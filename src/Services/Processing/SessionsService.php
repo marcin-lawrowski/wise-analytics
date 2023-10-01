@@ -50,7 +50,8 @@ class SessionsService {
 	private function refreshUserSessions(int $userId, string $startDate, string $endDate) {
 		$this->sessionsDAO->deleteByUserAndDate($userId, $startDate, $endDate);
 
-		$events = $this->queryEvents(['*'], ["user_id" => $userId, "created >= '$startDate'", "created <= '$endDate'"]);
+		$events = $this->queryEvents(['*'], ["user_id = $userId", "created >= '$startDate'", "created <= '$endDate'"]);
+
 		$this->createSessions($userId, $this->getGroupedEvents($events));
 	}
 
