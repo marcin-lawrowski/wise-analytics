@@ -1,6 +1,6 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Stats\Metrics\Processors;
+namespace Kainex\WiseAnalytics\Services\Processing\Metrics\Processors;
 
 use Kainex\WiseAnalytics\Model\Stats\Metric;
 use Kainex\WiseAnalytics\Model\Stats\Statistic;

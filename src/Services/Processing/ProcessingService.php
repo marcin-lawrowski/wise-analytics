@@ -1,6 +1,6 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Stats;
+namespace Kainex\WiseAnalytics\Services\Processing;
 
 use Kainex\WiseAnalytics\Options;
 

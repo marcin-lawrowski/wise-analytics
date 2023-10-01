@@ -2,12 +2,9 @@
 
 namespace Kainex\WiseAnalytics\Endpoints;
 
-use Kainex\WiseAnalytics\DAO\EventTypesDAO;
-use Kainex\WiseAnalytics\DAO\UsersDAO;
-use Kainex\WiseAnalytics\Model\User;
 use Kainex\WiseAnalytics\Options;
 use Kainex\WiseAnalytics\Services\Events\EventsService;
-use Kainex\WiseAnalytics\Services\Stats\ProcessingService;
+use Kainex\WiseAnalytics\Services\Processing\ProcessingService;
 use Kainex\WiseAnalytics\Services\Users\UsersService;
 
 /**
@@ -26,22 +23,17 @@ class FrontHandler {
 	/** @var EventsService */
 	private $eventsService;
 
-	/** @var ProcessingService */
-	private $processingService;
-
 	/**
 	 * FrontHandler constructor.
 	 * @param Options $options
 	 * @param UsersService $usersService
 	 * @param EventsService $eventsService
-	 * @param ProcessingService $processingService
 	 */
-	public function __construct(Options $options, UsersService $usersService, EventsService $eventsService, ProcessingService $processingService)
+	public function __construct(Options $options, UsersService $usersService, EventsService $eventsService)
 	{
 		$this->options = $options;
 		$this->usersService = $usersService;
 		$this->eventsService = $eventsService;
-		$this->processingService = $processingService;
 	}
 
 	public function registerEndpoints() {
@@ -72,25 +64,22 @@ class FrontHandler {
 	}
 	
 	private function handleEvent() {
-		$user = $this->usersService->getOrCreateUser();
+		try {
+			$user = $this->usersService->getOrCreateUser();
+			$event = $this->eventsService->createEvent(
+				$user,
+				$this->getRequestParam('ty'),
+				$this->getRequestParam('cs'), [
+					'uri' => $this->getRequestParam('ur'),
+					'title' => $this->getRequestParam('ti'),
+					'referer' => $this->getRequestParam('re'),
+				]
+			);
 
-		/*
-		$event = $this->eventsService->createEvent(
-			$user,
-			$this->getRequestParam('ty'),
-			$this->getRequestParam('cs'), [
-				'uri' => $this->getRequestParam('ur'),
-				'title' => $this->getRequestParam('ti'),
-				'referer' => $this->getRequestParam('re'),
-			]
-		);
-		*/
-
-		$this->processingService->process();
-
-
-		//echo $event->getId();
-		//$this->usersDao->save($user);
+			$this->endResponse("event ok: " . $event->getId());
+		} catch (\Exception $e) {
+			$this->endResponse("event error: " . $e->getMessage());
+		}
 	}
 
 	/**
@@ -103,6 +92,24 @@ class FrontHandler {
 	 */
 	private function getRequestParam($name, $default = null) {
 		return array_key_exists($name, $_GET) ? stripslashes_deep($_GET[$name]) : $default;
+	}
+
+	/**
+	 * Outputs 1x1 transparent GIF image together with "X-WA-Api-Response" header
+	 *
+	 * @param string $headerMessage
+	 */
+	private function endResponse($headerMessage = null) {
+		$imageSource = 'R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=';
+		$image = base64_decode($imageSource);
+		nocache_headers();
+		header("Content-type: image/gif");
+		header("Content-Length: ".strlen($image));
+		if ($headerMessage) {
+			header("X-NeptuneWeb-Api-Response: {$headerMessage}");
+		}
+		echo $image;
+		die();
 	}
 	
 }

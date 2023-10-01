@@ -2,20 +2,31 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
-import Loader from "common/Loader";
+import moment from 'moment';
 import Spinner from "common/Spinner";
 
 class Highlights extends React.Component {
 
 	componentDidMount() {
+		this.refresh();
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
+			this.refresh();
+		}
+	}
+
+	refresh() {
 		this.props.requestReport({
 			name: 'overview.highlights',
 			filters: {
-				startDate: this.props.startDate,
-				endDate: this.props.endDate
+				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
+				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
 			}
 		});
 	}
+
 
 	render() {
 		return <React.Fragment>
@@ -46,6 +57,14 @@ class Highlights extends React.Component {
 						</div>
 					</div>
 				</div>
+				<div className="col">
+					<div className="card p-1">
+						<div className="card-body text-center">
+							<h6 className="card-title text-muted">Avg. Time</h6>
+							<h3>{ this.props.report.avgSessionTime }</h3>
+						</div>
+					</div>
+				</div>
 			</div>
 		</React.Fragment>
 	}
@@ -53,8 +72,8 @@ class Highlights extends React.Component {
 
 Highlights.propTypes = {
 	configuration: PropTypes.object.isRequired,
-	startDate: PropTypes.string.isRequired,
-	endDate: PropTypes.string.isRequired
+	startDate: PropTypes.object,
+	endDate: PropTypes.object
 };
 
 export default connect(

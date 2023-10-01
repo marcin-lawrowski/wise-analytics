@@ -2,7 +2,7 @@
 
 namespace Kainex\WiseAnalytics\Endpoints;
 
-use Kainex\WiseAnalytics\Services\Reports\HighlightsService;
+use Kainex\WiseAnalytics\Services\Reporting\HighlightsService;
 
 class ReportsEndpoint {
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Stats;
+namespace Kainex\WiseAnalytics\Services\Processing;
 
 use Kainex\WiseAnalytics\Container;
 use Kainex\WiseAnalytics\Model\Stats\Metric;
 use Kainex\WiseAnalytics\Options;
-use Kainex\WiseAnalytics\Services\Stats\Metrics\Processors\UsersProcessor;
+use Kainex\WiseAnalytics\Services\Processing\Metrics\Processors\UsersProcessor;
 
 class StatisticsService {
 

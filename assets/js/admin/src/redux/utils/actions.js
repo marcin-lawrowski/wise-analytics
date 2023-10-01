@@ -6,8 +6,6 @@ export function handleServerActions(state, action, defaultServerActions, categor
 	for (let actionName in defaultServerActions) {
 		let actionNameCapitalized = actionName.toUpperCase();
 		let prefix = `${categoryName}_${actionNameCapitalized}_`;
-
-		console.log('Action name = ', actionName, action.type, prefix);
 		
 		if (action.type === prefix + "FETCH_IN_PROGRESS") {
 			return newState( { [actionName]: { ...state[actionName], inProgress: true } }, state );

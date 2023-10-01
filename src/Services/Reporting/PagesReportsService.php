@@ -1,6 +1,6 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Reports;
+namespace Kainex\WiseAnalytics\Services\Reporting;
 
 use Kainex\WiseAnalytics\DAO\EventTypesDAO;
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;

@@ -20,11 +20,12 @@ class Spinner extends React.Component {
 
 Spinner.defaultProps = {
 	marginBottom: 0,
-	marginTop: 0
+	marginTop: 0,
+	show: false
 };
 
 Spinner.propTypes = {
-	show: PropTypes.bool.isRequired,
+	show: PropTypes.bool,
 	marginBottom: PropTypes.number.isRequired,
 	marginTop: PropTypes.number.isRequired,
 	text: PropTypes.string

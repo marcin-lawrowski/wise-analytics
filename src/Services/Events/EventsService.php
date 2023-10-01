@@ -7,7 +7,6 @@ use Kainex\WiseAnalytics\DAO\EventTypesDAO;
 use Kainex\WiseAnalytics\Model\Event;
 use Kainex\WiseAnalytics\Model\EventType;
 use Kainex\WiseAnalytics\Model\User;
-use Kainex\WiseAnalytics\Options;
 use Kainex\WiseAnalytics\Utils\URLUtils;
 
 class EventsService {

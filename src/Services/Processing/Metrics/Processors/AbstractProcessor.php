@@ -1,6 +1,6 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Stats\Metrics\Processors;
+namespace Kainex\WiseAnalytics\Services\Processing\Metrics\Processors;
 
 use Kainex\WiseAnalytics\DAO\Stats\StatisticsDAO;
 use Kainex\WiseAnalytics\Installer;

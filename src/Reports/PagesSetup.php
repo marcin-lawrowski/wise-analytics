@@ -3,19 +3,25 @@
 namespace Kainex\WiseAnalytics\Reports;
 
 use Kainex\WiseAnalytics\Reports\Pages\Overview;
+use Kainex\WiseAnalytics\Services\Processing\ProcessingService;
 
 class PagesSetup {
 
 	/** @var Overview */
 	private $overviewPage;
 
+	/** @var ProcessingService */
+	private $processingService;
+
 	/**
 	 * PagesSetup constructor.
 	 * @param Overview $overviewPage
+	 * @param ProcessingService $processingService
 	 */
-	public function __construct(Overview $overviewPage)
+	public function __construct(Overview $overviewPage, ProcessingService $processingService)
 	{
 		$this->overviewPage = $overviewPage;
+		$this->processingService = $processingService;
 	}
 
 	public function install() {
@@ -24,6 +30,9 @@ class PagesSetup {
 	}
 
 	public function overviewAction() {
+		// TODO: move to Cron hourly (?)
+		$this->processingService->process();
+
 		$this->overviewPage->render();
 	}
 
