@@ -1,0 +1,78 @@
+{
+  "services": {
+	"options": {
+	  "class": "Kainex\\WiseAnalytics\\Options"
+	},
+
+	"dao.users": {
+	  "class": "Kainex\\WiseAnalytics\\DAO\\UsersDAO", "params": ["options"]
+	},
+	"dao.event.types": {
+	  "class": "Kainex\\WiseAnalytics\\DAO\\EventTypesDAO", "params": ["options"]
+	},
+	"dao.events": {
+	  "class": "Kainex\\WiseAnalytics\\DAO\\EventsDAO", "params": ["options"]
+	},
+	"dao.stats.metrics": {
+	  "class": "Kainex\\WiseAnalytics\\DAO\\Stats\\MetricsDAO", "params": ["options"]
+	},
+	"dao.stats.statistics": {
+	  "class": "Kainex\\WiseAnalytics\\DAO\\Stats\\StatisticsDAO", "params": ["options"]
+	},
+
+	"tracking.core": {
+	  "class": "Kainex\\WiseAnalytics\\Tracking\\Core", "params": ["options"]
+	},
+
+	"services.events": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Events\\EventsService", "params": ["options", "dao.events", "dao.event.types"]
+	},
+	"services.users": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Users\\UsersService", "params": ["options", "dao.users"]
+	},
+	"services.stats.metrics": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Stats\\MetricsService", "params": ["options", "dao.stats.metrics"]
+	},
+	"services.stats.statistics": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Stats\\StatisticsService", "params": ["options", "container"]
+	},
+
+	"services.stats.statistics.metrics.users": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Stats\\Metrics\\Processors\\UsersProcessor", "params": ["dao.stats.statistics"]
+	},
+
+
+	"services.reports.users": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Reports\\UsersReportsService", "params": []
+	},
+	"services.reports.pages": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Reports\\PagesReportsService", "params": []
+	},
+	"services.reports.highlights": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Reports\\HighlightsService", "params": ["services.reports.users", "services.reports.pages"]
+	},
+
+	"services.stats.processing": {
+	  "class": "Kainex\\WiseAnalytics\\Services\\Stats\\ProcessingService", "params": ["options", "services.stats.metrics", "services.stats.statistics"]
+	},
+
+	"endpoints.front": {
+	  "class": "Kainex\\WiseAnalytics\\Endpoints\\FrontHandler", "params": ["options", "services.users", "services.events", "services.stats.processing"]
+	},
+	"endpoints.reports": {
+	  "class": "Kainex\\WiseAnalytics\\Endpoints\\ReportsEndpoint", "params": ["services.reports.highlights"]
+	},
+
+	"reports.pages.overview": {
+	  "class": "Kainex\\WiseAnalytics\\Reports\\Pages\\Overview"
+	},
+
+	"reports.pages.setup": {
+	  "class": "Kainex\\WiseAnalytics\\Reports\\PagesSetup", "params": ["reports.pages.overview"]
+	},
+
+	"analytics": {
+	  "class": "Kainex\\WiseAnalytics\\Analytics", "params": ["options"]
+	}
+  }
+}
