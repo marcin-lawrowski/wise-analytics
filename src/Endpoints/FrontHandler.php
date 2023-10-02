@@ -4,8 +4,8 @@ namespace Kainex\WiseAnalytics\Endpoints;
 
 use Kainex\WiseAnalytics\Options;
 use Kainex\WiseAnalytics\Services\Events\EventsService;
-use Kainex\WiseAnalytics\Services\Processing\ProcessingService;
 use Kainex\WiseAnalytics\Services\Users\UsersService;
+use Kainex\WiseAnalytics\Utils\IPUtils;
 
 /**
  * FrontHandler
@@ -70,8 +70,9 @@ class FrontHandler {
 				$user,
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [
+					'ip' => IPUtils::getIpAddress(),
 					'uri' => $this->getRequestParam('ur'),
-					'title' => $this->getRequestParam('ti'),
+					//'title' => $this->getRequestParam('ti'), // TODO: title
 					'referer' => $this->getRequestParam('re'),
 				]
 			);
@@ -106,7 +107,7 @@ class FrontHandler {
 		header("Content-type: image/gif");
 		header("Content-Length: ".strlen($image));
 		if ($headerMessage) {
-			header("X-NeptuneWeb-Api-Response: {$headerMessage}");
+			header("X-WA-Api-Response: {$headerMessage}");
 		}
 		echo $image;
 		die();
