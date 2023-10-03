@@ -91,14 +91,23 @@ waConnector.api.Core = function() {
 			// attach custom data:
 			params['da'] = JSON.stringify(customData);
 		}
-		
-		if (baseDeferred !== null) {
-			// if jQuery is available send all events sequentially:
-			baseDeferred = baseDeferred.then(apiCallDeferred('event', params, doneCallback));
-		} else {
-			// otherwise send each event without waiting:
-			apiCall('event', params, doneCallback);
-		}
+
+		waConnector.libs.botDetect()
+			.then(function(botd) { return botd.detect(); })
+			.then(function(result) {
+				if (result.bot !== false) {
+					return;
+				}
+
+				if (baseDeferred !== null) {
+					// if jQuery is available send all events sequentially:
+					baseDeferred = baseDeferred.then(apiCallDeferred('event', params, doneCallback));
+				} else {
+					// otherwise send each event without waiting:
+					apiCall('event', params, doneCallback);
+				}
+			})
+			.catch(function(error) { console.error(error) });
 	}
 	
 	function apiCallDeferred(category, params, doneCallback) {
