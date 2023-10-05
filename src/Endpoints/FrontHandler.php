@@ -73,6 +73,7 @@ class FrontHandler {
 					'ip' => IPUtils::getIpAddress(),
 					'uri' => $this->getRequestParam('ur'),
 					//'title' => $this->getRequestParam('ti'), // TODO: title
+					'ua' => $_SERVER['HTTP_USER_AGENT'],
 					'referer' => $this->getRequestParam('re'),
 				]
 			);
