@@ -60,6 +60,12 @@ waConnector.api.Core = function() {
 		var uuid = getCookie(waConfig.cookie);
 		// UUID - related code goes here
 	}
+
+	function getCanonical() {
+		var canonical = document.querySelector("link[rel='canonical']");
+
+		return canonical ? canonical.getAttribute("href") : '';
+	}
 	
 	/**
 	 * Tracks event with additional data.
@@ -72,6 +78,7 @@ waConnector.api.Core = function() {
 		var params = {
 			ty: eventName,
 			ur: window.location.href,
+			cur: getCanonical(),
 			ti: document.title,
 			re: document.referrer,
 			cs: getApiHash()

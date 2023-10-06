@@ -13,7 +13,7 @@ class Event {
     /** @var integer */
     private $typeId;
 
-    /** @var string */
+    /** @var string|null */
     private $uri;
 
     /** @var string */
@@ -74,17 +74,17 @@ class Event {
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getUri(): string
+	public function getUri(): ?string
 	{
 		return $this->uri;
 	}
 
 	/**
-	 * @param string $uri
+	 * @param string|null $uri
 	 */
-	public function setUri(string $uri): void
+	public function setUri(?string $uri): void
 	{
 		$this->uri = $uri;
 	}

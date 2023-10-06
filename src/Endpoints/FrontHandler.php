@@ -65,15 +65,15 @@ class FrontHandler {
 	
 	private function handleEvent() {
 		try {
-			$user = $this->usersService->getOrCreateUser();
 			$event = $this->eventsService->createEvent(
-				$user,
+				$this->usersService->getOrCreateUser(),
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [
 					'ip' => IPUtils::getIpAddress(),
 					'uri' => $this->getRequestParam('ur'),
-					//'title' => $this->getRequestParam('ti'), // TODO: title
-					'ua' => $_SERVER['HTTP_USER_AGENT'],
+					'canonicalUri' => $this->getRequestParam('cur'),
+					'title' => $this->getRequestParam('ti'),
+					'userAgent' => $_SERVER['HTTP_USER_AGENT'],
 					'referer' => $this->getRequestParam('re'),
 				]
 			);
