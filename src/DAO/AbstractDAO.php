@@ -25,6 +25,27 @@ abstract class AbstractDAO {
 	}
 
 	/**
+	 * @param array $fields
+	 * @return object[]
+	 */
+	protected function getByFields(array $fields): array {
+		global $wpdb;
+
+		$conditions = [];
+		foreach ($fields as $fieldName => $fieldValue) {
+			$conditions[] = sprintf("`%s` = '%s'", $fieldName, $fieldValue);
+		}
+
+		$sql = sprintf("SELECT * FROM `%s` WHERE %s;", $this->getTable(), implode(' AND ', $conditions));
+		$results = $wpdb->get_results($sql);
+		if (is_array($results)) {
+			return $results;
+		}
+
+		return [];
+	}
+
+	/**
 	 * @param array $conditions
 	 */
 	protected function deleteByConditions(array $conditions) {

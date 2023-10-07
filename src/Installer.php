@@ -34,6 +34,12 @@ class Installer {
 		return $wpdb->prefix.'wise_analytics_event_types';
 	}
 
+	public static function getEventResourcesTable() {
+		global $wpdb;
+
+		return $wpdb->prefix.'wise_analytics_resources';
+	}
+
 	public static function getMetricsTable() {
 		global $wpdb;
 
@@ -145,6 +151,19 @@ class Installer {
 				uuid text NOT NULL,
 				created datetime NOT NULL default now(),
 				data json
+		) $charsetCollate;";
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+
+		$tableName = self::getEventResourcesTable();
+		$sql = "CREATE TABLE ".$tableName." (
+				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				type_id bigint(11),
+				text_key text,
+				text_value text,
+				int_key int,
+				int_value int,
+				created datetime not null default now()
 		) $charsetCollate;";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
@@ -301,6 +320,10 @@ class Installer {
 		$wpdb->query($sql);
 
 		$tableName = self::getMetricsTable();
+		$sql = "DROP TABLE IF EXISTS {$tableName};";
+		$wpdb->query($sql);
+
+		$tableName = self::getEventResourcesTable();
 		$sql = "DROP TABLE IF EXISTS {$tableName};";
 		$wpdb->query($sql);
 		

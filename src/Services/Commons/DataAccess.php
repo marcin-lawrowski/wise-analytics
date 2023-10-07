@@ -7,35 +7,54 @@ use Kainex\WiseAnalytics\Installer;
 trait DataAccess {
 
 	/**
-	 * @param string[] $selects
-	 * @param string[] $conditions
+	 * @param array $definition
 	 * @return object[]
+	 * @throws \Exception
 	 */
-	protected function queryEvents(array $selects, array $conditions): array {
-		return $this->query(Installer::getEventsTable(), $selects, $conditions);
+	protected function queryEvents(array $definition): array {
+		return $this->query(Installer::getEventsTable(), $definition);
 	}
 
 	/**
 	 * @param string[] $selects
 	 * @param string[] $conditions
 	 * @return object[]
+	 * @throws \Exception
 	 */
 	protected function querySessions(array $selects, array $conditions): array {
-		return $this->query(Installer::getSessionsTable(), $selects, $conditions);
+		return $this->query(Installer::getSessionsTable(), ['select' => $selects, 'where' => $conditions]);
 	}
 
 	/**
 	 * @param string $table
-	 * @param string[] $selects
-	 * @param string[] $conditions
+	 * @param array $definition
 	 * @return object[]
+	 * @throws \Exception
 	 */
-	private function query(string $table, array $selects, array $conditions): array {
+	private function query(string $table, array $definition): array {
 		global $wpdb;
 
+		if (!isset($definition['where'])) {
+			throw new \Exception('No "where" conditions specified');
+		}
+
+		$aliasSQL = isset($definition['alias']) ? ' AS '.$definition['alias'] : '';
+		$selectSQL = isset($definition['select']) ? implode(', ', $definition['select']) : '*';
+		$whereSQL = implode(' AND ', $definition['where']);
+		$groupBySQL = isset($definition['group']) ? 'GROUP BY '.implode(', ', $definition['group']) : '';
+		$orderBySQL = isset($definition['order']) ? 'ORDER BY '.implode(', ', $definition['order']) : '';
+		$joins = [];
+		if (isset($definition['join'])) {
+			foreach ($definition['join'] as $join) {
+				$joins[] = sprintf('LEFT JOIN %s ON (%s)', $join[0], implode(' AND ', $join[1]));
+			}
+		}
+		$joinsSQL = implode(" ", $joins);
+		$limitSQL = isset($definition['limit']) ? ' LIMIT '.$definition['limit'] : '';
+
 		$sql = sprintf(
-			"SELECT %s FROM `%s` WHERE %s;",
-			implode(', ', $selects), $table, implode(' AND ', $conditions)
+			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s;",
+			$selectSQL, $table, $aliasSQL, $joinsSQL, $whereSQL, $groupBySQL, $orderBySQL, $limitSQL
 		);
 		$results = $wpdb->get_results($sql);
 		if (is_array($results)) {

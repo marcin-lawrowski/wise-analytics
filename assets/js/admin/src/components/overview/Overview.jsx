@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Highlights from "./Highlights";
 import moment from 'moment';
 import DatePicker from "react-datepicker";
+import TopPages from "./TopPages";
 
 class Overview extends React.Component {
 
@@ -42,6 +43,14 @@ class Overview extends React.Component {
 			<div className="row">
 				<div className="col">
 					<Highlights
+						startDate={ this.state.startDate }
+						endDate={ this.state.endDate }
+					/>
+				</div>
+			</div>
+			<div className="row mt-3">
+				<div className="col-md-6">
+					<TopPages
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 					/>

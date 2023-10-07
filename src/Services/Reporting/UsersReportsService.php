@@ -11,7 +11,7 @@ class UsersReportsService {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
-		$result = $this->queryEvents(['COUNT(DISTINCT user_id) AS users'], ["created >= '$startDateStr'", "created <= '$endDateStr'"]);
+		$result = $this->queryEvents(['select' => ['COUNT(DISTINCT user_id) AS users'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
 
 		return count($result) > 0 ? (int) $result[0]->users : 0;
 	}

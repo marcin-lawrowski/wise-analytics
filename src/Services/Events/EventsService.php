@@ -4,7 +4,9 @@ namespace Kainex\WiseAnalytics\Services\Events;
 
 use Kainex\WiseAnalytics\DAO\EventsDAO;
 use Kainex\WiseAnalytics\DAO\EventTypesDAO;
+use Kainex\WiseAnalytics\DAO\EventResourcesDAO;
 use Kainex\WiseAnalytics\Model\Event;
+use Kainex\WiseAnalytics\Model\EventResource;
 use Kainex\WiseAnalytics\Model\EventType;
 use Kainex\WiseAnalytics\Model\User;
 use Kainex\WiseAnalytics\Utils\URLUtils;
@@ -24,27 +26,32 @@ class EventsService {
 	/** @var EventTypesDAO */
 	private $eventTypesDAO;
 
+	/** @var EventResourcesDAO */
+	private $eventResourcesDAO;
+
 	/**
 	 * EventsService constructor.
 	 * @param URLUtils $urlUtils
 	 * @param EventsDAO $eventsDAO
 	 * @param EventTypesDAO $eventTypesDAO
+	 * @param EventResourcesDAO $resourcesDAO
 	 */
-	public function __construct(URLUtils $urlUtils, EventsDAO $eventsDAO, EventTypesDAO $eventTypesDAO)
+	public function __construct(URLUtils $urlUtils, EventsDAO $eventsDAO, EventTypesDAO $eventTypesDAO, EventResourcesDAO $resourcesDAO)
 	{
 		$this->urlUtils = $urlUtils;
 		$this->eventsDAO = $eventsDAO;
 		$this->eventTypesDAO = $eventTypesDAO;
+		$this->eventResourcesDAO = $resourcesDAO;
 	}
 
 	/**
 	 * @param User $user
 	 * @param string $typeSlug
 	 * @param string $checksum
-	 * @param array $data
+	 * @param array $inputData
 	 * @return Event
 	 */
-	public function createEvent(User $user, string $typeSlug, string $checksum, array $data): Event {
+	public function createEvent(User $user, string $typeSlug, string $checksum, array $inputData): Event {
 		if (!$checksum) {
 			throw new \Exception('Missing checksum');
 		}
@@ -55,14 +62,16 @@ class EventsService {
 		$eventType = $this->getOrCreateEventType($typeSlug);
 
 		$event = new Event();
-		$event->setUri($this->convertUri($typeSlug, $data));
+		$event->setUri($this->convertUri($typeSlug, $inputData));
 		$event->setCreated(new \DateTime());
 		$event->setUserId($user->getId());
 		$event->setTypeId($eventType->getId());
 		$event->setChecksum($checksum);
-		$event->setData($this->convertData($typeSlug, $data));
+		$event->setData($this->convertData($typeSlug, $inputData));
 
 		$this->eventsDAO->save($event);
+
+		$this->postCreateActions($typeSlug, $event, $inputData);
 
 		return $event;
 	}
@@ -83,15 +92,22 @@ class EventsService {
 		return $eventType;
 	}
 
-	private function convertData(string $typeSlug, array $data): array {
+	/**
+	 * Converts input data into event type format.
+	 *
+	 * @param string $eventTypeSlug
+	 * @param array $inputData
+	 * @return array
+	 */
+	private function convertData(string $eventTypeSlug, array $inputData): array {
 		$output = [];
 
-		switch ($typeSlug) {
+		switch ($eventTypeSlug) {
 			case 'page-view':
 				$output = array_filter([
-					'ip' => $data['ip'],
-					'uri' => $data['uri'],
-					'referer' => $data['referer']
+					'ip' => $inputData['ip'],
+					'uri' => $inputData['uri'],
+					'referer' => $inputData['referer']
 				]);
 				break;
 		}
@@ -100,15 +116,23 @@ class EventsService {
 	}
 
 
-	private function convertUri(string $typeSlug, array $data): ?string {
+	/**
+	 * Converts input data into event URI.
+	 *
+	 * @param string $eventTypeSlug
+	 * @param array $inputData
+	 * @return string|null
+	 * @throws \Exception
+	 */
+	private function convertUri(string $eventTypeSlug, array $inputData): ?string {
 		$output = null;
 
-		switch ($typeSlug) {
+		switch ($eventTypeSlug) {
 			case 'page-view':
-				if (isset($data['canonicalUri']) && $data['canonicalUri']) {
-					$output = $this->urlUtils->toPathAndQuery($data['canonicalUri']);
-				} else if (isset($data['uri']) && $data['uri']) {
-					$output = $this->urlUtils->toPathAndQuery($data['uri']);
+				if (isset($inputData['canonicalUri']) && $inputData['canonicalUri']) {
+					$output = $this->urlUtils->toPathAndQuery($inputData['canonicalUri']);
+				} else if (isset($inputData['uri']) && $inputData['uri']) {
+					$output = $this->urlUtils->toPathAndQuery($inputData['uri']);
 				} else {
 					throw new \Exception('Missing URI');
 				}
@@ -117,6 +141,35 @@ class EventsService {
 		}
 
 		return $output;
+	}
+
+	/**
+	 *
+	 * TODO: save the resource only if created date is old enough
+	 *
+	 * @param string $eventTypeSlug
+	 * @param Event $event
+	 * @param array $inputData
+	 * @throws \Exception
+	 */
+	private function postCreateActions(string $eventTypeSlug, Event $event, array $inputData) {
+		if ($eventTypeSlug === 'page-view') {
+			if (!isset($inputData['title']) || !$inputData['title']) {
+				return;
+			}
+
+			$resources = $this->eventResourcesDAO->getByTypeAndTextKey(EventResource::TYPE_URI_TITLE, $event->getUri());
+			if (count($resources) > 0) {
+				$resources[0]->setTextValue($inputData['title']);
+				$this->eventResourcesDAO->save($resources[0]);
+			} else {
+				$es = new EventResource();
+				$es->setTypeId(EventResource::TYPE_URI_TITLE);
+				$es->setTextKey($event->getUri());
+				$es->setTextValue($inputData['title']);
+				$this->eventResourcesDAO->save($es);
+			}
+		}
 	}
 
 }

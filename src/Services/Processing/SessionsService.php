@@ -31,6 +31,7 @@ class SessionsService {
 	 * TODO: safety limit of the sessions or offset
 	 *
 	 * @param \DateTime $day The day to refresh the sessions
+	 * @throws \Exception
 	 */
 	public function refresh(\DateTime $day) {
 		$startDate = clone $day;
@@ -40,7 +41,7 @@ class SessionsService {
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
-		$users = $this->queryEvents(['DISTINCT user_id'], ["created >= '$startDateStr'", "created <= '$endDateStr'"]);
+		$users = $this->queryEvents(['select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
 
 		foreach ($users as $user) {
 			$this->refreshUserSessions($user->user_id, $startDateStr, $endDateStr);
@@ -50,7 +51,7 @@ class SessionsService {
 	private function refreshUserSessions(int $userId, string $startDate, string $endDate) {
 		$this->sessionsDAO->deleteByUserAndDate($userId, $startDate, $endDate);
 
-		$events = $this->queryEvents(['*'], ["user_id = $userId", "created >= '$startDate'", "created <= '$endDate'"]);
+		$events = $this->queryEvents(['select' => ['*'], 'where' => ["user_id = $userId", "created >= '$startDate'", "created <= '$endDate'"]]);
 
 		$this->createSessions($userId, $this->getGroupedEvents($events));
 	}
