@@ -5,6 +5,14 @@ namespace Kainex\WiseAnalytics\Utils;
 class TimeUtils {
 
 	/**
+	 * @param string $timestamp
+	 * @return string
+	 */
+	public static function formatTimestamp(string $timestamp): string {
+		return date('M j, Y H:i', strtotime($timestamp));
+	}
+
+	/**
 	 * @param integer $seconds
 	 * @param string|null $mode
 	 * @param bool $roundSeconds

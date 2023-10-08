@@ -16,13 +16,12 @@ trait DataAccess {
 	}
 
 	/**
-	 * @param string[] $selects
-	 * @param string[] $conditions
+	 * @param array $definition
 	 * @return object[]
 	 * @throws \Exception
 	 */
-	protected function querySessions(array $selects, array $conditions): array {
-		return $this->query(Installer::getSessionsTable(), ['select' => $selects, 'where' => $conditions]);
+	protected function querySessions(array $definition): array {
+		return $this->query(Installer::getSessionsTable(), $definition);
 	}
 
 	/**

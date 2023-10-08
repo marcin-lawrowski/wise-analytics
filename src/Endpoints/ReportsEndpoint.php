@@ -4,6 +4,7 @@ namespace Kainex\WiseAnalytics\Endpoints;
 
 use Kainex\WiseAnalytics\Services\Reporting\HighlightsService;
 use Kainex\WiseAnalytics\Services\Reporting\PagesReportsService;
+use Kainex\WiseAnalytics\Services\Reporting\UsersReportsService;
 
 class ReportsEndpoint {
 
@@ -13,15 +14,20 @@ class ReportsEndpoint {
 	/** @var PagesReportsService */
 	private $pagesReportsService;
 
+	/** @var UsersReportsService */
+	private $usersReportsService;
+
 	/**
 	 * ReportsEndpoint constructor.
 	 * @param HighlightsService $highlightsService
 	 * @param PagesReportsService $pagesReportsService
+	 * @param UsersReportsService $usersReportsService
 	 */
-	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService)
+	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, UsersReportsService $usersReportsService)
 	{
 		$this->highlightsService = $highlightsService;
 		$this->pagesReportsService = $pagesReportsService;
+		$this->usersReportsService = $usersReportsService;
 	}
 
 	public function registerEndpoints() {
@@ -50,6 +56,8 @@ class ReportsEndpoint {
 					return $this->highlightsService->getHighlights($startDate, $endDate);
 				case 'overview.pages.top';
 					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate);
+				case 'visitors';
+					return $this->usersReportsService->getVisitors($startDate, $endDate);
 			}
 
 		} catch (\Exception $e) {
