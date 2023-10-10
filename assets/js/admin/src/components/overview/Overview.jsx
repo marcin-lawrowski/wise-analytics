@@ -6,6 +6,7 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import TopPages from "./TopPages";
 import Visitors from "../visitors/Visitors";
+import Events from "../events/Events";
 
 class Overview extends React.Component {
 
@@ -50,14 +51,20 @@ class Overview extends React.Component {
 				</div>
 			</div>
 			<div className="row mt-3">
-				<div className="col-md-6">
+				<div className="col-md-3">
 					<TopPages
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 					/>
 				</div>
-				<div className="col-md-6">
+				<div className="col-md-3">
 					<Visitors
+						startDate={ this.state.startDate }
+						endDate={ this.state.endDate }
+					/>
+				</div>
+				<div className="col-md-6">
+					<Events
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 					/>

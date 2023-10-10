@@ -3,7 +3,8 @@ import { handleServerActions } from "utils/actions";
 const defaultServerActions = {
 	'overview.highlights': { result: { users: 0, pageViews: 0, avgPagesPerVisit: 0.0, avgSessionTime: '0s' } },
 	'overview.pages.top': { result: { pages: [] } },
-	'visitors': { result: { visitors: [] } }
+	'visitors': { result: { visitors: [] } },
+	'events': { result: { events: [] } }
 }
 
 const defaultState = {

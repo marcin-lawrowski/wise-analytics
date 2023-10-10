@@ -2,6 +2,7 @@
 
 namespace Kainex\WiseAnalytics\Endpoints;
 
+use Kainex\WiseAnalytics\Services\Reporting\EventsReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\HighlightsService;
 use Kainex\WiseAnalytics\Services\Reporting\PagesReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\UsersReportsService;
@@ -17,17 +18,22 @@ class ReportsEndpoint {
 	/** @var UsersReportsService */
 	private $usersReportsService;
 
+	/** @var EventsReportsService */
+	private $eventsReportsService;
+
 	/**
 	 * ReportsEndpoint constructor.
 	 * @param HighlightsService $highlightsService
 	 * @param PagesReportsService $pagesReportsService
 	 * @param UsersReportsService $usersReportsService
+	 * @param EventsReportsService $eventsReportsService
 	 */
-	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, UsersReportsService $usersReportsService)
+	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, UsersReportsService $usersReportsService, EventsReportsService $eventsReportsService)
 	{
 		$this->highlightsService = $highlightsService;
 		$this->pagesReportsService = $pagesReportsService;
 		$this->usersReportsService = $usersReportsService;
+		$this->eventsReportsService = $eventsReportsService;
 	}
 
 	public function registerEndpoints() {
@@ -58,6 +64,8 @@ class ReportsEndpoint {
 					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate);
 				case 'visitors';
 					return $this->usersReportsService->getVisitors($startDate, $endDate);
+				case 'events';
+					return $this->eventsReportsService->getEvents($startDate, $endDate);
 			}
 
 		} catch (\Exception $e) {
