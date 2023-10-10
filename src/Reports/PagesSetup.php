@@ -30,9 +30,6 @@ class PagesSetup {
 	}
 
 	public function overviewAction() {
-		// TODO: move to Cron hourly (?)
-		$this->processingService->process();
-
 		$this->overviewPage->render();
 	}
 

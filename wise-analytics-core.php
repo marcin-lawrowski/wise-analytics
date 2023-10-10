@@ -16,6 +16,7 @@ use Kainex\WiseAnalytics\Endpoints\ReportsEndpoint;
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Loader;
 use Kainex\WiseAnalytics\Reports\PagesSetup;
+use Kainex\WiseAnalytics\Services\Processing\ProcessingService;
 use Kainex\WiseAnalytics\Tracking\Core;
 
 define('WISE_ANALYTICS_VERSION', '1.0.0');
@@ -46,3 +47,6 @@ if (is_admin()) {
 	Installer::setup(__FILE__);
 	add_action('admin_enqueue_scripts', [$container->get(Analytics::class), 'enqueueAdminResources']);
 }
+
+// install cron tasks:
+add_action('wa_processing_hook_'.get_current_blog_id(), [$container->get(ProcessingService::class), 'process']);

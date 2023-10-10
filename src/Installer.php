@@ -244,6 +244,8 @@ class Installer {
 		) $charsetCollate;";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
+
+		self::installCron();
 		
 		// set default options after installation:
 		//$settings = WiseAnalyticsContainer::get('WiseAnalyticsSettings');
@@ -259,6 +261,16 @@ class Installer {
 		if ($user_level < $sac_admin_user_level) {
 			return;
 		}
+
+		if (function_exists('is_multisite') && is_multisite()) {
+			$blogIDs = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+			foreach ($blogIDs as $blogID) {
+				self::uninstallCron($blogID);
+			}
+			return;
+		}
+
+		self::uninstallCron($wpdb->blogid);
 	}
 
 	/**
@@ -328,6 +340,17 @@ class Installer {
 		$wpdb->query($sql);
 		
 		//WiseAnalyticsOptions::getInstance()->dropAllOptions();
+	}
+
+	private static function installCron() {
+		if (!wp_next_scheduled('wa_processing_hook_'.get_current_blog_id())) {
+			wp_schedule_event(time(), 'hourly', 'wa_processing_hook_'.get_current_blog_id());
+		}
+	}
+
+	private static function uninstallCron($blogId) {
+		$timestamp = wp_next_scheduled('wa_processing_hook_'.$blogId);
+        wp_unschedule_event($timestamp, 'wa_processing_hook_'.$blogId);
 	}
 
 }
