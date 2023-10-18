@@ -30,11 +30,6 @@ var plumberOptions = {
 	errorHandler: onError,
 };
 
-const vendors = [
-	'jquery', 'bootstrap', 'react', 'react-dom', 'prop-types', 'react-redux', 'react-google-charts', 'react-router', 'react-router-dom',
-	'react-select', 'react-bootstrap', 'react-datepicker', 'redux', 'redux-thunk', 'ckeditor4-react', 'qs', 'moment'
-];
-
 var jsFiles = {
 	vendor: [
 
@@ -74,6 +69,33 @@ gulp.task('eslint', function() {
 		.pipe(eslint.failAfterError());
 });
 
+const libVendors = [
+	'react', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', '@nivo/core', '@nivo/line'
+]
+
+gulp.task('build:vendor', () => {
+	process.env.NODE_ENV = 'production';
+	const b = browserify({ debug: false });
+
+	libVendors.forEach(lib => {
+		b.require(lib, { expose: lib });
+	});
+
+	b.transform(babelify.configure({
+		presets : ["@babel/preset-env", "@babel/preset-react"],
+		plugins : ["@babel/plugin-transform-runtime"],
+		extensions: ['.jsx', '.js', '.cjs']
+	}), { global: true });
+
+     return b
+	    .bundle()
+		.pipe(source('wise-analytics-vendor.js'))
+		.pipe(buffer())
+		.pipe(uglify())
+		.pipe(rename('wise-analytics-vendor.min.js'))
+		.pipe(gulp.dest('assets/js/admin'));
+});
+
 gulp.task("build-sources-dev", function() {
 	process.env.NODE_ENV = 'development';
 	var args = watchify.args;
@@ -86,7 +108,7 @@ gulp.task("build-sources-dev", function() {
 		debug: true,
 		detectGlobals: true,
 		cache: {}, packageCache: {}
-	}), args);
+	}).external([ ...libVendors ]), args);
 
 	bundler.transform(babelify.configure({
 		presets : ["@babel/preset-env", "@babel/preset-react"],

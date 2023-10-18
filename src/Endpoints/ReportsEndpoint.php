@@ -56,6 +56,8 @@ class ReportsEndpoint {
 		$startDate->setTime(0, 0, 0);
 		$endDate->setTime(23, 59, 59);
 
+		// TODO: validate dates
+
 		try {
 			switch ($queryParams['name']) {
 				case 'overview.highlights';
@@ -64,6 +66,8 @@ class ReportsEndpoint {
 					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate);
 				case 'visitors';
 					return $this->usersReportsService->getVisitors($startDate, $endDate);
+				case 'visitors.daily';
+					return $this->usersReportsService->getVisitorsDaily($startDate, $endDate);
 				case 'events';
 					return $this->eventsReportsService->getEvents($startDate, $endDate);
 			}

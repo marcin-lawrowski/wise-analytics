@@ -33,6 +33,9 @@ div.waContainer {
   /* rtl:end:remove */
 
 }
+div.waContainer .card {
+  max-width: unset;
+}
 div.waContainer :root,
 div.waContainer [data-bs-theme=light] {
   --bs-blue: #0d6efd;

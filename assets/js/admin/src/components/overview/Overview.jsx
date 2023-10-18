@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import TopPages from "./TopPages";
 import Visitors from "../visitors/Visitors";
 import Events from "../events/Events";
+import VisitorsChart from "../visitors/VisitorsChart";
 
 class Overview extends React.Component {
 
@@ -45,6 +46,14 @@ class Overview extends React.Component {
 			<div className="row">
 				<div className="col">
 					<Highlights
+						startDate={ this.state.startDate }
+						endDate={ this.state.endDate }
+					/>
+				</div>
+			</div>
+			<div className="row mt-3">
+				<div className="col-md-12">
+					<VisitorsChart
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 					/>
