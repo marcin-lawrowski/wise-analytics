@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Spinner from "common/Spinner";
+import Loader from "common/Loader";
 
 class TopPages extends React.Component {
 
@@ -30,10 +30,9 @@ class TopPages extends React.Component {
 
 	render() {
 		return <React.Fragment>
-			<h5 className="d-flex">Top Pages <Spinner show={ this.props.loading } /></h5>
-
 			<div className="card p-1">
-				<div className="card-body text-center">
+				<div className="card-body">
+					<h5 className="card-title">Top Pages <Loader show={ this.props.loading } /></h5>
 					<table className="table table-striped">
 						<thead>
 							<tr>

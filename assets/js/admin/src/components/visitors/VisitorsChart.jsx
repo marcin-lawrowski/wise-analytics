@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Spinner from "common/Spinner";
+import Loader from "common/Loader";
 import LineChart from "../common/charts/LineChart";
 
 class VisitorsChart extends React.Component {
@@ -36,17 +36,14 @@ class VisitorsChart extends React.Component {
 			data: this.props.report.visitors.map( (record, index) => ({ "x": record.date, "y": record.visitors }) )
 		}];
 
-		return <React.Fragment>
-			<h5 className="d-flex">Visitors <Spinner show={ this.props.loading } /></h5>
-
-			<div className="card p-1">
-				<div className="card-body text-center">
-					<div style={ { height: 200 }}>
-						{ this.props.report.visitors.length > 0 ? <LineChart data={ data }/> : <Spinner show={ true } /> }
-					</div>
+		return <div className="card p-1">
+			<div className="card-body">
+				<h5 className="card-title">Visitors <Loader show={ this.props.loading } /></h5>
+				<div style={ { height: 200 }}>
+					{ this.props.report.visitors.length > 0 && <LineChart data={ data }/> }
 				</div>
 			</div>
-		</React.Fragment>
+		</div>
 	}
 }
 

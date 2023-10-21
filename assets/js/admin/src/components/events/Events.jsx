@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Spinner from "common/Spinner";
+import Loader from "common/Loader";
 
 class Events extends React.Component {
 
@@ -29,10 +29,9 @@ class Events extends React.Component {
 
 	render() {
 		return <React.Fragment>
-			<h5 className="d-flex">Recent Events <Spinner show={ this.props.loading } /></h5>
-
 			<div className="card p-1 w-100">
-				<div className="card-body text-center">
+				<div className="card-body">
+					<h5 className="card-title">Recent Events <Loader show={ this.props.loading } /></h5>
 					<table className="table table-striped ">
 						<thead>
 							<tr>

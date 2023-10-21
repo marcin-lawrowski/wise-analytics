@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import Spinner from "common/Spinner";
+import Loader from "common/Loader";
 
 class Highlights extends React.Component {
 
@@ -30,21 +31,19 @@ class Highlights extends React.Component {
 
 	render() {
 		return <React.Fragment>
-			<h5 className="d-flex">Highlights <Spinner show={ this.props.loading } /></h5>
-
 			<div className="row">
 				<div className="col">
 					<div className="card p-1">
 						<div className="card-body text-center">
-							<h6 className="card-title text-muted">Users</h6>
-							<h3>{ this.props.report.users }</h3>
+							<h6 className="card-title text-muted">Users <Loader show={ this.props.loading } /></h6>
+							<h3>{ this.props.report.users } </h3>
 						</div>
 					</div>
 				</div>
 				<div className="col">
 					<div className="card p-1">
 						<div className="card-body text-center">
-							<h6 className="card-title text-muted">Page Views</h6>
+							<h6 className="card-title text-muted">Page Views <Loader show={ this.props.loading } /></h6>
 							<h3>{ this.props.report.pageViews }</h3>
 						</div>
 					</div>
@@ -52,7 +51,7 @@ class Highlights extends React.Component {
 				<div className="col">
 					<div className="card p-1">
 						<div className="card-body text-center">
-							<h6 className="card-title text-muted">Pages / visit</h6>
+							<h6 className="card-title text-muted">Pages / visit <Loader show={ this.props.loading } /></h6>
 							<h3>{ this.props.report.avgPagesPerVisit }</h3>
 						</div>
 					</div>
@@ -60,7 +59,7 @@ class Highlights extends React.Component {
 				<div className="col">
 					<div className="card p-1">
 						<div className="card-body text-center">
-							<h6 className="card-title text-muted">Avg. Time</h6>
+							<h6 className="card-title text-muted">Avg. Time <Loader show={ this.props.loading } /></h6>
 							<h3>{ this.props.report.avgSessionTime }</h3>
 						</div>
 					</div>
