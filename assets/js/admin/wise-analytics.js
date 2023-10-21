@@ -191,7 +191,7 @@ var LineChart = /*#__PURE__*/function (_React$Component) {
               border: '1px solid #92b7d5',
               alignItems: 'center'
             }
-          }, point.data.yFormatted, " ", point.data.y !== 1 ? series1.plural : series1.single, " on ", (0, _moment["default"])(point.data.x).format('MMM D'));
+          }, point.data.yFormatted, " ", point.data.y !== 1 ? series1.plural : series1.single, /*#__PURE__*/_react["default"].createElement("br", null), " ", (0, _moment["default"])(point.data.x).format('MMM D'));
         }
       });
     }
@@ -561,7 +561,7 @@ var TopPages = /*#__PURE__*/function (_React$Component) {
     key: "refresh",
     value: function refresh() {
       this.props.requestReport({
-        name: 'overview.pages.top',
+        name: 'pages.top',
         filters: {
           startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
@@ -606,8 +606,8 @@ TopPages.propTypes = {
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration,
-    loading: state.reports['overview.pages.top'].inProgress,
-    report: state.reports['overview.pages.top'].result
+    loading: state.reports['pages.top'].inProgress,
+    report: state.reports['pages.top'].result
   };
 }, {
   requestReport: _reports.requestReport
@@ -657,7 +657,7 @@ var Visitors = /*#__PURE__*/function (_React$Component) {
     key: "refresh",
     value: function refresh() {
       this.props.requestReport({
-        name: 'visitors',
+        name: 'visitors.last',
         filters: {
           startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
@@ -702,8 +702,8 @@ Visitors.propTypes = {
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration,
-    loading: state.reports['visitors'].inProgress,
-    report: state.reports['visitors'].result
+    loading: state.reports['visitors.last'].inProgress,
+    report: state.reports['visitors.last'].result
   };
 }, {
   requestReport: _reports.requestReport
@@ -764,9 +764,6 @@ var VisitorsChart = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      if (this.props.report.visitors.length === 0) {
-        return null;
-      }
       var data = [{
         id: 'Visitors',
         single: 'Visitor',
@@ -790,8 +787,10 @@ var VisitorsChart = /*#__PURE__*/function (_React$Component) {
         style: {
           height: 200
         }
-      }, /*#__PURE__*/_react["default"].createElement(_LineChart["default"], {
+      }, this.props.report.visitors.length > 0 ? /*#__PURE__*/_react["default"].createElement(_LineChart["default"], {
         data: data
+      }) : /*#__PURE__*/_react["default"].createElement(_Spinner["default"], {
+        show: true
       })))));
     }
   }]);
@@ -950,12 +949,12 @@ var defaultServerActions = {
       avgSessionTime: '0s'
     }
   },
-  'overview.pages.top': {
+  'pages.top': {
     result: {
       pages: []
     }
   },
-  'visitors': {
+  'visitors.last': {
     result: {
       visitors: []
     }

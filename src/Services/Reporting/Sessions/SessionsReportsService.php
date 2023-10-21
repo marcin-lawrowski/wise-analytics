@@ -1,13 +1,10 @@
 <?php
 
+namespace Kainex\WiseAnalytics\Services\Reporting\Sessions;
 
-namespace Kainex\WiseAnalytics\Services\Reporting;
+use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 
-
-use Kainex\WiseAnalytics\Services\Commons\DataAccess;
-
-class SessionsReportsService {
-	use DataAccess;
+class SessionsReportsService extends ReportingService {
 
 	public function getAverageTime(\DateTime $startDate, \DateTime $endDate): int {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');

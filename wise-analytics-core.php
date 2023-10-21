@@ -32,16 +32,14 @@ $container = Container::getInstance();
 
 add_action('wp_enqueue_scripts', [$container->get(Analytics::class), 'enqueueResources']);
 
-// report pages:
+// reporting:
 add_action('admin_menu', [$container->get(PagesSetup::class), 'install']);
+add_action('rest_api_init', [$container->get(ReportsEndpoint::class), 'registerEndpoints']);
 
-// install tracking:
+// tracking:
 add_action('init', [$container->get(Core::class), 'install']);
-
-// install endpoints:
 add_action('init', [$container->get(FrontHandler::class), 'registerEndpoints']);
 add_action('pre_get_posts', [$container->get(FrontHandler::class), 'registerHandlers']);
-add_action('rest_api_init', [$container->get(ReportsEndpoint::class), 'registerEndpoints']);
 
 if (is_admin()) {
 	Installer::setup(__FILE__);

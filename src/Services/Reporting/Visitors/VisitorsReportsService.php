@@ -1,14 +1,12 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Reporting;
+namespace Kainex\WiseAnalytics\Services\Reporting\Visitors;
 
 use Kainex\WiseAnalytics\Installer;
-use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
-use Ramsey\Uuid\Type\Time;
 
-class UsersReportsService {
-	use DataAccess;
+class VisitorsReportsService extends ReportingService {
 
 	public function getTotalUsers(\DateTime $startDate, \DateTime $endDate): int {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
@@ -19,7 +17,7 @@ class UsersReportsService {
 		return count($result) > 0 ? (int) $result[0]->users : 0;
 	}
 
-	public function getVisitors(\DateTime $startDate, \DateTime $endDate): array {
+	public function getLastVisitors(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 

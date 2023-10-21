@@ -19,7 +19,7 @@ class Visitors extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'visitors',
+			name: 'visitors.last',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -68,7 +68,7 @@ Visitors.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['visitors'].inProgress,
-		report: state.reports['visitors'].result
+		loading: state.reports['visitors.last'].inProgress,
+		report: state.reports['visitors.last'].result
 	}), { requestReport }
 )(Visitors);

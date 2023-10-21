@@ -1,14 +1,11 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Reporting;
+namespace Kainex\WiseAnalytics\Services\Reporting\Events;
 
-use Kainex\WiseAnalytics\Installer;
-use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
-use Ramsey\Uuid\Type\Time;
 
-class EventsReportsService {
-	use DataAccess;
+class EventsReportsService extends ReportingService {
 
 	public function getEvents(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');

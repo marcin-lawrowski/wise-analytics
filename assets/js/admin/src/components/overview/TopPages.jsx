@@ -19,7 +19,7 @@ class TopPages extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'overview.pages.top',
+			name: 'pages.top',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -65,7 +65,7 @@ TopPages.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['overview.pages.top'].inProgress,
-		report: state.reports['overview.pages.top'].result
+		loading: state.reports['pages.top'].inProgress,
+		report: state.reports['pages.top'].result
 	}), { requestReport }
 )(TopPages);

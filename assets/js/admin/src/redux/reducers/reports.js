@@ -2,8 +2,8 @@ import { handleServerActions } from "utils/actions";
 
 const defaultServerActions = {
 	'overview.highlights': { result: { users: 0, pageViews: 0, avgPagesPerVisit: 0.0, avgSessionTime: '0s' } },
-	'overview.pages.top': { result: { pages: [] } },
-	'visitors': { result: { visitors: [] } },
+	'pages.top': { result: { pages: [] } },
+	'visitors.last': { result: { visitors: [] } },
 	'visitors.daily': { result: { visitors: [] } },
 	'events': { result: { events: [] } }
 }

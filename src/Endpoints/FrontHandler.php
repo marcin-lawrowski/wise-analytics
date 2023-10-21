@@ -2,7 +2,6 @@
 
 namespace Kainex\WiseAnalytics\Endpoints;
 
-use Kainex\WiseAnalytics\Options;
 use Kainex\WiseAnalytics\Services\Events\EventsService;
 use Kainex\WiseAnalytics\Services\Users\UsersService;
 use Kainex\WiseAnalytics\Utils\IPUtils;
@@ -14,9 +13,6 @@ use Kainex\WiseAnalytics\Utils\IPUtils;
  */
 class FrontHandler {
 	
-	/**  @var Options */
-	private $options;
-	
 	/** @var UsersService */
 	private $usersService;
 
@@ -25,13 +21,11 @@ class FrontHandler {
 
 	/**
 	 * FrontHandler constructor.
-	 * @param Options $options
 	 * @param UsersService $usersService
 	 * @param EventsService $eventsService
 	 */
-	public function __construct(Options $options, UsersService $usersService, EventsService $eventsService)
+	public function __construct(UsersService $usersService, EventsService $eventsService)
 	{
-		$this->options = $options;
 		$this->usersService = $usersService;
 		$this->eventsService = $eventsService;
 	}

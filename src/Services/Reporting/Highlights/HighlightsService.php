@@ -1,12 +1,16 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Reporting;
+namespace Kainex\WiseAnalytics\Services\Reporting\Highlights;
 
+use Kainex\WiseAnalytics\Services\Reporting\Pages\PagesReportsService;
+use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
+use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
+use Kainex\WiseAnalytics\Services\Reporting\Visitors\VisitorsReportsService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
-class HighlightsService {
+class HighlightsService extends ReportingService {
 
-	/** @var UsersReportsService */
+	/** @var VisitorsReportsService */
 	private $usersReportsService;
 
 	/** @var PagesReportsService */
@@ -17,11 +21,11 @@ class HighlightsService {
 
 	/**
 	 * HighlightsService constructor.
-	 * @param UsersReportsService $usersReportsService
+	 * @param VisitorsReportsService $usersReportsService
 	 * @param PagesReportsService $pagesReportsService
 	 * @param SessionsReportsService $sessionsReportsService
 	 */
-	public function __construct(UsersReportsService $usersReportsService, PagesReportsService $pagesReportsService, SessionsReportsService $sessionsReportsService)
+	public function __construct(VisitorsReportsService $usersReportsService, PagesReportsService $pagesReportsService, SessionsReportsService $sessionsReportsService)
 	{
 		$this->usersReportsService = $usersReportsService;
 		$this->pagesReportsService = $pagesReportsService;

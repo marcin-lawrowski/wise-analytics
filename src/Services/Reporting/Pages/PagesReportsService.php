@@ -1,14 +1,13 @@
 <?php
 
-namespace Kainex\WiseAnalytics\Services\Reporting;
+namespace Kainex\WiseAnalytics\Services\Reporting\Pages;
 
 use Kainex\WiseAnalytics\DAO\EventTypesDAO;
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\EventResource;
-use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 
-class PagesReportsService {
-	use DataAccess;
+class PagesReportsService extends ReportingService {
 
 	/** @var EventTypesDAO */
 	private $eventTypesDAO;

@@ -10,16 +10,6 @@ use Kainex\WiseAnalytics\Services\Users\UsersService;
  * @author Kainex <contact@kainex.pl>
  */
 class Analytics {
-	
-	/** @var Options */
-	private $options;
-
-	/**
-	 * @param Options $options
-	 */
-	public function __construct(Options $options) {
-		$this->options = $options;
-	}
 
 	/**
 	 * Registers and enqueues all necessary resources (scripts or styles).

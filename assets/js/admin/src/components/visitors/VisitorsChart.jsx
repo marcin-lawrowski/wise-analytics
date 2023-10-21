@@ -29,10 +29,6 @@ class VisitorsChart extends React.Component {
 	}
 
 	render() {
-		if (this.props.report.visitors.length === 0) {
-			return null;
-		}
-
 		const data = [{
 			id: 'Visitors',
 			single: 'Visitor',
@@ -46,7 +42,7 @@ class VisitorsChart extends React.Component {
 			<div className="card p-1">
 				<div className="card-body text-center">
 					<div style={ { height: 200 }}>
-						<LineChart data={ data }/>
+						{ this.props.report.visitors.length > 0 ? <LineChart data={ data }/> : <Spinner show={ true } /> }
 					</div>
 				</div>
 			</div>

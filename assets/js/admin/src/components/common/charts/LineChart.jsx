@@ -56,7 +56,7 @@ class LineChart extends React.Component {
 		                border: '1px solid #92b7d5',
 		                alignItems: 'center'
 	                }}
-	            >{ point.data.yFormatted } { point.data.y !== 1 ? series1.plural : series1.single} on { moment(point.data.x).format('MMM D') }</div>
+	            >{ point.data.yFormatted } { point.data.y !== 1 ? series1.plural : series1.single}<br /> { moment(point.data.x).format('MMM D') }</div>
 	        )}
 		/>
 	}
