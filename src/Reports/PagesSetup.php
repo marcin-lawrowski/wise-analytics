@@ -19,8 +19,8 @@ class PagesSetup {
 	}
 
 	public function install() {
-		add_menu_page('Analytics', 'Analytics', 'manage_options', 'wise-analytics-overview', '', 'dashicons-chart-bar');
-		add_submenu_page('wise-analytics-overview', 'Overview', 'Overview', 'manage_options', 'wise-analytics-overview', array($this, 'overviewAction'));
+		add_menu_page('Analytics', 'Analytics', 'manage_options', 'wise-analytics', '', 'dashicons-chart-bar');
+		add_submenu_page('wise-analytics-overview', 'Overview', 'Overview', 'manage_options', 'wise-analytics', array($this, 'overviewAction'));
 	}
 
 	public function overviewAction() {

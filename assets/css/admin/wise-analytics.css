@@ -1,4 +1,9 @@
+
 @charset "UTF-8";
+.toplevel_page_wise-analytics #wpcontent {
+  background-color: #f9fafb;
+}
+
 div.waContainer {
   /*!
    * Bootstrap  v5.3.2 (https://getbootstrap.com/)
@@ -32,6 +37,7 @@ div.waContainer {
   /* rtl:begin:remove */
   /* rtl:end:remove */
 
+  margin-top: 2em;
 }
 div.waContainer .card {
   max-width: unset;
@@ -13247,4 +13253,7 @@ div.waContainer .react-datepicker__calendar-icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
+}
+div.waContainer .card {
+  --bs-card-border-color: #f7f9fc;
 }

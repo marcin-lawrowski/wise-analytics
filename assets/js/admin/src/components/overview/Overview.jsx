@@ -8,30 +8,54 @@ import TopPages from "./TopPages";
 import Visitors from "../visitors/Visitors";
 import Events from "../events/Events";
 import VisitorsChart from "../visitors/VisitorsChart";
+import Select from 'react-select';
+import {getDatesRange} from "utils/dates";
 
 class Overview extends React.Component {
+
+	get RANGES() {
+		return [
+			{ value: 'today', label: 'Today', ...getDatesRange('today') },
+			{ value: 'yesterday', label: 'Yesterday', ...getDatesRange('yesterday') },
+			{ value: 'last7Days', label: 'This Week', ...getDatesRange('last7Days') },
+			{ value: 'last14Days', label: 'Last 2 Weeks', ...getDatesRange('last14Days') },
+			{ value: 'thisMonth', label: 'This Month', ...getDatesRange('thisMonth') }
+		];
+	}
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			startDate: moment().subtract(6, 'days').toDate(),
-			endDate: moment().toDate()
+			startDate: moment().subtract(13, 'days').toDate(),
+			endDate: moment().toDate(),
+			range: 'last14Days'
 		}
 
 		this.onDatesRangeChange = this.onDatesRangeChange.bind(this);
+		this.onRangeChange = this.onRangeChange.bind(this);
 	}
 
 	onDatesRangeChange(dates, d) {
 		this.setState({ startDate: dates[0], endDate: dates[1] });
 	}
 
+	onRangeChange(selected) {
+		this.setState({ range: selected.value, startDate: selected.startDate, endDate: selected.endDate });
+	}
+
 	render() {
 		return <React.Fragment>
 			<div className="d-flex align-items-center justify-content-between">
-				<h4>Overview</h4>
-				<div>
-					Dates range:&nbsp;
+				<h5>Analytics</h5>
+				<div className="d-flex align-items-center">
+					<Select
+						value={ this.RANGES.find( option => option.value === this.state.range )}
+						onChange={ this.onRangeChange }
+						options={ this.RANGES }
+						isSearchable={ false }
+					/>
+					&nbsp;
 					<DatePicker
 						selected={ this.state.startDate }
 						onChange={ this.onDatesRangeChange }
@@ -40,6 +64,7 @@ class Overview extends React.Component {
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 						selectsRange
+						className="form-control"
 					/>
 				</div>
 			</div>

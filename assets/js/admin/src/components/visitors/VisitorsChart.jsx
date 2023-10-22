@@ -38,7 +38,7 @@ class VisitorsChart extends React.Component {
 
 		return <div className="card p-1">
 			<div className="card-body">
-				<h5 className="card-title">Visitors <Loader show={ this.props.loading } /></h5>
+				<h6 className="card-title">Visitors <Loader show={ this.props.loading } /></h6>
 				<div style={ { height: 200 }}>
 					{ this.props.report.visitors.length > 0 && <LineChart data={ data }/> }
 				</div>

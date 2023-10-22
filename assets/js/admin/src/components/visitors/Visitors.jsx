@@ -31,7 +31,7 @@ class Visitors extends React.Component {
 		return <React.Fragment>
 			<div className="card p-1">
 				<div className="card-body">
-					<h5 className="card-title">Visitors <Loader show={ this.props.loading } /></h5>
+					<h6 className="card-title">Visitors daily <Loader show={ this.props.loading } /></h6>
 					<table className="table table-striped">
 						<thead>
 							<tr>

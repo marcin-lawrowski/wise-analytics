@@ -1,7 +1,15 @@
 @import "reset.scss";
+@import "bootstrap-mods";
+
+.toplevel_page_wise-analytics #wpcontent {
+  background-color: #f9fafb;
+}
 
 div.waContainer {
   @include reset;
   @import "node_modules/bootstrap/dist/css/bootstrap";
   @import "node_modules/react-datepicker/dist/react-datepicker";
+  @include bootstrap-mods;
+
+  margin-top: 2em;
 }
