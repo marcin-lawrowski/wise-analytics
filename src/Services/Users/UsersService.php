@@ -46,6 +46,10 @@ class UsersService {
 		}
 	}
 
+	public function saveUser(User $user): User {
+		return $this->usersDAO->save($user);
+	}
+
 	/**
 	 * @return User
 	 * @throws \Exception

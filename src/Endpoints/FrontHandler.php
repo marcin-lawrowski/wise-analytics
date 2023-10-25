@@ -59,7 +59,7 @@ class FrontHandler {
 	
 	private function handleEvent() {
 		try {
-			$event = $this->eventsService->createEvent(
+			$event = $this->eventsService->createEventWithChecksum(
 				$this->usersService->getOrCreateUser(),
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [

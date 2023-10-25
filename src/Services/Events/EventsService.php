@@ -14,7 +14,8 @@ use Kainex\WiseAnalytics\Utils\URLUtils;
 class EventsService {
 
 	const STANDARD_TYPES = [
-		'page-view' => 'Page View'
+		'page-view' => 'Page View',
+		'wp-user-log-in' => 'User Log In'
 	];
 
 	/** @var URLUtils */
@@ -51,7 +52,7 @@ class EventsService {
 	 * @param array $inputData
 	 * @return Event
 	 */
-	public function createEvent(User $user, string $typeSlug, string $checksum, array $inputData): Event {
+	public function createEventWithChecksum(User $user, string $typeSlug, string $checksum, array $inputData): Event {
 		if (!$checksum) {
 			throw new \Exception('Missing checksum');
 		}
@@ -76,6 +77,35 @@ class EventsService {
 		return $event;
 	}
 
+	/**
+	 * @param User $user
+	 * @param string $typeSlug
+	 * @param array $inputData
+	 * @return Event
+	 * @throws \Exception
+	 */
+	public function createEvent(User $user, string $typeSlug, array $inputData): Event {
+		$eventType = $this->getOrCreateEventType($typeSlug);
+
+		$event = new Event();
+		$event->setUri($this->convertUri($typeSlug, $inputData));
+		$event->setCreated(new \DateTime());
+		$event->setUserId($user->getId());
+		$event->setTypeId($eventType->getId());
+		$event->setData($this->convertData($typeSlug, $inputData));
+
+		$this->eventsDAO->save($event);
+
+		$this->postCreateActions($typeSlug, $event, $inputData);
+
+		return $event;
+	}
+
+	/**
+	 * @param string $typeSlug
+	 * @return EventType
+	 * @throws \Exception
+	 */
 	private function getOrCreateEventType(string $typeSlug): EventType {
 		$eventType = $this->eventTypesDAO->getBySlug($typeSlug);
 		if (!$eventType) {
@@ -110,6 +140,13 @@ class EventsService {
 					'referer' => $inputData['referer']
 				]);
 				break;
+			case 'wp-user-log-in':
+				$output = array_filter([
+					'id' => $inputData['id'],
+					'login' => $inputData['login'],
+					'ip' => $inputData['ip']
+				]);
+				break;
 		}
 
 		return $output;
@@ -138,6 +175,10 @@ class EventsService {
 				}
 
 				break;
+			default:
+				if (isset($inputData['uri']) && $inputData['uri']) {
+					$output = $this->urlUtils->toPathAndQuery($inputData['uri']);
+				}
 		}
 
 		return $output;

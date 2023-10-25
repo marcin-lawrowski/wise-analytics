@@ -302,8 +302,18 @@ var Events = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "renderVisitor",
+    value: function renderVisitor(event) {
+      var name = [event.visitorFirstName, event.visitorLastName].join(' ').trim();
+      if (!name) {
+        name = 'Visitor #' + event.visitorId;
+      }
+      return name;
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this = this;
       return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1 w-100"
       }, /*#__PURE__*/_react["default"].createElement("div", {
@@ -325,7 +335,7 @@ var Events = /*#__PURE__*/function (_React$Component) {
       }, "Date"))), /*#__PURE__*/_react["default"].createElement("tbody", null, this.props.report.events.map(function (event, index) {
         return /*#__PURE__*/_react["default"].createElement("tr", {
           key: index
-        }, /*#__PURE__*/_react["default"].createElement("td", null, "Visitor #", event.visitorId), /*#__PURE__*/_react["default"].createElement("td", null, event.typeId === '1' ? 'Page View' : 'Unknown'), /*#__PURE__*/_react["default"].createElement("td", null, event.uri), /*#__PURE__*/_react["default"].createElement("td", null, event.created));
+        }, /*#__PURE__*/_react["default"].createElement("td", null, _this.renderVisitor(event)), /*#__PURE__*/_react["default"].createElement("td", null, event.typeName ? event.typeName : 'Unknown'), /*#__PURE__*/_react["default"].createElement("td", null, event.uri), /*#__PURE__*/_react["default"].createElement("td", null, event.created));
       }))))));
     }
   }]);

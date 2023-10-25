@@ -16,7 +16,7 @@ class Event {
     /** @var string|null */
     private $uri;
 
-    /** @var string */
+    /** @var string|null */
     private $checksum;
 
     /** @var \DateTime */
@@ -122,17 +122,17 @@ class Event {
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getChecksum(): string
+	public function getChecksum(): ?string
 	{
 		return $this->checksum;
 	}
 
 	/**
-	 * @param string $checksum
+	 * @param string|null $checksum
 	 */
-	public function setChecksum(string $checksum): void
+	public function setChecksum(?string $checksum): void
 	{
 		$this->checksum = $checksum;
 	}

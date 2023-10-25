@@ -27,6 +27,15 @@ class Events extends React.Component {
 		});
 	}
 
+	renderVisitor(event) {
+		let name = [event.visitorFirstName, event.visitorLastName].join(' ').trim();
+		if (!name) {
+			name = 'Visitor #' + event.visitorId;
+		}
+
+		return name;
+	}
+
 	render() {
 		return <React.Fragment>
 			<div className="card p-1 w-100">
@@ -44,8 +53,8 @@ class Events extends React.Component {
 						<tbody>
 						{ this.props.report.events.map( (event, index) =>
 							<tr key={ index }>
-								<td>Visitor #{ event.visitorId }</td>
-								<td>{ event.typeId === '1' ? 'Page View' : 'Unknown' }</td>
+								<td>{ this.renderVisitor(event) }</td>
+								<td>{ event.typeName ? event.typeName : 'Unknown' }</td>
 								<td>{ event.uri }</td>
 								<td>{ event.created }</td>
 							</tr>

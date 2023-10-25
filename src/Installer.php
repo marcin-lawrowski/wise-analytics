@@ -149,6 +149,10 @@ class Installer {
 		$sql = "CREATE TABLE ".$tableName." (
 				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				uuid text NOT NULL,
+				first_name text,
+				last_name text,
+				email text,
+				company text,
 				created datetime NOT NULL default now(),
 				data json
 		) $charsetCollate;";

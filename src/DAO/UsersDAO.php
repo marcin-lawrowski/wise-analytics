@@ -118,6 +118,10 @@ class UsersDAO extends AbstractDAO {
 
 		$columns = [
 			'uuid' => $user->getUuid(),
+			'first_name' => $user->getFirstName(),
+			'last_name' => $user->getLastName(),
+			'email' => $user->getEmail(),
+			'company' => $user->getCompany(),
 			'data' => json_encode($user->getData()),
 			'created' => $user->getCreated()->format('Y-m-d H:i:s')
 		];
@@ -153,7 +157,11 @@ class UsersDAO extends AbstractDAO {
         if ($rawUserData->uuid) {
             $user->setUuid($rawUserData->uuid);
         }
-		$user->setData($rawUserData->data);
+		$user->setData(json_decode($rawUserData->data, true));
+		$user->setFirstName($rawUserData->first_name);
+		$user->setLastName($rawUserData->last_name);
+		$user->setEmail($rawUserData->email);
+		$user->setCompany($rawUserData->company);
 		$user->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', $rawUserData->created));
 
 		return $user;
