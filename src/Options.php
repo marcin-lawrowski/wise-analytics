@@ -8,7 +8,7 @@ namespace Kainex\WiseAnalytics;
  * @author Kainex <contact@kainex.pl>
  */
 class Options {
-	const OPTIONS_NAME = 'wise_analytics_options_name';
+	const OPTIONS_NAME = 'wise_analytics_options';
 	
 	/**
 	* @var array Raw options array

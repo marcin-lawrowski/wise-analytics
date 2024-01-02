@@ -30,11 +30,15 @@ trait DataAccess {
 	 * @return object[]
 	 * @throws \Exception
 	 */
-	private function query(string $table, array $definition): array {
+	protected function query(string $table, array $definition): array {
 		global $wpdb;
 
 		if (!isset($definition['where'])) {
 			throw new \Exception('No "where" conditions specified');
+		}
+
+		if (strpos($table, $wpdb->prefix) !== 0) {
+			$table = $wpdb->prefix.$table;
 		}
 
 		$aliasSQL = isset($definition['alias']) ? ' AS '.$definition['alias'] : '';

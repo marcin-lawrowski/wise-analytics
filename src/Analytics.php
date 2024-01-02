@@ -2,7 +2,7 @@
 
 namespace Kainex\WiseAnalytics;
 
-use Kainex\WiseAnalytics\Services\Users\UsersService;
+use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 
 /**
  * Analytics core.
@@ -17,7 +17,7 @@ class Analytics {
 	public function enqueueResources() {
 		$config = [
 			'url' => get_site_url(),
-			'cookie' => UsersService::UUID_COOKIE
+			'cookie' => VisitorsService::UUID_COOKIE
 		];
 		
 		wp_enqueue_script('wise-analytics-libs', plugins_url('assets/js/frontend/wa-libs.js', dirname(__FILE__)), array('jquery'), WISE_ANALYTICS_VERSION, false);

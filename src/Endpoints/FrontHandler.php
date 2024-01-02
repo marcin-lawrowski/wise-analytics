@@ -3,7 +3,7 @@
 namespace Kainex\WiseAnalytics\Endpoints;
 
 use Kainex\WiseAnalytics\Services\Events\EventsService;
-use Kainex\WiseAnalytics\Services\Users\UsersService;
+use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\IPUtils;
 
 /**
@@ -13,20 +13,20 @@ use Kainex\WiseAnalytics\Utils\IPUtils;
  */
 class FrontHandler {
 	
-	/** @var UsersService */
-	private $usersService;
+	/** @var VisitorsService */
+	private $visitorsService;
 
 	/** @var EventsService */
 	private $eventsService;
 
 	/**
 	 * FrontHandler constructor.
-	 * @param UsersService $usersService
+	 * @param VisitorsService $usersService
 	 * @param EventsService $eventsService
 	 */
-	public function __construct(UsersService $usersService, EventsService $eventsService)
+	public function __construct(VisitorsService $usersService, EventsService $eventsService)
 	{
-		$this->usersService = $usersService;
+		$this->visitorsService = $usersService;
 		$this->eventsService = $eventsService;
 	}
 
@@ -60,7 +60,7 @@ class FrontHandler {
 	private function handleEvent() {
 		try {
 			$event = $this->eventsService->createEventWithChecksum(
-				$this->usersService->getOrCreateUser(),
+				$this->visitorsService->getOrCreate(),
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [
 					'ip' => IPUtils::getIpAddress(),

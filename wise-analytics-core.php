@@ -9,6 +9,7 @@
 	Text Domain: wise-analytics
 */
 
+use Kainex\WiseAnalytics\Admin\Settings;
 use Kainex\WiseAnalytics\Analytics;
 use Kainex\WiseAnalytics\Container;
 use Kainex\WiseAnalytics\Endpoints\FrontHandler;
@@ -45,6 +46,10 @@ add_action('pre_get_posts', [$container->get(FrontHandler::class), 'registerHand
 if (is_admin()) {
 	Installer::setup(__FILE__);
 	add_action('admin_enqueue_scripts', [$container->get(Analytics::class), 'enqueueAdminResources']);
+
+	/** @var Kainex\WiseAnalytics\Admin\Settings $settings */
+	$settings = $container->get(Settings::class);
+	$settings->install();
 }
 
 // install cron tasks:

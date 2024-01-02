@@ -3,26 +3,26 @@
 namespace Kainex\WiseAnalytics\Integrations;
 
 use Kainex\WiseAnalytics\Services\Events\EventsService;
-use Kainex\WiseAnalytics\Services\Users\UsersService;
+use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\IPUtils;
 use Kainex\WiseAnalytics\Utils\URLUtils;
 
 class WordPressIntegrations {
 
-	/** @var UsersService */
-	private $usersService;
+	/** @var VisitorsService */
+	private $visitorsService;
 
 	/** @var EventsService */
 	private $eventsService;
 
 	/**
 	 * WordPressIntegrations constructor.
-	 * @param UsersService $usersService
+	 * @param VisitorsService $visitorsService
 	 * @param EventsService $eventsService
 	 */
-	public function __construct(UsersService $usersService, EventsService $eventsService)
+	public function __construct(VisitorsService $visitorsService, EventsService $eventsService)
 	{
-		$this->usersService = $usersService;
+		$this->visitorsService = $visitorsService;
 		$this->eventsService = $eventsService;
 	}
 
@@ -38,18 +38,18 @@ class WordPressIntegrations {
 	 * @throws \Exception
 	 */
 	public function onWpLogin(string $userLogin, \WP_User $wpUser) {
-		$user = $this->usersService->getOrCreateUser();
+		$visitor = $this->visitorsService->getOrCreate();
 		if ($wpUser->first_name) {
-			$user->setFirstName($wpUser->first_name);
+			$visitor->setFirstName($wpUser->first_name);
 		}
 		if ($wpUser->last_name) {
-			$user->setLastName($wpUser->last_name);
+			$visitor->setLastName($wpUser->last_name);
 		}
-		$user->setEmail($wpUser->user_email);
-		$this->usersService->saveUser($user);
+		$visitor->setEmail($wpUser->user_email);
+		$this->visitorsService->save($visitor);
 
 		$this->eventsService->createEvent(
-			$user,
+			$visitor,
 			'wp-user-log-in', [
 				'uri' => URLUtils::getCurrentURL(),
 				'ip' => IPUtils::getIpAddress(),

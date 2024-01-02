@@ -15,7 +15,8 @@ class EventsService {
 
 	const STANDARD_TYPES = [
 		'page-view' => 'Page View',
-		'wp-user-log-in' => 'User Log In'
+		'wp-user-log-in' => 'User Log In',
+		'form-submission' => 'Form Submission'
 	];
 
 	/** @var URLUtils */
@@ -144,6 +145,11 @@ class EventsService {
 				$output = array_filter([
 					'id' => $inputData['id'],
 					'login' => $inputData['login'],
+					'ip' => $inputData['ip']
+				]);
+				break;
+			case 'form-submission':
+				$output = array_filter([
 					'ip' => $inputData['ip']
 				]);
 				break;
