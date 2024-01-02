@@ -65,8 +65,6 @@ class ContactForm7 {
 		}
 
 		$this->visitorsService->saveWithPlainArray($visitor, $visitorUpdate);
-
-		var_dump($visitorUpdate);die();
 	}
 
 }
