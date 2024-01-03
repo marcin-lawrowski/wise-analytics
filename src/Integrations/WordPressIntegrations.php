@@ -46,6 +46,9 @@ class WordPressIntegrations {
 			$visitor->setLastName($wpUser->last_name);
 		}
 		$visitor->setEmail($wpUser->user_email);
+		$data = $visitor->getData();
+		$data['wpUserId'] = $wpUser->ID;
+		$visitor->setData($data);
 		$this->visitorsService->save($visitor);
 
 		$this->eventsService->createEvent(

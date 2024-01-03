@@ -27,12 +27,15 @@ class URLUtils {
 		return $url;
 	}
 
-	public static function getCurrentURL(): string {
-		if (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && isset($_SERVER['HTTP_REFERER'])) {
+	public static function getRefererURL(): string {
+		if (isset($_SERVER['HTTP_REFERER'])) {
 			return $_SERVER['HTTP_REFERER'];
 		}
 
+		return self::getCurrentURL();
+	}
 
+	public static function getCurrentURL(): string {
 	    if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
 	        $protocol = 'https://';
 	    } else {

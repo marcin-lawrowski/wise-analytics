@@ -86,6 +86,9 @@ abstract class AbstractTab {
 	*/
 	public function sanitizeOptionValue($inputValue) {
 		$newInputValue = array();
+		if (!is_array($inputValue)) {
+			$inputValue = [];
+		}
 		
 		foreach ($this->getFields() as $field) {
 			$id = $field[0];

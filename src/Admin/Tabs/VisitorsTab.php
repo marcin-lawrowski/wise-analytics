@@ -38,11 +38,15 @@ class VisitorsTab extends AbstractTab {
 		return [
 			['_section', 'Fields Mapping', 'Auto-update visitor fields based on actions taken in other services like plugins (e.g. form submission in Contact Form 7 plugin)'],
 			['mappings', 'Mappings', 'mappingsCallback', 'void'],
+			['mappings_exclude_authenticated', 'Exclude Authenticated Users', 'booleanFieldCallback', 'boolean', 'Do not map fields of logged-in WordPress users'],
 		];
 	}
 
 	public function getDefaultValues(): array {
-		return [];
+		return [
+			'mappings_exclude_authenticated' => true,
+			'mappings' => []
+		];
 	}
 
 	/**
@@ -53,20 +57,19 @@ class VisitorsTab extends AbstractTab {
 	* @return null
 	*/
 	public function sanitizeOptionValue($inputValue) {
-		$sanitized = parent::sanitizeOptionValue($inputValue); // no 'visitors' key
+		$currentOptions = get_option(Options::OPTIONS_NAME, []);
+		$sanitized = parent::sanitizeOptionValue($inputValue); // no 'visitors_mappings' key
 
 		// merge other mappings with the new one:
-		$merged = false;
-		if (isset($inputValue['visitors']) && isset($inputValue['visitors']['mappings'])) {
-			$currentOptions = get_option(Options::OPTIONS_NAME, array());
-			if (isset($currentOptions['visitors']) && isset($currentOptions['visitors']['mappings'])) {
-				$merged = true;
-				$sanitized['visitors']['mappings'] = array_merge($currentOptions['visitors']['mappings'], $inputValue['visitors']['mappings']);
-			}
-		}
+		if (isset($inputValue['visitors_mappings'])) {
+			$sanitized['visitors_mappings'] = isset($currentOptions['visitors_mappings'])
+				? array_merge($currentOptions['visitors_mappings'], $inputValue['visitors_mappings'])
+				: $inputValue['visitors_mappings'];
 
-		if (!$merged) {
-			$sanitized['visitors']['mappings'] = $inputValue['visitors']['mappings'];
+		} else {
+			$sanitized['visitors_mappings'] = isset($currentOptions['visitors_mappings'])
+				? $currentOptions['visitors_mappings']
+				: [];
 		}
 
 		return $sanitized;
@@ -117,8 +120,8 @@ class VisitorsTab extends AbstractTab {
 		}
 
 		$mappingKey = $typeDefinition['type'].'.'.$actionId;
-		$visitorsConfiguration = (array) $this->options->getOption('visitors', []);
-		$currentMappings = isset($visitorsConfiguration['mappings']) && isset($visitorsConfiguration['mappings'][$mappingKey]) ? $visitorsConfiguration['mappings'][$mappingKey] : [];
+		$visitorsConfiguration = (array) $this->options->getOption('visitors_mappings', []);
+		$currentMappings = isset($visitorsConfiguration[$mappingKey]) ? $visitorsConfiguration[$mappingKey] : [];
 
 		print '<h3>' . $typeDefinition['typeName'] . '</h3>';
 		print '<h4>"' . $action['item'] .'" ' . $action['name'] . '</h4>';
@@ -140,7 +143,7 @@ class VisitorsTab extends AbstractTab {
 	private function getVisitorFieldsSelect(string $actionsSource, string $actionId, string $actionFieldId, array $currentMappings): string {
 		$currentFieldId = isset($currentMappings[$actionFieldId]) ? $currentMappings[$actionFieldId] : null;
 
-		$html = sprintf('<select name="%s[visitors][mappings][%s][%s]"><option value="">-- not mapped --</option>', Options::OPTIONS_NAME, $actionsSource.'.'.$actionId, $actionFieldId);
+		$html = sprintf('<select name="%s[visitors_mappings][%s][%s]"><option value="">-- not mapped --</option>', Options::OPTIONS_NAME, $actionsSource.'.'.$actionId, $actionFieldId);
 		foreach ($this->visitorsService->getVisitorFields() as $visitorField) {
 			$html .= sprintf('<option %s value="%s">%s</option>', $currentFieldId === $visitorField['id'] ? 'selected' : '', $visitorField['id'], $visitorField['name']);
 		}
@@ -151,8 +154,8 @@ class VisitorsTab extends AbstractTab {
 
 	private function getCurrentMappingRatio(string $actionsSource, string $actionId, array $actionFields): int {
 		$mappingKey = $actionsSource.'.'.$actionId;
-		$visitorsConfiguration = (array) $this->options->getOption('visitors', []);
-		$currentMappings = isset($visitorsConfiguration['mappings']) && isset($visitorsConfiguration['mappings'][$mappingKey]) ? $visitorsConfiguration['mappings'][$mappingKey] : [];
+		$visitorsConfiguration = (array) $this->options->getOption('visitors_mappings', []);
+		$currentMappings = isset($visitorsConfiguration[$mappingKey]) ? $visitorsConfiguration[$mappingKey] : [];
 
 		$totalMapped = 0;
 		foreach ($actionFields as $actionField) {

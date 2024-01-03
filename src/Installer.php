@@ -2,6 +2,8 @@
 
 namespace Kainex\WiseAnalytics;
 
+use Kainex\WiseAnalytics\Admin\Settings;
+
 /**
  * Installer
  *
@@ -252,8 +254,10 @@ class Installer {
 		self::installCron();
 		
 		// set default options after installation:
-		//$settings = WiseAnalyticsContainer::get('WiseAnalyticsSettings');
-		//$settings->setDefaultSettings();
+		$container = Container::getInstance();
+		/** @var Settings $settings */
+		$settings = $container->get(Settings::class);
+		$settings->setDefaultSettings();
 	}
 
 	/**

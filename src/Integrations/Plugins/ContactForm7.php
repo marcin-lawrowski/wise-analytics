@@ -37,21 +37,24 @@ class ContactForm7 {
 	}
 
 	public function beforeSendEmail($WPCF7_ContactForm) {
-		$submission = \WPCF7_Submission::get_instance();
-		$postedData = $submission->get_posted_data();
+		$postedData = \WPCF7_Submission::get_instance()->get_posted_data();
 		$visitor = $this->visitorsService->getOrCreate();
 		$this->eventsService->createEvent(
 			$visitor,
 			'form-submission', [
-				'uri' => URLUtils::getCurrentURL(),
+				'uri' => URLUtils::getRefererURL(),
 				'ip' => IPUtils::getIpAddress(),
 				'submission' => $postedData
 			]
 		);
 
+		if ($this->options->isOptionEnabled('mappings_exclude_authenticated') && isset($visitor->getData()['wpUserId'])) {
+			return;
+		}
+
 		$mappingKey = 'plugins.cf7.form.'.$WPCF7_ContactForm->id;
-		$visitorsConfiguration = (array) $this->options->getOption('visitors', []);
-		$currentMappings = isset($visitorsConfiguration['mappings']) && isset($visitorsConfiguration['mappings'][$mappingKey]) ? $visitorsConfiguration['mappings'][$mappingKey] : null;
+		$visitorsConfiguration = (array) $this->options->getOption('visitors_mappings', []);
+		$currentMappings = isset($visitorsConfiguration[$mappingKey]) ? $visitorsConfiguration[$mappingKey] : null;
 
 		if (!$currentMappings) {
 			return;
