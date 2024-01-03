@@ -774,8 +774,18 @@ var Visitors = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "renderVisitor",
+    value: function renderVisitor(visitor) {
+      var name = [visitor.firstName, visitor.lastName].join(' ').trim();
+      if (!name) {
+        name = 'Visitor #' + visitor.id;
+      }
+      return name;
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this = this;
       return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1"
       }, /*#__PURE__*/_react["default"].createElement("div", {
@@ -797,7 +807,7 @@ var Visitors = /*#__PURE__*/function (_React$Component) {
       }, "Last Visit"))), /*#__PURE__*/_react["default"].createElement("tbody", null, this.props.report.visitors.map(function (visitor, index) {
         return /*#__PURE__*/_react["default"].createElement("tr", {
           key: index
-        }, /*#__PURE__*/_react["default"].createElement("td", null, "User #", visitor.id), /*#__PURE__*/_react["default"].createElement("td", null, visitor.totalSessions), /*#__PURE__*/_react["default"].createElement("td", null, visitor.avgSessionDuration), /*#__PURE__*/_react["default"].createElement("td", null, visitor.lastVisit));
+        }, /*#__PURE__*/_react["default"].createElement("td", null, _this.renderVisitor(visitor)), /*#__PURE__*/_react["default"].createElement("td", null, visitor.totalSessions), /*#__PURE__*/_react["default"].createElement("td", null, visitor.avgSessionDuration), /*#__PURE__*/_react["default"].createElement("td", null, visitor.lastVisit));
       }))))));
     }
   }]);

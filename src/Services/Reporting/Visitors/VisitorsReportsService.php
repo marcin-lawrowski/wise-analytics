@@ -28,7 +28,9 @@ class VisitorsReportsService extends ReportingService {
 				'sum(se.duration) / count(se.id) as avgSessionDuration',
 				'se.user_id as id',
 				'sum(JSON_LENGTH(JSON_EXTRACT(se.events, "$"))) as totalEvents',
-				'max(start) as lastVisit'
+				'max(start) as lastVisit',
+				'us.first_name as firstName',
+				'us.last_name as lastName',
 			],
 			'join' => [[Installer::getUsersTable().' us', ['se.user_id = us.id']]],
 			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],

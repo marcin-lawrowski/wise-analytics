@@ -27,6 +27,15 @@ class Visitors extends React.Component {
 		});
 	}
 
+	renderVisitor(visitor) {
+		let name = [visitor.firstName, visitor.lastName].join(' ').trim();
+		if (!name) {
+			name = 'Visitor #' + visitor.id;
+		}
+
+		return name;
+	}
+
 	render() {
 		return <React.Fragment>
 			<div className="card p-1">
@@ -44,7 +53,7 @@ class Visitors extends React.Component {
 						<tbody>
 						{ this.props.report.visitors.map( (visitor, index) =>
 							<tr key={ index }>
-								<td>User #{ visitor.id }</td>
+								<td>{ this.renderVisitor(visitor) }</td>
 								<td>{ visitor.totalSessions }</td>
 								<td>{ visitor.avgSessionDuration }</td>
 								<td>{ visitor.lastVisit }</td>
