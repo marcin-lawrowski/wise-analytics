@@ -55,7 +55,7 @@ class Events extends React.Component {
 							<tr key={ index }>
 								<td>{ this.renderVisitor(event) }</td>
 								<td>{ event.typeName ? event.typeName : 'Unknown' }</td>
-								<td>{ event.uri }</td>
+								<td><a href={ this.props.configuration.baseUrl + event.uri } target="_blank">{ event.title ? event.title : event.uri }</a></td>
 								<td>{ event.created }</td>
 							</tr>
 						)}

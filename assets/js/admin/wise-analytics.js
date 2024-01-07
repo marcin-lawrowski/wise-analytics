@@ -335,7 +335,10 @@ var Events = /*#__PURE__*/function (_React$Component) {
       }, "Date"))), /*#__PURE__*/_react["default"].createElement("tbody", null, this.props.report.events.map(function (event, index) {
         return /*#__PURE__*/_react["default"].createElement("tr", {
           key: index
-        }, /*#__PURE__*/_react["default"].createElement("td", null, _this.renderVisitor(event)), /*#__PURE__*/_react["default"].createElement("td", null, event.typeName ? event.typeName : 'Unknown'), /*#__PURE__*/_react["default"].createElement("td", null, event.uri), /*#__PURE__*/_react["default"].createElement("td", null, event.created));
+        }, /*#__PURE__*/_react["default"].createElement("td", null, _this.renderVisitor(event)), /*#__PURE__*/_react["default"].createElement("td", null, event.typeName ? event.typeName : 'Unknown'), /*#__PURE__*/_react["default"].createElement("td", null, /*#__PURE__*/_react["default"].createElement("a", {
+          href: _this.props.configuration.baseUrl + event.uri,
+          target: "_blank"
+        }, event.title ? event.title : event.uri)), /*#__PURE__*/_react["default"].createElement("td", null, event.created));
       }))))));
     }
   }]);

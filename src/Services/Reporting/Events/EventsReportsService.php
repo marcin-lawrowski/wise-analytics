@@ -3,6 +3,7 @@
 namespace Kainex\WiseAnalytics\Services\Reporting\Events;
 
 use Kainex\WiseAnalytics\Installer;
+use Kainex\WiseAnalytics\Model\EventResource;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
@@ -21,11 +22,13 @@ class EventsReportsService extends ReportingService {
 				'us.first_name as visitorFirstName',
 				'us.last_name as visitorLastName',
 				'ev.type_id as typeId',
-				'et.name as typeName'
+				'et.name as typeName',
+				're.text_value as title'
 			],
 			'join' => [
 				[Installer::getEventTypesTable().' et', ['ev.type_id = et.id']],
-				[Installer::getUsersTable().' us', ['ev.user_id = us.id']]
+				[Installer::getUsersTable().' us', ['ev.user_id = us.id']],
+				[Installer::getEventResourcesTable().' re', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]
 			],
 			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
 			'order' => ['created DESC'],
