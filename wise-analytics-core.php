@@ -54,6 +54,9 @@ if (is_admin()) {
 
 // install cron tasks:
 add_action('wa_processing_hook_'.get_current_blog_id(), [$container->get(ProcessingService::class), 'process']);
+if (isset($_GET['wa_processing_hook'])) {
+	$container->get(ProcessingService::class)->process();
+}
 
 // integrations:
 /** @var Kainex\WiseAnalytics\Integrations\Integrations $integrations */

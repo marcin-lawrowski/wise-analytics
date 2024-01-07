@@ -34,9 +34,6 @@ class ProcessingService {
 	}
 
 	public function process() {
-		error_log('Process');
-
-		//$this->processUsersMetric();
 		$this->sessionsService->refresh(new \DateTime());
 	}
 

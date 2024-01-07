@@ -5,6 +5,7 @@ namespace Kainex\WiseAnalytics\Services\Processing;
 use Kainex\WiseAnalytics\DAO\Stats\SessionsDAO;
 use Kainex\WiseAnalytics\Model\Stats\Session;
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Utils\Logger;
 
 class SessionsService {
 	use DataAccess;
@@ -17,13 +18,18 @@ class SessionsService {
 	/** @var SessionsDAO */
 	private $sessionsDAO;
 
+	/** @var Logger */
+	private $logger;
+
 	/**
 	 * SessionsService constructor.
 	 * @param SessionsDAO $sessionsDAO
+	 * @param Logger $logger
 	 */
-	public function __construct(SessionsDAO $sessionsDAO)
+	public function __construct(SessionsDAO $sessionsDAO, Logger $logger)
 	{
 		$this->sessionsDAO = $sessionsDAO;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -41,19 +47,31 @@ class SessionsService {
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
-		$users = $this->queryEvents(['select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
 
-		foreach ($users as $user) {
-			$this->refreshUserSessions($user->user_id, $startDateStr, $endDateStr);
+		try {
+
+			$this->logger->info('Refreshing sessions, time range: ' . $startDateStr . ' - ' . $endDateStr);
+
+			$users = $this->queryEvents(['select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+			$totalEvents = 0;
+			foreach ($users as $user) {
+				$totalEvents += $this->refreshUserSessions($user->user_id, $startDateStr, $endDateStr);
+			}
+
+			$this->logger->info('Refreshed users: ' . count($users) . ', events processed: ' . $totalEvents);
+		} catch (\Exception $exception) {
+			$this->logger->error('Error when refreshing sessions: ' . $exception->getMessage());
 		}
 	}
 
-	private function refreshUserSessions(int $userId, string $startDate, string $endDate) {
+	private function refreshUserSessions(int $userId, string $startDate, string $endDate): int {
 		$this->sessionsDAO->deleteByUserAndDate($userId, $startDate, $endDate);
 
 		$events = $this->queryEvents(['select' => ['*'], 'where' => ["user_id = $userId", "created >= '$startDate'", "created <= '$endDate'"]]);
 
 		$this->createSessions($userId, $this->getGroupedEvents($events));
+
+		return count($events);
 	}
 
 	/**
