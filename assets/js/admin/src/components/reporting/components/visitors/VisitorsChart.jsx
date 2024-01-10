@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import Loader from "common/Loader";
-import LineChart from "../common/charts/LineChart";
+import LineChart from "common/charts/LineChart";
 
 class VisitorsChart extends React.Component {
 

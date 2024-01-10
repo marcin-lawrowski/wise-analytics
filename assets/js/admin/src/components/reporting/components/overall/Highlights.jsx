@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Spinner from "common/Spinner";
 import Loader from "common/Loader";
 
 class Highlights extends React.Component {

@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import Highlights from "./Highlights";
+import Highlights from "reporting/components/overall/Highlights";
 import moment from 'moment';
 import DatePicker from "react-datepicker";
-import TopPages from "./TopPages";
-import Visitors from "../visitors/Visitors";
-import Events from "../events/Events";
-import VisitorsChart from "../visitors/VisitorsChart";
+import TopPages from "reporting/components/pages/TopPages";
+import Visitors from "reporting/components/visitors/Visitors";
+import Events from "reporting/components/events/Events";
+import VisitorsChart from "reporting/components/visitors/VisitorsChart";
 import Select from 'react-select';
 import {getDatesRange} from "utils/dates";
 
@@ -15,10 +15,12 @@ class Overview extends React.Component {
 
 	get RANGES() {
 		return [
+			{ value: undefined, label: 'Custom' },
 			{ value: 'today', label: 'Today', ...getDatesRange('today') },
 			{ value: 'yesterday', label: 'Yesterday', ...getDatesRange('yesterday') },
-			{ value: 'last7Days', label: 'This Week', ...getDatesRange('last7Days') },
+			{ value: 'last7Days', label: 'Last Week', ...getDatesRange('last7Days') },
 			{ value: 'last14Days', label: 'Last 2 Weeks', ...getDatesRange('last14Days') },
+			{ value: 'last30Days', label: 'Last 30 Days', ...getDatesRange('last30Days') },
 			{ value: 'thisMonth', label: 'This Month', ...getDatesRange('thisMonth') }
 		];
 	}
@@ -27,17 +29,16 @@ class Overview extends React.Component {
 		super(props);
 
 		this.state = {
-			startDate: moment().subtract(13, 'days').toDate(),
-			endDate: moment().toDate(),
-			range: 'last14Days'
+			...getDatesRange('last30Days'),
+			range: 'last30Days'
 		}
 
 		this.onDatesRangeChange = this.onDatesRangeChange.bind(this);
 		this.onRangeChange = this.onRangeChange.bind(this);
 	}
 
-	onDatesRangeChange(dates, d) {
-		this.setState({ startDate: dates[0], endDate: dates[1] });
+	onDatesRangeChange(dates) {
+		this.setState({ startDate: dates[0], endDate: dates[1], range: undefined });
 	}
 
 	onRangeChange(selected) {
