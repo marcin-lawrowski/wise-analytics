@@ -5,6 +5,8 @@ const defaultServerActions = {
 	'pages.top': { result: { pages: [] } },
 	'visitors.last': { result: { visitors: [] } },
 	'visitors.daily': { result: { visitors: [] } },
+	'sessions.daily': { result: { sessions: [] } },
+	'pages.views.daily': { result: { pageViews: [] } },
 	'events': { result: { events: [] } }
 }
 

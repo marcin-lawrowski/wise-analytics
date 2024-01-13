@@ -5,6 +5,7 @@ namespace Kainex\WiseAnalytics\Services\Reporting\Pages;
 use Kainex\WiseAnalytics\DAO\EventTypesDAO;
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\EventResource;
+use Kainex\WiseAnalytics\Model\EventType;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 
 class PagesReportsService extends ReportingService {
@@ -22,10 +23,7 @@ class PagesReportsService extends ReportingService {
 	}
 
 	public function getTotalPageViews(\DateTime $startDate, \DateTime $endDate): int {
-		$eventType = $this->eventTypesDAO->getBySlug('page-view');
-		if (!$eventType) {
-			throw new \Exception('Missing event type');
-		}
+		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -36,10 +34,7 @@ class PagesReportsService extends ReportingService {
 	}
 
 	public function getTopPagesViews(\DateTime $startDate, \DateTime $endDate): array {
-		$eventType = $this->eventTypesDAO->getBySlug('page-view');
-		if (!$eventType) {
-			throw new \Exception('Missing event type');
-		}
+		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -57,6 +52,58 @@ class PagesReportsService extends ReportingService {
 		return [
 			'pages' => $result
 		];
+	}
+
+	public function getPagesViewsDaily(\DateTime $startDate, \DateTime $endDate): array {
+		$eventType = $this->getPageViewEventType();
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$result = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'DATE_FORMAT(ev.created, \'%Y-%m-%d\') as date',
+				'count(*) as pageViews'
+			],
+			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "ev.type_id" => $eventType->getId()],
+			'group' => ['DATE_FORMAT(ev.created, \'%Y-%m-%d\')']
+		]);
+
+
+		$output = [];
+		foreach ($result as $record) {
+			$output[$record->date] = intval($record->pageViews);
+		}
+
+		$pageViews = [];
+		$endDate->modify('+1 day');
+		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
+			$dateStr = $startDate->format('Y-m-d');
+
+			$pageViews[] = [
+				'date' => $dateStr,
+				'pageViews' => isset($output[$dateStr]) ? $output[$dateStr] : 0
+			];
+
+			$startDate->modify('+1 day');
+		}
+
+		return [
+			'pageViews' => $pageViews
+		];
+	}
+
+	/**
+	 * @return EventType
+	 * @throws \Exception
+	 */
+	private function getPageViewEventType(): EventType 	{
+		$eventType = $this->eventTypesDAO->getBySlug('page-view');
+		if (!$eventType) {
+			throw new \Exception('Missing event type');
+		}
+
+		return $eventType;
 	}
 
 }

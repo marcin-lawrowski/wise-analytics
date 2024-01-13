@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import TopPages from "reporting/components/pages/TopPages";
 import Visitors from "reporting/components/visitors/Visitors";
 import Events from "reporting/components/events/Events";
-import VisitorsChart from "reporting/components/visitors/VisitorsChart";
+import LeadLineChart from "reporting/components/overall/LeadLineChart";
 import Select from 'react-select';
 import {getDatesRange} from "utils/dates";
 
@@ -79,7 +79,7 @@ class Overview extends React.Component {
 			</div>
 			<div className="row mt-3">
 				<div className="col-md-12">
-					<VisitorsChart
+					<LeadLineChart
 						startDate={ this.state.startDate }
 						endDate={ this.state.endDate }
 					/>

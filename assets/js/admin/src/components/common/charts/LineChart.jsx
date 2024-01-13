@@ -23,6 +23,9 @@ class LineChart extends React.Component {
 				stacked: true,
 				reverse: false
 			}}
+			enableGridX={ false }
+			gridYValues={ yTickValues }
+			enableArea={ true } // background below the lines
 			xFormat="time:%Y-%m-%d"
 			yFormat=" >-.0d"
 			tickInterval={ 100 }
@@ -33,7 +36,7 @@ class LineChart extends React.Component {
 			    legendPosition: 'middle',
 				useUTC: false,
 				precision: 'day',
-				tickValues: series1.data.length <= 8 ? 'every day' : undefined
+				tickValues: 5 //series1.data.length <= 8 ? 'every day' : 'every day'
 			}}
 			axisLeft={{
 				tickSize: 5,

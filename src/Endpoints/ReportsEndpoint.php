@@ -5,6 +5,7 @@ namespace Kainex\WiseAnalytics\Endpoints;
 use Kainex\WiseAnalytics\Services\Reporting\Events\EventsReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Highlights\HighlightsService;
 use Kainex\WiseAnalytics\Services\Reporting\Pages\PagesReportsService;
+use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Visitors\VisitorsReportsService;
 
 class ReportsEndpoint {
@@ -21,19 +22,24 @@ class ReportsEndpoint {
 	/** @var EventsReportsService */
 	private $eventsReportsService;
 
+	/** @var SessionsReportsService */
+	private $sessionsReportsService;
+
 	/**
 	 * ReportsEndpoint constructor.
 	 * @param HighlightsService $highlightsService
 	 * @param PagesReportsService $pagesReportsService
 	 * @param VisitorsReportsService $usersReportsService
 	 * @param EventsReportsService $eventsReportsService
+	 * @param SessionsReportsService $sessionsReportsService
 	 */
-	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $usersReportsService, EventsReportsService $eventsReportsService)
+	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $usersReportsService, EventsReportsService $eventsReportsService, SessionsReportsService $sessionsReportsService)
 	{
 		$this->highlightsService = $highlightsService;
 		$this->pagesReportsService = $pagesReportsService;
 		$this->usersReportsService = $usersReportsService;
 		$this->eventsReportsService = $eventsReportsService;
+		$this->sessionsReportsService = $sessionsReportsService;
 	}
 
 	public function registerEndpoints() {
@@ -70,10 +76,14 @@ class ReportsEndpoint {
 					return $this->highlightsService->getHighlights($startDate, $endDate);
 				case 'pages.top';
 					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate);
+				case 'pages.views.daily';
+					return $this->pagesReportsService->getPagesViewsDaily($startDate, $endDate);
 				case 'visitors.last';
 					return $this->usersReportsService->getLastVisitors($startDate, $endDate);
 				case 'visitors.daily';
 					return $this->usersReportsService->getVisitorsDaily($startDate, $endDate);
+				case 'sessions.daily';
+					return $this->sessionsReportsService->getSessionsDaily($startDate, $endDate);
 				case 'events';
 					return $this->eventsReportsService->getEvents($startDate, $endDate);
 			}

@@ -5,7 +5,7 @@ import { requestReport } from "actions/reports";
 import moment from 'moment';
 import LineChart from "common/charts/LineChart";
 
-class VisitorsChart extends React.Component {
+class SessionsChart extends React.Component {
 
 	componentDidMount() {
 		this.refresh();
@@ -22,7 +22,7 @@ class VisitorsChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'visitors.daily',
+			name: 'sessions.daily',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -32,19 +32,19 @@ class VisitorsChart extends React.Component {
 
 	render() {
 		const data = [{
-			id: 'Visitors',
-			single: 'Visitor',
-			plural: 'Visitors',
-			data: this.props.report.visitors.map( (record, index) => ({ "x": record.date, "y": record.visitors }) )
+			id: 'Sessions',
+			single: 'Session',
+			plural: 'Sessions',
+			data: this.props.report.sessions.map( (record, index) => ({ "x": record.date, "y": record.sessions }) )
 		}];
 
 		return <div style={ { height: 200 }}>
-			{ this.props.report.visitors.length > 0 && <LineChart data={ data }/> }
+			{ this.props.report.sessions.length > 0 && <LineChart data={ data }/> }
 		</div>
 	}
 }
 
-VisitorsChart.propTypes = {
+SessionsChart.propTypes = {
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object,
@@ -54,7 +54,7 @@ VisitorsChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['visitors.daily'].inProgress,
-		report: state.reports['visitors.daily'].result
+		loading: state.reports['sessions.daily'].inProgress,
+		report: state.reports['sessions.daily'].result
 	}), { requestReport }
-)(VisitorsChart);
+)(SessionsChart);
