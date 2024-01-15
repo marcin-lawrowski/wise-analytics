@@ -538,9 +538,11 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-body text-center"
       }, /*#__PURE__*/_react["default"].createElement("h6", {
         className: "card-title text-muted"
-      }, "Users ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
+      }, "Visitors ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.users, " ")))), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.visitors.total, " "), this.props.report.visitors.percentReturning, "% ", /*#__PURE__*/_react["default"].createElement("span", {
+        className: "text-muted"
+      }, "returning")))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1"
@@ -1498,7 +1500,11 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 var defaultServerActions = {
   'overview.highlights': {
     result: {
-      users: 0,
+      visitors: {
+        total: 0,
+        "new": 0,
+        returning: 0
+      },
       pageViews: 0,
       avgPagesPerVisit: 0.0,
       avgSessionTime: '0s'

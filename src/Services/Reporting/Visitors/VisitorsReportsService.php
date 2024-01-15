@@ -8,13 +8,25 @@ use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class VisitorsReportsService extends ReportingService {
 
-	public function getTotalUsers(\DateTime $startDate, \DateTime $endDate): int {
+	public function getVisitorsHighlights(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
+		$output = [];
 		$result = $this->queryEvents(['select' => ['COUNT(DISTINCT user_id) AS users'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+		$output['total'] = $result ? (int) $result[0]->users : 0;
 
-		return count($result) > 0 ? (int) $result[0]->users : 0;
+		$result = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => ['COUNT(DISTINCT ev.user_id) AS newUsers'],
+			'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
+			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "us.created >= '$startDateStr'"]
+		]);
+		$output['new'] = $result ? (int) $result[0]->newUsers : 0;
+		$output['returning'] = $output['total'] - $output['new'];
+		$output['percentReturning'] = $output['total'] ? round($output['returning'] / $output['total'] * 100, 2) : 0;
+
+		return $output;
 	}
 
 	public function getLastVisitors(\DateTime $startDate, \DateTime $endDate): array {

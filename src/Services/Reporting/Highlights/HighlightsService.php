@@ -11,7 +11,7 @@ use Kainex\WiseAnalytics\Utils\TimeUtils;
 class HighlightsService extends ReportingService {
 
 	/** @var VisitorsReportsService */
-	private $usersReportsService;
+	private $visitorsReportsService;
 
 	/** @var PagesReportsService */
 	private $pagesReportsService;
@@ -27,20 +27,20 @@ class HighlightsService extends ReportingService {
 	 */
 	public function __construct(VisitorsReportsService $usersReportsService, PagesReportsService $pagesReportsService, SessionsReportsService $sessionsReportsService)
 	{
-		$this->usersReportsService = $usersReportsService;
+		$this->visitorsReportsService = $usersReportsService;
 		$this->pagesReportsService = $pagesReportsService;
 		$this->sessionsReportsService = $sessionsReportsService;
 	}
 
 	public function getHighlights(\DateTime $startDate, \DateTime $endDate) {
-		$totalVisits = $this->usersReportsService->getTotalUsers($startDate, $endDate);
+		$totalVisits = $this->visitorsReportsService->getVisitorsHighlights($startDate, $endDate);
 		$totalPageViews = $this->pagesReportsService->getTotalPageViews($startDate, $endDate);
 		$avgSessionTime = $this->sessionsReportsService->getAverageTime($startDate, $endDate);
 
 		return [
-			'users' => $totalVisits,
+			'visitors' => $totalVisits,
 			'pageViews' => $totalPageViews,
-			'avgPagesPerVisit' => $totalVisits ? round($totalPageViews / $totalVisits, 2) : 0.0,
+			'avgPagesPerVisit' => $totalVisits['total'] ? round($totalPageViews / $totalVisits['total'], 2) : 0.0,
 			'avgSessionTime' => $avgSessionTime > 0 ? TimeUtils::formatDuration($avgSessionTime, 'suffixes') : '0s'
 		];
 	}
