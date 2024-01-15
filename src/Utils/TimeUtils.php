@@ -6,10 +6,18 @@ class TimeUtils {
 
 	/**
 	 * @param string $timestamp
+	 * @param bool $shortToday
 	 * @return string
 	 */
-	public static function formatTimestamp(string $timestamp): string {
-		return date('M j, Y H:i', strtotime($timestamp));
+	public static function formatTimestamp(string $timestamp, bool $shortToday = true): string {
+		static $now = null;
+		if ($shortToday && !$now) {
+			$now = date('M j, Y ');
+		}
+
+		$formatted = date('M j, Y H:i', strtotime($timestamp));
+
+		return $shortToday ? preg_replace('/^'.$now.'/', '', $formatted) : $formatted;
 	}
 
 	/**

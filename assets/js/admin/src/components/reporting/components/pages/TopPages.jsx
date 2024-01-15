@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Loader from "common/Loader";
+import StatsTable from "common/data/StatsTable";
 
 class TopPages extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			offset: 0
+		}
+	}
 
 	componentDidMount() {
 		this.refresh();
@@ -23,36 +31,35 @@ class TopPages extends React.Component {
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
-			}
+			},
+			offset: this.state.offset
 		});
 	}
 
-
 	render() {
-		return <React.Fragment>
-			<div className="card p-1">
-				<div className="card-body">
-					<h6 className="card-title">Top Pages <Loader show={ this.props.loading } /></h6>
-					<table className="table table-striped">
-						<thead>
-							<tr>
-								<th scope="col">Page</th>
-								<th scope="col">Views</th>
-							</tr>
-						</thead>
-						<tbody>
-						{ this.props.report.pages.map( (page, index) =>
-							<tr key={ index }>
-								<td><a href={ this.props.configuration.baseUrl + page.uri } target="_blank">{ page.title ? page.title : page.uri }</a></td>
-								<td>{ page.pageViews }</td>
-							</tr>
-						)}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</React.Fragment>
+		return <StatsTable
+			title="Top Pages"
+			loading={ this.props.loading }
+			columns={[
+				{ 'name': 'Page' },
+				{ 'name': 'Views' }
+			]}
+			data={ this.props.report.pages }
+			cellRenderer={ (columnIndex, row) => {
+				switch (columnIndex) {
+					case 0:
+						return <a href={ this.props.configuration.baseUrl + row.uri } target="_blank">{ row.title ? row.title : row.uri }</a>;
+					case 1:
+						return row.pageViews;
+				}
+			}}
+			offset={ this.props.report.offset }
+			limit={ this.props.report.limit }
+			total={ this.props.report.total }
+			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+		/>
 	}
+
 }
 
 TopPages.propTypes = {

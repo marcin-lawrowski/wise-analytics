@@ -54,10 +54,11 @@ trait DataAccess {
 		}
 		$joinsSQL = implode(" ", $joins);
 		$limitSQL = isset($definition['limit']) ? ' LIMIT '.$definition['limit'] : '';
+		$offsetSQL = isset($definition['offset']) ? ' OFFSET '.$definition['offset'] : '';
 
 		$sql = sprintf(
-			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s;",
-			$selectSQL, $table, $aliasSQL, $joinsSQL, $whereSQL, $groupBySQL, $orderBySQL, $limitSQL
+			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s %s;",
+			$selectSQL, $table, $aliasSQL, $joinsSQL, $whereSQL, $groupBySQL, $orderBySQL, $limitSQL, $offsetSQL
 		);
 		$results = $wpdb->get_results($sql);
 		if ($wpdb->last_error) {

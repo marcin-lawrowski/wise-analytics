@@ -56,6 +56,7 @@ class ReportsEndpoint {
 	public function reportEndpoint(\WP_REST_Request $request) {
 		$queryParams = $request->get_query_params();
 		$filters = $queryParams['filters'];
+		$offset = $queryParams['offset'] ?? 0;
 
 		try {
 			$startDate = \DateTime::createFromFormat("Y-m-d", $filters['startDate']);
@@ -75,7 +76,7 @@ class ReportsEndpoint {
 				case 'overview.highlights';
 					return $this->highlightsService->getHighlights($startDate, $endDate);
 				case 'pages.top';
-					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate);
+					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate, $offset);
 				case 'pages.views.daily';
 					return $this->pagesReportsService->getPagesViewsDaily($startDate, $endDate);
 				case 'visitors.last';
@@ -85,7 +86,7 @@ class ReportsEndpoint {
 				case 'sessions.daily';
 					return $this->sessionsReportsService->getSessionsDaily($startDate, $endDate);
 				case 'events';
-					return $this->eventsReportsService->getEvents($startDate, $endDate);
+					return $this->eventsReportsService->getEvents($startDate, $endDate, $offset);
 			}
 
 		} catch (\Exception $e) {

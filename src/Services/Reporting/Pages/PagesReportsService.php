@@ -33,24 +33,38 @@ class PagesReportsService extends ReportingService {
 		return count($result) > 0 ? (int) $result[0]->total : 0;
 	}
 
-	public function getTopPagesViews(\DateTime $startDate, \DateTime $endDate): array {
+	public function getTopPagesViews(\DateTime $startDate, \DateTime $endDate, int $offset): array {
 		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$condition = ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "ev.type_id" => $eventType->getId()];
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => ['count(ev.uri) as pageViews, ev.uri, re.text_value as title'],
 			'join' => [[Installer::getEventResourcesTable().' re', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "ev.type_id" => $eventType->getId()],
+			'where' => $condition,
 			'group' => ['ev.uri'],
 			'order' => ['pageViews DESC'],
-			'limit' => 10
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		]);
+
+		$count = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.id) as total'
+			],
+			'group' => ['ev.uri'],
+			'where' => $condition
 		]);
 
 		return [
-			'pages' => $result
+			'pages' => $result,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
 		];
 	}
 

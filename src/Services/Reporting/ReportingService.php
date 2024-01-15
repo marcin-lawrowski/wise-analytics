@@ -10,4 +10,6 @@ use Kainex\WiseAnalytics\Services\Commons\DataAccess;
  */
 abstract class ReportingService {
 	use DataAccess;
+
+	const RESULTS_LIMIT = 20;
 }

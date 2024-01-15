@@ -9,7 +9,7 @@ use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class EventsReportsService extends ReportingService {
 
-	public function getEvents(\DateTime $startDate, \DateTime $endDate): array {
+	public function getEvents(\DateTime $startDate, \DateTime $endDate, int $offset): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -32,7 +32,8 @@ class EventsReportsService extends ReportingService {
 			],
 			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
 			'order' => ['created DESC'],
-			'limit' => 20
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
 		]);
 
 		$output = [];
@@ -41,8 +42,19 @@ class EventsReportsService extends ReportingService {
 			$output[] = $record;
 		}
 
+		$count = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.id) as total'
+			],
+			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"]
+		]);
+
 		return [
-			'events' => $output
+			'events' => $output,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
 		];
 	}
 

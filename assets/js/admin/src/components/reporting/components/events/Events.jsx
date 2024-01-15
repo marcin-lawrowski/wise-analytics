@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
-import Loader from "common/Loader";
+import StatsTable from "common/data/StatsTable";
 
 class Events extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			offset: 0
+		}
+	}
 
 	componentDidMount() {
 		this.refresh();
@@ -23,7 +31,8 @@ class Events extends React.Component {
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
-			}
+			},
+			offset: this.state.offset
 		});
 	}
 
@@ -37,34 +46,35 @@ class Events extends React.Component {
 	}
 
 	render() {
-		return <React.Fragment>
-			<div className="card p-1 w-100">
-				<div className="card-body">
-					<h6 className="card-title">Recent Events <Loader show={ this.props.loading } /></h6>
-					<table className="table table-striped ">
-						<thead>
-							<tr>
-								<th scope="col">Visitor</th>
-								<th scope="col">Event</th>
-								<th scope="col">URI</th>
-								<th scope="col">Date</th>
-							</tr>
-						</thead>
-						<tbody>
-						{ this.props.report.events.map( (event, index) =>
-							<tr key={ index }>
-								<td>{ this.renderVisitor(event) }</td>
-								<td>{ event.typeName ? event.typeName : 'Unknown' }</td>
-								<td><a href={ this.props.configuration.baseUrl + event.uri } target="_blank">{ event.title ? event.title : event.uri }</a></td>
-								<td>{ event.created }</td>
-							</tr>
-						)}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</React.Fragment>
+		return <StatsTable
+			title="Recent Events"
+			loading={ this.props.loading }
+			columns={[
+				{ 'name': 'Visitor' },
+				{ 'name': 'Event' },
+				{ 'name': 'URI' },
+				{ 'name': 'Date' }
+			]}
+			data={ this.props.report.events }
+			cellRenderer={ (columnIndex, row) => {
+				switch (columnIndex) {
+					case 0:
+						return this.renderVisitor(row);
+					case 1:
+						return row.typeName ? row.typeName : 'Unknown';
+					case 2:
+						return <a href={ this.props.configuration.baseUrl + row.uri } target="_blank">{ row.title ? row.title : row.uri }</a>;
+					case 3:
+						return row.created;
+				}
+			}}
+			offset={ this.props.report.offset }
+			limit={ this.props.report.limit }
+			total={ this.props.report.total }
+			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+		/>
 	}
+
 }
 
 Events.propTypes = {
