@@ -540,9 +540,9 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-title text-muted"
       }, "Visitors ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.visitors.total, " "), this.props.report.visitors.percentReturning, "% ", /*#__PURE__*/_react["default"].createElement("span", {
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.visitors.total, " "), this.props.report.visitors.percentNew, "% ", /*#__PURE__*/_react["default"].createElement("span", {
         className: "text-muted"
-      }, "returning")))), /*#__PURE__*/_react["default"].createElement("div", {
+      }, "new")))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1"
@@ -1503,7 +1503,8 @@ var defaultServerActions = {
       visitors: {
         total: 0,
         "new": 0,
-        returning: 0
+        returning: 0,
+        percentNew: 0
       },
       pageViews: 0,
       avgPagesPerVisit: 0.0,

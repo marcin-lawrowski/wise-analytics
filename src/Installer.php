@@ -155,6 +155,7 @@ class Installer {
 				last_name text,
 				email text,
 				company text,
+				language text,
 				created datetime NOT NULL default now(),
 				data json
 		) $charsetCollate;";

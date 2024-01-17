@@ -122,6 +122,7 @@ class UsersDAO extends AbstractDAO {
 			'last_name' => $user->getLastName(),
 			'email' => $user->getEmail(),
 			'company' => $user->getCompany(),
+			'language' => $user->getLanguage(),
 			'data' => json_encode($user->getData()),
 			'created' => $user->getCreated()->format('Y-m-d H:i:s')
 		];
@@ -161,6 +162,7 @@ class UsersDAO extends AbstractDAO {
 		$user->setFirstName($rawUserData->first_name);
 		$user->setLastName($rawUserData->last_name);
 		$user->setEmail($rawUserData->email);
+		$user->setLanguage($rawUserData->language);
 		$user->setCompany($rawUserData->company);
 		$user->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', $rawUserData->created));
 

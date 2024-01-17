@@ -59,8 +59,12 @@ class FrontHandler {
 	
 	private function handleEvent() {
 		try {
+			$language = $this->getRequestParam('la');
+
 			$event = $this->eventsService->createEventWithChecksum(
-				$this->visitorsService->getOrCreate(),
+				$this->visitorsService->getOrCreate([
+					'language' => $language
+				]),
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [
 					'ip' => IPUtils::getIpAddress(),
@@ -69,6 +73,7 @@ class FrontHandler {
 					'title' => $this->getRequestParam('ti'),
 					'userAgent' => $_SERVER['HTTP_USER_AGENT'],
 					'referer' => $this->getRequestParam('re'),
+					'language' => $language,
 				]
 			);
 

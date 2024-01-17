@@ -25,6 +25,7 @@ class VisitorsReportsService extends ReportingService {
 		$output['new'] = $result ? (int) $result[0]->newUsers : 0;
 		$output['returning'] = $output['total'] - $output['new'];
 		$output['percentReturning'] = $output['total'] ? round($output['returning'] / $output['total'] * 100, 2) : 0;
+		$output['percentNew'] = $output['total'] ? round($output['new'] / $output['total'] * 100, 2) : 0;
 
 		return $output;
 	}

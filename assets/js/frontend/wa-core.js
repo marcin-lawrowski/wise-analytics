@@ -81,6 +81,7 @@ waConnector.api.Core = function() {
 			cur: getCanonical(),
 			ti: document.title,
 			re: document.referrer,
+			la: window.navigator.userLanguage || window.navigator.language,
 			cs: getApiHash()
 		};
 		

@@ -36,16 +36,22 @@ class VisitorsService {
 	}
 
 	/**
+	 * @param array $configuration
 	 * @return User
 	 * @throws \Exception
 	 */
-	public function getOrCreate(): User {
+	public function getOrCreate(array $configuration = []): User {
 		if (!isset($_COOKIE[VisitorsService::UUID_COOKIE])) {
-			return $this->create();
+			return $this->create($configuration);
 		} else {
 			$visitor = $this->usersDAO->getByUuid($_COOKIE[VisitorsService::UUID_COOKIE]);
 			if (!$visitor) {
-				return $this->create();
+				return $this->create($configuration);
+			}
+
+			if (isset($configuration['language']) && $configuration['language'] && $configuration['language'] !== $visitor->getLanguage()) {
+				$visitor->setLanguage($configuration['language']);
+				$visitor = $this->usersDAO->save($visitor);
 			}
 
 			return $visitor;
@@ -60,10 +66,13 @@ class VisitorsService {
 	 * @return User
 	 * @throws \Exception
 	 */
-	private function create(): User {
+	private function create(array $configuration = []): User {
 		$visitor = new User();
 		$visitor->setUuid(StringUtils::createUuid());
 		$visitor->setCreated(new \DateTime());
+		if (isset($configuration['language']) && $configuration['language']) {
+			$visitor->setLanguage($configuration['language']);
+		}
 		$visitor = $this->usersDAO->save($visitor);
 
 		setcookie(self::UUID_COOKIE, $visitor->getUuid(), time() + self::UUID_COOKIE_TIME, '/');

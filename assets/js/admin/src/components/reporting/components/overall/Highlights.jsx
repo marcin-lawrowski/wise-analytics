@@ -36,7 +36,7 @@ class Highlights extends React.Component {
 						<div className="card-body text-center">
 							<h6 className="card-title text-muted">Visitors <Loader show={ this.props.loading } /></h6>
 							<h3>{ this.props.report.visitors.total } </h3>
-							{ this.props.report.visitors.percentReturning }% <span className="text-muted">returning</span>
+							{ this.props.report.visitors.percentNew }% <span className="text-muted">new</span>
 						</div>
 					</div>
 				</div>
