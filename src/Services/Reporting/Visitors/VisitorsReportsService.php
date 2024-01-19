@@ -103,4 +103,22 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
+	public function getLanguages(\DateTime $startDate, \DateTime $endDate): array {
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		return [
+			'languages' => $this->queryEvents([
+				'alias' => 'ev',
+				'select' => [
+					'count(distinct ev.user_id) as totalVisitors',
+					'us.language'
+				],
+				'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
+				'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
+				'group' => ['us.language']
+			])
+		];
+	}
+
 }

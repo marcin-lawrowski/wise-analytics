@@ -70,7 +70,7 @@ gulp.task('eslint', function() {
 });
 
 const libVendors = [
-	'react', 'react-select', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', '@nivo/core', '@nivo/line'
+	'react', 'react-select', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', '@nivo/core', '@nivo/line', '@nivo/line', '@nivo/pie'
 ]
 
 gulp.task('build:vendor', () => {

@@ -5,7 +5,8 @@ import getStore from "store";
 import Application from "Application";
 import * as Actions from "actions/configuration";
 import { CookiesProvider } from 'react-cookie';
-import matchAll from 'string.prototype.matchall'
+import matchAll from 'string.prototype.matchall';
+import { HashRouter } from "react-router-dom";
 
 function renderApplication(element, configuration) {
 	const store = getStore(configuration);
@@ -15,7 +16,11 @@ function renderApplication(element, configuration) {
 
 	root.render(<Provider store={ store }>
 			<CookiesProvider>
-				<Application rootElement={ element } />
+				<React.StrictMode>
+                    <HashRouter>
+						<Application rootElement={ element } />
+                    </HashRouter>
+				</React.StrictMode>
 			</CookiesProvider>
 		</Provider>
 	);

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
@@ -15,22 +16,68 @@ var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _reactRedux = require("react-redux");
 var _Overview = _interopRequireDefault(require("./reporting/pages/Overview"));
+var _reactRouterDom = require("react-router-dom");
+var _Visitors = _interopRequireDefault(require("./reporting/pages/visitors/Visitors"));
+var _dates = require("utils/dates");
+var _DatesRangeFilter = _interopRequireDefault(require("./reporting/pages/parts/DatesRangeFilter"));
+var _MainMenu = _interopRequireDefault(require("./reporting/pages/parts/MainMenu"));
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var Application = /*#__PURE__*/function (_React$Component) {
   (0, _inherits2["default"])(Application, _React$Component);
   var _super = _createSuper(Application);
-  function Application() {
+  function Application(props) {
+    var _this;
     (0, _classCallCheck2["default"])(this, Application);
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = _objectSpread(_objectSpread({}, (0, _dates.getDatesRange)('last30Days')), {}, {
+      range: 'last30Days'
+    });
+    return _this;
   }
   (0, _createClass2["default"])(Application, [{
     key: "render",
     value: function render() {
+      var _this2 = this;
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: "container-fluid",
         "data-bs-theme": "light"
-      }, /*#__PURE__*/_react["default"].createElement(_Overview["default"], null));
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "d-flex align-items-center justify-content-between"
+      }, /*#__PURE__*/_react["default"].createElement("h5", null, "Analytics: Overview"), /*#__PURE__*/_react["default"].createElement(_DatesRangeFilter["default"], {
+        onDatesRangeChange: function onDatesRangeChange(startDate, endDate, range) {
+          return _this2.setState({
+            startDate: startDate,
+            endDate: endDate,
+            range: range
+          });
+        },
+        range: this.state.range,
+        startDate: this.state.startDate,
+        endDate: this.state.endDate
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-1"
+      }, /*#__PURE__*/_react["default"].createElement(_MainMenu["default"], null)), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-11 pt-4"
+      }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
+        path: "/"
+      }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
+        index: true,
+        element: /*#__PURE__*/_react["default"].createElement(_Overview["default"], {
+          startDate: this.state.startDate,
+          endDate: this.state.endDate
+        })
+      }), /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
+        path: "visitors/*",
+        element: /*#__PURE__*/_react["default"].createElement(_Visitors["default"], {
+          startDate: this.state.startDate,
+          endDate: this.state.endDate
+        })
+      }))))));
     }
   }]);
   return Application;
@@ -45,7 +92,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   };
 })(Application);
 
-},{"./reporting/pages/Overview":13,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],2:[function(require,module,exports){
+},{"./reporting/pages/Overview":14,"./reporting/pages/parts/DatesRangeFilter":15,"./reporting/pages/parts/MainMenu":16,"./reporting/pages/visitors/Visitors":17,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-router-dom":298,"utils/dates":29}],2:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -92,7 +139,7 @@ Loader.propTypes = {
 };
 var _default = exports["default"] = Loader;
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"prop-types":"prop-types","react":"react"}],3:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react"}],3:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -201,7 +248,7 @@ LineChart.propTypes = {
 };
 var _default = exports["default"] = LineChart;
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"@babel/runtime/helpers/toConsumableArray":41,"@nivo/line":"@nivo/line","moment":261,"prop-types":"prop-types","react":"react","utils/charts":23}],4:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"@babel/runtime/helpers/toConsumableArray":46,"@nivo/line":"@nivo/line","moment":266,"prop-types":"prop-types","react":"react","utils/charts":28}],4:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -348,7 +395,7 @@ StatsTable.propTypes = {
 };
 var _default = exports["default"] = StatsTable;
 
-},{"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"common/Loader":2,"prop-types":"prop-types","react":"react"}],5:[function(require,module,exports){
+},{"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"common/Loader":2,"prop-types":"prop-types","react":"react"}],5:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -474,7 +521,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(Events);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/data/StatsTable":4,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],6:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/data/StatsTable":4,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],6:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -592,7 +639,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(Highlights);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/Loader":2,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],7:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/Loader":2,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],7:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -710,7 +757,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   };
 })(LeadLineChart);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"common/Loader":2,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-select":"react-select","reporting/components/pages/PageViewsChart":8,"reporting/components/sessions/SessionsChart":10,"reporting/components/visitors/VisitorsChart":12}],8:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"common/Loader":2,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-select":"react-select","reporting/components/pages/PageViewsChart":8,"reporting/components/sessions/SessionsChart":10,"reporting/components/visitors/VisitorsChart":13}],8:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -805,7 +852,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(PageViewsChart);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/charts/LineChart":3,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],9:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/charts/LineChart":3,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],9:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -914,7 +961,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(TopPages);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/data/StatsTable":4,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],10:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/data/StatsTable":4,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],10:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1009,7 +1056,132 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(SessionsChart);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/charts/LineChart":3,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],11:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/charts/LineChart":3,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],11:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _reactRedux = require("react-redux");
+var _reports = require("actions/reports");
+var _moment = _interopRequireDefault(require("moment"));
+var _pie = require("@nivo/pie");
+var _Loader = _interopRequireDefault(require("common/Loader"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var LanguagesChart = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(LanguagesChart, _React$Component);
+  var _super = _createSuper(LanguagesChart);
+  function LanguagesChart() {
+    (0, _classCallCheck2["default"])(this, LanguagesChart);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2["default"])(LanguagesChart, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.refresh();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState, snapshot) {
+      if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
+        this.refresh();
+      }
+    }
+  }, {
+    key: "refresh",
+    value: function refresh() {
+      this.props.requestReport({
+        name: 'visitors.languages',
+        filters: {
+          startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
+          endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
+        }
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var data = this.props.report.languages.map(function (record, index) {
+        var _record$language;
+        return {
+          "id": (_record$language = record.language) !== null && _record$language !== void 0 ? _record$language : '(not set)',
+          "value": record.totalVisitors
+        };
+      });
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        className: "card"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "card-body p-0"
+      }, /*#__PURE__*/_react["default"].createElement("h6", {
+        className: "card-title text-muted"
+      }, "Languages ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
+        show: this.props.loading
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          height: 300
+        }
+      }, /*#__PURE__*/_react["default"].createElement(_pie.ResponsivePie, {
+        data: data,
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 40,
+          left: 40
+        },
+        innerRadius: 0,
+        padAngle: 0.7,
+        cornerRadius: 3,
+        colors: {
+          scheme: 'pastel2'
+        },
+        activeOuterRadiusOffset: 8,
+        borderWidth: 1,
+        borderColor: {
+          from: 'color',
+          modifiers: [['darker', 0.2]]
+        },
+        arcLinkLabelsSkipAngle: 10,
+        arcLinkLabelsTextColor: "#333333",
+        arcLinkLabelsThickness: 2,
+        arcLinkLabelsColor: {
+          from: 'color'
+        },
+        arcLabelsSkipAngle: 10,
+        arcLabelsTextColor: {
+          from: 'color',
+          modifiers: [['darker', 2]]
+        }
+      }))));
+    }
+  }]);
+  return LanguagesChart;
+}(_react["default"].Component);
+LanguagesChart.propTypes = {
+  configuration: _propTypes["default"].object.isRequired,
+  startDate: _propTypes["default"].object,
+  endDate: _propTypes["default"].object
+};
+var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
+  return {
+    configuration: state.configuration,
+    loading: state.reports['visitors.languages'].inProgress,
+    report: state.reports['visitors.languages'].result
+  };
+}, {
+  requestReport: _reports.requestReport
+})(LanguagesChart);
+
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"@nivo/pie":"@nivo/pie","actions/reports":21,"common/Loader":2,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],12:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1115,7 +1287,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(Visitors);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/Loader":2,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],12:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/Loader":2,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],13:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1210,7 +1382,87 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(VisitorsChart);
 
-},{"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"actions/reports":16,"common/charts/LineChart":3,"moment":261,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],13:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"actions/reports":21,"common/charts/LineChart":3,"moment":266,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],14:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _reactRedux = require("react-redux");
+var _Highlights = _interopRequireDefault(require("reporting/components/overall/Highlights"));
+var _TopPages = _interopRequireDefault(require("reporting/components/pages/TopPages"));
+var _Visitors = _interopRequireDefault(require("reporting/components/visitors/Visitors"));
+var _Events = _interopRequireDefault(require("reporting/components/events/Events"));
+var _LeadLineChart = _interopRequireDefault(require("reporting/components/overall/LeadLineChart"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var Overview = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(Overview, _React$Component);
+  var _super = _createSuper(Overview);
+  function Overview() {
+    (0, _classCallCheck2["default"])(this, Overview);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2["default"])(Overview, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col"
+      }, /*#__PURE__*/_react["default"].createElement(_Highlights["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      }))), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "row mt-3"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-12"
+      }, /*#__PURE__*/_react["default"].createElement(_LeadLineChart["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      }))), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "row mt-3"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-3"
+      }, /*#__PURE__*/_react["default"].createElement(_TopPages["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-3"
+      }, /*#__PURE__*/_react["default"].createElement(_Visitors["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-6"
+      }, /*#__PURE__*/_react["default"].createElement(_Events["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      }))));
+    }
+  }]);
+  return Overview;
+}(_react["default"].Component);
+Overview.propTypes = {
+  configuration: _propTypes["default"].object.isRequired,
+  startDate: _propTypes["default"].object.isRequired,
+  endDate: _propTypes["default"].object.isRequired
+};
+var _default = exports["default"] = (0, _reactRedux.connect)(function (props) {
+  return {
+    configuration: props.configuration
+  };
+})(Overview);
+
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react","react-redux":"react-redux","reporting/components/events/Events":5,"reporting/components/overall/Highlights":6,"reporting/components/overall/LeadLineChart":7,"reporting/components/pages/TopPages":9,"reporting/components/visitors/Visitors":12}],15:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1228,34 +1480,26 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _reactRedux = require("react-redux");
-var _Highlights = _interopRequireDefault(require("reporting/components/overall/Highlights"));
-var _moment = _interopRequireDefault(require("moment"));
-var _reactDatepicker = _interopRequireDefault(require("react-datepicker"));
-var _TopPages = _interopRequireDefault(require("reporting/components/pages/TopPages"));
-var _Visitors = _interopRequireDefault(require("reporting/components/visitors/Visitors"));
-var _Events = _interopRequireDefault(require("reporting/components/events/Events"));
-var _LeadLineChart = _interopRequireDefault(require("reporting/components/overall/LeadLineChart"));
 var _reactSelect = _interopRequireDefault(require("react-select"));
+var _reactDatepicker = _interopRequireDefault(require("react-datepicker"));
+var _moment = _interopRequireDefault(require("moment"));
 var _dates = require("utils/dates");
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var Overview = /*#__PURE__*/function (_React$Component) {
-  (0, _inherits2["default"])(Overview, _React$Component);
-  var _super = _createSuper(Overview);
-  function Overview(props) {
+var DatesRangeFilter = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(DatesRangeFilter, _React$Component);
+  var _super = _createSuper(DatesRangeFilter);
+  function DatesRangeFilter(props) {
     var _this;
-    (0, _classCallCheck2["default"])(this, Overview);
+    (0, _classCallCheck2["default"])(this, DatesRangeFilter);
     _this = _super.call(this, props);
-    _this.state = _objectSpread(_objectSpread({}, (0, _dates.getDatesRange)('last30Days')), {}, {
-      range: 'last30Days'
-    });
     _this.onDatesRangeChange = _this.onDatesRangeChange.bind((0, _assertThisInitialized2["default"])(_this));
     _this.onRangeChange = _this.onRangeChange.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
-  (0, _createClass2["default"])(Overview, [{
+  (0, _createClass2["default"])(DatesRangeFilter, [{
     key: "RANGES",
     get: function get() {
       return [{
@@ -1284,91 +1528,213 @@ var Overview = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "onDatesRangeChange",
     value: function onDatesRangeChange(dates) {
-      this.setState({
-        startDate: dates[0],
-        endDate: dates[1],
-        range: undefined
-      });
+      this.props.onDatesRangeChange(dates[0], dates[1], undefined);
     }
   }, {
     key: "onRangeChange",
     value: function onRangeChange(selected) {
-      this.setState({
-        range: selected.value,
-        startDate: selected.startDate,
-        endDate: selected.endDate
-      });
+      this.props.onDatesRangeChange(selected.startDate, selected.endDate, selected.value);
     }
   }, {
     key: "render",
     value: function render() {
       var _this2 = this;
-      return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
-        className: "d-flex align-items-center justify-content-between"
-      }, /*#__PURE__*/_react["default"].createElement("h5", null, "Analytics"), /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         className: "d-flex align-items-center"
       }, /*#__PURE__*/_react["default"].createElement(_reactSelect["default"], {
         value: this.RANGES.find(function (option) {
-          return option.value === _this2.state.range;
+          return option.value === _this2.props.range;
         }),
         onChange: this.onRangeChange,
         options: this.RANGES,
         isSearchable: false
       }), "\xA0", /*#__PURE__*/_react["default"].createElement(_reactDatepicker["default"], {
-        selected: this.state.startDate,
+        selected: this.props.startDate,
         onChange: this.onDatesRangeChange,
         minDate: (0, _moment["default"])().subtract(3, 'months').toDate(),
         maxDate: new Date(),
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
+        startDate: this.props.startDate,
+        endDate: this.props.endDate,
         selectsRange: true,
         className: "form-control"
-      }))), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "row"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: "col"
-      }, /*#__PURE__*/_react["default"].createElement(_Highlights["default"], {
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      }))), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "row mt-3"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: "col-md-12"
-      }, /*#__PURE__*/_react["default"].createElement(_LeadLineChart["default"], {
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      }))), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "row mt-3"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: "col-md-3"
-      }, /*#__PURE__*/_react["default"].createElement(_TopPages["default"], {
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      })), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "col-md-3"
-      }, /*#__PURE__*/_react["default"].createElement(_Visitors["default"], {
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      })), /*#__PURE__*/_react["default"].createElement("div", {
-        className: "col-md-6"
-      }, /*#__PURE__*/_react["default"].createElement(_Events["default"], {
-        startDate: this.state.startDate,
-        endDate: this.state.endDate
-      }))));
+      }));
     }
   }]);
-  return Overview;
+  return DatesRangeFilter;
 }(_react["default"].Component);
-Overview.propTypes = {
+DatesRangeFilter.propTypes = {
+  configuration: _propTypes["default"].object.isRequired,
+  onDatesRangeChange: _propTypes["default"].func.isRequired,
+  range: _propTypes["default"].string.isRequired,
+  startDate: _propTypes["default"].object.isRequired,
+  endDate: _propTypes["default"].object.isRequired
+};
+var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
+  return {
+    configuration: state.configuration
+  };
+})(DatesRangeFilter);
+
+},{"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"moment":266,"prop-types":"prop-types","react":"react","react-datepicker":285,"react-redux":"react-redux","react-select":"react-select","utils/dates":29}],16:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _reactRedux = require("react-redux");
+var _reactRouterDom = require("react-router-dom");
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var MainMenu = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(MainMenu, _React$Component);
+  var _super = _createSuper(MainMenu);
+  function MainMenu() {
+    (0, _classCallCheck2["default"])(this, MainMenu);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2["default"])(MainMenu, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        className: "list-group mt-4"
+      }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+        to: "/",
+        className: "list-group-item list-group-item-action"
+      }, "Overview"), /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+        to: "/visitors",
+        className: "list-group-item list-group-item-action"
+      }, "Visitors"));
+    }
+  }]);
+  return MainMenu;
+}(_react["default"].Component);
+MainMenu.propTypes = {
   configuration: _propTypes["default"].object.isRequired
 };
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration
   };
-})(Overview);
+})(MainMenu);
 
-},{"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/getPrototypeOf":33,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/possibleConstructorReturn":39,"moment":261,"prop-types":"prop-types","react":"react","react-datepicker":280,"react-redux":"react-redux","react-select":"react-select","reporting/components/events/Events":5,"reporting/components/overall/Highlights":6,"reporting/components/overall/LeadLineChart":7,"reporting/components/pages/TopPages":9,"reporting/components/visitors/Visitors":11,"utils/dates":24}],14:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-router-dom":298}],17:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _reactRedux = require("react-redux");
+var _reactRouterDom = require("react-router-dom");
+var _Home = _interopRequireDefault(require("./home/Home"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var Visitors = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(Visitors, _React$Component);
+  var _super = _createSuper(Visitors);
+  function Visitors() {
+    (0, _classCallCheck2["default"])(this, Visitors);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2["default"])(Visitors, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
+        path: "/"
+      }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
+        index: true,
+        element: /*#__PURE__*/_react["default"].createElement(_Home["default"], {
+          startDate: this.props.startDate,
+          endDate: this.props.endDate
+        })
+      })));
+    }
+  }]);
+  return Visitors;
+}(_react["default"].Component);
+Visitors.propTypes = {
+  configuration: _propTypes["default"].object.isRequired,
+  startDate: _propTypes["default"].object.isRequired,
+  endDate: _propTypes["default"].object.isRequired
+};
+var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
+  return {
+    configuration: state.configuration
+  };
+})(Visitors);
+
+},{"./home/Home":18,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-router-dom":298}],18:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _reactRedux = require("react-redux");
+var _LanguagesChart = _interopRequireDefault(require("reporting/components/visitors/LanguagesChart"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var Home = /*#__PURE__*/function (_React$Component) {
+  (0, _inherits2["default"])(Home, _React$Component);
+  var _super = _createSuper(Home);
+  function Home() {
+    (0, _classCallCheck2["default"])(this, Home);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2["default"])(Home, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-9"
+      }, "table"), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-md-3"
+      }, /*#__PURE__*/_react["default"].createElement(_LanguagesChart["default"], {
+        startDate: this.props.startDate,
+        endDate: this.props.endDate
+      }))));
+    }
+  }]);
+  return Home;
+}(_react["default"].Component);
+Home.propTypes = {
+  configuration: _propTypes["default"].object.isRequired,
+  startDate: _propTypes["default"].object.isRequired,
+  endDate: _propTypes["default"].object.isRequired
+};
+var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
+  return {
+    configuration: state.configuration
+  };
+})(Home);
+
+},{"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/getPrototypeOf":38,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/possibleConstructorReturn":44,"prop-types":"prop-types","react":"react","react-redux":"react-redux","reporting/components/visitors/LanguagesChart":11}],19:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1382,6 +1748,7 @@ var _Application = _interopRequireDefault(require("Application"));
 var Actions = _interopRequireWildcard(require("actions/configuration"));
 var _reactCookie = require("react-cookie");
 var _stringPrototype = _interopRequireDefault(require("string.prototype.matchall"));
+var _reactRouterDom = require("react-router-dom");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof3(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function renderApplication(element, configuration) {
@@ -1390,9 +1757,9 @@ function renderApplication(element, configuration) {
   var root = (0, _client.createRoot)(element);
   root.render( /*#__PURE__*/_react["default"].createElement(_reactRedux.Provider, {
     store: store
-  }, /*#__PURE__*/_react["default"].createElement(_reactCookie.CookiesProvider, null, /*#__PURE__*/_react["default"].createElement(_Application["default"], {
+  }, /*#__PURE__*/_react["default"].createElement(_reactCookie.CookiesProvider, null, /*#__PURE__*/_react["default"].createElement(_react["default"].StrictMode, null, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.HashRouter, null, /*#__PURE__*/_react["default"].createElement(_Application["default"], {
     rootElement: element
-  }))));
+  }))))));
 }
 jQuery(window).on('load', function () {
   _stringPrototype["default"].shim(); // Edge missing matchAll method
@@ -1412,7 +1779,7 @@ jQuery(window).on('load', function () {
   });
 });
 
-},{"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44,"Application":1,"actions/configuration":15,"react":"react","react-cookie":275,"react-dom/client":281,"react-redux":"react-redux","store":20,"string.prototype.matchall":301}],15:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49,"Application":1,"actions/configuration":20,"react":"react","react-cookie":280,"react-dom/client":286,"react-redux":"react-redux","react-router-dom":298,"store":25,"string.prototype.matchall":313}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1426,7 +1793,7 @@ function replace(data) {
   };
 }
 
-},{}],16:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1442,7 +1809,7 @@ function requestReport(params) {
   });
 }
 
-},{"utils/ajax":22}],17:[function(require,module,exports){
+},{"utils/ajax":27}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1468,7 +1835,7 @@ function configuration() {
   }
 }
 
-},{}],18:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1485,7 +1852,7 @@ var mainReducers = (0, _redux.combineReducers)({
 });
 var _default = exports["default"] = mainReducers;
 
-},{"./configuration":17,"./reports":19,"@babel/runtime/helpers/interopRequireDefault":35,"redux":"redux"}],19:[function(require,module,exports){
+},{"./configuration":22,"./reports":24,"@babel/runtime/helpers/interopRequireDefault":40,"redux":"redux"}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1528,6 +1895,11 @@ var defaultServerActions = {
       visitors: []
     }
   },
+  'visitors.languages': {
+    result: {
+      languages: []
+    }
+  },
   'sessions.daily': {
     result: {
       sessions: []
@@ -1557,7 +1929,7 @@ function reports() {
   return state;
 }
 
-},{"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/interopRequireDefault":35,"utils/actions":21}],20:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/interopRequireDefault":40,"utils/actions":26}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1576,7 +1948,7 @@ function getStore(configuration) {
 }
 var _default = exports["default"] = getStore;
 
-},{"@babel/runtime/helpers/interopRequireDefault":35,"reducers":18,"redux":"redux","redux-thunk":"redux-thunk"}],21:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":40,"reducers":23,"redux":"redux","redux-thunk":"redux-thunk"}],26:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1680,7 +2052,7 @@ function handleServerActions(state, action, defaultServerActions, categoryName) 
   }
 }
 
-},{"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/interopRequireDefault":35}],22:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/interopRequireDefault":40}],27:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1876,7 +2248,7 @@ function uniqueId() {
   return Math.random().toString(36).substr(2, 9);
 }
 
-},{"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44,"qs":268}],23:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49,"qs":273}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1893,7 +2265,7 @@ function getNumberTickValues(maxNumber) {
   }
 }
 
-},{}],24:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1983,20 +2355,20 @@ function getDatesRange(preset) {
   }
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":35,"moment":261}],25:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":40,"moment":266}],30:[function(require,module,exports){
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
   for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
   return arr2;
 }
 module.exports = _arrayLikeToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],26:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var arrayLikeToArray = require("./arrayLikeToArray.js");
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return arrayLikeToArray(arr);
 }
 module.exports = _arrayWithoutHoles, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./arrayLikeToArray.js":25}],27:[function(require,module,exports){
+},{"./arrayLikeToArray.js":30}],32:[function(require,module,exports){
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -2004,14 +2376,14 @@ function _assertThisInitialized(self) {
   return self;
 }
 module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],28:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
 module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],29:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var toPropertyKey = require("./toPropertyKey.js");
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
@@ -2031,7 +2403,7 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./toPropertyKey.js":43}],30:[function(require,module,exports){
+},{"./toPropertyKey.js":48}],35:[function(require,module,exports){
 var unsupportedIterableToArray = require("./unsupportedIterableToArray.js");
 function _createForOfIteratorHelper(o, allowArrayLike) {
   var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
@@ -2085,7 +2457,7 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
   };
 }
 module.exports = _createForOfIteratorHelper, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./unsupportedIterableToArray.js":45}],31:[function(require,module,exports){
+},{"./unsupportedIterableToArray.js":50}],36:[function(require,module,exports){
 var getPrototypeOf = require("./getPrototypeOf.js");
 var isNativeReflectConstruct = require("./isNativeReflectConstruct.js");
 var possibleConstructorReturn = require("./possibleConstructorReturn.js");
@@ -2104,7 +2476,7 @@ function _createSuper(Derived) {
   };
 }
 module.exports = _createSuper, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./getPrototypeOf.js":33,"./isNativeReflectConstruct.js":36,"./possibleConstructorReturn.js":39}],32:[function(require,module,exports){
+},{"./getPrototypeOf.js":38,"./isNativeReflectConstruct.js":41,"./possibleConstructorReturn.js":44}],37:[function(require,module,exports){
 var toPropertyKey = require("./toPropertyKey.js");
 function _defineProperty(obj, key, value) {
   key = toPropertyKey(key);
@@ -2121,7 +2493,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./toPropertyKey.js":43}],33:[function(require,module,exports){
+},{"./toPropertyKey.js":48}],38:[function(require,module,exports){
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -2129,7 +2501,7 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 module.exports = _getPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],34:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 var setPrototypeOf = require("./setPrototypeOf.js");
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -2148,14 +2520,14 @@ function _inherits(subClass, superClass) {
   if (superClass) setPrototypeOf(subClass, superClass);
 }
 module.exports = _inherits, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./setPrototypeOf.js":40}],35:[function(require,module,exports){
+},{"./setPrototypeOf.js":45}],40:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     "default": obj
   };
 }
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],36:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 function _isNativeReflectConstruct() {
   if (typeof Reflect === "undefined" || !Reflect.construct) return false;
   if (Reflect.construct.sham) return false;
@@ -2168,17 +2540,17 @@ function _isNativeReflectConstruct() {
   }
 }
 module.exports = _isNativeReflectConstruct, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],37:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 module.exports = _iterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],38:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 module.exports = _nonIterableSpread, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],39:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 var _typeof = require("./typeof.js")["default"];
 var assertThisInitialized = require("./assertThisInitialized.js");
 function _possibleConstructorReturn(self, call) {
@@ -2190,7 +2562,7 @@ function _possibleConstructorReturn(self, call) {
   return assertThisInitialized(self);
 }
 module.exports = _possibleConstructorReturn, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./assertThisInitialized.js":27,"./typeof.js":44}],40:[function(require,module,exports){
+},{"./assertThisInitialized.js":32,"./typeof.js":49}],45:[function(require,module,exports){
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -2199,7 +2571,7 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 module.exports = _setPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],41:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 var arrayWithoutHoles = require("./arrayWithoutHoles.js");
 var iterableToArray = require("./iterableToArray.js");
 var unsupportedIterableToArray = require("./unsupportedIterableToArray.js");
@@ -2208,7 +2580,7 @@ function _toConsumableArray(arr) {
   return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
 }
 module.exports = _toConsumableArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./arrayWithoutHoles.js":26,"./iterableToArray.js":37,"./nonIterableSpread.js":38,"./unsupportedIterableToArray.js":45}],42:[function(require,module,exports){
+},{"./arrayWithoutHoles.js":31,"./iterableToArray.js":42,"./nonIterableSpread.js":43,"./unsupportedIterableToArray.js":50}],47:[function(require,module,exports){
 var _typeof = require("./typeof.js")["default"];
 function _toPrimitive(input, hint) {
   if (_typeof(input) !== "object" || input === null) return input;
@@ -2221,7 +2593,7 @@ function _toPrimitive(input, hint) {
   return (hint === "string" ? String : Number)(input);
 }
 module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./typeof.js":44}],43:[function(require,module,exports){
+},{"./typeof.js":49}],48:[function(require,module,exports){
 var _typeof = require("./typeof.js")["default"];
 var toPrimitive = require("./toPrimitive.js");
 function _toPropertyKey(arg) {
@@ -2229,7 +2601,7 @@ function _toPropertyKey(arg) {
   return _typeof(key) === "symbol" ? key : String(key);
 }
 module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./toPrimitive.js":42,"./typeof.js":44}],44:[function(require,module,exports){
+},{"./toPrimitive.js":47,"./typeof.js":49}],49:[function(require,module,exports){
 function _typeof(o) {
   "@babel/helpers - typeof";
 
@@ -2240,7 +2612,7 @@ function _typeof(o) {
   }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(o);
 }
 module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],45:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 var arrayLikeToArray = require("./arrayLikeToArray.js");
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
@@ -2251,7 +2623,7 @@ function _unsupportedIterableToArray(o, minLen) {
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
 }
 module.exports = _unsupportedIterableToArray, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{"./arrayLikeToArray.js":25}],46:[function(require,module,exports){
+},{"./arrayLikeToArray.js":30}],51:[function(require,module,exports){
 /**
  * @popperjs/core v2.11.8 - MIT License
  */
@@ -4072,9 +4444,9 @@ exports.popperOffsets = popperOffsets$1;
 exports.preventOverflow = preventOverflow$1;
 
 
-},{}],47:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 
-},{}],48:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -4091,7 +4463,7 @@ module.exports = function callBoundIntrinsic(name, allowMissing) {
 	return intrinsic;
 };
 
-},{"./":49,"get-intrinsic":247}],49:[function(require,module,exports){
+},{"./":54,"get-intrinsic":252}],54:[function(require,module,exports){
 'use strict';
 
 var bind = require('function-bind');
@@ -4140,7 +4512,7 @@ if ($defineProperty) {
 	module.exports.apply = applyBind;
 }
 
-},{"function-bind":245,"get-intrinsic":247}],50:[function(require,module,exports){
+},{"function-bind":250,"get-intrinsic":252}],55:[function(require,module,exports){
 /*!
 	Copyright (c) 2018 Jed Watson.
 	Licensed under the MIT License (MIT), see
@@ -4202,7 +4574,7 @@ if ($defineProperty) {
 	}
 }());
 
-},{}],51:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /*!
  * cookie
  * Copyright(c) 2012-2014 Roman Shtylman
@@ -4474,7 +4846,7 @@ function tryDecode(str, decode) {
   }
 }
 
-},{}],52:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4490,7 +4862,7 @@ function addLeadingZeros(number, targetLength) {
   return sign + output;
 }
 module.exports = exports.default;
-},{}],53:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4510,7 +4882,7 @@ function assign(target, object) {
   return target;
 }
 module.exports = exports.default;
-},{}],54:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -4522,7 +4894,7 @@ var _index = _interopRequireDefault(require("../../locale/en-US/index.js"));
 var _default = _index.default;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../locale/en-US/index.js":124,"@babel/runtime/helpers/interopRequireDefault":35}],55:[function(require,module,exports){
+},{"../../locale/en-US/index.js":129,"@babel/runtime/helpers/interopRequireDefault":40}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4537,7 +4909,7 @@ function getDefaultOptions() {
 function setDefaultOptions(newOptions) {
   defaultOptions = newOptions;
 }
-},{}],56:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5319,7 +5691,7 @@ function formatTimezone(offset, dirtyDelimiter) {
 var _default = formatters;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../../_lib/getUTCDayOfYear/index.js":60,"../../../_lib/getUTCISOWeek/index.js":62,"../../../_lib/getUTCISOWeekYear/index.js":61,"../../../_lib/getUTCWeek/index.js":64,"../../../_lib/getUTCWeekYear/index.js":63,"../../addLeadingZeros/index.js":52,"../lightFormatters/index.js":57,"@babel/runtime/helpers/interopRequireDefault":35}],57:[function(require,module,exports){
+},{"../../../_lib/getUTCDayOfYear/index.js":65,"../../../_lib/getUTCISOWeek/index.js":67,"../../../_lib/getUTCISOWeekYear/index.js":66,"../../../_lib/getUTCWeek/index.js":69,"../../../_lib/getUTCWeekYear/index.js":68,"../../addLeadingZeros/index.js":57,"../lightFormatters/index.js":62,"@babel/runtime/helpers/interopRequireDefault":40}],62:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5410,7 +5782,7 @@ var formatters = {
 var _default = formatters;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../addLeadingZeros/index.js":52,"@babel/runtime/helpers/interopRequireDefault":35}],58:[function(require,module,exports){
+},{"../../addLeadingZeros/index.js":57,"@babel/runtime/helpers/interopRequireDefault":40}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5499,7 +5871,7 @@ var longFormatters = {
 var _default = longFormatters;
 exports.default = _default;
 module.exports = exports.default;
-},{}],59:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5523,7 +5895,7 @@ function getTimezoneOffsetInMilliseconds(date) {
   return date.getTime() - utcDate.getTime();
 }
 module.exports = exports.default;
-},{}],60:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5545,7 +5917,7 @@ function getUTCDayOfYear(dirtyDate) {
   return Math.floor(difference / MILLISECONDS_IN_DAY) + 1;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"@babel/runtime/helpers/interopRequireDefault":35}],61:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"@babel/runtime/helpers/interopRequireDefault":40}],66:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5577,7 +5949,7 @@ function getUTCISOWeekYear(dirtyDate) {
   }
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"../startOfUTCISOWeek/index.js":72,"@babel/runtime/helpers/interopRequireDefault":35}],62:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"../startOfUTCISOWeek/index.js":77,"@babel/runtime/helpers/interopRequireDefault":40}],67:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5601,7 +5973,7 @@ function getUTCISOWeek(dirtyDate) {
   return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"../startOfUTCISOWeek/index.js":72,"../startOfUTCISOWeekYear/index.js":71,"@babel/runtime/helpers/interopRequireDefault":35}],63:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"../startOfUTCISOWeek/index.js":77,"../startOfUTCISOWeekYear/index.js":76,"@babel/runtime/helpers/interopRequireDefault":40}],68:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5643,7 +6015,7 @@ function getUTCWeekYear(dirtyDate, options) {
   }
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../defaultOptions/index.js":55,"../requiredArgs/index.js":66,"../startOfUTCWeek/index.js":74,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],64:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../defaultOptions/index.js":60,"../requiredArgs/index.js":71,"../startOfUTCWeek/index.js":79,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],69:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5667,7 +6039,7 @@ function getUTCWeek(dirtyDate, options) {
   return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"../startOfUTCWeek/index.js":74,"../startOfUTCWeekYear/index.js":73,"@babel/runtime/helpers/interopRequireDefault":35}],65:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"../startOfUTCWeek/index.js":79,"../startOfUTCWeekYear/index.js":78,"@babel/runtime/helpers/interopRequireDefault":40}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5695,7 +6067,7 @@ function throwProtectedError(token, format, input) {
     throw new RangeError("Use `dd` instead of `DD` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
   }
 }
-},{}],66:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5708,7 +6080,7 @@ function requiredArgs(required, args) {
   }
 }
 module.exports = exports.default;
-},{}],67:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5740,7 +6112,7 @@ function setUTCDay(dirtyDate, dirtyDay, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../defaultOptions/index.js":55,"../requiredArgs/index.js":66,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],68:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../defaultOptions/index.js":60,"../requiredArgs/index.js":71,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],73:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5767,7 +6139,7 @@ function setUTCISODay(dirtyDate, dirtyDay) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],69:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],74:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5788,7 +6160,7 @@ function setUTCISOWeek(dirtyDate, dirtyISOWeek) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../getUTCISOWeek/index.js":62,"../requiredArgs/index.js":66,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],70:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../getUTCISOWeek/index.js":67,"../requiredArgs/index.js":71,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],75:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5809,7 +6181,7 @@ function setUTCWeek(dirtyDate, dirtyWeek, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../getUTCWeek/index.js":64,"../requiredArgs/index.js":66,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],71:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../getUTCWeek/index.js":69,"../requiredArgs/index.js":71,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],76:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5830,7 +6202,7 @@ function startOfUTCISOWeekYear(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../getUTCISOWeekYear/index.js":61,"../requiredArgs/index.js":66,"../startOfUTCISOWeek/index.js":72,"@babel/runtime/helpers/interopRequireDefault":35}],72:[function(require,module,exports){
+},{"../getUTCISOWeekYear/index.js":66,"../requiredArgs/index.js":71,"../startOfUTCISOWeek/index.js":77,"@babel/runtime/helpers/interopRequireDefault":40}],77:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5851,7 +6223,7 @@ function startOfUTCISOWeek(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../requiredArgs/index.js":66,"@babel/runtime/helpers/interopRequireDefault":35}],73:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../requiredArgs/index.js":71,"@babel/runtime/helpers/interopRequireDefault":40}],78:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5877,7 +6249,7 @@ function startOfUTCWeekYear(dirtyDate, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../defaultOptions/index.js":55,"../getUTCWeekYear/index.js":63,"../requiredArgs/index.js":66,"../startOfUTCWeek/index.js":74,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],74:[function(require,module,exports){
+},{"../defaultOptions/index.js":60,"../getUTCWeekYear/index.js":68,"../requiredArgs/index.js":71,"../startOfUTCWeek/index.js":79,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],79:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5907,7 +6279,7 @@ function startOfUTCWeek(dirtyDate, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../../toDate/index.js":185,"../defaultOptions/index.js":55,"../requiredArgs/index.js":66,"../toInteger/index.js":75,"@babel/runtime/helpers/interopRequireDefault":35}],75:[function(require,module,exports){
+},{"../../toDate/index.js":190,"../defaultOptions/index.js":60,"../requiredArgs/index.js":71,"../toInteger/index.js":80,"@babel/runtime/helpers/interopRequireDefault":40}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5925,7 +6297,7 @@ function toInteger(dirtyNumber) {
   return number < 0 ? Math.ceil(number) : Math.floor(number);
 }
 module.exports = exports.default;
-},{}],76:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -5969,7 +6341,7 @@ function addDays(dirtyDate, dirtyAmount) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],77:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],82:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6006,7 +6378,7 @@ function addHours(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, amount * MILLISECONDS_IN_HOUR);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMilliseconds/index.js":78,"@babel/runtime/helpers/interopRequireDefault":35}],78:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMilliseconds/index.js":83,"@babel/runtime/helpers/interopRequireDefault":40}],83:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6042,7 +6414,7 @@ function addMilliseconds(dirtyDate, dirtyAmount) {
   return new Date(timestamp + amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],79:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],84:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6079,7 +6451,7 @@ function addMinutes(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, amount * MILLISECONDS_IN_MINUTE);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMilliseconds/index.js":78,"@babel/runtime/helpers/interopRequireDefault":35}],80:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMilliseconds/index.js":83,"@babel/runtime/helpers/interopRequireDefault":40}],85:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6149,7 +6521,7 @@ function addMonths(dirtyDate, dirtyAmount) {
   }
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],81:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],86:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6185,7 +6557,7 @@ function addQuarters(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, months);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMonths/index.js":80,"@babel/runtime/helpers/interopRequireDefault":35}],82:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMonths/index.js":85,"@babel/runtime/helpers/interopRequireDefault":40}],87:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6221,7 +6593,7 @@ function addWeeks(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, days);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addDays/index.js":76,"@babel/runtime/helpers/interopRequireDefault":35}],83:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addDays/index.js":81,"@babel/runtime/helpers/interopRequireDefault":40}],88:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6256,7 +6628,7 @@ function addYears(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, amount * 12);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMonths/index.js":80,"@babel/runtime/helpers/interopRequireDefault":35}],84:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMonths/index.js":85,"@babel/runtime/helpers/interopRequireDefault":40}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6464,7 +6836,7 @@ var secondsInMonth = secondsInYear / 12;
 exports.secondsInMonth = secondsInMonth;
 var secondsInQuarter = secondsInMonth * 3;
 exports.secondsInQuarter = secondsInQuarter;
-},{}],85:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6520,7 +6892,7 @@ function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
   return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY);
 }
 module.exports = exports.default;
-},{"../_lib/getTimezoneOffsetInMilliseconds/index.js":59,"../_lib/requiredArgs/index.js":66,"../startOfDay/index.js":172,"@babel/runtime/helpers/interopRequireDefault":35}],86:[function(require,module,exports){
+},{"../_lib/getTimezoneOffsetInMilliseconds/index.js":64,"../_lib/requiredArgs/index.js":71,"../startOfDay/index.js":177,"@babel/runtime/helpers/interopRequireDefault":40}],91:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6560,7 +6932,7 @@ function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
   return yearDiff * 12 + monthDiff;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],87:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],92:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6598,7 +6970,7 @@ function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
   return dateLeft.getFullYear() - dateRight.getFullYear();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],88:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],93:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6633,7 +7005,7 @@ function endOfDay(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],89:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],94:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6670,7 +7042,7 @@ function endOfMonth(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],90:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],95:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6727,7 +7099,7 @@ function endOfWeek(dirtyDate, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/defaultOptions/index.js":55,"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],91:[function(require,module,exports){
+},{"../_lib/defaultOptions/index.js":60,"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],96:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -6764,7 +7136,7 @@ function endOfYear(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],92:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],97:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7176,7 +7548,7 @@ function cleanEscapedString(input) {
   return matched[1].replace(doubleQuoteRegExp, "'");
 }
 module.exports = exports.default;
-},{"../_lib/defaultLocale/index.js":54,"../_lib/defaultOptions/index.js":55,"../_lib/format/formatters/index.js":56,"../_lib/format/longFormatters/index.js":58,"../_lib/getTimezoneOffsetInMilliseconds/index.js":59,"../_lib/protectedTokens/index.js":65,"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../isValid/index.js":113,"../subMilliseconds/index.js":180,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],93:[function(require,module,exports){
+},{"../_lib/defaultLocale/index.js":59,"../_lib/defaultOptions/index.js":60,"../_lib/format/formatters/index.js":61,"../_lib/format/longFormatters/index.js":63,"../_lib/getTimezoneOffsetInMilliseconds/index.js":64,"../_lib/protectedTokens/index.js":70,"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../isValid/index.js":118,"../subMilliseconds/index.js":185,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],98:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7210,7 +7582,7 @@ function getDate(dirtyDate) {
   return dayOfMonth;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],94:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],99:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7244,7 +7616,7 @@ function getDay(dirtyDate) {
   return day;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],95:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],100:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7282,7 +7654,7 @@ function getDaysInMonth(dirtyDate) {
   return lastDayOfMonth.getDate();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],96:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],101:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7316,7 +7688,7 @@ function getHours(dirtyDate) {
   return hours;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],97:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],102:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7368,7 +7740,7 @@ function getISOWeekYear(dirtyDate) {
   }
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../startOfISOWeek/index.js":174,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],98:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../startOfISOWeek/index.js":179,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],103:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7412,7 +7784,7 @@ function getISOWeek(dirtyDate) {
   return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../startOfISOWeek/index.js":174,"../startOfISOWeekYear/index.js":173,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],99:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../startOfISOWeek/index.js":179,"../startOfISOWeekYear/index.js":178,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],104:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7446,7 +7818,7 @@ function getMinutes(dirtyDate) {
   return minutes;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],100:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],105:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7480,7 +7852,7 @@ function getMonth(dirtyDate) {
   return month;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],101:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],106:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7514,7 +7886,7 @@ function getQuarter(dirtyDate) {
   return quarter;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],102:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],107:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7548,7 +7920,7 @@ function getSeconds(dirtyDate) {
   return seconds;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],103:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],108:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7582,7 +7954,7 @@ function getTime(dirtyDate) {
   return timestamp;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],104:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],109:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7614,7 +7986,7 @@ function getYear(dirtyDate) {
   return (0, _index.default)(dirtyDate).getFullYear();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],105:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],110:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7649,7 +8021,7 @@ function isAfter(dirtyDate, dirtyDateToCompare) {
   return date.getTime() > dateToCompare.getTime();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],106:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],111:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7684,7 +8056,7 @@ function isBefore(dirtyDate, dirtyDateToCompare) {
   return date.getTime() < dateToCompare.getTime();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],107:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],112:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7731,7 +8103,7 @@ function isDate(value) {
   return value instanceof Date || (0, _typeof2.default)(value) === 'object' && Object.prototype.toString.call(value) === '[object Date]';
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],108:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],113:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7769,7 +8141,7 @@ function isEqual(dirtyLeftDate, dirtyRightDate) {
   return dateLeft.getTime() === dateRight.getTime();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],109:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],114:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7814,7 +8186,7 @@ function isSameDay(dirtyDateLeft, dirtyDateRight) {
   return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../startOfDay/index.js":172,"@babel/runtime/helpers/interopRequireDefault":35}],110:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../startOfDay/index.js":177,"@babel/runtime/helpers/interopRequireDefault":40}],115:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7854,7 +8226,7 @@ function isSameMonth(dirtyDateLeft, dirtyDateRight) {
   return dateLeft.getFullYear() === dateRight.getFullYear() && dateLeft.getMonth() === dateRight.getMonth();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],111:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],116:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7894,7 +8266,7 @@ function isSameQuarter(dirtyDateLeft, dirtyDateRight) {
   return dateLeftStartOfQuarter.getTime() === dateRightStartOfQuarter.getTime();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../startOfQuarter/index.js":176,"@babel/runtime/helpers/interopRequireDefault":35}],112:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../startOfQuarter/index.js":181,"@babel/runtime/helpers/interopRequireDefault":40}],117:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7929,7 +8301,7 @@ function isSameYear(dirtyDateLeft, dirtyDateRight) {
   return dateLeft.getFullYear() === dateRight.getFullYear();
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],113:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],118:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -7980,7 +8352,7 @@ function isValid(dirtyDate) {
   return !isNaN(Number(date));
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../isDate/index.js":107,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],114:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../isDate/index.js":112,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],119:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8042,7 +8414,7 @@ function isWithinInterval(dirtyDate, interval) {
   return time >= startTime && time <= endTime;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],115:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],120:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8059,7 +8431,7 @@ function buildFormatLongFn(args) {
   };
 }
 module.exports = exports.default;
-},{}],116:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8085,7 +8457,7 @@ function buildLocalizeFn(args) {
   };
 }
 module.exports = exports.default;
-},{}],117:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8135,7 +8507,7 @@ function findIndex(array, predicate) {
   return undefined;
 }
 module.exports = exports.default;
-},{}],118:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8160,7 +8532,7 @@ function buildMatchPatternFn(args) {
   };
 }
 module.exports = exports.default;
-},{}],119:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8252,7 +8624,7 @@ var formatDistance = function formatDistance(token, count, options) {
 var _default = formatDistance;
 exports.default = _default;
 module.exports = exports.default;
-},{}],120:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8296,7 +8668,7 @@ var formatLong = {
 var _default = formatLong;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../../_lib/buildFormatLongFn/index.js":115,"@babel/runtime/helpers/interopRequireDefault":35}],121:[function(require,module,exports){
+},{"../../../_lib/buildFormatLongFn/index.js":120,"@babel/runtime/helpers/interopRequireDefault":40}],126:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8317,7 +8689,7 @@ var formatRelative = function formatRelative(token, _date, _baseDate, _options) 
 var _default = formatRelative;
 exports.default = _default;
 module.exports = exports.default;
-},{}],122:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8470,7 +8842,7 @@ var localize = {
 var _default = localize;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../../_lib/buildLocalizeFn/index.js":116,"@babel/runtime/helpers/interopRequireDefault":35}],123:[function(require,module,exports){
+},{"../../../_lib/buildLocalizeFn/index.js":121,"@babel/runtime/helpers/interopRequireDefault":40}],128:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8578,7 +8950,7 @@ var match = {
 var _default = match;
 exports.default = _default;
 module.exports = exports.default;
-},{"../../../_lib/buildMatchFn/index.js":117,"../../../_lib/buildMatchPatternFn/index.js":118,"@babel/runtime/helpers/interopRequireDefault":35}],124:[function(require,module,exports){
+},{"../../../_lib/buildMatchFn/index.js":122,"../../../_lib/buildMatchPatternFn/index.js":123,"@babel/runtime/helpers/interopRequireDefault":40}],129:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8615,7 +8987,7 @@ var locale = {
 var _default = locale;
 exports.default = _default;
 module.exports = exports.default;
-},{"./_lib/formatDistance/index.js":119,"./_lib/formatLong/index.js":120,"./_lib/formatRelative/index.js":121,"./_lib/localize/index.js":122,"./_lib/match/index.js":123,"@babel/runtime/helpers/interopRequireDefault":35}],125:[function(require,module,exports){
+},{"./_lib/formatDistance/index.js":124,"./_lib/formatLong/index.js":125,"./_lib/formatRelative/index.js":126,"./_lib/localize/index.js":127,"./_lib/match/index.js":128,"@babel/runtime/helpers/interopRequireDefault":40}],130:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8672,7 +9044,7 @@ function max(dirtyDatesArray) {
   return result || new Date(NaN);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],126:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],131:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8728,7 +9100,7 @@ function min(dirtyDatesArray) {
   return result || new Date(NaN);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],127:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],132:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -8965,7 +9337,7 @@ function validateTimezone(_hours, minutes) {
   return minutes >= 0 && minutes <= 59;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../constants/index.js":84,"@babel/runtime/helpers/interopRequireDefault":35}],128:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../constants/index.js":89,"@babel/runtime/helpers/interopRequireDefault":40}],133:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9005,7 +9377,7 @@ var Parser = /*#__PURE__*/function () {
   return Parser;
 }();
 exports.Parser = Parser;
-},{"./Setter.js":129,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/interopRequireDefault":35}],129:[function(require,module,exports){
+},{"./Setter.js":134,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/interopRequireDefault":40}],134:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9094,7 +9466,7 @@ var DateToSystemTimezoneSetter = /*#__PURE__*/function (_Setter2) {
   return DateToSystemTimezoneSetter;
 }(Setter);
 exports.DateToSystemTimezoneSetter = DateToSystemTimezoneSetter;
-},{"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],130:[function(require,module,exports){
+},{"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],135:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9150,7 +9522,7 @@ var timezonePatterns = {
   extendedOptionalSeconds: /^([+-])(\d{2}):(\d{2})(:(\d{2}))?|Z/
 };
 exports.timezonePatterns = timezonePatterns;
-},{}],131:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9223,7 +9595,7 @@ var AMPMMidnightParser = /*#__PURE__*/function (_Parser) {
   return AMPMMidnightParser;
 }(_Parser2.Parser);
 exports.AMPMMidnightParser = AMPMMidnightParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],132:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],137:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9296,7 +9668,7 @@ var AMPMParser = /*#__PURE__*/function (_Parser) {
   return AMPMParser;
 }(_Parser2.Parser);
 exports.AMPMParser = AMPMParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],133:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],138:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9369,7 +9741,7 @@ var DateParser = /*#__PURE__*/function (_Parser) {
   return DateParser;
 }(_Parser2.Parser);
 exports.DateParser = DateParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],134:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],139:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9438,7 +9810,7 @@ var DayOfYearParser = /*#__PURE__*/function (_Parser) {
   return DayOfYearParser;
 }(_Parser2.Parser);
 exports.DayOfYearParser = DayOfYearParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],135:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],140:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9536,7 +9908,7 @@ var DayParser = /*#__PURE__*/function (_Parser) {
   return DayParser;
 }(_Parser2.Parser);
 exports.DayParser = DayParser;
-},{"../../../_lib/setUTCDay/index.js":67,"../Parser.js":128,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],136:[function(require,module,exports){
+},{"../../../_lib/setUTCDay/index.js":72,"../Parser.js":133,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],141:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9610,7 +9982,7 @@ var DayPeriodParser = /*#__PURE__*/function (_Parser) {
   return DayPeriodParser;
 }(_Parser2.Parser);
 exports.DayPeriodParser = DayPeriodParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],137:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],142:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9681,7 +10053,7 @@ var EraParser = /*#__PURE__*/function (_Parser) {
   return EraParser;
 }(_Parser2.Parser);
 exports.EraParser = EraParser;
-},{"../Parser.js":128,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],138:[function(require,module,exports){
+},{"../Parser.js":133,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],143:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9730,7 +10102,7 @@ var ExtendedYearParser = /*#__PURE__*/function (_Parser) {
   return ExtendedYearParser;
 }(_Parser2.Parser);
 exports.ExtendedYearParser = ExtendedYearParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],139:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],144:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9778,7 +10150,7 @@ var FractionOfSecondParser = /*#__PURE__*/function (_Parser) {
   return FractionOfSecondParser;
 }(_Parser2.Parser);
 exports.FractionOfSecondParser = FractionOfSecondParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],140:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],145:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9843,7 +10215,7 @@ var Hour0To11Parser = /*#__PURE__*/function (_Parser) {
   return Hour0To11Parser;
 }(_Parser2.Parser);
 exports.Hour0To11Parser = Hour0To11Parser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],141:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],146:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9903,7 +10275,7 @@ var Hour0to23Parser = /*#__PURE__*/function (_Parser) {
   return Hour0to23Parser;
 }(_Parser2.Parser);
 exports.Hour0to23Parser = Hour0to23Parser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],142:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],147:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -9964,7 +10336,7 @@ var Hour1To24Parser = /*#__PURE__*/function (_Parser) {
   return Hour1To24Parser;
 }(_Parser2.Parser);
 exports.Hour1To24Parser = Hour1To24Parser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],143:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],148:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10031,7 +10403,7 @@ var Hour1to12Parser = /*#__PURE__*/function (_Parser) {
   return Hour1to12Parser;
 }(_Parser2.Parser);
 exports.Hour1to12Parser = Hour1to12Parser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],144:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],149:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10144,7 +10516,7 @@ var ISODayParser = /*#__PURE__*/function (_Parser) {
   return ISODayParser;
 }(_Parser2.Parser);
 exports.ISODayParser = ISODayParser;
-},{"../../../_lib/setUTCISODay/index.js":68,"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],145:[function(require,module,exports){
+},{"../../../_lib/setUTCISODay/index.js":73,"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],150:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10205,7 +10577,7 @@ var ISOTimezoneParser = /*#__PURE__*/function (_Parser) {
   return ISOTimezoneParser;
 }(_Parser2.Parser);
 exports.ISOTimezoneParser = ISOTimezoneParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],146:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],151:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10266,7 +10638,7 @@ var ISOTimezoneWithZParser = /*#__PURE__*/function (_Parser) {
   return ISOTimezoneWithZParser;
 }(_Parser2.Parser);
 exports.ISOTimezoneWithZParser = ISOTimezoneWithZParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],147:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],152:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10328,7 +10700,7 @@ var ISOWeekParser = /*#__PURE__*/function (_Parser) {
   return ISOWeekParser;
 }(_Parser2.Parser);
 exports.ISOWeekParser = ISOWeekParser;
-},{"../../../_lib/setUTCISOWeek/index.js":69,"../../../_lib/startOfUTCISOWeek/index.js":72,"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],148:[function(require,module,exports){
+},{"../../../_lib/setUTCISOWeek/index.js":74,"../../../_lib/startOfUTCISOWeek/index.js":77,"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],153:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10380,7 +10752,7 @@ var ISOWeekYearParser = /*#__PURE__*/function (_Parser) {
   return ISOWeekYearParser;
 }(_Parser2.Parser);
 exports.ISOWeekYearParser = ISOWeekYearParser;
-},{"../../../_lib/startOfUTCISOWeek/index.js":72,"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],149:[function(require,module,exports){
+},{"../../../_lib/startOfUTCISOWeek/index.js":77,"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],154:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10491,7 +10863,7 @@ var LocalDayParser = /*#__PURE__*/function (_Parser) {
   return LocalDayParser;
 }(_Parser2.Parser);
 exports.LocalDayParser = LocalDayParser;
-},{"../../../_lib/setUTCDay/index.js":67,"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],150:[function(require,module,exports){
+},{"../../../_lib/setUTCDay/index.js":72,"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],155:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10553,7 +10925,7 @@ var LocalWeekParser = /*#__PURE__*/function (_Parser) {
   return LocalWeekParser;
 }(_Parser2.Parser);
 exports.LocalWeekParser = LocalWeekParser;
-},{"../../../_lib/setUTCWeek/index.js":70,"../../../_lib/startOfUTCWeek/index.js":74,"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],151:[function(require,module,exports){
+},{"../../../_lib/setUTCWeek/index.js":75,"../../../_lib/startOfUTCWeek/index.js":79,"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],156:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10630,7 +11002,7 @@ var LocalWeekYearParser = /*#__PURE__*/function (_Parser) {
   return LocalWeekYearParser;
 }(_Parser2.Parser);
 exports.LocalWeekYearParser = LocalWeekYearParser;
-},{"../../../_lib/getUTCWeekYear/index.js":63,"../../../_lib/startOfUTCWeek/index.js":74,"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],152:[function(require,module,exports){
+},{"../../../_lib/getUTCWeekYear/index.js":68,"../../../_lib/startOfUTCWeek/index.js":79,"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],157:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10690,7 +11062,7 @@ var MinuteParser = /*#__PURE__*/function (_Parser) {
   return MinuteParser;
 }(_Parser2.Parser);
 exports.MinuteParser = MinuteParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],153:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],158:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10785,7 +11157,7 @@ var MonthParser = /*#__PURE__*/function (_Parser) {
   return MonthParser;
 }(_Parser2.Parser);
 exports.MonthParser = MonthParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],154:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],159:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10875,7 +11247,7 @@ var QuarterParser = /*#__PURE__*/function (_Parser) {
   return QuarterParser;
 }(_Parser2.Parser);
 exports.QuarterParser = QuarterParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],155:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],160:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -10935,7 +11307,7 @@ var SecondParser = /*#__PURE__*/function (_Parser) {
   return SecondParser;
 }(_Parser2.Parser);
 exports.SecondParser = SecondParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],156:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],161:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11046,7 +11418,7 @@ var StandAloneLocalDayParser = /*#__PURE__*/function (_Parser) {
   return StandAloneLocalDayParser;
 }(_Parser2.Parser);
 exports.StandAloneLocalDayParser = StandAloneLocalDayParser;
-},{"../../../_lib/setUTCDay/index.js":67,"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],157:[function(require,module,exports){
+},{"../../../_lib/setUTCDay/index.js":72,"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],162:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11141,7 +11513,7 @@ var StandAloneMonthParser = /*#__PURE__*/function (_Parser) {
   return StandAloneMonthParser;
 }(_Parser2.Parser);
 exports.StandAloneMonthParser = StandAloneMonthParser;
-},{"../Parser.js":128,"../constants.js":130,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],158:[function(require,module,exports){
+},{"../Parser.js":133,"../constants.js":135,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],163:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11231,7 +11603,7 @@ var StandAloneQuarterParser = /*#__PURE__*/function (_Parser) {
   return StandAloneQuarterParser;
 }(_Parser2.Parser);
 exports.StandAloneQuarterParser = StandAloneQuarterParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],159:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],164:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11277,7 +11649,7 @@ var TimestampMillisecondsParser = /*#__PURE__*/function (_Parser) {
   return TimestampMillisecondsParser;
 }(_Parser2.Parser);
 exports.TimestampMillisecondsParser = TimestampMillisecondsParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],160:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],165:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11323,7 +11695,7 @@ var TimestampSecondsParser = /*#__PURE__*/function (_Parser) {
   return TimestampSecondsParser;
 }(_Parser2.Parser);
 exports.TimestampSecondsParser = TimestampSecondsParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],161:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],166:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -11405,7 +11777,7 @@ var YearParser = /*#__PURE__*/function (_Parser) {
   return YearParser;
 }(_Parser2.Parser);
 exports.YearParser = YearParser;
-},{"../Parser.js":128,"../utils.js":163,"@babel/runtime/helpers/assertThisInitialized":27,"@babel/runtime/helpers/classCallCheck":28,"@babel/runtime/helpers/createClass":29,"@babel/runtime/helpers/createSuper":31,"@babel/runtime/helpers/defineProperty":32,"@babel/runtime/helpers/inherits":34,"@babel/runtime/helpers/interopRequireDefault":35}],162:[function(require,module,exports){
+},{"../Parser.js":133,"../utils.js":168,"@babel/runtime/helpers/assertThisInitialized":32,"@babel/runtime/helpers/classCallCheck":33,"@babel/runtime/helpers/createClass":34,"@babel/runtime/helpers/createSuper":36,"@babel/runtime/helpers/defineProperty":37,"@babel/runtime/helpers/inherits":39,"@babel/runtime/helpers/interopRequireDefault":40}],167:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11520,7 +11892,7 @@ var parsers = {
   T: new _TimestampMillisecondsParser.TimestampMillisecondsParser()
 };
 exports.parsers = parsers;
-},{"./AMPMMidnightParser.js":131,"./AMPMParser.js":132,"./DateParser.js":133,"./DayOfYearParser.js":134,"./DayParser.js":135,"./DayPeriodParser.js":136,"./EraParser.js":137,"./ExtendedYearParser.js":138,"./FractionOfSecondParser.js":139,"./Hour0To11Parser.js":140,"./Hour0to23Parser.js":141,"./Hour1To24Parser.js":142,"./Hour1to12Parser.js":143,"./ISODayParser.js":144,"./ISOTimezoneParser.js":145,"./ISOTimezoneWithZParser.js":146,"./ISOWeekParser.js":147,"./ISOWeekYearParser.js":148,"./LocalDayParser.js":149,"./LocalWeekParser.js":150,"./LocalWeekYearParser.js":151,"./MinuteParser.js":152,"./MonthParser.js":153,"./QuarterParser.js":154,"./SecondParser.js":155,"./StandAloneLocalDayParser.js":156,"./StandAloneMonthParser.js":157,"./StandAloneQuarterParser.js":158,"./TimestampMillisecondsParser.js":159,"./TimestampSecondsParser.js":160,"./YearParser.js":161}],163:[function(require,module,exports){
+},{"./AMPMMidnightParser.js":136,"./AMPMParser.js":137,"./DateParser.js":138,"./DayOfYearParser.js":139,"./DayParser.js":140,"./DayPeriodParser.js":141,"./EraParser.js":142,"./ExtendedYearParser.js":143,"./FractionOfSecondParser.js":144,"./Hour0To11Parser.js":145,"./Hour0to23Parser.js":146,"./Hour1To24Parser.js":147,"./Hour1to12Parser.js":148,"./ISODayParser.js":149,"./ISOTimezoneParser.js":150,"./ISOTimezoneWithZParser.js":151,"./ISOWeekParser.js":152,"./ISOWeekYearParser.js":153,"./LocalDayParser.js":154,"./LocalWeekParser.js":155,"./LocalWeekYearParser.js":156,"./MinuteParser.js":157,"./MonthParser.js":158,"./QuarterParser.js":159,"./SecondParser.js":160,"./StandAloneLocalDayParser.js":161,"./StandAloneMonthParser.js":162,"./StandAloneQuarterParser.js":163,"./TimestampMillisecondsParser.js":164,"./TimestampSecondsParser.js":165,"./YearParser.js":166}],168:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11647,7 +12019,7 @@ function normalizeTwoDigitYear(twoDigitYear, currentYear) {
 function isLeapYearIndex(year) {
   return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
 }
-},{"../../constants/index.js":84,"./constants.js":130}],164:[function(require,module,exports){
+},{"../../constants/index.js":89,"./constants.js":135}],169:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12162,7 +12534,7 @@ function cleanEscapedString(input) {
   return input.match(escapedStringRegExp)[1].replace(doubleQuoteRegExp, "'");
 }
 module.exports = exports.default;
-},{"../_lib/assign/index.js":53,"../_lib/defaultLocale/index.js":54,"../_lib/defaultOptions/index.js":55,"../_lib/format/longFormatters/index.js":58,"../_lib/getTimezoneOffsetInMilliseconds/index.js":59,"../_lib/protectedTokens/index.js":65,"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../subMilliseconds/index.js":180,"../toDate/index.js":185,"./_lib/Setter.js":129,"./_lib/parsers/index.js":162,"@babel/runtime/helpers/createForOfIteratorHelper":30,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],165:[function(require,module,exports){
+},{"../_lib/assign/index.js":58,"../_lib/defaultLocale/index.js":59,"../_lib/defaultOptions/index.js":60,"../_lib/format/longFormatters/index.js":63,"../_lib/getTimezoneOffsetInMilliseconds/index.js":64,"../_lib/protectedTokens/index.js":70,"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../subMilliseconds/index.js":185,"../toDate/index.js":190,"./_lib/Setter.js":134,"./_lib/parsers/index.js":167,"@babel/runtime/helpers/createForOfIteratorHelper":35,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],170:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12199,7 +12571,7 @@ function setHours(dirtyDate, dirtyHours) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],166:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],171:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12236,7 +12608,7 @@ function setMinutes(dirtyDate, dirtyMinutes) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],167:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],172:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12282,7 +12654,7 @@ function setMonth(dirtyDate, dirtyMonth) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../getDaysInMonth/index.js":95,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],168:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../getDaysInMonth/index.js":100,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],173:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12321,7 +12693,7 @@ function setQuarter(dirtyDate, dirtyQuarter) {
   return (0, _index3.default)(date, date.getMonth() + diff * 3);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../setMonth/index.js":167,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],169:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../setMonth/index.js":172,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],174:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12358,7 +12730,7 @@ function setSeconds(dirtyDate, dirtySeconds) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],170:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],175:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12400,7 +12772,7 @@ function setYear(dirtyDate, dirtyYear) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],171:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],176:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12486,7 +12858,7 @@ function set(dirtyDate, values) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../setMonth/index.js":167,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],172:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../setMonth/index.js":172,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],177:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12521,7 +12893,7 @@ function startOfDay(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],173:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],178:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12563,7 +12935,7 @@ function startOfISOWeekYear(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../getISOWeekYear/index.js":97,"../startOfISOWeek/index.js":174,"@babel/runtime/helpers/interopRequireDefault":35}],174:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../getISOWeekYear/index.js":102,"../startOfISOWeek/index.js":179,"@babel/runtime/helpers/interopRequireDefault":40}],179:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12600,7 +12972,7 @@ function startOfISOWeek(dirtyDate) {
   });
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../startOfWeek/index.js":177,"@babel/runtime/helpers/interopRequireDefault":35}],175:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../startOfWeek/index.js":182,"@babel/runtime/helpers/interopRequireDefault":40}],180:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12636,7 +13008,7 @@ function startOfMonth(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],176:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],181:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12674,7 +13046,7 @@ function startOfQuarter(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],177:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],182:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12731,7 +13103,7 @@ function startOfWeek(dirtyDate, options) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/defaultOptions/index.js":55,"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],178:[function(require,module,exports){
+},{"../_lib/defaultOptions/index.js":60,"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],183:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12768,7 +13140,7 @@ function startOfYear(dirtyDate) {
   return date;
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../toDate/index.js":185,"@babel/runtime/helpers/interopRequireDefault":35}],179:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../toDate/index.js":190,"@babel/runtime/helpers/interopRequireDefault":40}],184:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12803,7 +13175,7 @@ function subDays(dirtyDate, dirtyAmount) {
   return (0, _index.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addDays/index.js":76,"@babel/runtime/helpers/interopRequireDefault":35}],180:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addDays/index.js":81,"@babel/runtime/helpers/interopRequireDefault":40}],185:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12838,7 +13210,7 @@ function subMilliseconds(dirtyDate, dirtyAmount) {
   return (0, _index.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMilliseconds/index.js":78,"@babel/runtime/helpers/interopRequireDefault":35}],181:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMilliseconds/index.js":83,"@babel/runtime/helpers/interopRequireDefault":40}],186:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12873,7 +13245,7 @@ function subMonths(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addMonths/index.js":80,"@babel/runtime/helpers/interopRequireDefault":35}],182:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addMonths/index.js":85,"@babel/runtime/helpers/interopRequireDefault":40}],187:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12908,7 +13280,7 @@ function subQuarters(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addQuarters/index.js":81,"@babel/runtime/helpers/interopRequireDefault":35}],183:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addQuarters/index.js":86,"@babel/runtime/helpers/interopRequireDefault":40}],188:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12943,7 +13315,7 @@ function subWeeks(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addWeeks/index.js":82,"@babel/runtime/helpers/interopRequireDefault":35}],184:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addWeeks/index.js":87,"@babel/runtime/helpers/interopRequireDefault":40}],189:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -12978,7 +13350,7 @@ function subYears(dirtyDate, dirtyAmount) {
   return (0, _index2.default)(dirtyDate, -amount);
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"../_lib/toInteger/index.js":75,"../addYears/index.js":83,"@babel/runtime/helpers/interopRequireDefault":35}],185:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"../_lib/toInteger/index.js":80,"../addYears/index.js":88,"@babel/runtime/helpers/interopRequireDefault":40}],190:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault").default;
@@ -13039,7 +13411,7 @@ function toDate(argument) {
   }
 }
 module.exports = exports.default;
-},{"../_lib/requiredArgs/index.js":66,"@babel/runtime/helpers/interopRequireDefault":35,"@babel/runtime/helpers/typeof":44}],186:[function(require,module,exports){
+},{"../_lib/requiredArgs/index.js":71,"@babel/runtime/helpers/interopRequireDefault":40,"@babel/runtime/helpers/typeof":49}],191:[function(require,module,exports){
 'use strict';
 
 var hasPropertyDescriptors = require('has-property-descriptors')();
@@ -13101,7 +13473,7 @@ module.exports = function defineDataProperty(
 	}
 };
 
-},{"get-intrinsic":247,"gopd":248,"has-property-descriptors":249}],187:[function(require,module,exports){
+},{"get-intrinsic":252,"gopd":253,"has-property-descriptors":254}],192:[function(require,module,exports){
 'use strict';
 
 var keys = require('object-keys');
@@ -13150,7 +13522,7 @@ defineProperties.supportsDescriptors = !!supportsDescriptors;
 
 module.exports = defineProperties;
 
-},{"define-data-property":186,"has-property-descriptors":249,"object-keys":264}],188:[function(require,module,exports){
+},{"define-data-property":191,"has-property-descriptors":254,"object-keys":269}],193:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13186,7 +13558,7 @@ module.exports = function AdvanceStringIndex(S, index, unicode) {
 	return index + cp['[[CodeUnitCount]]'];
 };
 
-},{"../helpers/isInteger":233,"../helpers/maxSafeInteger":240,"./CodePointAt":190,"./Type":220,"get-intrinsic":247}],189:[function(require,module,exports){
+},{"../helpers/isInteger":238,"../helpers/maxSafeInteger":245,"./CodePointAt":195,"./Type":225,"get-intrinsic":252}],194:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13208,7 +13580,7 @@ module.exports = function Call(F, V) {
 	return $apply(F, V, argumentsList);
 };
 
-},{"./IsArray":200,"call-bind/callBound":48,"get-intrinsic":247}],190:[function(require,module,exports){
+},{"./IsArray":205,"call-bind/callBound":53,"get-intrinsic":252}],195:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13268,7 +13640,7 @@ module.exports = function CodePointAt(string, position) {
 	};
 };
 
-},{"../helpers/isLeadingSurrogate":234,"../helpers/isTrailingSurrogate":239,"./Type":220,"./UTF16SurrogatePairToCodePoint":221,"call-bind/callBound":48,"get-intrinsic":247}],191:[function(require,module,exports){
+},{"../helpers/isLeadingSurrogate":239,"../helpers/isTrailingSurrogate":244,"./Type":225,"./UTF16SurrogatePairToCodePoint":226,"call-bind/callBound":53,"get-intrinsic":252}],196:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13289,7 +13661,7 @@ module.exports = function CreateIterResultObject(value, done) {
 	};
 };
 
-},{"./Type":220,"get-intrinsic":247}],192:[function(require,module,exports){
+},{"./Type":225,"get-intrinsic":252}],197:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13331,7 +13703,7 @@ module.exports = function CreateMethodProperty(O, P, V) {
 	);
 };
 
-},{"../helpers/DefineOwnProperty":227,"./FromPropertyDescriptor":195,"./IsDataDescriptor":203,"./IsPropertyKey":204,"./SameValue":209,"./Type":220,"get-intrinsic":247}],193:[function(require,module,exports){
+},{"../helpers/DefineOwnProperty":232,"./FromPropertyDescriptor":200,"./IsDataDescriptor":208,"./IsPropertyKey":209,"./SameValue":214,"./Type":225,"get-intrinsic":252}],198:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13433,7 +13805,7 @@ module.exports = function CreateRegExpStringIterator(R, S, global, fullUnicode) 
 	return new RegExpStringIterator(R, S, global, fullUnicode);
 };
 
-},{"./AdvanceStringIndex":188,"./CreateIterResultObject":191,"./CreateMethodProperty":192,"./Get":196,"./OrdinaryObjectCreate":206,"./RegExpExec":207,"./Set":210,"./ToLength":215,"./ToString":219,"./Type":220,"es-set-tostringtag":241,"get-intrinsic":247,"has-symbols":251,"internal-slot":256}],194:[function(require,module,exports){
+},{"./AdvanceStringIndex":193,"./CreateIterResultObject":196,"./CreateMethodProperty":197,"./Get":201,"./OrdinaryObjectCreate":211,"./RegExpExec":212,"./Set":215,"./ToLength":220,"./ToString":224,"./Type":225,"es-set-tostringtag":246,"get-intrinsic":252,"has-symbols":256,"internal-slot":261}],199:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13485,7 +13857,7 @@ module.exports = function DefinePropertyOrThrow(O, P, desc) {
 	);
 };
 
-},{"../helpers/DefineOwnProperty":227,"../helpers/isPropertyDescriptor":238,"./FromPropertyDescriptor":195,"./IsAccessorDescriptor":199,"./IsDataDescriptor":203,"./IsPropertyKey":204,"./SameValue":209,"./ToPropertyDescriptor":218,"./Type":220,"get-intrinsic":247}],195:[function(require,module,exports){
+},{"../helpers/DefineOwnProperty":232,"../helpers/isPropertyDescriptor":243,"./FromPropertyDescriptor":200,"./IsAccessorDescriptor":204,"./IsDataDescriptor":208,"./IsPropertyKey":209,"./SameValue":214,"./ToPropertyDescriptor":223,"./Type":225,"get-intrinsic":252}],200:[function(require,module,exports){
 'use strict';
 
 var assertRecord = require('../helpers/assertRecord');
@@ -13503,7 +13875,7 @@ module.exports = function FromPropertyDescriptor(Desc) {
 	return fromPropertyDescriptor(Desc);
 };
 
-},{"../helpers/assertRecord":229,"../helpers/fromPropertyDescriptor":231,"./Type":220}],196:[function(require,module,exports){
+},{"../helpers/assertRecord":234,"../helpers/fromPropertyDescriptor":236,"./Type":225}],201:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13530,7 +13902,7 @@ module.exports = function Get(O, P) {
 	return O[P];
 };
 
-},{"./IsPropertyKey":204,"./Type":220,"get-intrinsic":247,"object-inspect":262}],197:[function(require,module,exports){
+},{"./IsPropertyKey":209,"./Type":225,"get-intrinsic":252,"object-inspect":267}],202:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13568,7 +13940,7 @@ module.exports = function GetMethod(O, P) {
 	return func;
 };
 
-},{"./GetV":198,"./IsCallable":201,"./IsPropertyKey":204,"get-intrinsic":247,"object-inspect":262}],198:[function(require,module,exports){
+},{"./GetV":203,"./IsCallable":206,"./IsPropertyKey":209,"get-intrinsic":252,"object-inspect":267}],203:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13595,7 +13967,7 @@ module.exports = function GetV(V, P) {
 	return V[P];
 };
 
-},{"./IsPropertyKey":204,"get-intrinsic":247,"object-inspect":262}],199:[function(require,module,exports){
+},{"./IsPropertyKey":209,"get-intrinsic":252,"object-inspect":267}],204:[function(require,module,exports){
 'use strict';
 
 var has = require('has');
@@ -13620,20 +13992,20 @@ module.exports = function IsAccessorDescriptor(Desc) {
 	return true;
 };
 
-},{"../helpers/assertRecord":229,"./Type":220,"has":254}],200:[function(require,module,exports){
+},{"../helpers/assertRecord":234,"./Type":225,"has":259}],205:[function(require,module,exports){
 'use strict';
 
 // https://262.ecma-international.org/6.0/#sec-isarray
 module.exports = require('../helpers/IsArray');
 
-},{"../helpers/IsArray":228}],201:[function(require,module,exports){
+},{"../helpers/IsArray":233}],206:[function(require,module,exports){
 'use strict';
 
 // http://262.ecma-international.org/5.1/#sec-9.11
 
 module.exports = require('is-callable');
 
-},{"is-callable":257}],202:[function(require,module,exports){
+},{"is-callable":262}],207:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('../GetIntrinsic.js');
@@ -13675,7 +14047,7 @@ if (DefinePropertyOrThrow && $construct) {
 	};
 }
 
-},{"../GetIntrinsic.js":226,"./DefinePropertyOrThrow":194}],203:[function(require,module,exports){
+},{"../GetIntrinsic.js":231,"./DefinePropertyOrThrow":199}],208:[function(require,module,exports){
 'use strict';
 
 var has = require('has');
@@ -13700,7 +14072,7 @@ module.exports = function IsDataDescriptor(Desc) {
 	return true;
 };
 
-},{"../helpers/assertRecord":229,"./Type":220,"has":254}],204:[function(require,module,exports){
+},{"../helpers/assertRecord":234,"./Type":225,"has":259}],209:[function(require,module,exports){
 'use strict';
 
 // https://262.ecma-international.org/6.0/#sec-ispropertykey
@@ -13709,7 +14081,7 @@ module.exports = function IsPropertyKey(argument) {
 	return typeof argument === 'string' || typeof argument === 'symbol';
 };
 
-},{}],205:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13735,7 +14107,7 @@ module.exports = function IsRegExp(argument) {
 	return hasRegExpMatcher(argument);
 };
 
-},{"./ToBoolean":213,"get-intrinsic":247,"is-regex":259}],206:[function(require,module,exports){
+},{"./ToBoolean":218,"get-intrinsic":252,"is-regex":264}],211:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13793,7 +14165,7 @@ module.exports = function OrdinaryObjectCreate(proto) {
 	return O;
 };
 
-},{"../helpers/forEach":230,"./IsArray":200,"./Type":220,"get-intrinsic":247,"has-proto":250,"internal-slot":256}],207:[function(require,module,exports){
+},{"../helpers/forEach":235,"./IsArray":205,"./Type":225,"get-intrinsic":252,"has-proto":255,"internal-slot":261}],212:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13827,12 +14199,12 @@ module.exports = function RegExpExec(R, S) {
 	return regexExec(R, S);
 };
 
-},{"./Call":189,"./Get":196,"./IsCallable":201,"./Type":220,"call-bind/callBound":48,"get-intrinsic":247}],208:[function(require,module,exports){
+},{"./Call":194,"./Get":201,"./IsCallable":206,"./Type":225,"call-bind/callBound":53,"get-intrinsic":252}],213:[function(require,module,exports){
 'use strict';
 
 module.exports = require('../5/CheckObjectCoercible');
 
-},{"../5/CheckObjectCoercible":224}],209:[function(require,module,exports){
+},{"../5/CheckObjectCoercible":229}],214:[function(require,module,exports){
 'use strict';
 
 var $isNaN = require('../helpers/isNaN');
@@ -13847,7 +14219,7 @@ module.exports = function SameValue(x, y) {
 	return $isNaN(x) && $isNaN(y);
 };
 
-},{"../helpers/isNaN":236}],210:[function(require,module,exports){
+},{"../helpers/isNaN":241}],215:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13896,7 +14268,7 @@ module.exports = function Set(O, P, V, Throw) {
 
 };
 
-},{"./IsPropertyKey":204,"./SameValue":209,"./Type":220,"get-intrinsic":247}],211:[function(require,module,exports){
+},{"./IsPropertyKey":209,"./SameValue":214,"./Type":225,"get-intrinsic":252}],216:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13930,7 +14302,7 @@ module.exports = function SpeciesConstructor(O, defaultConstructor) {
 	throw new $TypeError('no constructor found');
 };
 
-},{"./IsConstructor":202,"./Type":220,"get-intrinsic":247}],212:[function(require,module,exports){
+},{"./IsConstructor":207,"./Type":225,"get-intrinsic":252}],217:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -13977,14 +14349,14 @@ module.exports = function StringToNumber(argument) {
 	return $Number(argument);
 };
 
-},{"./Type":220,"call-bind/callBound":48,"get-intrinsic":247,"safe-regex-test":297,"string.prototype.trim":307}],213:[function(require,module,exports){
+},{"./Type":225,"call-bind/callBound":53,"get-intrinsic":252,"safe-regex-test":309,"string.prototype.trim":319}],218:[function(require,module,exports){
 'use strict';
 
 // http://262.ecma-international.org/5.1/#sec-9.2
 
 module.exports = function ToBoolean(value) { return !!value; };
 
-},{}],214:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 'use strict';
 
 var ToNumber = require('./ToNumber');
@@ -14002,7 +14374,7 @@ module.exports = function ToIntegerOrInfinity(value) {
 	return truncate(number);
 };
 
-},{"../helpers/isFinite":232,"../helpers/isNaN":236,"./ToNumber":216,"./truncate":223}],215:[function(require,module,exports){
+},{"../helpers/isFinite":237,"../helpers/isNaN":241,"./ToNumber":221,"./truncate":228}],220:[function(require,module,exports){
 'use strict';
 
 var MAX_SAFE_INTEGER = require('../helpers/maxSafeInteger');
@@ -14016,7 +14388,7 @@ module.exports = function ToLength(argument) {
 	return len;
 };
 
-},{"../helpers/maxSafeInteger":240,"./ToIntegerOrInfinity":214}],216:[function(require,module,exports){
+},{"../helpers/maxSafeInteger":245,"./ToIntegerOrInfinity":219}],221:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14044,7 +14416,7 @@ module.exports = function ToNumber(argument) {
 	return $Number(value);
 };
 
-},{"../helpers/isPrimitive":237,"./StringToNumber":212,"./ToPrimitive":217,"get-intrinsic":247}],217:[function(require,module,exports){
+},{"../helpers/isPrimitive":242,"./StringToNumber":217,"./ToPrimitive":222,"get-intrinsic":252}],222:[function(require,module,exports){
 'use strict';
 
 var toPrimitive = require('es-to-primitive/es2015');
@@ -14058,7 +14430,7 @@ module.exports = function ToPrimitive(input) {
 	return toPrimitive(input);
 };
 
-},{"es-to-primitive/es2015":242}],218:[function(require,module,exports){
+},{"es-to-primitive/es2015":247}],223:[function(require,module,exports){
 'use strict';
 
 var has = require('has');
@@ -14112,7 +14484,7 @@ module.exports = function ToPropertyDescriptor(Obj) {
 	return desc;
 };
 
-},{"./IsCallable":201,"./ToBoolean":213,"./Type":220,"get-intrinsic":247,"has":254}],219:[function(require,module,exports){
+},{"./IsCallable":206,"./ToBoolean":218,"./Type":225,"get-intrinsic":252,"has":259}],224:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14129,7 +14501,7 @@ module.exports = function ToString(argument) {
 	return $String(argument);
 };
 
-},{"get-intrinsic":247}],220:[function(require,module,exports){
+},{"get-intrinsic":252}],225:[function(require,module,exports){
 'use strict';
 
 var ES5Type = require('../5/Type');
@@ -14146,7 +14518,7 @@ module.exports = function Type(x) {
 	return ES5Type(x);
 };
 
-},{"../5/Type":225}],221:[function(require,module,exports){
+},{"../5/Type":230}],226:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14167,7 +14539,7 @@ module.exports = function UTF16SurrogatePairToCodePoint(lead, trail) {
 	return $fromCharCode(lead) + $fromCharCode(trail);
 };
 
-},{"../helpers/isLeadingSurrogate":234,"../helpers/isTrailingSurrogate":239,"get-intrinsic":247}],222:[function(require,module,exports){
+},{"../helpers/isLeadingSurrogate":239,"../helpers/isTrailingSurrogate":244,"get-intrinsic":252}],227:[function(require,module,exports){
 'use strict';
 
 var Type = require('./Type');
@@ -14185,7 +14557,7 @@ module.exports = function floor(x) {
 	return $floor(x);
 };
 
-},{"./Type":220}],223:[function(require,module,exports){
+},{"./Type":225}],228:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14204,7 +14576,7 @@ module.exports = function truncate(x) {
 	return result === 0 ? 0 : result; // in the spec, these are math values, so we filter out -0 here
 };
 
-},{"./floor":222,"get-intrinsic":247}],224:[function(require,module,exports){
+},{"./floor":227,"get-intrinsic":252}],229:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14220,7 +14592,7 @@ module.exports = function CheckObjectCoercible(value, optMessage) {
 	return value;
 };
 
-},{"get-intrinsic":247}],225:[function(require,module,exports){
+},{"get-intrinsic":252}],230:[function(require,module,exports){
 'use strict';
 
 // https://262.ecma-international.org/5.1/#sec-8
@@ -14246,14 +14618,14 @@ module.exports = function Type(x) {
 	}
 };
 
-},{}],226:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 'use strict';
 
 // TODO: remove, semver-major
 
 module.exports = require('get-intrinsic');
 
-},{"get-intrinsic":247}],227:[function(require,module,exports){
+},{"get-intrinsic":252}],232:[function(require,module,exports){
 'use strict';
 
 var hasPropertyDescriptors = require('has-property-descriptors');
@@ -14310,7 +14682,7 @@ module.exports = function DefineOwnProperty(IsDataDescriptor, SameValue, FromPro
 	return true;
 };
 
-},{"../helpers/IsArray":228,"call-bind/callBound":48,"get-intrinsic":247,"has-property-descriptors":249}],228:[function(require,module,exports){
+},{"../helpers/IsArray":233,"call-bind/callBound":53,"get-intrinsic":252,"has-property-descriptors":254}],233:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14324,7 +14696,7 @@ module.exports = $Array.isArray || function IsArray(argument) {
 	return toStr(argument) === '[object Array]';
 };
 
-},{"call-bind/callBound":48,"get-intrinsic":247}],229:[function(require,module,exports){
+},{"call-bind/callBound":53,"get-intrinsic":252}],234:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14413,7 +14785,7 @@ module.exports = function assertRecord(Type, recordType, argumentName, value) {
 	}
 };
 
-},{"./isInteger":233,"./isMatchRecord":235,"get-intrinsic":247,"has":254}],230:[function(require,module,exports){
+},{"./isInteger":238,"./isMatchRecord":240,"get-intrinsic":252,"has":259}],235:[function(require,module,exports){
 'use strict';
 
 module.exports = function forEach(array, callback) {
@@ -14422,7 +14794,7 @@ module.exports = function forEach(array, callback) {
 	}
 };
 
-},{}],231:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 'use strict';
 
 module.exports = function fromPropertyDescriptor(Desc) {
@@ -14451,14 +14823,14 @@ module.exports = function fromPropertyDescriptor(Desc) {
 	return obj;
 };
 
-},{}],232:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 'use strict';
 
 var $isNaN = require('./isNaN');
 
 module.exports = function (x) { return (typeof x === 'number' || typeof x === 'bigint') && !$isNaN(x) && x !== Infinity && x !== -Infinity; };
 
-},{"./isNaN":236}],233:[function(require,module,exports){
+},{"./isNaN":241}],238:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14478,14 +14850,14 @@ module.exports = function isInteger(argument) {
 };
 
 
-},{"./isFinite":232,"./isNaN":236,"get-intrinsic":247}],234:[function(require,module,exports){
+},{"./isFinite":237,"./isNaN":241,"get-intrinsic":252}],239:[function(require,module,exports){
 'use strict';
 
 module.exports = function isLeadingSurrogate(charCode) {
 	return typeof charCode === 'number' && charCode >= 0xD800 && charCode <= 0xDBFF;
 };
 
-},{}],235:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 'use strict';
 
 var has = require('has');
@@ -14503,21 +14875,21 @@ module.exports = function isMatchRecord(record) {
 	);
 };
 
-},{"has":254}],236:[function(require,module,exports){
+},{"has":259}],241:[function(require,module,exports){
 'use strict';
 
 module.exports = Number.isNaN || function isNaN(a) {
 	return a !== a;
 };
 
-},{}],237:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 'use strict';
 
 module.exports = function isPrimitive(value) {
 	return value === null || (typeof value !== 'function' && typeof value !== 'object');
 };
 
-},{}],238:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14550,19 +14922,19 @@ module.exports = function IsPropertyDescriptor(ES, Desc) {
 	return true;
 };
 
-},{"get-intrinsic":247,"has":254}],239:[function(require,module,exports){
+},{"get-intrinsic":252,"has":259}],244:[function(require,module,exports){
 'use strict';
 
 module.exports = function isTrailingSurrogate(charCode) {
 	return typeof charCode === 'number' && charCode >= 0xDC00 && charCode <= 0xDFFF;
 };
 
-},{}],240:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 'use strict';
 
 module.exports = Number.MAX_SAFE_INTEGER || 9007199254740991; // Math.pow(2, 53) - 1;
 
-},{}],241:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -14590,7 +14962,7 @@ module.exports = function setToStringTag(object, value) {
 	}
 };
 
-},{"get-intrinsic":247,"has":254,"has-tostringtag/shams":253}],242:[function(require,module,exports){
+},{"get-intrinsic":252,"has":259,"has-tostringtag/shams":258}],247:[function(require,module,exports){
 'use strict';
 
 var hasSymbols = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol';
@@ -14667,9 +15039,9 @@ module.exports = function ToPrimitive(input) {
 	return ordinaryToPrimitive(input, hint === 'default' ? 'number' : hint);
 };
 
-},{"./helpers/isPrimitive":243,"is-callable":257,"is-date-object":258,"is-symbol":260}],243:[function(require,module,exports){
-arguments[4][237][0].apply(exports,arguments)
-},{"dup":237}],244:[function(require,module,exports){
+},{"./helpers/isPrimitive":248,"is-callable":262,"is-date-object":263,"is-symbol":265}],248:[function(require,module,exports){
+arguments[4][242][0].apply(exports,arguments)
+},{"dup":242}],249:[function(require,module,exports){
 'use strict';
 
 /* eslint no-invalid-this: 1 */
@@ -14723,14 +15095,14 @@ module.exports = function bind(that) {
     return bound;
 };
 
-},{}],245:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
 
 module.exports = Function.prototype.bind || implementation;
 
-},{"./implementation":244}],246:[function(require,module,exports){
+},{"./implementation":249}],251:[function(require,module,exports){
 'use strict';
 
 var functionsHaveNames = function functionsHaveNames() {
@@ -14763,7 +15135,7 @@ functionsHaveNames.boundFunctionsHaveNames = function boundFunctionsHaveNames() 
 
 module.exports = functionsHaveNames;
 
-},{}],247:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 'use strict';
 
 var undefined;
@@ -15116,7 +15488,7 @@ module.exports = function GetIntrinsic(name, allowMissing) {
 	return value;
 };
 
-},{"function-bind":245,"has":254,"has-proto":250,"has-symbols":251}],248:[function(require,module,exports){
+},{"function-bind":250,"has":259,"has-proto":255,"has-symbols":256}],253:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -15134,7 +15506,7 @@ if ($gOPD) {
 
 module.exports = $gOPD;
 
-},{"get-intrinsic":247}],249:[function(require,module,exports){
+},{"get-intrinsic":252}],254:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -15169,7 +15541,7 @@ hasPropertyDescriptors.hasArrayLengthDefineBug = function hasArrayLengthDefineBu
 
 module.exports = hasPropertyDescriptors;
 
-},{"get-intrinsic":247}],250:[function(require,module,exports){
+},{"get-intrinsic":252}],255:[function(require,module,exports){
 'use strict';
 
 var test = {
@@ -15182,7 +15554,7 @@ module.exports = function hasProto() {
 	return { __proto__: test }.foo === test.foo && !({ __proto__: null } instanceof $Object);
 };
 
-},{}],251:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 'use strict';
 
 var origSymbol = typeof Symbol !== 'undefined' && Symbol;
@@ -15197,7 +15569,7 @@ module.exports = function hasNativeSymbols() {
 	return hasSymbolSham();
 };
 
-},{"./shams":252}],252:[function(require,module,exports){
+},{"./shams":257}],257:[function(require,module,exports){
 'use strict';
 
 /* eslint complexity: [2, 18], max-statements: [2, 33] */
@@ -15241,7 +15613,7 @@ module.exports = function hasSymbols() {
 	return true;
 };
 
-},{}],253:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 'use strict';
 
 var hasSymbols = require('has-symbols/shams');
@@ -15250,14 +15622,14 @@ module.exports = function hasToStringTagShams() {
 	return hasSymbols() && !!Symbol.toStringTag;
 };
 
-},{"has-symbols/shams":252}],254:[function(require,module,exports){
+},{"has-symbols/shams":257}],259:[function(require,module,exports){
 'use strict';
 
 var bind = require('function-bind');
 
 module.exports = bind.call(Function.call, Object.prototype.hasOwnProperty);
 
-},{"function-bind":245}],255:[function(require,module,exports){
+},{"function-bind":250}],260:[function(require,module,exports){
 'use strict';
 
 var reactIs = require('react-is');
@@ -15362,7 +15734,7 @@ function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
 
 module.exports = hoistNonReactStatics;
 
-},{"react-is":285}],256:[function(require,module,exports){
+},{"react-is":290}],261:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -15426,7 +15798,7 @@ if (Object.freeze) {
 
 module.exports = SLOT;
 
-},{"get-intrinsic":247,"has":254,"side-channel":299}],257:[function(require,module,exports){
+},{"get-intrinsic":252,"has":259,"side-channel":311}],262:[function(require,module,exports){
 'use strict';
 
 var fnToStr = Function.prototype.toString;
@@ -15529,7 +15901,7 @@ module.exports = reflectApply
 		return tryFunctionObject(value);
 	};
 
-},{}],258:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 'use strict';
 
 var getDay = Date.prototype.getDay;
@@ -15553,7 +15925,7 @@ module.exports = function isDateObject(value) {
 	return hasToStringTag ? tryDateObject(value) : toStr.call(value) === dateClass;
 };
 
-},{"has-tostringtag/shams":253}],259:[function(require,module,exports){
+},{"has-tostringtag/shams":258}],264:[function(require,module,exports){
 'use strict';
 
 var callBound = require('call-bind/callBound');
@@ -15613,7 +15985,7 @@ module.exports = hasToStringTag
 		return $toString(value) === regexClass;
 	};
 
-},{"call-bind/callBound":48,"has-tostringtag/shams":253}],260:[function(require,module,exports){
+},{"call-bind/callBound":53,"has-tostringtag/shams":258}],265:[function(require,module,exports){
 'use strict';
 
 var toStr = Object.prototype.toString;
@@ -15650,7 +16022,7 @@ if (hasSymbols) {
 	};
 }
 
-},{"has-symbols":251}],261:[function(require,module,exports){
+},{"has-symbols":256}],266:[function(require,module,exports){
 //! moment.js
 //! version : 2.29.4
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -21337,7 +21709,7 @@ if (hasSymbols) {
 
 })));
 
-},{}],262:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 var hasMap = typeof Map === 'function' && Map.prototype;
 var mapSizeDescriptor = Object.getOwnPropertyDescriptor && hasMap ? Object.getOwnPropertyDescriptor(Map.prototype, 'size') : null;
 var mapSize = hasMap && mapSizeDescriptor && typeof mapSizeDescriptor.get === 'function' ? mapSizeDescriptor.get : null;
@@ -21855,7 +22227,7 @@ function arrObjKeys(obj, inspect) {
     return xs;
 }
 
-},{"./util.inspect":47}],263:[function(require,module,exports){
+},{"./util.inspect":52}],268:[function(require,module,exports){
 'use strict';
 
 var keysShim;
@@ -21979,7 +22351,7 @@ if (!Object.keys) {
 }
 module.exports = keysShim;
 
-},{"./isArguments":265}],264:[function(require,module,exports){
+},{"./isArguments":270}],269:[function(require,module,exports){
 'use strict';
 
 var slice = Array.prototype.slice;
@@ -22013,7 +22385,7 @@ keysShim.shim = function shimObjectKeys() {
 
 module.exports = keysShim;
 
-},{"./implementation":263,"./isArguments":265}],265:[function(require,module,exports){
+},{"./implementation":268,"./isArguments":270}],270:[function(require,module,exports){
 'use strict';
 
 var toStr = Object.prototype.toString;
@@ -22032,7 +22404,7 @@ module.exports = function isArguments(value) {
 	return isArgs;
 };
 
-},{}],266:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -22218,7 +22590,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],267:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 'use strict';
 
 var replace = String.prototype.replace;
@@ -22243,7 +22615,7 @@ module.exports = {
     RFC3986: Format.RFC3986
 };
 
-},{}],268:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 'use strict';
 
 var stringify = require('./stringify');
@@ -22256,7 +22628,7 @@ module.exports = {
     stringify: stringify
 };
 
-},{"./formats":267,"./parse":269,"./stringify":270}],269:[function(require,module,exports){
+},{"./formats":272,"./parse":274,"./stringify":275}],274:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -22522,7 +22894,7 @@ module.exports = function (str, opts) {
     return utils.compact(obj);
 };
 
-},{"./utils":271}],270:[function(require,module,exports){
+},{"./utils":276}],275:[function(require,module,exports){
 'use strict';
 
 var getSideChannel = require('side-channel');
@@ -22844,7 +23216,7 @@ module.exports = function (object, opts) {
     return joined.length > 0 ? prefix + joined : '';
 };
 
-},{"./formats":267,"./utils":271,"side-channel":299}],271:[function(require,module,exports){
+},{"./formats":272,"./utils":276,"side-channel":311}],276:[function(require,module,exports){
 'use strict';
 
 var formats = require('./formats');
@@ -23098,7 +23470,7 @@ module.exports = {
     merge: merge
 };
 
-},{"./formats":267}],272:[function(require,module,exports){
+},{"./formats":272}],277:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23110,7 +23482,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var _default = _universalCookie["default"];
 exports["default"] = _default;
 module.exports = exports.default;
-},{"universal-cookie":311}],273:[function(require,module,exports){
+},{"universal-cookie":323}],278:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -23130,7 +23502,7 @@ exports.Consumer = Consumer;
 exports.Provider = Provider;
 var _default = CookiesContext;
 exports["default"] = _default;
-},{"./Cookies":272,"react":"react"}],274:[function(require,module,exports){
+},{"./Cookies":277,"react":"react"}],279:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -23182,7 +23554,7 @@ var CookiesProvider = /*#__PURE__*/function (_React$Component) {
 }(React.Component);
 exports["default"] = CookiesProvider;
 module.exports = exports.default;
-},{"./CookiesContext":273,"react":"react","universal-cookie":311}],275:[function(require,module,exports){
+},{"./CookiesContext":278,"react":"react","universal-cookie":323}],280:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23235,13 +23607,13 @@ Object.keys(_types).forEach(function (key) {
   });
 });
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-},{"./Cookies":272,"./CookiesProvider":274,"./types":276,"./useCookies":277,"./withCookies":279}],276:[function(require,module,exports){
+},{"./Cookies":277,"./CookiesProvider":279,"./types":281,"./useCookies":282,"./withCookies":284}],281:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-},{}],277:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23318,7 +23690,7 @@ function shouldUpdate(dependencies, newCookies, oldCookies) {
   return false;
 }
 module.exports = exports.default;
-},{"./CookiesContext":273,"./utils":278,"react":"react"}],278:[function(require,module,exports){
+},{"./CookiesContext":278,"./utils":283,"react":"react"}],283:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23328,7 +23700,7 @@ exports.isInBrowser = isInBrowser;
 function isInBrowser() {
   return typeof window !== 'undefined' && typeof window.document !== 'undefined' && typeof window.document.createElement !== 'undefined';
 }
-},{}],279:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -23439,10 +23811,10 @@ function withCookies(WrappedComponent) {
   return (0, _hoistNonReactStatics["default"])(ForwardedComponent, WrappedComponent);
 }
 module.exports = exports.default;
-},{"./CookiesContext":273,"hoist-non-react-statics":255,"react":"react"}],280:[function(require,module,exports){
+},{"./CookiesContext":278,"hoist-non-react-statics":260,"react":"react"}],285:[function(require,module,exports){
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("react"),require("prop-types"),require("classnames"),require("date-fns/isDate"),require("date-fns/isValid"),require("date-fns/format"),require("date-fns/addMinutes"),require("date-fns/addHours"),require("date-fns/addDays"),require("date-fns/addWeeks"),require("date-fns/addMonths"),require("date-fns/addQuarters"),require("date-fns/addYears"),require("date-fns/subDays"),require("date-fns/subWeeks"),require("date-fns/subMonths"),require("date-fns/subQuarters"),require("date-fns/subYears"),require("date-fns/getSeconds"),require("date-fns/getMinutes"),require("date-fns/getHours"),require("date-fns/getDay"),require("date-fns/getDate"),require("date-fns/getISOWeek"),require("date-fns/getMonth"),require("date-fns/getQuarter"),require("date-fns/getYear"),require("date-fns/getTime"),require("date-fns/setSeconds"),require("date-fns/setMinutes"),require("date-fns/setHours"),require("date-fns/setMonth"),require("date-fns/setQuarter"),require("date-fns/setYear"),require("date-fns/min"),require("date-fns/max"),require("date-fns/differenceInCalendarDays"),require("date-fns/differenceInCalendarMonths"),require("date-fns/differenceInCalendarYears"),require("date-fns/startOfDay"),require("date-fns/startOfWeek"),require("date-fns/startOfMonth"),require("date-fns/startOfQuarter"),require("date-fns/startOfYear"),require("date-fns/endOfDay"),require("date-fns/endOfWeek"),require("date-fns/endOfMonth"),require("date-fns/endOfYear"),require("date-fns/isEqual"),require("date-fns/isSameDay"),require("date-fns/isSameMonth"),require("date-fns/isSameYear"),require("date-fns/isSameQuarter"),require("date-fns/isAfter"),require("date-fns/isBefore"),require("date-fns/isWithinInterval"),require("date-fns/toDate"),require("date-fns/parse"),require("date-fns/parseISO"),require("react-onclickoutside"),require("react-dom"),require("react-popper"),require("date-fns/set")):"function"==typeof define&&define.amd?define(["exports","react","prop-types","classnames","date-fns/isDate","date-fns/isValid","date-fns/format","date-fns/addMinutes","date-fns/addHours","date-fns/addDays","date-fns/addWeeks","date-fns/addMonths","date-fns/addQuarters","date-fns/addYears","date-fns/subDays","date-fns/subWeeks","date-fns/subMonths","date-fns/subQuarters","date-fns/subYears","date-fns/getSeconds","date-fns/getMinutes","date-fns/getHours","date-fns/getDay","date-fns/getDate","date-fns/getISOWeek","date-fns/getMonth","date-fns/getQuarter","date-fns/getYear","date-fns/getTime","date-fns/setSeconds","date-fns/setMinutes","date-fns/setHours","date-fns/setMonth","date-fns/setQuarter","date-fns/setYear","date-fns/min","date-fns/max","date-fns/differenceInCalendarDays","date-fns/differenceInCalendarMonths","date-fns/differenceInCalendarYears","date-fns/startOfDay","date-fns/startOfWeek","date-fns/startOfMonth","date-fns/startOfQuarter","date-fns/startOfYear","date-fns/endOfDay","date-fns/endOfWeek","date-fns/endOfMonth","date-fns/endOfYear","date-fns/isEqual","date-fns/isSameDay","date-fns/isSameMonth","date-fns/isSameYear","date-fns/isSameQuarter","date-fns/isAfter","date-fns/isBefore","date-fns/isWithinInterval","date-fns/toDate","date-fns/parse","date-fns/parseISO","react-onclickoutside","react-dom","react-popper","date-fns/set"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).DatePicker={},e.React,e.PropTypes,e.classNames,e.isDate,e.isValidDate,e.format,e.addMinutes,e.addHours,e.addDays,e.addWeeks,e.addMonths,e.addQuarters,e.addYears,e.subDays,e.subWeeks,e.subMonths,e.subQuarters,e.subYears,e.getSeconds,e.getMinutes,e.getHours,e.getDay,e.getDate,e.getISOWeek,e.getMonth,e.getQuarter,e.getYear,e.getTime,e.setSeconds,e.setMinutes,e.setHours,e.setMonth,e.setQuarter,e.setYear,e.min,e.max,e.differenceInCalendarDays,e.differenceInCalendarMonths,e.differenceInCalendarYears,e.startOfDay,e.startOfWeek,e.startOfMonth,e.startOfQuarter,e.startOfYear,e.endOfDay,null,e.endOfMonth,e.endOfYear,e.dfIsEqual,e.dfIsSameDay,e.dfIsSameMonth,e.dfIsSameYear,e.dfIsSameQuarter,e.isAfter,e.isBefore,e.isWithinInterval,e.toDate,e.parse,e.parseISO,e.onClickOutside,e.ReactDOM,e.ReactPopper,e.set)}(this,(function(e,t,r,a,n,o,s,i,p,l,c,d,u,f,h,m,y,v,D,g,w,k,b,S,C,_,M,E,P,N,Y,x,O,I,T,R,L,F,A,q,Q,K,B,W,H,j,V,U,z,$,G,J,X,Z,ee,te,re,ae,ne,oe,se,ie,pe,le){"use strict";function ce(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var de=ce(t),ue=ce(a),fe=ce(n),he=ce(o),me=ce(s),ye=ce(i),ve=ce(p),De=ce(l),ge=ce(c),we=ce(d),ke=ce(u),be=ce(f),Se=ce(h),Ce=ce(m),_e=ce(y),Me=ce(v),Ee=ce(D),Pe=ce(g),Ne=ce(w),Ye=ce(k),xe=ce(b),Oe=ce(S),Ie=ce(C),Te=ce(_),Re=ce(M),Le=ce(E),Fe=ce(P),Ae=ce(N),qe=ce(Y),Qe=ce(x),Ke=ce(O),Be=ce(I),We=ce(T),He=ce(R),je=ce(L),Ve=ce(F),Ue=ce(A),ze=ce(q),$e=ce(Q),Ge=ce(K),Je=ce(B),Xe=ce(W),Ze=ce(H),et=ce(j),tt=ce(U),rt=ce(z),at=ce($),nt=ce(G),ot=ce(J),st=ce(X),it=ce(Z),pt=ce(ee),lt=ce(te),ct=ce(re),dt=ce(ae),ut=ce(ne),ft=ce(oe),ht=ce(se),mt=ce(ie),yt=ce(le);function vt(e,t){var r=Object.keys(e);if(Object.getOwnPropertySymbols){var a=Object.getOwnPropertySymbols(e);t&&(a=a.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),r.push.apply(r,a)}return r}function Dt(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?vt(Object(r),!0).forEach((function(t){St(e,t,r[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):vt(Object(r)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))}))}return e}function gt(e){return gt="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},gt(e)}function wt(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function kt(e,t){for(var r=0;r<t.length;r++){var a=t[r];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,Ot(a.key),a)}}function bt(e,t,r){return t&&kt(e.prototype,t),r&&kt(e,r),Object.defineProperty(e,"prototype",{writable:!1}),e}function St(e,t,r){return(t=Ot(t))in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function Ct(){return Ct=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var a in r)Object.prototype.hasOwnProperty.call(r,a)&&(e[a]=r[a])}return e},Ct.apply(this,arguments)}function _t(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),Object.defineProperty(e,"prototype",{writable:!1}),t&&Et(e,t)}function Mt(e){return Mt=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(e){return e.__proto__||Object.getPrototypeOf(e)},Mt(e)}function Et(e,t){return Et=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,t){return e.__proto__=t,e},Et(e,t)}function Pt(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function Nt(e){var t=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],(function(){}))),!0}catch(e){return!1}}();return function(){var r,a=Mt(e);if(t){var n=Mt(this).constructor;r=Reflect.construct(a,arguments,n)}else r=a.apply(this,arguments);return function(e,t){if(t&&("object"==typeof t||"function"==typeof t))return t;if(void 0!==t)throw new TypeError("Derived constructors may only return object or undefined");return Pt(e)}(this,r)}}function Yt(e){return function(e){if(Array.isArray(e))return xt(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return xt(e,t);var r=Object.prototype.toString.call(e).slice(8,-1);"Object"===r&&e.constructor&&(r=e.constructor.name);if("Map"===r||"Set"===r)return Array.from(e);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return xt(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function xt(e,t){(null==t||t>e.length)&&(t=e.length);for(var r=0,a=new Array(t);r<t;r++)a[r]=e[r];return a}function Ot(e){var t=function(e,t){if("object"!=typeof e||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var a=r.call(e,t||"default");if("object"!=typeof a)return a;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}(e,"string");return"symbol"==typeof t?t:String(t)}var It=function(e,t){switch(e){case"P":return t.date({width:"short"});case"PP":return t.date({width:"medium"});case"PPP":return t.date({width:"long"});default:return t.date({width:"full"})}},Tt=function(e,t){switch(e){case"p":return t.time({width:"short"});case"pp":return t.time({width:"medium"});case"ppp":return t.time({width:"long"});default:return t.time({width:"full"})}},Rt={p:Tt,P:function(e,t){var r,a=e.match(/(P+)(p+)?/)||[],n=a[1],o=a[2];if(!o)return It(e,t);switch(n){case"P":r=t.dateTime({width:"short"});break;case"PP":r=t.dateTime({width:"medium"});break;case"PPP":r=t.dateTime({width:"long"});break;default:r=t.dateTime({width:"full"})}return r.replace("{{date}}",It(n,t)).replace("{{time}}",Tt(o,t))}},Lt=12,Ft=/P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;function At(e){var t=e?"string"==typeof e||e instanceof String?ft.default(e):dt.default(e):new Date;return qt(t)?t:null}function qt(e,t){return t=t||new Date("1/1/1000"),he.default(e)&&!lt.default(e,t)}function Qt(e,t,r){if("en"===r)return me.default(e,t,{awareOfUnicodeTokens:!0});var a=tr(r);return r&&!a&&console.warn('A locale object was not found for the provided string ["'.concat(r,'"].')),!a&&er()&&tr(er())&&(a=tr(er())),me.default(e,t,{locale:a||null,awareOfUnicodeTokens:!0})}function Kt(e,t){var r=t.dateFormat,a=t.locale;return e&&Qt(e,Array.isArray(r)?r[0]:r,a)||""}function Bt(e,t){var r=t.hour,a=void 0===r?0:r,n=t.minute,o=void 0===n?0:n,s=t.second,i=void 0===s?0:s;return Qe.default(qe.default(Ae.default(e,i),o),a)}function Wt(e,t,r){var a=tr(t||er());return Ge.default(e,{locale:a,weekStartsOn:r})}function Ht(e){return Je.default(e)}function jt(e){return Ze.default(e)}function Vt(e){return Xe.default(e)}function Ut(){return $e.default(At())}function zt(e,t){return e&&t?st.default(e,t):!e&&!t}function $t(e,t){return e&&t?ot.default(e,t):!e&&!t}function Gt(e,t){return e&&t?it.default(e,t):!e&&!t}function Jt(e,t){return e&&t?nt.default(e,t):!e&&!t}function Xt(e,t){return e&&t?at.default(e,t):!e&&!t}function Zt(e,t,r){var a,n=$e.default(t),o=et.default(r);try{a=ct.default(e,{start:n,end:o})}catch(e){a=!1}return a}function er(){return("undefined"!=typeof window?window:globalThis).__localeId__}function tr(e){if("string"==typeof e){var t="undefined"!=typeof window?window:globalThis;return t.__localeData__?t.__localeData__[e]:null}return e}function rr(e,t){return Qt(Ke.default(At(),e),"LLLL",t)}function ar(e,t){return Qt(Ke.default(At(),e),"LLL",t)}function nr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.maxDate,n=t.excludeDates,o=t.excludeDateIntervals,s=t.includeDates,i=t.includeDateIntervals,p=t.filterDate;return ur(e,{minDate:r,maxDate:a})||n&&n.some((function(t){return Jt(e,t)}))||o&&o.some((function(t){var r=t.start,a=t.end;return ct.default(e,{start:r,end:a})}))||s&&!s.some((function(t){return Jt(e,t)}))||i&&!i.some((function(t){var r=t.start,a=t.end;return ct.default(e,{start:r,end:a})}))||p&&!p(At(e))||!1}function or(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.excludeDates,a=t.excludeDateIntervals;return a&&a.length>0?a.some((function(t){var r=t.start,a=t.end;return ct.default(e,{start:r,end:a})})):r&&r.some((function(t){return Jt(e,t)}))||!1}function sr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.maxDate,n=t.excludeDates,o=t.includeDates,s=t.filterDate;return ur(e,{minDate:Je.default(r),maxDate:tt.default(a)})||n&&n.some((function(t){return $t(e,t)}))||o&&!o.some((function(t){return $t(e,t)}))||s&&!s(At(e))||!1}function ir(e,t,r,a){var n=Le.default(e),o=Te.default(e),s=Le.default(t),i=Te.default(t),p=Le.default(a);return n===s&&n===p?o<=r&&r<=i:n<s?p===n&&o<=r||p===s&&i>=r||p<s&&p>n:void 0}function pr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.maxDate,n=t.excludeDates,o=t.includeDates,s=t.filterDate;return ur(e,{minDate:r,maxDate:a})||n&&n.some((function(t){return Gt(e,t)}))||o&&!o.some((function(t){return Gt(e,t)}))||s&&!s(At(e))||!1}function lr(e,t,r){if(!he.default(t)||!he.default(r))return!1;var a=Le.default(t),n=Le.default(r);return a<=e&&n>=e}function cr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.maxDate,n=t.excludeDates,o=t.includeDates,s=t.filterDate,i=new Date(e,0,1);return ur(i,{minDate:Ze.default(r),maxDate:rt.default(a)})||n&&n.some((function(e){return zt(i,e)}))||o&&!o.some((function(e){return zt(i,e)}))||s&&!s(At(i))||!1}function dr(e,t,r,a){var n=Le.default(e),o=Re.default(e),s=Le.default(t),i=Re.default(t),p=Le.default(a);return n===s&&n===p?o<=r&&r<=i:n<s?p===n&&o<=r||p===s&&i>=r||p<s&&p>n:void 0}function ur(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.maxDate;return r&&Ve.default(e,r)<0||a&&Ve.default(e,a)>0}function fr(e,t){return t.some((function(t){return Ye.default(t)===Ye.default(e)&&Ne.default(t)===Ne.default(e)}))}function hr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.excludeTimes,a=t.includeTimes,n=t.filterTime;return r&&fr(e,r)||a&&!fr(e,a)||n&&!n(e)||!1}function mr(e,t){var r=t.minTime,a=t.maxTime;if(!r||!a)throw new Error("Both minTime and maxTime props required");var n,o=At(),s=Qe.default(qe.default(o,Ne.default(e)),Ye.default(e)),i=Qe.default(qe.default(o,Ne.default(r)),Ye.default(r)),p=Qe.default(qe.default(o,Ne.default(a)),Ye.default(a));try{n=!ct.default(s,{start:i,end:p})}catch(e){n=!1}return n}function yr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.includeDates,n=_e.default(e,1);return r&&Ue.default(r,n)>0||a&&a.every((function(e){return Ue.default(e,n)>0}))||!1}function vr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.maxDate,a=t.includeDates,n=we.default(e,1);return r&&Ue.default(n,r)>0||a&&a.every((function(e){return Ue.default(n,e)>0}))||!1}function Dr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.includeDates,n=Ee.default(e,1);return r&&ze.default(r,n)>0||a&&a.every((function(e){return ze.default(e,n)>0}))||!1}function gr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.maxDate,a=t.includeDates,n=be.default(e,1);return r&&ze.default(n,r)>0||a&&a.every((function(e){return ze.default(n,e)>0}))||!1}function wr(e){var t=e.minDate,r=e.includeDates;if(r&&t){var a=r.filter((function(e){return Ve.default(e,t)>=0}));return He.default(a)}return r?He.default(r):t}function kr(e){var t=e.maxDate,r=e.includeDates;if(r&&t){var a=r.filter((function(e){return Ve.default(e,t)<=0}));return je.default(a)}return r?je.default(r):t}function br(){for(var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:[],t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"react-datepicker__day--highlighted",r=new Map,a=0,n=e.length;a<n;a++){var o=e[a];if(fe.default(o)){var s=Qt(o,"MM.dd.yyyy"),i=r.get(s)||[];i.includes(t)||(i.push(t),r.set(s,i))}else if("object"===gt(o)){var p=Object.keys(o),l=p[0],c=o[p[0]];if("string"==typeof l&&c.constructor===Array)for(var d=0,u=c.length;d<u;d++){var f=Qt(c[d],"MM.dd.yyyy"),h=r.get(f)||[];h.includes(l)||(h.push(l),r.set(f,h))}}}return r}function Sr(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:[],t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"react-datepicker__day--holidays",r=new Map;return e.forEach((function(e){var a=e.date,n=e.holidayName;if(fe.default(a)){var o=Qt(a,"MM.dd.yyyy"),s=r.get(o)||{};if(!("className"in s)||s.className!==t||(i=s.holidayNames,p=[n],i.length!==p.length||!i.every((function(e,t){return e===p[t]})))){var i,p;s.className=t;var l=s.holidayNames;s.holidayNames=l?[].concat(Yt(l),[n]):[n],r.set(o,s)}}})),r}function Cr(e,t,r,a,n){for(var o=n.length,s=[],i=0;i<o;i++){var p=ye.default(ve.default(e,Ye.default(n[i])),Ne.default(n[i])),l=ye.default(e,(r+1)*a);pt.default(p,t)&&lt.default(p,l)&&s.push(n[i])}return s}function _r(e){return e<10?"0".concat(e):"".concat(e)}function Mr(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:Lt,r=Math.ceil(Le.default(e)/t)*t;return{startPeriod:r-(t-1),endPeriod:r}}function Er(e){var t=e.getSeconds(),r=e.getMilliseconds();return dt.default(e.getTime()-1e3*t-r)}function Pr(e,t,r,a){for(var n=[],o=0;o<2*t+1;o++){var s=e+t-o,i=!0;r&&(i=Le.default(r)<=s),a&&i&&(i=Le.default(a)>=s),i&&n.push(s)}return n}var Nr=function(e){_t(a,e);var r=Nt(a);function a(e){var n;wt(this,a),St(Pt(n=r.call(this,e)),"renderOptions",(function(){var e=n.props.year,t=n.state.yearsList.map((function(t){return de.default.createElement("div",{className:e===t?"react-datepicker__year-option react-datepicker__year-option--selected_year":"react-datepicker__year-option",key:t,onClick:n.onChange.bind(Pt(n),t),"aria-selected":e===t?"true":void 0},e===t?de.default.createElement("span",{className:"react-datepicker__year-option--selected"},"✓"):"",t)})),r=n.props.minDate?Le.default(n.props.minDate):null,a=n.props.maxDate?Le.default(n.props.maxDate):null;return a&&n.state.yearsList.find((function(e){return e===a}))||t.unshift(de.default.createElement("div",{className:"react-datepicker__year-option",key:"upcoming",onClick:n.incrementYears},de.default.createElement("a",{className:"react-datepicker__navigation react-datepicker__navigation--years react-datepicker__navigation--years-upcoming"}))),r&&n.state.yearsList.find((function(e){return e===r}))||t.push(de.default.createElement("div",{className:"react-datepicker__year-option",key:"previous",onClick:n.decrementYears},de.default.createElement("a",{className:"react-datepicker__navigation react-datepicker__navigation--years react-datepicker__navigation--years-previous"}))),t})),St(Pt(n),"onChange",(function(e){n.props.onChange(e)})),St(Pt(n),"handleClickOutside",(function(){n.props.onCancel()})),St(Pt(n),"shiftYears",(function(e){var t=n.state.yearsList.map((function(t){return t+e}));n.setState({yearsList:t})})),St(Pt(n),"incrementYears",(function(){return n.shiftYears(1)})),St(Pt(n),"decrementYears",(function(){return n.shiftYears(-1)}));var o=e.yearDropdownItemNumber,s=e.scrollableYearDropdown,i=o||(s?10:5);return n.state={yearsList:Pr(n.props.year,i,n.props.minDate,n.props.maxDate)},n.dropdownRef=t.createRef(),n}return bt(a,[{key:"componentDidMount",value:function(){var e=this.dropdownRef.current;if(e){var t=e.children?Array.from(e.children):null,r=t?t.find((function(e){return e.ariaSelected})):null;e.scrollTop=r?r.offsetTop+(r.clientHeight-e.clientHeight)/2:(e.scrollHeight-e.clientHeight)/2}}},{key:"render",value:function(){var e=ue.default({"react-datepicker__year-dropdown":!0,"react-datepicker__year-dropdown--scrollable":this.props.scrollableYearDropdown});return de.default.createElement("div",{className:e,ref:this.dropdownRef},this.renderOptions())}}]),a}(de.default.Component),Yr=ht.default(Nr),xr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"state",{dropdownVisible:!1}),St(Pt(e),"renderSelectOptions",(function(){for(var t=e.props.minDate?Le.default(e.props.minDate):1900,r=e.props.maxDate?Le.default(e.props.maxDate):2100,a=[],n=t;n<=r;n++)a.push(de.default.createElement("option",{key:n,value:n},n));return a})),St(Pt(e),"onSelectChange",(function(t){e.onChange(t.target.value)})),St(Pt(e),"renderSelectMode",(function(){return de.default.createElement("select",{value:e.props.year,className:"react-datepicker__year-select",onChange:e.onSelectChange},e.renderSelectOptions())})),St(Pt(e),"renderReadView",(function(t){return de.default.createElement("div",{key:"read",style:{visibility:t?"visible":"hidden"},className:"react-datepicker__year-read-view",onClick:function(t){return e.toggleDropdown(t)}},de.default.createElement("span",{className:"react-datepicker__year-read-view--down-arrow"}),de.default.createElement("span",{className:"react-datepicker__year-read-view--selected-year"},e.props.year))})),St(Pt(e),"renderDropdown",(function(){return de.default.createElement(Yr,{key:"dropdown",year:e.props.year,onChange:e.onChange,onCancel:e.toggleDropdown,minDate:e.props.minDate,maxDate:e.props.maxDate,scrollableYearDropdown:e.props.scrollableYearDropdown,yearDropdownItemNumber:e.props.yearDropdownItemNumber})})),St(Pt(e),"renderScrollMode",(function(){var t=e.state.dropdownVisible,r=[e.renderReadView(!t)];return t&&r.unshift(e.renderDropdown()),r})),St(Pt(e),"onChange",(function(t){e.toggleDropdown(),t!==e.props.year&&e.props.onChange(t)})),St(Pt(e),"toggleDropdown",(function(t){e.setState({dropdownVisible:!e.state.dropdownVisible},(function(){e.props.adjustDateOnChange&&e.handleYearChange(e.props.date,t)}))})),St(Pt(e),"handleYearChange",(function(t,r){e.onSelect(t,r),e.setOpen()})),St(Pt(e),"onSelect",(function(t,r){e.props.onSelect&&e.props.onSelect(t,r)})),St(Pt(e),"setOpen",(function(){e.props.setOpen&&e.props.setOpen(!0)})),e}return bt(r,[{key:"render",value:function(){var e;switch(this.props.dropdownMode){case"scroll":e=this.renderScrollMode();break;case"select":e=this.renderSelectMode()}return de.default.createElement("div",{className:"react-datepicker__year-dropdown-container react-datepicker__year-dropdown-container--".concat(this.props.dropdownMode)},e)}}]),r}(de.default.Component),Or=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"isSelectedMonth",(function(t){return e.props.month===t})),St(Pt(e),"renderOptions",(function(){return e.props.monthNames.map((function(t,r){return de.default.createElement("div",{className:e.isSelectedMonth(r)?"react-datepicker__month-option react-datepicker__month-option--selected_month":"react-datepicker__month-option",key:t,onClick:e.onChange.bind(Pt(e),r),"aria-selected":e.isSelectedMonth(r)?"true":void 0},e.isSelectedMonth(r)?de.default.createElement("span",{className:"react-datepicker__month-option--selected"},"✓"):"",t)}))})),St(Pt(e),"onChange",(function(t){return e.props.onChange(t)})),St(Pt(e),"handleClickOutside",(function(){return e.props.onCancel()})),e}return bt(r,[{key:"render",value:function(){return de.default.createElement("div",{className:"react-datepicker__month-dropdown"},this.renderOptions())}}]),r}(de.default.Component),Ir=ht.default(Or),Tr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"state",{dropdownVisible:!1}),St(Pt(e),"renderSelectOptions",(function(e){return e.map((function(e,t){return de.default.createElement("option",{key:t,value:t},e)}))})),St(Pt(e),"renderSelectMode",(function(t){return de.default.createElement("select",{value:e.props.month,className:"react-datepicker__month-select",onChange:function(t){return e.onChange(t.target.value)}},e.renderSelectOptions(t))})),St(Pt(e),"renderReadView",(function(t,r){return de.default.createElement("div",{key:"read",style:{visibility:t?"visible":"hidden"},className:"react-datepicker__month-read-view",onClick:e.toggleDropdown},de.default.createElement("span",{className:"react-datepicker__month-read-view--down-arrow"}),de.default.createElement("span",{className:"react-datepicker__month-read-view--selected-month"},r[e.props.month]))})),St(Pt(e),"renderDropdown",(function(t){return de.default.createElement(Ir,{key:"dropdown",month:e.props.month,monthNames:t,onChange:e.onChange,onCancel:e.toggleDropdown})})),St(Pt(e),"renderScrollMode",(function(t){var r=e.state.dropdownVisible,a=[e.renderReadView(!r,t)];return r&&a.unshift(e.renderDropdown(t)),a})),St(Pt(e),"onChange",(function(t){e.toggleDropdown(),t!==e.props.month&&e.props.onChange(t)})),St(Pt(e),"toggleDropdown",(function(){return e.setState({dropdownVisible:!e.state.dropdownVisible})})),e}return bt(r,[{key:"render",value:function(){var e,t=this,r=[0,1,2,3,4,5,6,7,8,9,10,11].map(this.props.useShortMonthInDropdown?function(e){return ar(e,t.props.locale)}:function(e){return rr(e,t.props.locale)});switch(this.props.dropdownMode){case"scroll":e=this.renderScrollMode(r);break;case"select":e=this.renderSelectMode(r)}return de.default.createElement("div",{className:"react-datepicker__month-dropdown-container react-datepicker__month-dropdown-container--".concat(this.props.dropdownMode)},e)}}]),r}(de.default.Component);function Rr(e,t){for(var r=[],a=Ht(e),n=Ht(t);!pt.default(a,n);)r.push(At(a)),a=we.default(a,1);return r}var Lr,Fr=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"renderOptions",(function(){return a.state.monthYearsList.map((function(e){var t=Fe.default(e),r=zt(a.props.date,e)&&$t(a.props.date,e);return de.default.createElement("div",{className:r?"react-datepicker__month-year-option--selected_month-year":"react-datepicker__month-year-option",key:t,onClick:a.onChange.bind(Pt(a),t),"aria-selected":r?"true":void 0},r?de.default.createElement("span",{className:"react-datepicker__month-year-option--selected"},"✓"):"",Qt(e,a.props.dateFormat,a.props.locale))}))})),St(Pt(a),"onChange",(function(e){return a.props.onChange(e)})),St(Pt(a),"handleClickOutside",(function(){a.props.onCancel()})),a.state={monthYearsList:Rr(a.props.minDate,a.props.maxDate)},a}return bt(r,[{key:"render",value:function(){var e=ue.default({"react-datepicker__month-year-dropdown":!0,"react-datepicker__month-year-dropdown--scrollable":this.props.scrollableMonthYearDropdown});return de.default.createElement("div",{className:e},this.renderOptions())}}]),r}(de.default.Component),Ar=ht.default(Fr),qr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"state",{dropdownVisible:!1}),St(Pt(e),"renderSelectOptions",(function(){for(var t=Ht(e.props.minDate),r=Ht(e.props.maxDate),a=[];!pt.default(t,r);){var n=Fe.default(t);a.push(de.default.createElement("option",{key:n,value:n},Qt(t,e.props.dateFormat,e.props.locale))),t=we.default(t,1)}return a})),St(Pt(e),"onSelectChange",(function(t){e.onChange(t.target.value)})),St(Pt(e),"renderSelectMode",(function(){return de.default.createElement("select",{value:Fe.default(Ht(e.props.date)),className:"react-datepicker__month-year-select",onChange:e.onSelectChange},e.renderSelectOptions())})),St(Pt(e),"renderReadView",(function(t){var r=Qt(e.props.date,e.props.dateFormat,e.props.locale);return de.default.createElement("div",{key:"read",style:{visibility:t?"visible":"hidden"},className:"react-datepicker__month-year-read-view",onClick:function(t){return e.toggleDropdown(t)}},de.default.createElement("span",{className:"react-datepicker__month-year-read-view--down-arrow"}),de.default.createElement("span",{className:"react-datepicker__month-year-read-view--selected-month-year"},r))})),St(Pt(e),"renderDropdown",(function(){return de.default.createElement(Ar,{key:"dropdown",date:e.props.date,dateFormat:e.props.dateFormat,onChange:e.onChange,onCancel:e.toggleDropdown,minDate:e.props.minDate,maxDate:e.props.maxDate,scrollableMonthYearDropdown:e.props.scrollableMonthYearDropdown,locale:e.props.locale})})),St(Pt(e),"renderScrollMode",(function(){var t=e.state.dropdownVisible,r=[e.renderReadView(!t)];return t&&r.unshift(e.renderDropdown()),r})),St(Pt(e),"onChange",(function(t){e.toggleDropdown();var r=At(parseInt(t));zt(e.props.date,r)&&$t(e.props.date,r)||e.props.onChange(r)})),St(Pt(e),"toggleDropdown",(function(){return e.setState({dropdownVisible:!e.state.dropdownVisible})})),e}return bt(r,[{key:"render",value:function(){var e;switch(this.props.dropdownMode){case"scroll":e=this.renderScrollMode();break;case"select":e=this.renderSelectMode()}return de.default.createElement("div",{className:"react-datepicker__month-year-dropdown-container react-datepicker__month-year-dropdown-container--".concat(this.props.dropdownMode)},e)}}]),r}(de.default.Component),Qr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"dayEl",de.default.createRef()),St(Pt(e),"handleClick",(function(t){!e.isDisabled()&&e.props.onClick&&e.props.onClick(t)})),St(Pt(e),"handleMouseEnter",(function(t){!e.isDisabled()&&e.props.onMouseEnter&&e.props.onMouseEnter(t)})),St(Pt(e),"handleOnKeyDown",(function(t){" "===t.key&&(t.preventDefault(),t.key="Enter"),e.props.handleOnKeyDown(t)})),St(Pt(e),"isSameDay",(function(t){return Jt(e.props.day,t)})),St(Pt(e),"isKeyboardSelected",(function(){return!e.props.disabledKeyboardNavigation&&!e.isSameDay(e.props.selected)&&e.isSameDay(e.props.preSelection)})),St(Pt(e),"isDisabled",(function(){return nr(e.props.day,e.props)})),St(Pt(e),"isExcluded",(function(){return or(e.props.day,e.props)})),St(Pt(e),"getHighLightedClass",(function(){var t=e.props,r=t.day,a=t.highlightDates;if(!a)return!1;var n=Qt(r,"MM.dd.yyyy");return a.get(n)})),St(Pt(e),"getHolidaysClass",(function(){var t=e.props,r=t.day,a=t.holidays;if(!a)return!1;var n=Qt(r,"MM.dd.yyyy");return a.has(n)?[a.get(n).className]:void 0})),St(Pt(e),"isInRange",(function(){var t=e.props,r=t.day,a=t.startDate,n=t.endDate;return!(!a||!n)&&Zt(r,a,n)})),St(Pt(e),"isInSelectingRange",(function(){var t,r=e.props,a=r.day,n=r.selectsStart,o=r.selectsEnd,s=r.selectsRange,i=r.selectsDisabledDaysInRange,p=r.startDate,l=r.endDate,c=null!==(t=e.props.selectingDate)&&void 0!==t?t:e.props.preSelection;return!(!(n||o||s)||!c||!i&&e.isDisabled())&&(n&&l&&(lt.default(c,l)||Xt(c,l))?Zt(a,c,l):(o&&p&&(pt.default(c,p)||Xt(c,p))||!(!s||!p||l||!pt.default(c,p)&&!Xt(c,p)))&&Zt(a,p,c))})),St(Pt(e),"isSelectingRangeStart",(function(){var t;if(!e.isInSelectingRange())return!1;var r=e.props,a=r.day,n=r.startDate,o=r.selectsStart,s=null!==(t=e.props.selectingDate)&&void 0!==t?t:e.props.preSelection;return Jt(a,o?s:n)})),St(Pt(e),"isSelectingRangeEnd",(function(){var t;if(!e.isInSelectingRange())return!1;var r=e.props,a=r.day,n=r.endDate,o=r.selectsEnd,s=r.selectsRange,i=null!==(t=e.props.selectingDate)&&void 0!==t?t:e.props.preSelection;return Jt(a,o||s?i:n)})),St(Pt(e),"isRangeStart",(function(){var t=e.props,r=t.day,a=t.startDate,n=t.endDate;return!(!a||!n)&&Jt(a,r)})),St(Pt(e),"isRangeEnd",(function(){var t=e.props,r=t.day,a=t.startDate,n=t.endDate;return!(!a||!n)&&Jt(n,r)})),St(Pt(e),"isWeekend",(function(){var t=xe.default(e.props.day);return 0===t||6===t})),St(Pt(e),"isAfterMonth",(function(){return void 0!==e.props.month&&(e.props.month+1)%12===Te.default(e.props.day)})),St(Pt(e),"isBeforeMonth",(function(){return void 0!==e.props.month&&(Te.default(e.props.day)+1)%12===e.props.month})),St(Pt(e),"isCurrentDay",(function(){return e.isSameDay(At())})),St(Pt(e),"isSelected",(function(){return e.isSameDay(e.props.selected)})),St(Pt(e),"getClassNames",(function(t){var r,a=e.props.dayClassName?e.props.dayClassName(t):void 0;return ue.default("react-datepicker__day",a,"react-datepicker__day--"+Qt(e.props.day,"ddd",r),{"react-datepicker__day--disabled":e.isDisabled(),"react-datepicker__day--excluded":e.isExcluded(),"react-datepicker__day--selected":e.isSelected(),"react-datepicker__day--keyboard-selected":e.isKeyboardSelected(),"react-datepicker__day--range-start":e.isRangeStart(),"react-datepicker__day--range-end":e.isRangeEnd(),"react-datepicker__day--in-range":e.isInRange(),"react-datepicker__day--in-selecting-range":e.isInSelectingRange(),"react-datepicker__day--selecting-range-start":e.isSelectingRangeStart(),"react-datepicker__day--selecting-range-end":e.isSelectingRangeEnd(),"react-datepicker__day--today":e.isCurrentDay(),"react-datepicker__day--weekend":e.isWeekend(),"react-datepicker__day--outside-month":e.isAfterMonth()||e.isBeforeMonth()},e.getHighLightedClass("react-datepicker__day--highlighted"),e.getHolidaysClass())})),St(Pt(e),"getAriaLabel",(function(){var t=e.props,r=t.day,a=t.ariaLabelPrefixWhenEnabled,n=void 0===a?"Choose":a,o=t.ariaLabelPrefixWhenDisabled,s=void 0===o?"Not available":o,i=e.isDisabled()||e.isExcluded()?s:n;return"".concat(i," ").concat(Qt(r,"PPPP",e.props.locale))})),St(Pt(e),"getTitle",(function(){var t=e.props,r=t.day,a=t.holidays,n=void 0===a?new Map:a,o=Qt(r,"MM.dd.yyyy");return n.has(o)&&n.get(o).holidayNames.length>0?n.get(o).holidayNames.join(", "):""})),St(Pt(e),"getTabIndex",(function(t,r){var a=t||e.props.selected,n=r||e.props.preSelection;return e.isKeyboardSelected()||e.isSameDay(a)&&Jt(n,a)?0:-1})),St(Pt(e),"handleFocusDay",(function(){var t,r=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},a=!1;0===e.getTabIndex()&&!r.isInputFocused&&e.isSameDay(e.props.preSelection)&&(document.activeElement&&document.activeElement!==document.body||(a=!0),e.props.inline&&!e.props.shouldFocusDayInline&&(a=!1),e.props.containerRef&&e.props.containerRef.current&&e.props.containerRef.current.contains(document.activeElement)&&document.activeElement.classList.contains("react-datepicker__day")&&(a=!0),e.props.monthShowsDuplicateDaysEnd&&e.isAfterMonth()&&(a=!1),e.props.monthShowsDuplicateDaysStart&&e.isBeforeMonth()&&(a=!1)),a&&(null===(t=e.dayEl.current)||void 0===t||t.focus({preventScroll:!0}))})),St(Pt(e),"renderDayContents",(function(){return e.props.monthShowsDuplicateDaysEnd&&e.isAfterMonth()||e.props.monthShowsDuplicateDaysStart&&e.isBeforeMonth()?null:e.props.renderDayContents?e.props.renderDayContents(Oe.default(e.props.day),e.props.day):Oe.default(e.props.day)})),St(Pt(e),"render",(function(){return de.default.createElement("div",{ref:e.dayEl,className:e.getClassNames(e.props.day),onKeyDown:e.handleOnKeyDown,onClick:e.handleClick,onMouseEnter:e.handleMouseEnter,tabIndex:e.getTabIndex(),"aria-label":e.getAriaLabel(),role:"option",title:e.getTitle(),"aria-disabled":e.isDisabled(),"aria-current":e.isCurrentDay()?"date":void 0,"aria-selected":e.isSelected()||e.isInRange()},e.renderDayContents(),""!==e.getTitle()&&de.default.createElement("span",{className:"holiday-overlay"},e.getTitle()))})),e}return bt(r,[{key:"componentDidMount",value:function(){this.handleFocusDay()}},{key:"componentDidUpdate",value:function(e){this.handleFocusDay(e)}}]),r}(de.default.Component),Kr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"handleClick",(function(t){e.props.onClick&&e.props.onClick(t)})),e}return bt(r,[{key:"render",value:function(){var e=this.props,t=e.weekNumber,r=e.ariaLabelPrefix,a=void 0===r?"week ":r,n={"react-datepicker__week-number":!0,"react-datepicker__week-number--clickable":!!e.onClick};return de.default.createElement("div",{className:ue.default(n),"aria-label":"".concat(a," ").concat(this.props.weekNumber),onClick:this.handleClick},t)}}],[{key:"defaultProps",get:function(){return{ariaLabelPrefix:"week "}}}]),r}(de.default.Component),Br=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"handleDayClick",(function(t,r){e.props.onDayClick&&e.props.onDayClick(t,r)})),St(Pt(e),"handleDayMouseEnter",(function(t){e.props.onDayMouseEnter&&e.props.onDayMouseEnter(t)})),St(Pt(e),"handleWeekClick",(function(t,r,a){"function"==typeof e.props.onWeekSelect&&e.props.onWeekSelect(t,r,a),e.props.shouldCloseOnSelect&&e.props.setOpen(!1)})),St(Pt(e),"formatWeekNumber",(function(t){return e.props.formatWeekNumber?e.props.formatWeekNumber(t):function(e,t){var r=t&&tr(t)||er()&&tr(er());return Ie.default(e,r?{locale:r}:null)}(t)})),St(Pt(e),"renderDays",(function(){var t=Wt(e.props.day,e.props.locale,e.props.calendarStartDay),r=[],a=e.formatWeekNumber(t);if(e.props.showWeekNumber){var n=e.props.onWeekSelect?e.handleWeekClick.bind(Pt(e),t,a):void 0;r.push(de.default.createElement(Kr,{key:"W",weekNumber:a,onClick:n,ariaLabelPrefix:e.props.ariaLabelPrefix}))}return r.concat([0,1,2,3,4,5,6].map((function(r){var a=De.default(t,r);return de.default.createElement(Qr,{ariaLabelPrefixWhenEnabled:e.props.chooseDayAriaLabelPrefix,ariaLabelPrefixWhenDisabled:e.props.disabledDayAriaLabelPrefix,key:a.valueOf(),day:a,month:e.props.month,onClick:e.handleDayClick.bind(Pt(e),a),onMouseEnter:e.handleDayMouseEnter.bind(Pt(e),a),minDate:e.props.minDate,maxDate:e.props.maxDate,excludeDates:e.props.excludeDates,excludeDateIntervals:e.props.excludeDateIntervals,includeDates:e.props.includeDates,includeDateIntervals:e.props.includeDateIntervals,highlightDates:e.props.highlightDates,holidays:e.props.holidays,selectingDate:e.props.selectingDate,filterDate:e.props.filterDate,preSelection:e.props.preSelection,selected:e.props.selected,selectsStart:e.props.selectsStart,selectsEnd:e.props.selectsEnd,selectsRange:e.props.selectsRange,selectsDisabledDaysInRange:e.props.selectsDisabledDaysInRange,startDate:e.props.startDate,endDate:e.props.endDate,dayClassName:e.props.dayClassName,renderDayContents:e.props.renderDayContents,disabledKeyboardNavigation:e.props.disabledKeyboardNavigation,handleOnKeyDown:e.props.handleOnKeyDown,isInputFocused:e.props.isInputFocused,containerRef:e.props.containerRef,inline:e.props.inline,shouldFocusDayInline:e.props.shouldFocusDayInline,monthShowsDuplicateDaysEnd:e.props.monthShowsDuplicateDaysEnd,monthShowsDuplicateDaysStart:e.props.monthShowsDuplicateDaysStart,locale:e.props.locale})})))})),e}return bt(r,[{key:"render",value:function(){return de.default.createElement("div",{className:"react-datepicker__week"},this.renderDays())}}],[{key:"defaultProps",get:function(){return{shouldCloseOnSelect:!0}}}]),r}(de.default.Component),Wr="two_columns",Hr="three_columns",jr="four_columns",Vr=(St(Lr={},Wr,{grid:[[0,1],[2,3],[4,5],[6,7],[8,9],[10,11]],verticalNavigationOffset:2}),St(Lr,Hr,{grid:[[0,1,2],[3,4,5],[6,7,8],[9,10,11]],verticalNavigationOffset:3}),St(Lr,jr,{grid:[[0,1,2,3],[4,5,6,7],[8,9,10,11]],verticalNavigationOffset:4}),Lr);function Ur(e,t){return e?jr:t?Wr:Hr}var zr=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"MONTH_REFS",Yt(Array(12)).map((function(){return de.default.createRef()}))),St(Pt(e),"QUARTER_REFS",Yt(Array(4)).map((function(){return de.default.createRef()}))),St(Pt(e),"isDisabled",(function(t){return nr(t,e.props)})),St(Pt(e),"isExcluded",(function(t){return or(t,e.props)})),St(Pt(e),"handleDayClick",(function(t,r){e.props.onDayClick&&e.props.onDayClick(t,r,e.props.orderInDisplay)})),St(Pt(e),"handleDayMouseEnter",(function(t){e.props.onDayMouseEnter&&e.props.onDayMouseEnter(t)})),St(Pt(e),"handleMouseLeave",(function(){e.props.onMouseLeave&&e.props.onMouseLeave()})),St(Pt(e),"isRangeStartMonth",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate;return!(!n||!o)&&$t(Ke.default(a,t),n)})),St(Pt(e),"isRangeStartQuarter",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate;return!(!n||!o)&&Gt(Be.default(a,t),n)})),St(Pt(e),"isRangeEndMonth",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate;return!(!n||!o)&&$t(Ke.default(a,t),o)})),St(Pt(e),"isRangeEndQuarter",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate;return!(!n||!o)&&Gt(Be.default(a,t),o)})),St(Pt(e),"isInSelectingRangeMonth",(function(t){var r,a=e.props,n=a.day,o=a.selectsStart,s=a.selectsEnd,i=a.selectsRange,p=a.startDate,l=a.endDate,c=null!==(r=e.props.selectingDate)&&void 0!==r?r:e.props.preSelection;return!(!(o||s||i)||!c)&&(o&&l?ir(c,l,t,n):(s&&p||!(!i||!p||l))&&ir(p,c,t,n))})),St(Pt(e),"isSelectingMonthRangeStart",(function(t){var r;if(!e.isInSelectingRangeMonth(t))return!1;var a=e.props,n=a.day,o=a.startDate,s=a.selectsStart,i=Ke.default(n,t),p=null!==(r=e.props.selectingDate)&&void 0!==r?r:e.props.preSelection;return $t(i,s?p:o)})),St(Pt(e),"isSelectingMonthRangeEnd",(function(t){var r;if(!e.isInSelectingRangeMonth(t))return!1;var a=e.props,n=a.day,o=a.endDate,s=a.selectsEnd,i=a.selectsRange,p=Ke.default(n,t),l=null!==(r=e.props.selectingDate)&&void 0!==r?r:e.props.preSelection;return $t(p,s||i?l:o)})),St(Pt(e),"isInSelectingRangeQuarter",(function(t){var r,a=e.props,n=a.day,o=a.selectsStart,s=a.selectsEnd,i=a.selectsRange,p=a.startDate,l=a.endDate,c=null!==(r=e.props.selectingDate)&&void 0!==r?r:e.props.preSelection;return!(!(o||s||i)||!c)&&(o&&l?dr(c,l,t,n):(s&&p||!(!i||!p||l))&&dr(p,c,t,n))})),St(Pt(e),"isWeekInMonth",(function(t){var r=e.props.day,a=De.default(t,6);return $t(t,r)||$t(a,r)})),St(Pt(e),"isCurrentMonth",(function(e,t){return Le.default(e)===Le.default(At())&&t===Te.default(At())})),St(Pt(e),"isCurrentQuarter",(function(e,t){return Le.default(e)===Le.default(At())&&t===Re.default(At())})),St(Pt(e),"isSelectedMonth",(function(e,t,r){return Te.default(r)===t&&Le.default(e)===Le.default(r)})),St(Pt(e),"isSelectedQuarter",(function(e,t,r){return Re.default(e)===t&&Le.default(e)===Le.default(r)})),St(Pt(e),"renderWeeks",(function(){for(var t=[],r=e.props.fixedHeight,a=0,n=!1,o=Wt(Ht(e.props.day),e.props.locale,e.props.calendarStartDay);t.push(de.default.createElement(Br,{ariaLabelPrefix:e.props.weekAriaLabelPrefix,chooseDayAriaLabelPrefix:e.props.chooseDayAriaLabelPrefix,disabledDayAriaLabelPrefix:e.props.disabledDayAriaLabelPrefix,key:a,day:o,month:Te.default(e.props.day),onDayClick:e.handleDayClick,onDayMouseEnter:e.handleDayMouseEnter,onWeekSelect:e.props.onWeekSelect,formatWeekNumber:e.props.formatWeekNumber,locale:e.props.locale,minDate:e.props.minDate,maxDate:e.props.maxDate,excludeDates:e.props.excludeDates,excludeDateIntervals:e.props.excludeDateIntervals,includeDates:e.props.includeDates,includeDateIntervals:e.props.includeDateIntervals,inline:e.props.inline,shouldFocusDayInline:e.props.shouldFocusDayInline,highlightDates:e.props.highlightDates,holidays:e.props.holidays,selectingDate:e.props.selectingDate,filterDate:e.props.filterDate,preSelection:e.props.preSelection,selected:e.props.selected,selectsStart:e.props.selectsStart,selectsEnd:e.props.selectsEnd,selectsRange:e.props.selectsRange,selectsDisabledDaysInRange:e.props.selectsDisabledDaysInRange,showWeekNumber:e.props.showWeekNumbers,startDate:e.props.startDate,endDate:e.props.endDate,dayClassName:e.props.dayClassName,setOpen:e.props.setOpen,shouldCloseOnSelect:e.props.shouldCloseOnSelect,disabledKeyboardNavigation:e.props.disabledKeyboardNavigation,renderDayContents:e.props.renderDayContents,handleOnKeyDown:e.props.handleOnKeyDown,isInputFocused:e.props.isInputFocused,containerRef:e.props.containerRef,calendarStartDay:e.props.calendarStartDay,monthShowsDuplicateDaysEnd:e.props.monthShowsDuplicateDaysEnd,monthShowsDuplicateDaysStart:e.props.monthShowsDuplicateDaysStart})),!n;){a++,o=ge.default(o,1);var s=r&&a>=6,i=!r&&!e.isWeekInMonth(o);if(s||i){if(!e.props.peekNextMonth)break;n=!0}}return t})),St(Pt(e),"onMonthClick",(function(t,r){e.handleDayClick(Ht(Ke.default(e.props.day,r)),t)})),St(Pt(e),"onMonthMouseEnter",(function(t){e.handleDayMouseEnter(Ht(Ke.default(e.props.day,t)))})),St(Pt(e),"handleMonthNavigation",(function(t,r){e.isDisabled(r)||e.isExcluded(r)||(e.props.setPreSelection(r),e.MONTH_REFS[t].current&&e.MONTH_REFS[t].current.focus())})),St(Pt(e),"onMonthKeyDown",(function(t,r){var a=e.props,n=a.selected,o=a.preSelection,s=a.disabledKeyboardNavigation,i=a.showTwoColumnMonthYearPicker,p=a.showFourColumnMonthYearPicker,l=a.setPreSelection,c=t.key;if("Tab"!==c&&t.preventDefault(),!s){var d=Ur(p,i),u=Vr[d].verticalNavigationOffset,f=Vr[d].grid;switch(c){case"Enter":e.onMonthClick(t,r),l(n);break;case"ArrowRight":e.handleMonthNavigation(11===r?0:r+1,we.default(o,1));break;case"ArrowLeft":e.handleMonthNavigation(0===r?11:r-1,_e.default(o,1));break;case"ArrowUp":e.handleMonthNavigation(f[0].includes(r)?r+12-u:r-u,_e.default(o,u));break;case"ArrowDown":e.handleMonthNavigation(f[f.length-1].includes(r)?r-12+u:r+u,we.default(o,u))}}})),St(Pt(e),"onQuarterClick",(function(t,r){e.handleDayClick(Vt(Be.default(e.props.day,r)),t)})),St(Pt(e),"onQuarterMouseEnter",(function(t){e.handleDayMouseEnter(Vt(Be.default(e.props.day,t)))})),St(Pt(e),"handleQuarterNavigation",(function(t,r){e.isDisabled(r)||e.isExcluded(r)||(e.props.setPreSelection(r),e.QUARTER_REFS[t-1].current&&e.QUARTER_REFS[t-1].current.focus())})),St(Pt(e),"onQuarterKeyDown",(function(t,r){var a=t.key;if(!e.props.disabledKeyboardNavigation)switch(a){case"Enter":e.onQuarterClick(t,r),e.props.setPreSelection(e.props.selected);break;case"ArrowRight":e.handleQuarterNavigation(4===r?1:r+1,ke.default(e.props.preSelection,1));break;case"ArrowLeft":e.handleQuarterNavigation(1===r?4:r-1,Me.default(e.props.preSelection,1))}})),St(Pt(e),"getMonthClassNames",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate,s=r.selected,i=r.minDate,p=r.maxDate,l=r.preSelection,c=r.monthClassName,d=r.excludeDates,u=r.includeDates,f=c?c(Ke.default(a,t)):void 0,h=Ke.default(a,t);return ue.default("react-datepicker__month-text","react-datepicker__month-".concat(t),f,{"react-datepicker__month-text--disabled":(i||p||d||u)&&sr(h,e.props),"react-datepicker__month-text--selected":e.isSelectedMonth(a,t,s),"react-datepicker__month-text--keyboard-selected":!e.props.disabledKeyboardNavigation&&Te.default(l)===t,"react-datepicker__month-text--in-selecting-range":e.isInSelectingRangeMonth(t),"react-datepicker__month-text--in-range":ir(n,o,t,a),"react-datepicker__month-text--range-start":e.isRangeStartMonth(t),"react-datepicker__month-text--range-end":e.isRangeEndMonth(t),"react-datepicker__month-text--selecting-range-start":e.isSelectingMonthRangeStart(t),"react-datepicker__month-text--selecting-range-end":e.isSelectingMonthRangeEnd(t),"react-datepicker__month-text--today":e.isCurrentMonth(a,t)})})),St(Pt(e),"getTabIndex",(function(t){var r=Te.default(e.props.preSelection);return e.props.disabledKeyboardNavigation||t!==r?"-1":"0"})),St(Pt(e),"getQuarterTabIndex",(function(t){var r=Re.default(e.props.preSelection);return e.props.disabledKeyboardNavigation||t!==r?"-1":"0"})),St(Pt(e),"getAriaLabel",(function(t){var r=e.props,a=r.chooseDayAriaLabelPrefix,n=void 0===a?"Choose":a,o=r.disabledDayAriaLabelPrefix,s=void 0===o?"Not available":o,i=r.day,p=Ke.default(i,t),l=e.isDisabled(p)||e.isExcluded(p)?s:n;return"".concat(l," ").concat(Qt(p,"MMMM yyyy"))})),St(Pt(e),"getQuarterClassNames",(function(t){var r=e.props,a=r.day,n=r.startDate,o=r.endDate,s=r.selected,i=r.minDate,p=r.maxDate,l=r.preSelection;return ue.default("react-datepicker__quarter-text","react-datepicker__quarter-".concat(t),{"react-datepicker__quarter-text--disabled":(i||p)&&pr(Be.default(a,t),e.props),"react-datepicker__quarter-text--selected":e.isSelectedQuarter(a,t,s),"react-datepicker__quarter-text--keyboard-selected":Re.default(l)===t,"react-datepicker__quarter-text--in-selecting-range":e.isInSelectingRangeQuarter(t),"react-datepicker__quarter-text--in-range":dr(n,o,t,a),"react-datepicker__quarter-text--range-start":e.isRangeStartQuarter(t),"react-datepicker__quarter-text--range-end":e.isRangeEndQuarter(t)})})),St(Pt(e),"getMonthContent",(function(t){var r=e.props,a=r.showFullMonthYearPicker,n=r.renderMonthContent,o=r.locale,s=ar(t,o),i=rr(t,o);return n?n(t,s,i):a?i:s})),St(Pt(e),"getQuarterContent",(function(t){var r=e.props,a=r.renderQuarterContent,n=function(e,t){return Qt(Be.default(At(),e),"QQQ",t)}(t,r.locale);return a?a(t,n):n})),St(Pt(e),"renderMonths",(function(){var t=e.props,r=t.showTwoColumnMonthYearPicker,a=t.showFourColumnMonthYearPicker,n=t.day,o=t.selected;return Vr[Ur(a,r)].grid.map((function(t,r){return de.default.createElement("div",{className:"react-datepicker__month-wrapper",key:r},t.map((function(t,r){return de.default.createElement("div",{ref:e.MONTH_REFS[t],key:r,onClick:function(r){e.onMonthClick(r,t)},onKeyDown:function(r){e.onMonthKeyDown(r,t)},onMouseEnter:function(){return e.onMonthMouseEnter(t)},tabIndex:e.getTabIndex(t),className:e.getMonthClassNames(t),role:"option","aria-label":e.getAriaLabel(t),"aria-current":e.isCurrentMonth(n,t)?"date":void 0,"aria-selected":e.isSelectedMonth(n,t,o)},e.getMonthContent(t))})))}))})),St(Pt(e),"renderQuarters",(function(){var t=e.props,r=t.day,a=t.selected;return de.default.createElement("div",{className:"react-datepicker__quarter-wrapper"},[1,2,3,4].map((function(t,n){return de.default.createElement("div",{key:n,ref:e.QUARTER_REFS[n],role:"option",onClick:function(r){e.onQuarterClick(r,t)},onKeyDown:function(r){e.onQuarterKeyDown(r,t)},onMouseEnter:function(){return e.onQuarterMouseEnter(t)},className:e.getQuarterClassNames(t),"aria-selected":e.isSelectedQuarter(r,t,a),tabIndex:e.getQuarterTabIndex(t),"aria-current":e.isCurrentQuarter(r,t)?"date":void 0},e.getQuarterContent(t))})))})),St(Pt(e),"getClassNames",(function(){var t=e.props,r=t.selectingDate,a=t.selectsStart,n=t.selectsEnd,o=t.showMonthYearPicker,s=t.showQuarterYearPicker;return ue.default("react-datepicker__month",{"react-datepicker__month--selecting-range":r&&(a||n)},{"react-datepicker__monthPicker":o},{"react-datepicker__quarterPicker":s})})),e}return bt(r,[{key:"render",value:function(){var e=this.props,t=e.showMonthYearPicker,r=e.showQuarterYearPicker,a=e.day,n=e.ariaLabelPrefix,o=void 0===n?"month ":n;return de.default.createElement("div",{className:this.getClassNames(),onMouseLeave:this.handleMouseLeave,"aria-label":"".concat(o," ").concat(Qt(a,"yyyy-MM")),role:"listbox"},t?this.renderMonths():r?this.renderQuarters():this.renderWeeks())}}]),r}(de.default.Component),$r=function(e){_t(r,e);var t=Nt(r);function r(){var e;wt(this,r);for(var a=arguments.length,n=new Array(a),o=0;o<a;o++)n[o]=arguments[o];return St(Pt(e=t.call.apply(t,[this].concat(n))),"state",{height:null}),St(Pt(e),"handleClick",(function(t){(e.props.minTime||e.props.maxTime)&&mr(t,e.props)||(e.props.excludeTimes||e.props.includeTimes||e.props.filterTime)&&hr(t,e.props)||e.props.onChange(t)})),St(Pt(e),"isSelectedTime",(function(t){return e.props.selected&&(r=e.props.selected,a=t,Er(r).getTime()===Er(a).getTime());var r,a})),St(Pt(e),"liClasses",(function(t){var r=["react-datepicker__time-list-item",e.props.timeClassName?e.props.timeClassName(t):void 0];return e.isSelectedTime(t)&&r.push("react-datepicker__time-list-item--selected"),((e.props.minTime||e.props.maxTime)&&mr(t,e.props)||(e.props.excludeTimes||e.props.includeTimes||e.props.filterTime)&&hr(t,e.props))&&r.push("react-datepicker__time-list-item--disabled"),e.props.injectTimes&&(60*Ye.default(t)+Ne.default(t))%e.props.intervals!=0&&r.push("react-datepicker__time-list-item--injected"),r.join(" ")})),St(Pt(e),"handleOnKeyDown",(function(t,r){" "===t.key&&(t.preventDefault(),t.key="Enter"),"ArrowUp"!==t.key&&"ArrowLeft"!==t.key||!t.target.previousSibling||(t.preventDefault(),t.target.previousSibling.focus()),"ArrowDown"!==t.key&&"ArrowRight"!==t.key||!t.target.nextSibling||(t.preventDefault(),t.target.nextSibling.focus()),"Enter"===t.key&&e.handleClick(r),e.props.handleOnKeyDown(t)})),St(Pt(e),"renderTimes",(function(){for(var t,r=[],a=e.props.format?e.props.format:"p",n=e.props.intervals,o=e.props.selected||e.props.openToDate||At(),s=(t=o,$e.default(t)),i=e.props.injectTimes&&e.props.injectTimes.sort((function(e,t){return e-t})),p=60*function(e){var t=new Date(e.getFullYear(),e.getMonth(),e.getDate()),r=new Date(e.getFullYear(),e.getMonth(),e.getDate(),24);return Math.round((+r-+t)/36e5)}(o),l=p/n,c=0;c<l;c++){var d=ye.default(s,c*n);if(r.push(d),i){var u=Cr(s,d,c,n,i);r=r.concat(u)}}var f=r.reduce((function(e,t){return t.getTime()<=o.getTime()?t:e}),r[0]);return r.map((function(t,r){return de.default.createElement("li",{key:r,onClick:e.handleClick.bind(Pt(e),t),className:e.liClasses(t),ref:function(r){t===f&&(e.centerLi=r)},onKeyDown:function(r){e.handleOnKeyDown(r,t)},tabIndex:t===f?0:-1,role:"option","aria-selected":e.isSelectedTime(t)?"true":void 0},Qt(t,a,e.props.locale))}))})),e}return bt(r,[{key:"componentDidMount",value:function(){this.list.scrollTop=this.centerLi&&r.calcCenterPosition(this.props.monthRef?this.props.monthRef.clientHeight-this.header.clientHeight:this.list.clientHeight,this.centerLi),this.props.monthRef&&this.header&&this.setState({height:this.props.monthRef.clientHeight-this.header.clientHeight})}},{key:"render",value:function(){var e=this,t=this.state.height;return de.default.createElement("div",{className:"react-datepicker__time-container ".concat(this.props.todayButton?"react-datepicker__time-container--with-today-button":"")},de.default.createElement("div",{className:"react-datepicker__header react-datepicker__header--time ".concat(this.props.showTimeSelectOnly?"react-datepicker__header--time--only":""),ref:function(t){e.header=t}},de.default.createElement("div",{className:"react-datepicker-time__header"},this.props.timeCaption)),de.default.createElement("div",{className:"react-datepicker__time"},de.default.createElement("div",{className:"react-datepicker__time-box"},de.default.createElement("ul",{className:"react-datepicker__time-list",ref:function(t){e.list=t},style:t?{height:t}:{},role:"listbox","aria-label":this.props.timeCaption},this.renderTimes()))))}}],[{key:"defaultProps",get:function(){return{intervals:30,onTimeChange:function(){},todayButton:null,timeCaption:"Time"}}}]),r}(de.default.Component);St($r,"calcCenterPosition",(function(e,t){return t.offsetTop-(e/2-t.clientHeight/2)}));var Gr=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"YEAR_REFS",Yt(Array(a.props.yearItemNumber)).map((function(){return de.default.createRef()}))),St(Pt(a),"isDisabled",(function(e){return nr(e,a.props)})),St(Pt(a),"isExcluded",(function(e){return or(e,a.props)})),St(Pt(a),"selectingDate",(function(){var e;return null!==(e=a.props.selectingDate)&&void 0!==e?e:a.props.preSelection})),St(Pt(a),"updateFocusOnPaginate",(function(e){var t=function(){this.YEAR_REFS[e].current.focus()}.bind(Pt(a));window.requestAnimationFrame(t)})),St(Pt(a),"handleYearClick",(function(e,t){a.props.onDayClick&&a.props.onDayClick(e,t)})),St(Pt(a),"handleYearNavigation",(function(e,t){var r=a.props,n=r.date,o=r.yearItemNumber,s=Mr(n,o).startPeriod;a.isDisabled(t)||a.isExcluded(t)||(a.props.setPreSelection(t),e-s==-1?a.updateFocusOnPaginate(o-1):e-s===o?a.updateFocusOnPaginate(0):a.YEAR_REFS[e-s].current.focus())})),St(Pt(a),"isSameDay",(function(e,t){return Jt(e,t)})),St(Pt(a),"isCurrentYear",(function(e){return e===Le.default(At())})),St(Pt(a),"isRangeStart",(function(e){return a.props.startDate&&a.props.endDate&&zt(We.default(At(),e),a.props.startDate)})),St(Pt(a),"isRangeEnd",(function(e){return a.props.startDate&&a.props.endDate&&zt(We.default(At(),e),a.props.endDate)})),St(Pt(a),"isInRange",(function(e){return lr(e,a.props.startDate,a.props.endDate)})),St(Pt(a),"isInSelectingRange",(function(e){var t=a.props,r=t.selectsStart,n=t.selectsEnd,o=t.selectsRange,s=t.startDate,i=t.endDate;return!(!(r||n||o)||!a.selectingDate())&&(r&&i?lr(e,a.selectingDate(),i):(n&&s||!(!o||!s||i))&&lr(e,s,a.selectingDate()))})),St(Pt(a),"isSelectingRangeStart",(function(e){if(!a.isInSelectingRange(e))return!1;var t=a.props,r=t.startDate,n=t.selectsStart,o=We.default(At(),e);return zt(o,n?a.selectingDate():r)})),St(Pt(a),"isSelectingRangeEnd",(function(e){if(!a.isInSelectingRange(e))return!1;var t=a.props,r=t.endDate,n=t.selectsEnd,o=t.selectsRange,s=We.default(At(),e);return zt(s,n||o?a.selectingDate():r)})),St(Pt(a),"isKeyboardSelected",(function(e){var t=jt(We.default(a.props.date,e));return!a.props.disabledKeyboardNavigation&&!a.props.inline&&!Jt(t,jt(a.props.selected))&&Jt(t,jt(a.props.preSelection))})),St(Pt(a),"onYearClick",(function(e,t){var r=a.props.date;a.handleYearClick(jt(We.default(r,t)),e)})),St(Pt(a),"onYearKeyDown",(function(e,t){var r=e.key;if(!a.props.disabledKeyboardNavigation)switch(r){case"Enter":a.onYearClick(e,t),a.props.setPreSelection(a.props.selected);break;case"ArrowRight":a.handleYearNavigation(t+1,be.default(a.props.preSelection,1));break;case"ArrowLeft":a.handleYearNavigation(t-1,Ee.default(a.props.preSelection,1))}})),St(Pt(a),"getYearClassNames",(function(e){var t=a.props,r=t.minDate,n=t.maxDate,o=t.selected,s=t.excludeDates,i=t.includeDates,p=t.filterDate;return ue.default("react-datepicker__year-text",{"react-datepicker__year-text--selected":e===Le.default(o),"react-datepicker__year-text--disabled":(r||n||s||i||p)&&cr(e,a.props),"react-datepicker__year-text--keyboard-selected":a.isKeyboardSelected(e),"react-datepicker__year-text--range-start":a.isRangeStart(e),"react-datepicker__year-text--range-end":a.isRangeEnd(e),"react-datepicker__year-text--in-range":a.isInRange(e),"react-datepicker__year-text--in-selecting-range":a.isInSelectingRange(e),"react-datepicker__year-text--selecting-range-start":a.isSelectingRangeStart(e),"react-datepicker__year-text--selecting-range-end":a.isSelectingRangeEnd(e),"react-datepicker__year-text--today":a.isCurrentYear(e)})})),St(Pt(a),"getYearTabIndex",(function(e){return a.props.disabledKeyboardNavigation?"-1":e===Le.default(a.props.preSelection)?"0":"-1"})),St(Pt(a),"getYearContainerClassNames",(function(){var e=a.props,t=e.selectingDate,r=e.selectsStart,n=e.selectsEnd,o=e.selectsRange;return ue.default("react-datepicker__year",{"react-datepicker__year--selecting-range":t&&(r||n||o)})})),St(Pt(a),"getYearContent",(function(e){return a.props.renderYearContent?a.props.renderYearContent(e):e})),a}return bt(r,[{key:"render",value:function(){for(var e=this,t=[],r=this.props,a=r.date,n=r.yearItemNumber,o=r.onYearMouseEnter,s=r.onYearMouseLeave,i=Mr(a,n),p=i.startPeriod,l=i.endPeriod,c=function(r){t.push(de.default.createElement("div",{ref:e.YEAR_REFS[r-p],onClick:function(t){e.onYearClick(t,r)},onKeyDown:function(t){e.onYearKeyDown(t,r)},tabIndex:e.getYearTabIndex(r),className:e.getYearClassNames(r),onMouseEnter:function(e){return o(e,r)},onMouseLeave:function(e){return s(e,r)},key:r,"aria-current":e.isCurrentYear(r)?"date":void 0},e.getYearContent(r)))},d=p;d<=l;d++)c(d);return de.default.createElement("div",{className:this.getYearContainerClassNames()},de.default.createElement("div",{className:"react-datepicker__year-wrapper",onMouseLeave:this.props.clearSelectingDate},t))}}]),r}(de.default.Component),Jr=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"onTimeChange",(function(e){a.setState({time:e});var t=new Date;t.setHours(e.split(":")[0]),t.setMinutes(e.split(":")[1]),a.props.onChange(t)})),St(Pt(a),"renderTimeInput",(function(){var e=a.state.time,t=a.props,r=t.date,n=t.timeString,o=t.customTimeInput;return o?de.default.cloneElement(o,{date:r,value:e,onChange:a.onTimeChange}):de.default.createElement("input",{type:"time",className:"react-datepicker-time__input",placeholder:"Time",name:"time-input",required:!0,value:e,onChange:function(e){a.onTimeChange(e.target.value||n)}})})),a.state={time:a.props.timeString},a}return bt(r,[{key:"render",value:function(){return de.default.createElement("div",{className:"react-datepicker__input-time-container"},de.default.createElement("div",{className:"react-datepicker-time__caption"},this.props.timeInputLabel),de.default.createElement("div",{className:"react-datepicker-time__input-container"},de.default.createElement("div",{className:"react-datepicker-time__input"},this.renderTimeInput())))}}],[{key:"getDerivedStateFromProps",value:function(e,t){return e.timeString!==t.time?{time:e.timeString}:null}}]),r}(de.default.Component);function Xr(e){var t=e.className,r=e.children,a=e.showPopperArrow,n=e.arrowProps,o=void 0===n?{}:n;return de.default.createElement("div",{className:t},a&&de.default.createElement("div",Ct({className:"react-datepicker__triangle"},o)),r)}var Zr=["react-datepicker__year-select","react-datepicker__month-select","react-datepicker__month-year-select"],ea=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"handleClickOutside",(function(e){a.props.onClickOutside(e)})),St(Pt(a),"setClickOutsideRef",(function(){return a.containerRef.current})),St(Pt(a),"handleDropdownFocus",(function(e){(function(){var e=((arguments.length>0&&void 0!==arguments[0]?arguments[0]:{}).className||"").split(/\s+/);return Zr.some((function(t){return e.indexOf(t)>=0}))})(e.target)&&a.props.onDropdownFocus()})),St(Pt(a),"getDateInView",(function(){var e=a.props,t=e.preSelection,r=e.selected,n=e.openToDate,o=wr(a.props),s=kr(a.props),i=At(),p=n||r||t;return p||(o&&lt.default(i,o)?o:s&&pt.default(i,s)?s:i)})),St(Pt(a),"increaseMonth",(function(){a.setState((function(e){var t=e.date;return{date:we.default(t,1)}}),(function(){return a.handleMonthChange(a.state.date)}))})),St(Pt(a),"decreaseMonth",(function(){a.setState((function(e){var t=e.date;return{date:_e.default(t,1)}}),(function(){return a.handleMonthChange(a.state.date)}))})),St(Pt(a),"handleDayClick",(function(e,t,r){a.props.onSelect(e,t,r),a.props.setPreSelection&&a.props.setPreSelection(e)})),St(Pt(a),"handleDayMouseEnter",(function(e){a.setState({selectingDate:e}),a.props.onDayMouseEnter&&a.props.onDayMouseEnter(e)})),St(Pt(a),"handleMonthMouseLeave",(function(){a.setState({selectingDate:null}),a.props.onMonthMouseLeave&&a.props.onMonthMouseLeave()})),St(Pt(a),"handleYearMouseEnter",(function(e,t){a.setState({selectingDate:We.default(At(),t)}),a.props.onYearMouseEnter&&a.props.onYearMouseEnter(e,t)})),St(Pt(a),"handleYearMouseLeave",(function(e,t){a.props.onYearMouseLeave&&a.props.onYearMouseLeave(e,t)})),St(Pt(a),"handleYearChange",(function(e){a.props.onYearChange&&(a.props.onYearChange(e),a.setState({isRenderAriaLiveMessage:!0})),a.props.adjustDateOnChange&&(a.props.onSelect&&a.props.onSelect(e),a.props.setOpen&&a.props.setOpen(!0)),a.props.setPreSelection&&a.props.setPreSelection(e)})),St(Pt(a),"handleMonthChange",(function(e){a.handleCustomMonthChange(e),a.props.adjustDateOnChange&&(a.props.onSelect&&a.props.onSelect(e),a.props.setOpen&&a.props.setOpen(!0)),a.props.setPreSelection&&a.props.setPreSelection(e)})),St(Pt(a),"handleCustomMonthChange",(function(e){a.props.onMonthChange&&(a.props.onMonthChange(e),a.setState({isRenderAriaLiveMessage:!0}))})),St(Pt(a),"handleMonthYearChange",(function(e){a.handleYearChange(e),a.handleMonthChange(e)})),St(Pt(a),"changeYear",(function(e){a.setState((function(t){var r=t.date;return{date:We.default(r,e)}}),(function(){return a.handleYearChange(a.state.date)}))})),St(Pt(a),"changeMonth",(function(e){a.setState((function(t){var r=t.date;return{date:Ke.default(r,e)}}),(function(){return a.handleMonthChange(a.state.date)}))})),St(Pt(a),"changeMonthYear",(function(e){a.setState((function(t){var r=t.date;return{date:We.default(Ke.default(r,Te.default(e)),Le.default(e))}}),(function(){return a.handleMonthYearChange(a.state.date)}))})),St(Pt(a),"header",(function(){var e=Wt(arguments.length>0&&void 0!==arguments[0]?arguments[0]:a.state.date,a.props.locale,a.props.calendarStartDay),t=[];return a.props.showWeekNumbers&&t.push(de.default.createElement("div",{key:"W",className:"react-datepicker__day-name"},a.props.weekLabel||"#")),t.concat([0,1,2,3,4,5,6].map((function(t){var r=De.default(e,t),n=a.formatWeekday(r,a.props.locale),o=a.props.weekDayClassName?a.props.weekDayClassName(r):void 0;return de.default.createElement("div",{key:t,className:ue.default("react-datepicker__day-name",o)},n)})))})),St(Pt(a),"formatWeekday",(function(e,t){return a.props.formatWeekDay?function(e,t,r){return t(Qt(e,"EEEE",r))}(e,a.props.formatWeekDay,t):a.props.useWeekdaysShort?function(e,t){return Qt(e,"EEE",t)}(e,t):function(e,t){return Qt(e,"EEEEEE",t)}(e,t)})),St(Pt(a),"decreaseYear",(function(){a.setState((function(e){var t=e.date;return{date:Ee.default(t,a.props.showYearPicker?a.props.yearItemNumber:1)}}),(function(){return a.handleYearChange(a.state.date)}))})),St(Pt(a),"clearSelectingDate",(function(){a.setState({selectingDate:null})})),St(Pt(a),"renderPreviousButton",(function(){if(!a.props.renderCustomHeader){var e;switch(!0){case a.props.showMonthYearPicker:e=Dr(a.state.date,a.props);break;case a.props.showYearPicker:e=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.minDate,a=t.yearItemNumber,n=void 0===a?Lt:a,o=Mr(jt(Ee.default(e,n)),n).endPeriod,s=r&&Le.default(r);return s&&s>o||!1}(a.state.date,a.props);break;default:e=yr(a.state.date,a.props)}if((a.props.forceShowMonthNavigation||a.props.showDisabledMonthNavigation||!e)&&!a.props.showTimeSelectOnly){var t=["react-datepicker__navigation","react-datepicker__navigation--previous"],r=a.decreaseMonth;(a.props.showMonthYearPicker||a.props.showQuarterYearPicker||a.props.showYearPicker)&&(r=a.decreaseYear),e&&a.props.showDisabledMonthNavigation&&(t.push("react-datepicker__navigation--previous--disabled"),r=null);var n=a.props.showMonthYearPicker||a.props.showQuarterYearPicker||a.props.showYearPicker,o=a.props,s=o.previousMonthButtonLabel,i=o.previousYearButtonLabel,p=a.props,l=p.previousMonthAriaLabel,c=void 0===l?"string"==typeof s?s:"Previous Month":l,d=p.previousYearAriaLabel,u=void 0===d?"string"==typeof i?i:"Previous Year":d;return de.default.createElement("button",{type:"button",className:t.join(" "),onClick:r,onKeyDown:a.props.handleOnKeyDown,"aria-label":n?u:c},de.default.createElement("span",{className:["react-datepicker__navigation-icon","react-datepicker__navigation-icon--previous"].join(" ")},n?a.props.previousYearButtonLabel:a.props.previousMonthButtonLabel))}}})),St(Pt(a),"increaseYear",(function(){a.setState((function(e){var t=e.date;return{date:be.default(t,a.props.showYearPicker?a.props.yearItemNumber:1)}}),(function(){return a.handleYearChange(a.state.date)}))})),St(Pt(a),"renderNextButton",(function(){if(!a.props.renderCustomHeader){var e;switch(!0){case a.props.showMonthYearPicker:e=gr(a.state.date,a.props);break;case a.props.showYearPicker:e=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.maxDate,a=t.yearItemNumber,n=void 0===a?Lt:a,o=Mr(be.default(e,n),n).startPeriod,s=r&&Le.default(r);return s&&s<o||!1}(a.state.date,a.props);break;default:e=vr(a.state.date,a.props)}if((a.props.forceShowMonthNavigation||a.props.showDisabledMonthNavigation||!e)&&!a.props.showTimeSelectOnly){var t=["react-datepicker__navigation","react-datepicker__navigation--next"];a.props.showTimeSelect&&t.push("react-datepicker__navigation--next--with-time"),a.props.todayButton&&t.push("react-datepicker__navigation--next--with-today-button");var r=a.increaseMonth;(a.props.showMonthYearPicker||a.props.showQuarterYearPicker||a.props.showYearPicker)&&(r=a.increaseYear),e&&a.props.showDisabledMonthNavigation&&(t.push("react-datepicker__navigation--next--disabled"),r=null);var n=a.props.showMonthYearPicker||a.props.showQuarterYearPicker||a.props.showYearPicker,o=a.props,s=o.nextMonthButtonLabel,i=o.nextYearButtonLabel,p=a.props,l=p.nextMonthAriaLabel,c=void 0===l?"string"==typeof s?s:"Next Month":l,d=p.nextYearAriaLabel,u=void 0===d?"string"==typeof i?i:"Next Year":d;return de.default.createElement("button",{type:"button",className:t.join(" "),onClick:r,onKeyDown:a.props.handleOnKeyDown,"aria-label":n?u:c},de.default.createElement("span",{className:["react-datepicker__navigation-icon","react-datepicker__navigation-icon--next"].join(" ")},n?a.props.nextYearButtonLabel:a.props.nextMonthButtonLabel))}}})),St(Pt(a),"renderCurrentMonth",(function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:a.state.date,t=["react-datepicker__current-month"];return a.props.showYearDropdown&&t.push("react-datepicker__current-month--hasYearDropdown"),a.props.showMonthDropdown&&t.push("react-datepicker__current-month--hasMonthDropdown"),a.props.showMonthYearDropdown&&t.push("react-datepicker__current-month--hasMonthYearDropdown"),de.default.createElement("div",{className:t.join(" ")},Qt(e,a.props.dateFormat,a.props.locale))})),St(Pt(a),"renderYearDropdown",(function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(a.props.showYearDropdown&&!e)return de.default.createElement(xr,{adjustDateOnChange:a.props.adjustDateOnChange,date:a.state.date,onSelect:a.props.onSelect,setOpen:a.props.setOpen,dropdownMode:a.props.dropdownMode,onChange:a.changeYear,minDate:a.props.minDate,maxDate:a.props.maxDate,year:Le.default(a.state.date),scrollableYearDropdown:a.props.scrollableYearDropdown,yearDropdownItemNumber:a.props.yearDropdownItemNumber})})),St(Pt(a),"renderMonthDropdown",(function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(a.props.showMonthDropdown&&!e)return de.default.createElement(Tr,{dropdownMode:a.props.dropdownMode,locale:a.props.locale,onChange:a.changeMonth,month:Te.default(a.state.date),useShortMonthInDropdown:a.props.useShortMonthInDropdown})})),St(Pt(a),"renderMonthYearDropdown",(function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(a.props.showMonthYearDropdown&&!e)return de.default.createElement(qr,{dropdownMode:a.props.dropdownMode,locale:a.props.locale,dateFormat:a.props.dateFormat,onChange:a.changeMonthYear,minDate:a.props.minDate,maxDate:a.props.maxDate,date:a.state.date,scrollableMonthYearDropdown:a.props.scrollableMonthYearDropdown})})),St(Pt(a),"handleTodayButtonClick",(function(e){a.props.onSelect(Ut(),e),a.props.setPreSelection&&a.props.setPreSelection(Ut())})),St(Pt(a),"renderTodayButton",(function(){if(a.props.todayButton&&!a.props.showTimeSelectOnly)return de.default.createElement("div",{className:"react-datepicker__today-button",onClick:function(e){return a.handleTodayButtonClick(e)}},a.props.todayButton)})),St(Pt(a),"renderDefaultHeader",(function(e){var t=e.monthDate,r=e.i;return de.default.createElement("div",{className:"react-datepicker__header ".concat(a.props.showTimeSelect?"react-datepicker__header--has-time-select":"")},a.renderCurrentMonth(t),de.default.createElement("div",{className:"react-datepicker__header__dropdown react-datepicker__header__dropdown--".concat(a.props.dropdownMode),onFocus:a.handleDropdownFocus},a.renderMonthDropdown(0!==r),a.renderMonthYearDropdown(0!==r),a.renderYearDropdown(0!==r)),de.default.createElement("div",{className:"react-datepicker__day-names"},a.header(t)))})),St(Pt(a),"renderCustomHeader",(function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.monthDate,r=e.i;if(a.props.showTimeSelect&&!a.state.monthContainer||a.props.showTimeSelectOnly)return null;var n=yr(a.state.date,a.props),o=vr(a.state.date,a.props),s=Dr(a.state.date,a.props),i=gr(a.state.date,a.props),p=!a.props.showMonthYearPicker&&!a.props.showQuarterYearPicker&&!a.props.showYearPicker;return de.default.createElement("div",{className:"react-datepicker__header react-datepicker__header--custom",onFocus:a.props.onDropdownFocus},a.props.renderCustomHeader(Dt(Dt({},a.state),{},{customHeaderCount:r,monthDate:t,changeMonth:a.changeMonth,changeYear:a.changeYear,decreaseMonth:a.decreaseMonth,increaseMonth:a.increaseMonth,decreaseYear:a.decreaseYear,increaseYear:a.increaseYear,prevMonthButtonDisabled:n,nextMonthButtonDisabled:o,prevYearButtonDisabled:s,nextYearButtonDisabled:i})),p&&de.default.createElement("div",{className:"react-datepicker__day-names"},a.header(t)))})),St(Pt(a),"renderYearHeader",(function(){var e=a.state.date,t=a.props,r=t.showYearPicker,n=Mr(e,t.yearItemNumber),o=n.startPeriod,s=n.endPeriod;return de.default.createElement("div",{className:"react-datepicker__header react-datepicker-year-header"},r?"".concat(o," - ").concat(s):Le.default(e))})),St(Pt(a),"renderHeader",(function(e){switch(!0){case void 0!==a.props.renderCustomHeader:return a.renderCustomHeader(e);case a.props.showMonthYearPicker||a.props.showQuarterYearPicker||a.props.showYearPicker:return a.renderYearHeader(e);default:return a.renderDefaultHeader(e)}})),St(Pt(a),"renderMonths",(function(){var e;if(!a.props.showTimeSelectOnly&&!a.props.showYearPicker){for(var t=[],r=a.props.showPreviousMonths?a.props.monthsShown-1:0,n=_e.default(a.state.date,r),o=null!==(e=a.props.monthSelectedIn)&&void 0!==e?e:r,s=0;s<a.props.monthsShown;++s){var i=s-o+r,p=we.default(n,i),l="month-".concat(s),c=s<a.props.monthsShown-1,d=s>0;t.push(de.default.createElement("div",{key:l,ref:function(e){a.monthContainer=e},className:"react-datepicker__month-container"},a.renderHeader({monthDate:p,i:s}),de.default.createElement(zr,{chooseDayAriaLabelPrefix:a.props.chooseDayAriaLabelPrefix,disabledDayAriaLabelPrefix:a.props.disabledDayAriaLabelPrefix,weekAriaLabelPrefix:a.props.weekAriaLabelPrefix,ariaLabelPrefix:a.props.monthAriaLabelPrefix,onChange:a.changeMonthYear,day:p,dayClassName:a.props.dayClassName,calendarStartDay:a.props.calendarStartDay,monthClassName:a.props.monthClassName,onDayClick:a.handleDayClick,handleOnKeyDown:a.props.handleOnDayKeyDown,onDayMouseEnter:a.handleDayMouseEnter,onMouseLeave:a.handleMonthMouseLeave,onWeekSelect:a.props.onWeekSelect,orderInDisplay:s,formatWeekNumber:a.props.formatWeekNumber,locale:a.props.locale,minDate:a.props.minDate,maxDate:a.props.maxDate,excludeDates:a.props.excludeDates,excludeDateIntervals:a.props.excludeDateIntervals,highlightDates:a.props.highlightDates,holidays:a.props.holidays,selectingDate:a.state.selectingDate,includeDates:a.props.includeDates,includeDateIntervals:a.props.includeDateIntervals,inline:a.props.inline,shouldFocusDayInline:a.props.shouldFocusDayInline,fixedHeight:a.props.fixedHeight,filterDate:a.props.filterDate,preSelection:a.props.preSelection,setPreSelection:a.props.setPreSelection,selected:a.props.selected,selectsStart:a.props.selectsStart,selectsEnd:a.props.selectsEnd,selectsRange:a.props.selectsRange,selectsDisabledDaysInRange:a.props.selectsDisabledDaysInRange,showWeekNumbers:a.props.showWeekNumbers,startDate:a.props.startDate,endDate:a.props.endDate,peekNextMonth:a.props.peekNextMonth,setOpen:a.props.setOpen,shouldCloseOnSelect:a.props.shouldCloseOnSelect,renderDayContents:a.props.renderDayContents,renderMonthContent:a.props.renderMonthContent,renderQuarterContent:a.props.renderQuarterContent,renderYearContent:a.props.renderYearContent,disabledKeyboardNavigation:a.props.disabledKeyboardNavigation,showMonthYearPicker:a.props.showMonthYearPicker,showFullMonthYearPicker:a.props.showFullMonthYearPicker,showTwoColumnMonthYearPicker:a.props.showTwoColumnMonthYearPicker,showFourColumnMonthYearPicker:a.props.showFourColumnMonthYearPicker,showYearPicker:a.props.showYearPicker,showQuarterYearPicker:a.props.showQuarterYearPicker,isInputFocused:a.props.isInputFocused,containerRef:a.containerRef,monthShowsDuplicateDaysEnd:c,monthShowsDuplicateDaysStart:d})))}return t}})),St(Pt(a),"renderYears",(function(){if(!a.props.showTimeSelectOnly)return a.props.showYearPicker?de.default.createElement("div",{className:"react-datepicker__year--container"},a.renderHeader(),de.default.createElement(Gr,Ct({onDayClick:a.handleDayClick,selectingDate:a.state.selectingDate,clearSelectingDate:a.clearSelectingDate,date:a.state.date},a.props,{onYearMouseEnter:a.handleYearMouseEnter,onYearMouseLeave:a.handleYearMouseLeave}))):void 0})),St(Pt(a),"renderTimeSection",(function(){if(a.props.showTimeSelect&&(a.state.monthContainer||a.props.showTimeSelectOnly))return de.default.createElement($r,{selected:a.props.selected,openToDate:a.props.openToDate,onChange:a.props.onTimeChange,timeClassName:a.props.timeClassName,format:a.props.timeFormat,includeTimes:a.props.includeTimes,intervals:a.props.timeIntervals,minTime:a.props.minTime,maxTime:a.props.maxTime,excludeTimes:a.props.excludeTimes,filterTime:a.props.filterTime,timeCaption:a.props.timeCaption,todayButton:a.props.todayButton,showMonthDropdown:a.props.showMonthDropdown,showMonthYearDropdown:a.props.showMonthYearDropdown,showYearDropdown:a.props.showYearDropdown,withPortal:a.props.withPortal,monthRef:a.state.monthContainer,injectTimes:a.props.injectTimes,locale:a.props.locale,handleOnKeyDown:a.props.handleOnKeyDown,showTimeSelectOnly:a.props.showTimeSelectOnly})})),St(Pt(a),"renderInputTimeSection",(function(){var e=new Date(a.props.selected),t=qt(e)&&Boolean(a.props.selected)?"".concat(_r(e.getHours()),":").concat(_r(e.getMinutes())):"";if(a.props.showTimeInput)return de.default.createElement(Jr,{date:e,timeString:t,timeInputLabel:a.props.timeInputLabel,onChange:a.props.onTimeChange,customTimeInput:a.props.customTimeInput})})),St(Pt(a),"renderAriaLiveRegion",(function(){var e,t=Mr(a.state.date,a.props.yearItemNumber),r=t.startPeriod,n=t.endPeriod;return e=a.props.showYearPicker?"".concat(r," - ").concat(n):a.props.showMonthYearPicker||a.props.showQuarterYearPicker?Le.default(a.state.date):"".concat(rr(Te.default(a.state.date),a.props.locale)," ").concat(Le.default(a.state.date)),de.default.createElement("span",{role:"alert","aria-live":"polite",className:"react-datepicker__aria-live"},a.state.isRenderAriaLiveMessage&&e)})),St(Pt(a),"renderChildren",(function(){if(a.props.children)return de.default.createElement("div",{className:"react-datepicker__children-container"},a.props.children)})),a.containerRef=de.default.createRef(),a.state={date:a.getDateInView(),selectingDate:null,monthContainer:null,isRenderAriaLiveMessage:!1},a}return bt(r,[{key:"componentDidMount",value:function(){var e=this;this.props.showTimeSelect&&(this.assignMonthContainer=void e.setState({monthContainer:e.monthContainer}))}},{key:"componentDidUpdate",value:function(e){var t=this;if(!this.props.preSelection||Jt(this.props.preSelection,e.preSelection)&&this.props.monthSelectedIn===e.monthSelectedIn)this.props.openToDate&&!Jt(this.props.openToDate,e.openToDate)&&this.setState({date:this.props.openToDate});else{var r=!$t(this.state.date,this.props.preSelection);this.setState({date:this.props.preSelection},(function(){return r&&t.handleCustomMonthChange(t.state.date)}))}}},{key:"render",value:function(){var e=this.props.container||Xr;return de.default.createElement("div",{ref:this.containerRef},de.default.createElement(e,{className:ue.default("react-datepicker",this.props.className,{"react-datepicker--time-only":this.props.showTimeSelectOnly}),showPopperArrow:this.props.showPopperArrow,arrowProps:this.props.arrowProps},this.renderAriaLiveRegion(),this.renderPreviousButton(),this.renderNextButton(),this.renderMonths(),this.renderYears(),this.renderTodayButton(),this.renderTimeSection(),this.renderInputTimeSection(),this.renderChildren()))}}],[{key:"defaultProps",get:function(){return{onDropdownFocus:function(){},monthsShown:1,forceShowMonthNavigation:!1,timeCaption:"Time",previousYearButtonLabel:"Previous Year",nextYearButtonLabel:"Next Year",previousMonthButtonLabel:"Previous Month",nextMonthButtonLabel:"Next Month",customTimeInput:null,yearItemNumber:Lt}}}]),r}(de.default.Component),ta=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),(a=t.call(this,e)).el=document.createElement("div"),a}return bt(r,[{key:"componentDidMount",value:function(){this.portalRoot=(this.props.portalHost||document).getElementById(this.props.portalId),this.portalRoot||(this.portalRoot=document.createElement("div"),this.portalRoot.setAttribute("id",this.props.portalId),(this.props.portalHost||document.body).appendChild(this.portalRoot)),this.portalRoot.appendChild(this.el)}},{key:"componentWillUnmount",value:function(){this.portalRoot.removeChild(this.el)}},{key:"render",value:function(){return mt.default.createPortal(this.props.children,this.el)}}]),r}(de.default.Component),ra=function(e){return!e.disabled&&-1!==e.tabIndex},aa=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"getTabChildren",(function(){return Array.prototype.slice.call(a.tabLoopRef.current.querySelectorAll("[tabindex], a, button, input, select, textarea"),1,-1).filter(ra)})),St(Pt(a),"handleFocusStart",(function(){var e=a.getTabChildren();e&&e.length>1&&e[e.length-1].focus()})),St(Pt(a),"handleFocusEnd",(function(){var e=a.getTabChildren();e&&e.length>1&&e[0].focus()})),a.tabLoopRef=de.default.createRef(),a}return bt(r,[{key:"render",value:function(){return this.props.enableTabLoop?de.default.createElement("div",{className:"react-datepicker__tab-loop",ref:this.tabLoopRef},de.default.createElement("div",{className:"react-datepicker__tab-loop__start",tabIndex:"0",onFocus:this.handleFocusStart}),this.props.children,de.default.createElement("div",{className:"react-datepicker__tab-loop__end",tabIndex:"0",onFocus:this.handleFocusEnd})):this.props.children}}],[{key:"defaultProps",get:function(){return{enableTabLoop:!0}}}]),r}(de.default.Component),na=function(e){_t(r,e);var t=Nt(r);function r(){return wt(this,r),t.apply(this,arguments)}return bt(r,[{key:"render",value:function(){var e,t=this.props,r=t.className,a=t.wrapperClassName,n=t.hidePopper,o=t.popperComponent,s=t.popperModifiers,i=t.popperPlacement,p=t.popperProps,l=t.targetComponent,c=t.enableTabLoop,d=t.popperOnKeyDown,u=t.portalId,f=t.portalHost;if(!n){var h=ue.default("react-datepicker-popper",r);e=de.default.createElement(pe.Popper,Ct({modifiers:s,placement:i},p),(function(e){var t=e.ref,r=e.style,a=e.placement,n=e.arrowProps;return de.default.createElement(aa,{enableTabLoop:c},de.default.createElement("div",{ref:t,style:r,className:h,"data-placement":a,onKeyDown:d},de.default.cloneElement(o,{arrowProps:n})))}))}this.props.popperContainer&&(e=de.default.createElement(this.props.popperContainer,{},e)),u&&!n&&(e=de.default.createElement(ta,{portalId:u,portalHost:f},e));var m=ue.default("react-datepicker-wrapper",a);return de.default.createElement(pe.Manager,{className:"react-datepicker-manager"},de.default.createElement(pe.Reference,null,(function(e){var t=e.ref;return de.default.createElement("div",{ref:t,className:m},l)})),e)}}],[{key:"defaultProps",get:function(){return{hidePopper:!0,popperModifiers:[],popperProps:{},popperPlacement:"bottom-start"}}}]),r}(de.default.Component),oa="react-datepicker-ignore-onclickoutside",sa=ht.default(ea);var ia="Date input not valid.",pa=function(e){_t(r,e);var t=Nt(r);function r(e){var a;return wt(this,r),St(Pt(a=t.call(this,e)),"getPreSelection",(function(){return a.props.openToDate?a.props.openToDate:a.props.selectsEnd&&a.props.startDate?a.props.startDate:a.props.selectsStart&&a.props.endDate?a.props.endDate:At()})),St(Pt(a),"calcInitialState",(function(){var e,t,r=null===(e=a.props.holidays)||void 0===e?void 0:e.reduce((function(e,t){var r=new Date(t.date);return he.default(r)?[].concat(Yt(e),[Dt(Dt({},t),{},{date:r})]):e}),[]),n=a.getPreSelection(),o=wr(a.props),s=kr(a.props),i=o&&lt.default(n,$e.default(o))?o:s&&pt.default(n,et.default(s))?s:n;return{open:a.props.startOpen||!1,preventFocus:!1,preSelection:null!==(t=a.props.selectsRange?a.props.startDate:a.props.selected)&&void 0!==t?t:i,highlightDates:br(a.props.highlightDates),holidays:Sr(r),focused:!1,shouldFocusDayInline:!1,isRenderAriaLiveMessage:!1}})),St(Pt(a),"clearPreventFocusTimeout",(function(){a.preventFocusTimeout&&clearTimeout(a.preventFocusTimeout)})),St(Pt(a),"setFocus",(function(){a.input&&a.input.focus&&a.input.focus({preventScroll:!0})})),St(Pt(a),"setBlur",(function(){a.input&&a.input.blur&&a.input.blur(),a.cancelFocusInput()})),St(Pt(a),"setOpen",(function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];a.setState({open:e,preSelection:e&&a.state.open?a.state.preSelection:a.calcInitialState().preSelection,lastPreSelectChange:ca},(function(){e||a.setState((function(e){return{focused:!!t&&e.focused}}),(function(){!t&&a.setBlur(),a.setState({inputValue:null})}))}))})),St(Pt(a),"inputOk",(function(){return fe.default(a.state.preSelection)})),St(Pt(a),"isCalendarOpen",(function(){return void 0===a.props.open?a.state.open&&!a.props.disabled&&!a.props.readOnly:a.props.open})),St(Pt(a),"handleFocus",(function(e){a.state.preventFocus||(a.props.onFocus(e),a.props.preventOpenOnFocus||a.props.readOnly||a.setOpen(!0)),a.setState({focused:!0})})),St(Pt(a),"cancelFocusInput",(function(){clearTimeout(a.inputFocusTimeout),a.inputFocusTimeout=null})),St(Pt(a),"deferFocusInput",(function(){a.cancelFocusInput(),a.inputFocusTimeout=setTimeout((function(){return a.setFocus()}),1)})),St(Pt(a),"handleDropdownFocus",(function(){a.cancelFocusInput()})),St(Pt(a),"handleBlur",(function(e){(!a.state.open||a.props.withPortal||a.props.showTimeInput)&&a.props.onBlur(e),a.setState({focused:!1})})),St(Pt(a),"handleCalendarClickOutside",(function(e){a.props.inline||a.setOpen(!1),a.props.onClickOutside(e),a.props.withPortal&&e.preventDefault()})),St(Pt(a),"handleChange",(function(){for(var e=arguments.length,t=new Array(e),r=0;r<e;r++)t[r]=arguments[r];var n=t[0];if(!a.props.onChangeRaw||(a.props.onChangeRaw.apply(Pt(a),t),"function"==typeof n.isDefaultPrevented&&!n.isDefaultPrevented())){a.setState({inputValue:n.target.value,lastPreSelectChange:la});var o,s,i,p,l,c,d,u,f=(o=n.target.value,s=a.props.dateFormat,i=a.props.locale,p=a.props.strictParsing,l=a.props.minDate,c=null,d=tr(i)||tr(er()),u=!0,Array.isArray(s)?(s.forEach((function(e){var t=ut.default(o,e,new Date,{locale:d});p&&(u=qt(t,l)&&o===Qt(t,e,i)),qt(t,l)&&u&&(c=t)})),c):(c=ut.default(o,s,new Date,{locale:d}),p?u=qt(c)&&o===Qt(c,s,i):qt(c)||(s=s.match(Ft).map((function(e){var t=e[0];return"p"===t||"P"===t?d?(0,Rt[t])(e,d.formatLong):t:e})).join(""),o.length>0&&(c=ut.default(o,s.slice(0,o.length),new Date)),qt(c)||(c=new Date(o))),qt(c)&&u?c:null));a.props.showTimeSelectOnly&&a.props.selected&&!Jt(f,a.props.selected)&&(f=null==f?yt.default(a.props.selected,{hours:Ye.default(a.props.selected),minutes:Ne.default(a.props.selected),seconds:Pe.default(a.props.selected)}):yt.default(a.props.selected,{hours:Ye.default(f),minutes:Ne.default(f),seconds:Pe.default(f)})),!f&&n.target.value||a.setSelected(f,n,!0)}})),St(Pt(a),"handleSelect",(function(e,t,r){if(a.setState({preventFocus:!0},(function(){return a.preventFocusTimeout=setTimeout((function(){return a.setState({preventFocus:!1})}),50),a.preventFocusTimeout})),a.props.onChangeRaw&&a.props.onChangeRaw(t),a.setSelected(e,t,!1,r),a.props.showDateSelect&&a.setState({isRenderAriaLiveMessage:!0}),!a.props.shouldCloseOnSelect||a.props.showTimeSelect)a.setPreSelection(e);else if(!a.props.inline){a.props.selectsRange||a.setOpen(!1);var n=a.props,o=n.startDate,s=n.endDate;!o||s||lt.default(e,o)||a.setOpen(!1)}})),St(Pt(a),"setSelected",(function(e,t,r,n){var o=e;if(a.props.showYearPicker){if(null!==o&&cr(Le.default(o),a.props))return}else if(a.props.showMonthYearPicker){if(null!==o&&sr(o,a.props))return}else if(null!==o&&nr(o,a.props))return;var s=a.props,i=s.onChange,p=s.selectsRange,l=s.startDate,c=s.endDate;if(!Xt(a.props.selected,o)||a.props.allowSameDay||p)if(null!==o&&(!a.props.selected||r&&(a.props.showTimeSelect||a.props.showTimeSelectOnly||a.props.showTimeInput)||(o=Bt(o,{hour:Ye.default(a.props.selected),minute:Ne.default(a.props.selected),second:Pe.default(a.props.selected)})),a.props.inline||a.setState({preSelection:o}),a.props.focusSelectedMonth||a.setState({monthSelectedIn:n})),p){var d=l&&!c,u=l&&c;!l&&!c?i([o,null],t):d&&(lt.default(o,l)?i([o,null],t):i([l,o],t)),u&&i([o,null],t)}else i(o,t);r||(a.props.onSelect(o,t),a.setState({inputValue:null}))})),St(Pt(a),"setPreSelection",(function(e){var t=void 0!==a.props.minDate,r=void 0!==a.props.maxDate,n=!0;if(e){var o=$e.default(e);if(t&&r)n=Zt(e,a.props.minDate,a.props.maxDate);else if(t){var s=$e.default(a.props.minDate);n=pt.default(e,s)||Xt(o,s)}else if(r){var i=et.default(a.props.maxDate);n=lt.default(e,i)||Xt(o,i)}}n&&a.setState({preSelection:e})})),St(Pt(a),"handleTimeChange",(function(e){var t=a.props.selected?a.props.selected:a.getPreSelection(),r=a.props.selected?e:Bt(t,{hour:Ye.default(e),minute:Ne.default(e)});a.setState({preSelection:r}),a.props.onChange(r),a.props.shouldCloseOnSelect&&a.setOpen(!1),a.props.showTimeInput&&a.setOpen(!0),(a.props.showTimeSelectOnly||a.props.showTimeSelect)&&a.setState({isRenderAriaLiveMessage:!0}),a.setState({inputValue:null})})),St(Pt(a),"onInputClick",(function(){a.props.disabled||a.props.readOnly||a.setOpen(!0),a.props.onInputClick()})),St(Pt(a),"onInputKeyDown",(function(e){a.props.onKeyDown(e);var t=e.key;if(a.state.open||a.props.inline||a.props.preventOpenOnFocus){if(a.state.open){if("ArrowDown"===t||"ArrowUp"===t){e.preventDefault();var r=a.calendar.componentNode&&a.calendar.componentNode.querySelector('.react-datepicker__day[tabindex="0"]');return void(r&&r.focus({preventScroll:!0}))}var n=At(a.state.preSelection);"Enter"===t?(e.preventDefault(),a.inputOk()&&a.state.lastPreSelectChange===ca?(a.handleSelect(n,e),!a.props.shouldCloseOnSelect&&a.setPreSelection(n)):a.setOpen(!1)):"Escape"===t?(e.preventDefault(),a.setOpen(!1)):"Tab"===t&&a.setOpen(!1),a.inputOk()||a.props.onInputError({code:1,msg:ia})}}else"ArrowDown"!==t&&"ArrowUp"!==t&&"Enter"!==t||a.onInputClick()})),St(Pt(a),"onPortalKeyDown",(function(e){"Escape"===e.key&&(e.preventDefault(),a.setState({preventFocus:!0},(function(){a.setOpen(!1),setTimeout((function(){a.setFocus(),a.setState({preventFocus:!1})}))})))})),St(Pt(a),"onDayKeyDown",(function(e){a.props.onKeyDown(e);var t=e.key,r=At(a.state.preSelection);if("Enter"===t)e.preventDefault(),a.handleSelect(r,e),!a.props.shouldCloseOnSelect&&a.setPreSelection(r);else if("Escape"===t)e.preventDefault(),a.setOpen(!1),a.inputOk()||a.props.onInputError({code:1,msg:ia});else if(!a.props.disabledKeyboardNavigation){var n;switch(t){case"ArrowLeft":n=Se.default(r,1);break;case"ArrowRight":n=De.default(r,1);break;case"ArrowUp":n=Ce.default(r,1);break;case"ArrowDown":n=ge.default(r,1);break;case"PageUp":n=_e.default(r,1);break;case"PageDown":n=we.default(r,1);break;case"Home":n=Ee.default(r,1);break;case"End":n=be.default(r,1)}if(!n)return void(a.props.onInputError&&a.props.onInputError({code:1,msg:ia}));if(e.preventDefault(),a.setState({lastPreSelectChange:ca}),a.props.adjustDateOnChange&&a.setSelected(n),a.setPreSelection(n),a.props.inline){var o=Te.default(r),s=Te.default(n),i=Le.default(r),p=Le.default(n);o!==s||i!==p?a.setState({shouldFocusDayInline:!0}):a.setState({shouldFocusDayInline:!1})}}})),St(Pt(a),"onPopperKeyDown",(function(e){"Escape"===e.key&&(e.preventDefault(),a.setState({preventFocus:!0},(function(){a.setOpen(!1),setTimeout((function(){a.setFocus(),a.setState({preventFocus:!1})}))})))})),St(Pt(a),"onClearClick",(function(e){e&&e.preventDefault&&e.preventDefault(),a.props.selectsRange?a.props.onChange([null,null],e):a.props.onChange(null,e),a.setState({inputValue:null})})),St(Pt(a),"clear",(function(){a.onClearClick()})),St(Pt(a),"onScroll",(function(e){"boolean"==typeof a.props.closeOnScroll&&a.props.closeOnScroll?e.target!==document&&e.target!==document.documentElement&&e.target!==document.body||a.setOpen(!1):"function"==typeof a.props.closeOnScroll&&a.props.closeOnScroll(e)&&a.setOpen(!1)})),St(Pt(a),"renderCalendar",(function(){return a.props.inline||a.isCalendarOpen()?de.default.createElement(sa,{ref:function(e){a.calendar=e},locale:a.props.locale,calendarStartDay:a.props.calendarStartDay,chooseDayAriaLabelPrefix:a.props.chooseDayAriaLabelPrefix,disabledDayAriaLabelPrefix:a.props.disabledDayAriaLabelPrefix,weekAriaLabelPrefix:a.props.weekAriaLabelPrefix,monthAriaLabelPrefix:a.props.monthAriaLabelPrefix,adjustDateOnChange:a.props.adjustDateOnChange,setOpen:a.setOpen,shouldCloseOnSelect:a.props.shouldCloseOnSelect,dateFormat:a.props.dateFormatCalendar,useWeekdaysShort:a.props.useWeekdaysShort,formatWeekDay:a.props.formatWeekDay,dropdownMode:a.props.dropdownMode,selected:a.props.selected,preSelection:a.state.preSelection,onSelect:a.handleSelect,onWeekSelect:a.props.onWeekSelect,openToDate:a.props.openToDate,minDate:a.props.minDate,maxDate:a.props.maxDate,selectsStart:a.props.selectsStart,selectsEnd:a.props.selectsEnd,selectsRange:a.props.selectsRange,startDate:a.props.startDate,endDate:a.props.endDate,excludeDates:a.props.excludeDates,excludeDateIntervals:a.props.excludeDateIntervals,filterDate:a.props.filterDate,onClickOutside:a.handleCalendarClickOutside,formatWeekNumber:a.props.formatWeekNumber,highlightDates:a.state.highlightDates,holidays:a.state.holidays,includeDates:a.props.includeDates,includeDateIntervals:a.props.includeDateIntervals,includeTimes:a.props.includeTimes,injectTimes:a.props.injectTimes,inline:a.props.inline,shouldFocusDayInline:a.state.shouldFocusDayInline,peekNextMonth:a.props.peekNextMonth,showMonthDropdown:a.props.showMonthDropdown,showPreviousMonths:a.props.showPreviousMonths,useShortMonthInDropdown:a.props.useShortMonthInDropdown,showMonthYearDropdown:a.props.showMonthYearDropdown,showWeekNumbers:a.props.showWeekNumbers,showYearDropdown:a.props.showYearDropdown,withPortal:a.props.withPortal,forceShowMonthNavigation:a.props.forceShowMonthNavigation,showDisabledMonthNavigation:a.props.showDisabledMonthNavigation,scrollableYearDropdown:a.props.scrollableYearDropdown,scrollableMonthYearDropdown:a.props.scrollableMonthYearDropdown,todayButton:a.props.todayButton,weekLabel:a.props.weekLabel,outsideClickIgnoreClass:oa,fixedHeight:a.props.fixedHeight,monthsShown:a.props.monthsShown,monthSelectedIn:a.state.monthSelectedIn,onDropdownFocus:a.handleDropdownFocus,onMonthChange:a.props.onMonthChange,onYearChange:a.props.onYearChange,dayClassName:a.props.dayClassName,weekDayClassName:a.props.weekDayClassName,monthClassName:a.props.monthClassName,timeClassName:a.props.timeClassName,showDateSelect:a.props.showDateSelect,showTimeSelect:a.props.showTimeSelect,showTimeSelectOnly:a.props.showTimeSelectOnly,onTimeChange:a.handleTimeChange,timeFormat:a.props.timeFormat,timeIntervals:a.props.timeIntervals,minTime:a.props.minTime,maxTime:a.props.maxTime,excludeTimes:a.props.excludeTimes,filterTime:a.props.filterTime,timeCaption:a.props.timeCaption,className:a.props.calendarClassName,container:a.props.calendarContainer,yearItemNumber:a.props.yearItemNumber,yearDropdownItemNumber:a.props.yearDropdownItemNumber,previousMonthAriaLabel:a.props.previousMonthAriaLabel,previousMonthButtonLabel:a.props.previousMonthButtonLabel,nextMonthAriaLabel:a.props.nextMonthAriaLabel,nextMonthButtonLabel:a.props.nextMonthButtonLabel,previousYearAriaLabel:a.props.previousYearAriaLabel,previousYearButtonLabel:a.props.previousYearButtonLabel,nextYearAriaLabel:a.props.nextYearAriaLabel,nextYearButtonLabel:a.props.nextYearButtonLabel,timeInputLabel:a.props.timeInputLabel,disabledKeyboardNavigation:a.props.disabledKeyboardNavigation,renderCustomHeader:a.props.renderCustomHeader,popperProps:a.props.popperProps,renderDayContents:a.props.renderDayContents,renderMonthContent:a.props.renderMonthContent,renderQuarterContent:a.props.renderQuarterContent,renderYearContent:a.props.renderYearContent,onDayMouseEnter:a.props.onDayMouseEnter,onMonthMouseLeave:a.props.onMonthMouseLeave,onYearMouseEnter:a.props.onYearMouseEnter,onYearMouseLeave:a.props.onYearMouseLeave,selectsDisabledDaysInRange:a.props.selectsDisabledDaysInRange,showTimeInput:a.props.showTimeInput,showMonthYearPicker:a.props.showMonthYearPicker,showFullMonthYearPicker:a.props.showFullMonthYearPicker,showTwoColumnMonthYearPicker:a.props.showTwoColumnMonthYearPicker,showFourColumnMonthYearPicker:a.props.showFourColumnMonthYearPicker,showYearPicker:a.props.showYearPicker,showQuarterYearPicker:a.props.showQuarterYearPicker,showPopperArrow:a.props.showPopperArrow,excludeScrollbar:a.props.excludeScrollbar,handleOnKeyDown:a.props.onKeyDown,handleOnDayKeyDown:a.onDayKeyDown,isInputFocused:a.state.focused,customTimeInput:a.props.customTimeInput,setPreSelection:a.setPreSelection},a.props.children):null})),St(Pt(a),"renderAriaLiveRegion",(function(){var e,t=a.props,r=t.dateFormat,n=t.locale,o=a.props.showTimeInput||a.props.showTimeSelect?"PPPPp":"PPPP";return e=a.props.selectsRange?"Selected start date: ".concat(Kt(a.props.startDate,{dateFormat:o,locale:n}),". ").concat(a.props.endDate?"End date: "+Kt(a.props.endDate,{dateFormat:o,locale:n}):""):a.props.showTimeSelectOnly?"Selected time: ".concat(Kt(a.props.selected,{dateFormat:r,locale:n})):a.props.showYearPicker?"Selected year: ".concat(Kt(a.props.selected,{dateFormat:"yyyy",locale:n})):a.props.showMonthYearPicker?"Selected month: ".concat(Kt(a.props.selected,{dateFormat:"MMMM yyyy",locale:n})):a.props.showQuarterYearPicker?"Selected quarter: ".concat(Kt(a.props.selected,{dateFormat:"yyyy, QQQ",locale:n})):"Selected date: ".concat(Kt(a.props.selected,{dateFormat:o,locale:n})),de.default.createElement("span",{role:"alert","aria-live":"polite",className:"react-datepicker__aria-live"},e)})),St(Pt(a),"renderDateInput",(function(){var e,t=ue.default(a.props.className,St({},oa,a.state.open)),r=a.props.customInput||de.default.createElement("input",{type:"text"}),n=a.props.customInputRef||"ref",o="string"==typeof a.props.value?a.props.value:"string"==typeof a.state.inputValue?a.state.inputValue:a.props.selectsRange?function(e,t,r){if(!e)return"";var a=Kt(e,r),n=t?Kt(t,r):"";return"".concat(a," - ").concat(n)}(a.props.startDate,a.props.endDate,a.props):Kt(a.props.selected,a.props);return de.default.cloneElement(r,(St(e={},n,(function(e){a.input=e})),St(e,"value",o),St(e,"onBlur",a.handleBlur),St(e,"onChange",a.handleChange),St(e,"onClick",a.onInputClick),St(e,"onFocus",a.handleFocus),St(e,"onKeyDown",a.onInputKeyDown),St(e,"id",a.props.id),St(e,"name",a.props.name),St(e,"form",a.props.form),St(e,"autoFocus",a.props.autoFocus),St(e,"placeholder",a.props.placeholderText),St(e,"disabled",a.props.disabled),St(e,"autoComplete",a.props.autoComplete),St(e,"className",ue.default(r.props.className,t)),St(e,"title",a.props.title),St(e,"readOnly",a.props.readOnly),St(e,"required",a.props.required),St(e,"tabIndex",a.props.tabIndex),St(e,"aria-describedby",a.props.ariaDescribedBy),St(e,"aria-invalid",a.props.ariaInvalid),St(e,"aria-labelledby",a.props.ariaLabelledBy),St(e,"aria-required",a.props.ariaRequired),e))})),St(Pt(a),"renderClearButton",(function(){var e=a.props,t=e.isClearable,r=e.selected,n=e.startDate,o=e.endDate,s=e.clearButtonTitle,i=e.clearButtonClassName,p=void 0===i?"":i,l=e.ariaLabelClose,c=void 0===l?"Close":l;return!t||null==r&&null==n&&null==o?null:de.default.createElement("button",{type:"button",className:"react-datepicker__close-icon ".concat(p).trim(),"aria-label":c,onClick:a.onClearClick,title:s,tabIndex:-1})})),a.state=a.calcInitialState(),a}return bt(r,[{key:"componentDidMount",value:function(){window.addEventListener("scroll",this.onScroll,!0)}},{key:"componentDidUpdate",value:function(e,t){var r,a;e.inline&&(r=e.selected,a=this.props.selected,r&&a?Te.default(r)!==Te.default(a)||Le.default(r)!==Le.default(a):r!==a)&&this.setPreSelection(this.props.selected),void 0!==this.state.monthSelectedIn&&e.monthsShown!==this.props.monthsShown&&this.setState({monthSelectedIn:0}),e.highlightDates!==this.props.highlightDates&&this.setState({highlightDates:br(this.props.highlightDates)}),t.focused||Xt(e.selected,this.props.selected)||this.setState({inputValue:null}),t.open!==this.state.open&&(!1===t.open&&!0===this.state.open&&this.props.onCalendarOpen(),!0===t.open&&!1===this.state.open&&this.props.onCalendarClose())}},{key:"componentWillUnmount",value:function(){this.clearPreventFocusTimeout(),window.removeEventListener("scroll",this.onScroll,!0)}},{key:"renderInputContainer",value:function(){var e=this.props.showIcon;return de.default.createElement("div",{className:"react-datepicker__input-container".concat(e?" react-datepicker__view-calendar-icon":"")},e&&de.default.createElement("svg",{className:"react-datepicker__calendar-icon",xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 448 512"},de.default.createElement("path",{d:"M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z"})),this.state.isRenderAriaLiveMessage&&this.renderAriaLiveRegion(),this.renderDateInput(),this.renderClearButton())}},{key:"render",value:function(){var e=this.renderCalendar();if(this.props.inline)return e;if(this.props.withPortal){var t=this.state.open?de.default.createElement(aa,{enableTabLoop:this.props.enableTabLoop},de.default.createElement("div",{className:"react-datepicker__portal",tabIndex:-1,onKeyDown:this.onPortalKeyDown},e)):null;return this.state.open&&this.props.portalId&&(t=de.default.createElement(ta,{portalId:this.props.portalId,portalHost:this.props.portalHost},t)),de.default.createElement("div",null,this.renderInputContainer(),t)}return de.default.createElement(na,{className:this.props.popperClassName,wrapperClassName:this.props.wrapperClassName,hidePopper:!this.isCalendarOpen(),portalId:this.props.portalId,portalHost:this.props.portalHost,popperModifiers:this.props.popperModifiers,targetComponent:this.renderInputContainer(),popperContainer:this.props.popperContainer,popperComponent:e,popperPlacement:this.props.popperPlacement,popperProps:this.props.popperProps,popperOnKeyDown:this.onPopperKeyDown,enableTabLoop:this.props.enableTabLoop})}}],[{key:"defaultProps",get:function(){return{allowSameDay:!1,dateFormat:"MM/dd/yyyy",dateFormatCalendar:"LLLL yyyy",onChange:function(){},disabled:!1,disabledKeyboardNavigation:!1,dropdownMode:"scroll",onFocus:function(){},onBlur:function(){},onKeyDown:function(){},onInputClick:function(){},onSelect:function(){},onClickOutside:function(){},onMonthChange:function(){},onCalendarOpen:function(){},onCalendarClose:function(){},preventOpenOnFocus:!1,onYearChange:function(){},onInputError:function(){},monthsShown:1,readOnly:!1,withPortal:!1,selectsDisabledDaysInRange:!1,shouldCloseOnSelect:!0,showTimeSelect:!1,showTimeInput:!1,showPreviousMonths:!1,showMonthYearPicker:!1,showFullMonthYearPicker:!1,showTwoColumnMonthYearPicker:!1,showFourColumnMonthYearPicker:!1,showYearPicker:!1,showQuarterYearPicker:!1,strictParsing:!1,timeIntervals:30,timeCaption:"Time",previousMonthAriaLabel:"Previous Month",previousMonthButtonLabel:"Previous Month",nextMonthAriaLabel:"Next Month",nextMonthButtonLabel:"Next Month",previousYearAriaLabel:"Previous Year",previousYearButtonLabel:"Previous Year",nextYearAriaLabel:"Next Year",nextYearButtonLabel:"Next Year",timeInputLabel:"Time",enableTabLoop:!0,yearItemNumber:Lt,focusSelectedMonth:!1,showPopperArrow:!0,excludeScrollbar:!0,customTimeInput:null,calendarStartDay:void 0}}}]),r}(de.default.Component),la="input",ca="navigate";e.CalendarContainer=Xr,e.default=pa,e.getDefaultLocale=er,e.registerLocale=function(e,t){var r="undefined"!=typeof window?window:globalThis;r.__localeData__||(r.__localeData__={}),r.__localeData__[e]=t},e.setDefaultLocale=function(e){("undefined"!=typeof window?window:globalThis).__localeId__=e},Object.defineProperty(e,"__esModule",{value:!0})}));
 
-},{"classnames":50,"date-fns/addDays":76,"date-fns/addHours":77,"date-fns/addMinutes":79,"date-fns/addMonths":80,"date-fns/addQuarters":81,"date-fns/addWeeks":82,"date-fns/addYears":83,"date-fns/differenceInCalendarDays":85,"date-fns/differenceInCalendarMonths":86,"date-fns/differenceInCalendarYears":87,"date-fns/endOfDay":88,"date-fns/endOfMonth":89,"date-fns/endOfWeek":90,"date-fns/endOfYear":91,"date-fns/format":92,"date-fns/getDate":93,"date-fns/getDay":94,"date-fns/getHours":96,"date-fns/getISOWeek":98,"date-fns/getMinutes":99,"date-fns/getMonth":100,"date-fns/getQuarter":101,"date-fns/getSeconds":102,"date-fns/getTime":103,"date-fns/getYear":104,"date-fns/isAfter":105,"date-fns/isBefore":106,"date-fns/isDate":107,"date-fns/isEqual":108,"date-fns/isSameDay":109,"date-fns/isSameMonth":110,"date-fns/isSameQuarter":111,"date-fns/isSameYear":112,"date-fns/isValid":113,"date-fns/isWithinInterval":114,"date-fns/max":125,"date-fns/min":126,"date-fns/parse":164,"date-fns/parseISO":127,"date-fns/set":171,"date-fns/setHours":165,"date-fns/setMinutes":166,"date-fns/setMonth":167,"date-fns/setQuarter":168,"date-fns/setSeconds":169,"date-fns/setYear":170,"date-fns/startOfDay":172,"date-fns/startOfMonth":175,"date-fns/startOfQuarter":176,"date-fns/startOfWeek":177,"date-fns/startOfYear":178,"date-fns/subDays":179,"date-fns/subMonths":181,"date-fns/subQuarters":182,"date-fns/subWeeks":183,"date-fns/subYears":184,"date-fns/toDate":185,"prop-types":"prop-types","react":"react","react-dom":"react-dom","react-onclickoutside":286,"react-popper":290}],281:[function(require,module,exports){
+},{"classnames":55,"date-fns/addDays":81,"date-fns/addHours":82,"date-fns/addMinutes":84,"date-fns/addMonths":85,"date-fns/addQuarters":86,"date-fns/addWeeks":87,"date-fns/addYears":88,"date-fns/differenceInCalendarDays":90,"date-fns/differenceInCalendarMonths":91,"date-fns/differenceInCalendarYears":92,"date-fns/endOfDay":93,"date-fns/endOfMonth":94,"date-fns/endOfWeek":95,"date-fns/endOfYear":96,"date-fns/format":97,"date-fns/getDate":98,"date-fns/getDay":99,"date-fns/getHours":101,"date-fns/getISOWeek":103,"date-fns/getMinutes":104,"date-fns/getMonth":105,"date-fns/getQuarter":106,"date-fns/getSeconds":107,"date-fns/getTime":108,"date-fns/getYear":109,"date-fns/isAfter":110,"date-fns/isBefore":111,"date-fns/isDate":112,"date-fns/isEqual":113,"date-fns/isSameDay":114,"date-fns/isSameMonth":115,"date-fns/isSameQuarter":116,"date-fns/isSameYear":117,"date-fns/isValid":118,"date-fns/isWithinInterval":119,"date-fns/max":130,"date-fns/min":131,"date-fns/parse":169,"date-fns/parseISO":132,"date-fns/set":176,"date-fns/setHours":170,"date-fns/setMinutes":171,"date-fns/setMonth":172,"date-fns/setQuarter":173,"date-fns/setSeconds":174,"date-fns/setYear":175,"date-fns/startOfDay":177,"date-fns/startOfMonth":180,"date-fns/startOfQuarter":181,"date-fns/startOfWeek":182,"date-fns/startOfYear":183,"date-fns/subDays":184,"date-fns/subMonths":186,"date-fns/subQuarters":187,"date-fns/subWeeks":188,"date-fns/subYears":189,"date-fns/toDate":190,"prop-types":"prop-types","react":"react","react-dom":"react-dom","react-onclickoutside":291,"react-popper":295}],286:[function(require,module,exports){
 'use strict';
 
 var m = require('react-dom');
@@ -23469,7 +23841,7 @@ if ("development" === 'production') {
   };
 }
 
-},{"react-dom":"react-dom"}],282:[function(require,module,exports){
+},{"react-dom":"react-dom"}],287:[function(require,module,exports){
 /* global Map:readonly, Set:readonly, ArrayBuffer:readonly */
 
 var hasElementType = typeof Element !== 'undefined';
@@ -23610,7 +23982,7 @@ module.exports = function isEqual(a, b) {
   }
 };
 
-},{}],283:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 (function (process){
 /** @license React v16.13.1
  * react-is.development.js
@@ -23796,7 +24168,7 @@ exports.typeOf = typeOf;
 
 }).call(this,require('_process'))
 
-},{"_process":266}],284:[function(require,module,exports){
+},{"_process":271}],289:[function(require,module,exports){
 /** @license React v16.13.1
  * react-is.production.min.js
  *
@@ -23813,7 +24185,7 @@ exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;exports.isAsyncMode=f
 exports.isMemo=function(a){return z(a)===r};exports.isPortal=function(a){return z(a)===d};exports.isProfiler=function(a){return z(a)===g};exports.isStrictMode=function(a){return z(a)===f};exports.isSuspense=function(a){return z(a)===p};
 exports.isValidElementType=function(a){return"string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===w||a.$$typeof===x||a.$$typeof===y||a.$$typeof===v)};exports.typeOf=z;
 
-},{}],285:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23825,7 +24197,7 @@ if (process.env.NODE_ENV === 'production') {
 
 }).call(this,require('_process'))
 
-},{"./cjs/react-is.development.js":283,"./cjs/react-is.production.min.js":284,"_process":266}],286:[function(require,module,exports){
+},{"./cjs/react-is.development.js":288,"./cjs/react-is.production.min.js":289,"_process":271}],291:[function(require,module,exports){
 'use strict';Object.defineProperty(exports,'__esModule',{value:true});var react=require('react'),reactDom=require('react-dom');function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
@@ -24180,7 +24552,7 @@ function onClickOutsideHOC(WrappedComponent, config) {
     return WrappedComponent.getClass ? WrappedComponent.getClass() : WrappedComponent;
   }, _temp;
 }exports.IGNORE_CLASS_NAME=IGNORE_CLASS_NAME;exports.default=onClickOutsideHOC;
-},{"react":"react","react-dom":"react-dom"}],287:[function(require,module,exports){
+},{"react":"react","react-dom":"react-dom"}],292:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24224,7 +24596,7 @@ function Manager(_ref) {
     value: handleSetReferenceNode
   }, children));
 }
-},{"react":"react"}],288:[function(require,module,exports){
+},{"react":"react"}],293:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24316,7 +24688,7 @@ function Popper(_ref) {
   }, [setPopperElement, setArrowElement, placement, state, styles, update, forceUpdate]);
   return (0, _utils.unwrapArray)(children)(childrenProps);
 }
-},{"./Manager":287,"./usePopper":291,"./utils":292,"react":"react"}],289:[function(require,module,exports){
+},{"./Manager":292,"./usePopper":296,"./utils":297,"react":"react"}],294:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24360,7 +24732,7 @@ function Reference(_ref) {
     ref: refHandler
   });
 }
-},{"./Manager":287,"./utils":292,"react":"react","warning":314}],290:[function(require,module,exports){
+},{"./Manager":292,"./utils":297,"react":"react","warning":326}],295:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24398,7 +24770,7 @@ var _Manager = require("./Manager");
 var _Reference = require("./Reference");
 
 var _usePopper = require("./usePopper");
-},{"./Manager":287,"./Popper":288,"./Reference":289,"./usePopper":291}],291:[function(require,module,exports){
+},{"./Manager":292,"./Popper":293,"./Reference":294,"./usePopper":296}],296:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24522,7 +24894,7 @@ var usePopper = function usePopper(referenceElement, popperElement, options) {
 };
 
 exports.usePopper = usePopper;
-},{"./utils":292,"@popperjs/core":46,"react":"react","react-dom":"react-dom","react-fast-compare":282}],292:[function(require,module,exports){
+},{"./utils":297,"@popperjs/core":51,"react":"react","react-dom":"react-dom","react-fast-compare":287}],297:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24599,7 +24971,8242 @@ var fromEntries = function fromEntries(entries) {
 exports.fromEntries = fromEntries;
 var useIsomorphicLayoutEffect = typeof window !== 'undefined' && window.document && window.document.createElement ? React.useLayoutEffect : React.useEffect;
 exports.useIsomorphicLayoutEffect = useIsomorphicLayoutEffect;
-},{"react":"react"}],293:[function(require,module,exports){
+},{"react":"react"}],298:[function(require,module,exports){
+(function (process){
+/**
+ * React Router DOM v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+'use strict';
+
+/* eslint-env node */
+
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./umd/react-router-dom.production.min.js");
+} else {
+  module.exports = require("./umd/react-router-dom.development.js");
+}
+
+}).call(this,require('_process'))
+
+},{"./umd/react-router-dom.development.js":299,"./umd/react-router-dom.production.min.js":300,"_process":271}],299:[function(require,module,exports){
+/**
+ * React Router DOM v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('react-dom'), require('react-router'), require('@remix-run/router')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'react', 'react-dom', 'react-router', '@remix-run/router'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactRouterDOM = {}, global.React, global.ReactDOM, global.ReactRouter, global.RemixRouter));
+})(this, (function (exports, React, ReactDOM, reactRouter, router) { 'use strict';
+
+  function _interopNamespace(e) {
+    if (e && e.__esModule) return e;
+    var n = Object.create(null);
+    if (e) {
+      Object.keys(e).forEach(function (k) {
+        if (k !== 'default') {
+          var d = Object.getOwnPropertyDescriptor(e, k);
+          Object.defineProperty(n, k, d.get ? d : {
+            enumerable: true,
+            get: function () { return e[k]; }
+          });
+        }
+      });
+    }
+    n["default"] = e;
+    return Object.freeze(n);
+  }
+
+  var React__namespace = /*#__PURE__*/_interopNamespace(React);
+  var ReactDOM__namespace = /*#__PURE__*/_interopNamespace(ReactDOM);
+
+  function _extends() {
+    _extends = Object.assign ? Object.assign.bind() : function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    return _extends.apply(this, arguments);
+  }
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+    return target;
+  }
+
+  const defaultMethod = "get";
+  const defaultEncType = "application/x-www-form-urlencoded";
+  function isHtmlElement(object) {
+    return object != null && typeof object.tagName === "string";
+  }
+  function isButtonElement(object) {
+    return isHtmlElement(object) && object.tagName.toLowerCase() === "button";
+  }
+  function isFormElement(object) {
+    return isHtmlElement(object) && object.tagName.toLowerCase() === "form";
+  }
+  function isInputElement(object) {
+    return isHtmlElement(object) && object.tagName.toLowerCase() === "input";
+  }
+  function isModifiedEvent(event) {
+    return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+  }
+  function shouldProcessLinkClick(event, target) {
+    return event.button === 0 && (
+    // Ignore everything but left clicks
+    !target || target === "_self") &&
+    // Let browser handle "target=_blank" etc.
+    !isModifiedEvent(event) // Ignore clicks with modifier keys
+    ;
+  }
+
+  /**
+   * Creates a URLSearchParams object using the given initializer.
+   *
+   * This is identical to `new URLSearchParams(init)` except it also
+   * supports arrays as values in the object form of the initializer
+   * instead of just strings. This is convenient when you need multiple
+   * values for a given key, but don't want to use an array initializer.
+   *
+   * For example, instead of:
+   *
+   *   let searchParams = new URLSearchParams([
+   *     ['sort', 'name'],
+   *     ['sort', 'price']
+   *   ]);
+   *
+   * you can do:
+   *
+   *   let searchParams = createSearchParams({
+   *     sort: ['name', 'price']
+   *   });
+   */
+  function createSearchParams(init) {
+    if (init === void 0) {
+      init = "";
+    }
+    return new URLSearchParams(typeof init === "string" || Array.isArray(init) || init instanceof URLSearchParams ? init : Object.keys(init).reduce((memo, key) => {
+      let value = init[key];
+      return memo.concat(Array.isArray(value) ? value.map(v => [key, v]) : [[key, value]]);
+    }, []));
+  }
+  function getSearchParamsForLocation(locationSearch, defaultSearchParams) {
+    let searchParams = createSearchParams(locationSearch);
+    if (defaultSearchParams) {
+      // Use `defaultSearchParams.forEach(...)` here instead of iterating of
+      // `defaultSearchParams.keys()` to work-around a bug in Firefox related to
+      // web extensions. Relevant Bugzilla tickets:
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1414602
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1023984
+      defaultSearchParams.forEach((_, key) => {
+        if (!searchParams.has(key)) {
+          defaultSearchParams.getAll(key).forEach(value => {
+            searchParams.append(key, value);
+          });
+        }
+      });
+    }
+    return searchParams;
+  }
+
+  // Thanks https://github.com/sindresorhus/type-fest!
+
+  // One-time check for submitter support
+  let _formDataSupportsSubmitter = null;
+  function isFormDataSubmitterSupported() {
+    if (_formDataSupportsSubmitter === null) {
+      try {
+        new FormData(document.createElement("form"),
+        // @ts-expect-error if FormData supports the submitter parameter, this will throw
+        0);
+        _formDataSupportsSubmitter = false;
+      } catch (e) {
+        _formDataSupportsSubmitter = true;
+      }
+    }
+    return _formDataSupportsSubmitter;
+  }
+  const supportedFormEncTypes = new Set(["application/x-www-form-urlencoded", "multipart/form-data", "text/plain"]);
+  function getFormEncType(encType) {
+    if (encType != null && !supportedFormEncTypes.has(encType)) {
+      router.UNSAFE_warning(false, "\"" + encType + "\" is not a valid `encType` for `<Form>`/`<fetcher.Form>` " + ("and will default to \"" + defaultEncType + "\"")) ;
+      return null;
+    }
+    return encType;
+  }
+  function getFormSubmissionInfo(target, basename) {
+    let method;
+    let action;
+    let encType;
+    let formData;
+    let body;
+    if (isFormElement(target)) {
+      // When grabbing the action from the element, it will have had the basename
+      // prefixed to ensure non-JS scenarios work, so strip it since we'll
+      // re-prefix in the router
+      let attr = target.getAttribute("action");
+      action = attr ? router.stripBasename(attr, basename) : null;
+      method = target.getAttribute("method") || defaultMethod;
+      encType = getFormEncType(target.getAttribute("enctype")) || defaultEncType;
+      formData = new FormData(target);
+    } else if (isButtonElement(target) || isInputElement(target) && (target.type === "submit" || target.type === "image")) {
+      let form = target.form;
+      if (form == null) {
+        throw new Error("Cannot submit a <button> or <input type=\"submit\"> without a <form>");
+      }
+
+      // <button>/<input type="submit"> may override attributes of <form>
+
+      // When grabbing the action from the element, it will have had the basename
+      // prefixed to ensure non-JS scenarios work, so strip it since we'll
+      // re-prefix in the router
+      let attr = target.getAttribute("formaction") || form.getAttribute("action");
+      action = attr ? router.stripBasename(attr, basename) : null;
+      method = target.getAttribute("formmethod") || form.getAttribute("method") || defaultMethod;
+      encType = getFormEncType(target.getAttribute("formenctype")) || getFormEncType(form.getAttribute("enctype")) || defaultEncType;
+
+      // Build a FormData object populated from a form and submitter
+      formData = new FormData(form, target);
+
+      // If this browser doesn't support the `FormData(el, submitter)` format,
+      // then tack on the submitter value at the end.  This is a lightweight
+      // solution that is not 100% spec compliant.  For complete support in older
+      // browsers, consider using the `formdata-submitter-polyfill` package
+      if (!isFormDataSubmitterSupported()) {
+        let {
+          name,
+          type,
+          value
+        } = target;
+        if (type === "image") {
+          let prefix = name ? name + "." : "";
+          formData.append(prefix + "x", "0");
+          formData.append(prefix + "y", "0");
+        } else if (name) {
+          formData.append(name, value);
+        }
+      }
+    } else if (isHtmlElement(target)) {
+      throw new Error("Cannot submit element that is not <form>, <button>, or " + "<input type=\"submit|image\">");
+    } else {
+      method = defaultMethod;
+      action = null;
+      encType = defaultEncType;
+      body = target;
+    }
+
+    // Send body for <Form encType="text/plain" so we encode it into text
+    if (formData && encType === "text/plain") {
+      body = formData;
+      formData = undefined;
+    }
+    return {
+      action,
+      method: method.toLowerCase(),
+      encType,
+      formData,
+      body
+    };
+  }
+
+  const _excluded = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset", "unstable_viewTransition"],
+    _excluded2 = ["aria-current", "caseSensitive", "className", "end", "style", "to", "unstable_viewTransition", "children"],
+    _excluded3 = ["fetcherKey", "navigate", "reloadDocument", "replace", "state", "method", "action", "onSubmit", "relative", "preventScrollReset", "unstable_viewTransition"];
+  //#endregion
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //#region Routers
+  ////////////////////////////////////////////////////////////////////////////////
+  function createBrowserRouter(routes, opts) {
+    return router.createRouter({
+      basename: opts == null ? void 0 : opts.basename,
+      future: _extends({}, opts == null ? void 0 : opts.future, {
+        v7_prependBasename: true
+      }),
+      history: router.createBrowserHistory({
+        window: opts == null ? void 0 : opts.window
+      }),
+      hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
+      routes,
+      mapRouteProperties: reactRouter.UNSAFE_mapRouteProperties,
+      window: opts == null ? void 0 : opts.window
+    }).initialize();
+  }
+  function createHashRouter(routes, opts) {
+    return router.createRouter({
+      basename: opts == null ? void 0 : opts.basename,
+      future: _extends({}, opts == null ? void 0 : opts.future, {
+        v7_prependBasename: true
+      }),
+      history: router.createHashHistory({
+        window: opts == null ? void 0 : opts.window
+      }),
+      hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
+      routes,
+      mapRouteProperties: reactRouter.UNSAFE_mapRouteProperties,
+      window: opts == null ? void 0 : opts.window
+    }).initialize();
+  }
+  function parseHydrationData() {
+    var _window;
+    let state = (_window = window) == null ? void 0 : _window.__staticRouterHydrationData;
+    if (state && state.errors) {
+      state = _extends({}, state, {
+        errors: deserializeErrors(state.errors)
+      });
+    }
+    return state;
+  }
+  function deserializeErrors(errors) {
+    if (!errors) return null;
+    let entries = Object.entries(errors);
+    let serialized = {};
+    for (let [key, val] of entries) {
+      // Hey you!  If you change this, please change the corresponding logic in
+      // serializeErrors in react-router-dom/server.tsx :)
+      if (val && val.__type === "RouteErrorResponse") {
+        serialized[key] = new router.UNSAFE_ErrorResponseImpl(val.status, val.statusText, val.data, val.internal === true);
+      } else if (val && val.__type === "Error") {
+        // Attempt to reconstruct the right type of Error (i.e., ReferenceError)
+        if (val.__subType) {
+          let ErrorConstructor = window[val.__subType];
+          if (typeof ErrorConstructor === "function") {
+            try {
+              // @ts-expect-error
+              let error = new ErrorConstructor(val.message);
+              // Wipe away the client-side stack trace.  Nothing to fill it in with
+              // because we don't serialize SSR stack traces for security reasons
+              error.stack = "";
+              serialized[key] = error;
+            } catch (e) {
+              // no-op - fall through and create a normal Error
+            }
+          }
+        }
+        if (serialized[key] == null) {
+          let error = new Error(val.message);
+          // Wipe away the client-side stack trace.  Nothing to fill it in with
+          // because we don't serialize SSR stack traces for security reasons
+          error.stack = "";
+          serialized[key] = error;
+        }
+      } else {
+        serialized[key] = val;
+      }
+    }
+    return serialized;
+  }
+
+  //#endregion
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //#region Contexts
+  ////////////////////////////////////////////////////////////////////////////////
+  const ViewTransitionContext = /*#__PURE__*/React__namespace.createContext({
+    isTransitioning: false
+  });
+  {
+    ViewTransitionContext.displayName = "ViewTransition";
+  }
+
+  // TODO: (v7) Change the useFetcher data from `any` to `unknown`
+
+  const FetchersContext = /*#__PURE__*/React__namespace.createContext(new Map());
+  {
+    FetchersContext.displayName = "Fetchers";
+  }
+
+  //#endregion
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //#region Components
+  ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+    Webpack + React 17 fails to compile on any of the following because webpack
+    complains that `startTransition` doesn't exist in `React`:
+    * import { startTransition } from "react"
+    * import * as React from from "react";
+      "startTransition" in React ? React.startTransition(() => setState()) : setState()
+    * import * as React from from "react";
+      "startTransition" in React ? React["startTransition"](() => setState()) : setState()
+
+    Moving it to a constant such as the following solves the Webpack/React 17 issue:
+    * import * as React from from "react";
+      const START_TRANSITION = "startTransition";
+      START_TRANSITION in React ? React[START_TRANSITION](() => setState()) : setState()
+
+    However, that introduces webpack/terser minification issues in production builds
+    in React 18 where minification/obfuscation ends up removing the call of
+    React.startTransition entirely from the first half of the ternary.  Grabbing
+    this exported reference once up front resolves that issue.
+
+    See https://github.com/remix-run/react-router/issues/10579
+  */
+  const START_TRANSITION = "startTransition";
+  const startTransitionImpl = React__namespace[START_TRANSITION];
+  const FLUSH_SYNC = "flushSync";
+  const flushSyncImpl = ReactDOM__namespace[FLUSH_SYNC];
+  const USE_ID = "useId";
+  const useIdImpl = React__namespace[USE_ID];
+  function startTransitionSafe(cb) {
+    if (startTransitionImpl) {
+      startTransitionImpl(cb);
+    } else {
+      cb();
+    }
+  }
+  function flushSyncSafe(cb) {
+    if (flushSyncImpl) {
+      flushSyncImpl(cb);
+    } else {
+      cb();
+    }
+  }
+  class Deferred {
+    // @ts-expect-error - no initializer
+
+    // @ts-expect-error - no initializer
+
+    constructor() {
+      this.status = "pending";
+      this.promise = new Promise((resolve, reject) => {
+        this.resolve = value => {
+          if (this.status === "pending") {
+            this.status = "resolved";
+            resolve(value);
+          }
+        };
+        this.reject = reason => {
+          if (this.status === "pending") {
+            this.status = "rejected";
+            reject(reason);
+          }
+        };
+      });
+    }
+  }
+
+  /**
+   * Given a Remix Router instance, render the appropriate UI
+   */
+  function RouterProvider(_ref) {
+    let {
+      fallbackElement,
+      router: router$1,
+      future
+    } = _ref;
+    let [state, setStateImpl] = React__namespace.useState(router$1.state);
+    let [pendingState, setPendingState] = React__namespace.useState();
+    let [vtContext, setVtContext] = React__namespace.useState({
+      isTransitioning: false
+    });
+    let [renderDfd, setRenderDfd] = React__namespace.useState();
+    let [transition, setTransition] = React__namespace.useState();
+    let [interruption, setInterruption] = React__namespace.useState();
+    let fetcherData = React__namespace.useRef(new Map());
+    let {
+      v7_startTransition
+    } = future || {};
+    let optInStartTransition = React__namespace.useCallback(cb => {
+      if (v7_startTransition) {
+        startTransitionSafe(cb);
+      } else {
+        cb();
+      }
+    }, [v7_startTransition]);
+    let setState = React__namespace.useCallback((newState, _ref2) => {
+      let {
+        deletedFetchers,
+        unstable_flushSync: flushSync,
+        unstable_viewTransitionOpts: viewTransitionOpts
+      } = _ref2;
+      deletedFetchers.forEach(key => fetcherData.current.delete(key));
+      newState.fetchers.forEach((fetcher, key) => {
+        if (fetcher.data !== undefined) {
+          fetcherData.current.set(key, fetcher.data);
+        }
+      });
+      let isViewTransitionUnavailable = router$1.window == null || typeof router$1.window.document.startViewTransition !== "function";
+
+      // If this isn't a view transition or it's not available in this browser,
+      // just update and be done with it
+      if (!viewTransitionOpts || isViewTransitionUnavailable) {
+        if (flushSync) {
+          flushSyncSafe(() => setStateImpl(newState));
+        } else {
+          optInStartTransition(() => setStateImpl(newState));
+        }
+        return;
+      }
+
+      // flushSync + startViewTransition
+      if (flushSync) {
+        // Flush through the context to mark DOM elements as transition=ing
+        flushSyncSafe(() => {
+          // Cancel any pending transitions
+          if (transition) {
+            renderDfd && renderDfd.resolve();
+            transition.skipTransition();
+          }
+          setVtContext({
+            isTransitioning: true,
+            flushSync: true,
+            currentLocation: viewTransitionOpts.currentLocation,
+            nextLocation: viewTransitionOpts.nextLocation
+          });
+        });
+
+        // Update the DOM
+        let t = router$1.window.document.startViewTransition(() => {
+          flushSyncSafe(() => setStateImpl(newState));
+        });
+
+        // Clean up after the animation completes
+        t.finished.finally(() => {
+          flushSyncSafe(() => {
+            setRenderDfd(undefined);
+            setTransition(undefined);
+            setPendingState(undefined);
+            setVtContext({
+              isTransitioning: false
+            });
+          });
+        });
+        flushSyncSafe(() => setTransition(t));
+        return;
+      }
+
+      // startTransition + startViewTransition
+      if (transition) {
+        // Interrupting an in-progress transition, cancel and let everything flush
+        // out, and then kick off a new transition from the interruption state
+        renderDfd && renderDfd.resolve();
+        transition.skipTransition();
+        setInterruption({
+          state: newState,
+          currentLocation: viewTransitionOpts.currentLocation,
+          nextLocation: viewTransitionOpts.nextLocation
+        });
+      } else {
+        // Completed navigation update with opted-in view transitions, let 'er rip
+        setPendingState(newState);
+        setVtContext({
+          isTransitioning: true,
+          flushSync: false,
+          currentLocation: viewTransitionOpts.currentLocation,
+          nextLocation: viewTransitionOpts.nextLocation
+        });
+      }
+    }, [router$1.window, transition, renderDfd, fetcherData, optInStartTransition]);
+
+    // Need to use a layout effect here so we are subscribed early enough to
+    // pick up on any render-driven redirects/navigations (useEffect/<Navigate>)
+    React__namespace.useLayoutEffect(() => router$1.subscribe(setState), [router$1, setState]);
+
+    // When we start a view transition, create a Deferred we can use for the
+    // eventual "completed" render
+    React__namespace.useEffect(() => {
+      if (vtContext.isTransitioning && !vtContext.flushSync) {
+        setRenderDfd(new Deferred());
+      }
+    }, [vtContext]);
+
+    // Once the deferred is created, kick off startViewTransition() to update the
+    // DOM and then wait on the Deferred to resolve (indicating the DOM update has
+    // happened)
+    React__namespace.useEffect(() => {
+      if (renderDfd && pendingState && router$1.window) {
+        let newState = pendingState;
+        let renderPromise = renderDfd.promise;
+        let transition = router$1.window.document.startViewTransition(async () => {
+          optInStartTransition(() => setStateImpl(newState));
+          await renderPromise;
+        });
+        transition.finished.finally(() => {
+          setRenderDfd(undefined);
+          setTransition(undefined);
+          setPendingState(undefined);
+          setVtContext({
+            isTransitioning: false
+          });
+        });
+        setTransition(transition);
+      }
+    }, [optInStartTransition, pendingState, renderDfd, router$1.window]);
+
+    // When the new location finally renders and is committed to the DOM, this
+    // effect will run to resolve the transition
+    React__namespace.useEffect(() => {
+      if (renderDfd && pendingState && state.location.key === pendingState.location.key) {
+        renderDfd.resolve();
+      }
+    }, [renderDfd, transition, state.location, pendingState]);
+
+    // If we get interrupted with a new navigation during a transition, we skip
+    // the active transition, let it cleanup, then kick it off again here
+    React__namespace.useEffect(() => {
+      if (!vtContext.isTransitioning && interruption) {
+        setPendingState(interruption.state);
+        setVtContext({
+          isTransitioning: true,
+          flushSync: false,
+          currentLocation: interruption.currentLocation,
+          nextLocation: interruption.nextLocation
+        });
+        setInterruption(undefined);
+      }
+    }, [vtContext.isTransitioning, interruption]);
+    React__namespace.useEffect(() => {
+      router.UNSAFE_warning(fallbackElement == null || !router$1.future.v7_partialHydration, "`<RouterProvider fallbackElement>` is deprecated when using " + "`v7_partialHydration`, use a `HydrateFallback` component instead") ;
+      // Only log this once on initial mount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    let navigator = React__namespace.useMemo(() => {
+      return {
+        createHref: router$1.createHref,
+        encodeLocation: router$1.encodeLocation,
+        go: n => router$1.navigate(n),
+        push: (to, state, opts) => router$1.navigate(to, {
+          state,
+          preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+        }),
+        replace: (to, state, opts) => router$1.navigate(to, {
+          replace: true,
+          state,
+          preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+        })
+      };
+    }, [router$1]);
+    let basename = router$1.basename || "/";
+    let dataRouterContext = React__namespace.useMemo(() => ({
+      router: router$1,
+      navigator,
+      static: false,
+      basename
+    }), [router$1, navigator, basename]);
+
+    // The fragment and {null} here are important!  We need them to keep React 18's
+    // useId happy when we are server-rendering since we may have a <script> here
+    // containing the hydrated server-side staticContext (from StaticRouterProvider).
+    // useId relies on the component tree structure to generate deterministic id's
+    // so we need to ensure it remains the same on the client even though
+    // we don't need the <script> tag
+    return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement(reactRouter.UNSAFE_DataRouterContext.Provider, {
+      value: dataRouterContext
+    }, /*#__PURE__*/React__namespace.createElement(reactRouter.UNSAFE_DataRouterStateContext.Provider, {
+      value: state
+    }, /*#__PURE__*/React__namespace.createElement(FetchersContext.Provider, {
+      value: fetcherData.current
+    }, /*#__PURE__*/React__namespace.createElement(ViewTransitionContext.Provider, {
+      value: vtContext
+    }, /*#__PURE__*/React__namespace.createElement(reactRouter.Router, {
+      basename: basename,
+      location: state.location,
+      navigationType: state.historyAction,
+      navigator: navigator,
+      future: {
+        v7_relativeSplatPath: router$1.future.v7_relativeSplatPath
+      }
+    }, state.initialized || router$1.future.v7_partialHydration ? /*#__PURE__*/React__namespace.createElement(DataRoutes, {
+      routes: router$1.routes,
+      future: router$1.future,
+      state: state
+    }) : fallbackElement))))), null);
+  }
+  function DataRoutes(_ref3) {
+    let {
+      routes,
+      future,
+      state
+    } = _ref3;
+    return reactRouter.UNSAFE_useRoutesImpl(routes, undefined, state, future);
+  }
+  /**
+   * A `<Router>` for use in web browsers. Provides the cleanest URLs.
+   */
+  function BrowserRouter(_ref4) {
+    let {
+      basename,
+      children,
+      future,
+      window
+    } = _ref4;
+    let historyRef = React__namespace.useRef();
+    if (historyRef.current == null) {
+      historyRef.current = router.createBrowserHistory({
+        window,
+        v5Compat: true
+      });
+    }
+    let history = historyRef.current;
+    let [state, setStateImpl] = React__namespace.useState({
+      action: history.action,
+      location: history.location
+    });
+    let {
+      v7_startTransition
+    } = future || {};
+    let setState = React__namespace.useCallback(newState => {
+      v7_startTransition && startTransitionImpl ? startTransitionImpl(() => setStateImpl(newState)) : setStateImpl(newState);
+    }, [setStateImpl, v7_startTransition]);
+    React__namespace.useLayoutEffect(() => history.listen(setState), [history, setState]);
+    return /*#__PURE__*/React__namespace.createElement(reactRouter.Router, {
+      basename: basename,
+      children: children,
+      location: state.location,
+      navigationType: state.action,
+      navigator: history,
+      future: future
+    });
+  }
+  /**
+   * A `<Router>` for use in web browsers. Stores the location in the hash
+   * portion of the URL so it is not sent to the server.
+   */
+  function HashRouter(_ref5) {
+    let {
+      basename,
+      children,
+      future,
+      window
+    } = _ref5;
+    let historyRef = React__namespace.useRef();
+    if (historyRef.current == null) {
+      historyRef.current = router.createHashHistory({
+        window,
+        v5Compat: true
+      });
+    }
+    let history = historyRef.current;
+    let [state, setStateImpl] = React__namespace.useState({
+      action: history.action,
+      location: history.location
+    });
+    let {
+      v7_startTransition
+    } = future || {};
+    let setState = React__namespace.useCallback(newState => {
+      v7_startTransition && startTransitionImpl ? startTransitionImpl(() => setStateImpl(newState)) : setStateImpl(newState);
+    }, [setStateImpl, v7_startTransition]);
+    React__namespace.useLayoutEffect(() => history.listen(setState), [history, setState]);
+    return /*#__PURE__*/React__namespace.createElement(reactRouter.Router, {
+      basename: basename,
+      children: children,
+      location: state.location,
+      navigationType: state.action,
+      navigator: history,
+      future: future
+    });
+  }
+  /**
+   * A `<Router>` that accepts a pre-instantiated history object. It's important
+   * to note that using your own history object is highly discouraged and may add
+   * two versions of the history library to your bundles unless you use the same
+   * version of the history library that React Router uses internally.
+   */
+  function HistoryRouter(_ref6) {
+    let {
+      basename,
+      children,
+      future,
+      history
+    } = _ref6;
+    let [state, setStateImpl] = React__namespace.useState({
+      action: history.action,
+      location: history.location
+    });
+    let {
+      v7_startTransition
+    } = future || {};
+    let setState = React__namespace.useCallback(newState => {
+      v7_startTransition && startTransitionImpl ? startTransitionImpl(() => setStateImpl(newState)) : setStateImpl(newState);
+    }, [setStateImpl, v7_startTransition]);
+    React__namespace.useLayoutEffect(() => history.listen(setState), [history, setState]);
+    return /*#__PURE__*/React__namespace.createElement(reactRouter.Router, {
+      basename: basename,
+      children: children,
+      location: state.location,
+      navigationType: state.action,
+      navigator: history,
+      future: future
+    });
+  }
+  {
+    HistoryRouter.displayName = "unstable_HistoryRouter";
+  }
+  const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined";
+  const ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
+
+  /**
+   * The public API for rendering a history-aware `<a>`.
+   */
+  const Link = /*#__PURE__*/React__namespace.forwardRef(function LinkWithRef(_ref7, ref) {
+    let {
+        onClick,
+        relative,
+        reloadDocument,
+        replace,
+        state,
+        target,
+        to,
+        preventScrollReset,
+        unstable_viewTransition
+      } = _ref7,
+      rest = _objectWithoutPropertiesLoose(_ref7, _excluded);
+    let {
+      basename
+    } = React__namespace.useContext(reactRouter.UNSAFE_NavigationContext);
+
+    // Rendered into <a href> for absolute URLs
+    let absoluteHref;
+    let isExternal = false;
+    if (typeof to === "string" && ABSOLUTE_URL_REGEX.test(to)) {
+      // Render the absolute href server- and client-side
+      absoluteHref = to;
+
+      // Only check for external origins client-side
+      if (isBrowser) {
+        try {
+          let currentUrl = new URL(window.location.href);
+          let targetUrl = to.startsWith("//") ? new URL(currentUrl.protocol + to) : new URL(to);
+          let path = router.stripBasename(targetUrl.pathname, basename);
+          if (targetUrl.origin === currentUrl.origin && path != null) {
+            // Strip the protocol/origin/basename for same-origin absolute URLs
+            to = path + targetUrl.search + targetUrl.hash;
+          } else {
+            isExternal = true;
+          }
+        } catch (e) {
+          // We can't do external URL detection without a valid URL
+          router.UNSAFE_warning(false, "<Link to=\"" + to + "\"> contains an invalid URL which will probably break " + "when clicked - please update to a valid URL path.") ;
+        }
+      }
+    }
+
+    // Rendered into <a href> for relative URLs
+    let href = reactRouter.useHref(to, {
+      relative
+    });
+    let internalOnClick = useLinkClickHandler(to, {
+      replace,
+      state,
+      target,
+      preventScrollReset,
+      relative,
+      unstable_viewTransition
+    });
+    function handleClick(event) {
+      if (onClick) onClick(event);
+      if (!event.defaultPrevented) {
+        internalOnClick(event);
+      }
+    }
+    return (
+      /*#__PURE__*/
+      // eslint-disable-next-line jsx-a11y/anchor-has-content
+      React__namespace.createElement("a", _extends({}, rest, {
+        href: absoluteHref || href,
+        onClick: isExternal || reloadDocument ? onClick : handleClick,
+        ref: ref,
+        target: target
+      }))
+    );
+  });
+  {
+    Link.displayName = "Link";
+  }
+  /**
+   * A `<Link>` wrapper that knows if it's "active" or not.
+   */
+  const NavLink = /*#__PURE__*/React__namespace.forwardRef(function NavLinkWithRef(_ref8, ref) {
+    let {
+        "aria-current": ariaCurrentProp = "page",
+        caseSensitive = false,
+        className: classNameProp = "",
+        end = false,
+        style: styleProp,
+        to,
+        unstable_viewTransition,
+        children
+      } = _ref8,
+      rest = _objectWithoutPropertiesLoose(_ref8, _excluded2);
+    let path = reactRouter.useResolvedPath(to, {
+      relative: rest.relative
+    });
+    let location = reactRouter.useLocation();
+    let routerState = React__namespace.useContext(reactRouter.UNSAFE_DataRouterStateContext);
+    let {
+      navigator
+    } = React__namespace.useContext(reactRouter.UNSAFE_NavigationContext);
+    let isTransitioning = routerState != null &&
+    // Conditional usage is OK here because the usage of a data router is static
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useViewTransitionState(path) && unstable_viewTransition === true;
+    let toPathname = navigator.encodeLocation ? navigator.encodeLocation(path).pathname : path.pathname;
+    let locationPathname = location.pathname;
+    let nextLocationPathname = routerState && routerState.navigation && routerState.navigation.location ? routerState.navigation.location.pathname : null;
+    if (!caseSensitive) {
+      locationPathname = locationPathname.toLowerCase();
+      nextLocationPathname = nextLocationPathname ? nextLocationPathname.toLowerCase() : null;
+      toPathname = toPathname.toLowerCase();
+    }
+
+    // If the `to` has a trailing slash, look at that exact spot.  Otherwise,
+    // we're looking for a slash _after_ what's in `to`.  For example:
+    //
+    // <NavLink to="/users"> and <NavLink to="/users/">
+    // both want to look for a / at index 6 to match URL `/users/matt`
+    const endSlashPosition = toPathname !== "/" && toPathname.endsWith("/") ? toPathname.length - 1 : toPathname.length;
+    let isActive = locationPathname === toPathname || !end && locationPathname.startsWith(toPathname) && locationPathname.charAt(endSlashPosition) === "/";
+    let isPending = nextLocationPathname != null && (nextLocationPathname === toPathname || !end && nextLocationPathname.startsWith(toPathname) && nextLocationPathname.charAt(toPathname.length) === "/");
+    let renderProps = {
+      isActive,
+      isPending,
+      isTransitioning
+    };
+    let ariaCurrent = isActive ? ariaCurrentProp : undefined;
+    let className;
+    if (typeof classNameProp === "function") {
+      className = classNameProp(renderProps);
+    } else {
+      // If the className prop is not a function, we use a default `active`
+      // class for <NavLink />s that are active. In v5 `active` was the default
+      // value for `activeClassName`, but we are removing that API and can still
+      // use the old default behavior for a cleaner upgrade path and keep the
+      // simple styling rules working as they currently do.
+      className = [classNameProp, isActive ? "active" : null, isPending ? "pending" : null, isTransitioning ? "transitioning" : null].filter(Boolean).join(" ");
+    }
+    let style = typeof styleProp === "function" ? styleProp(renderProps) : styleProp;
+    return /*#__PURE__*/React__namespace.createElement(Link, _extends({}, rest, {
+      "aria-current": ariaCurrent,
+      className: className,
+      ref: ref,
+      style: style,
+      to: to,
+      unstable_viewTransition: unstable_viewTransition
+    }), typeof children === "function" ? children(renderProps) : children);
+  });
+  {
+    NavLink.displayName = "NavLink";
+  }
+  /**
+   * A `@remix-run/router`-aware `<form>`. It behaves like a normal form except
+   * that the interaction with the server is with `fetch` instead of new document
+   * requests, allowing components to add nicer UX to the page as the form is
+   * submitted and returns with data.
+   */
+  const Form = /*#__PURE__*/React__namespace.forwardRef((_ref9, forwardedRef) => {
+    let {
+        fetcherKey,
+        navigate,
+        reloadDocument,
+        replace,
+        state,
+        method = defaultMethod,
+        action,
+        onSubmit,
+        relative,
+        preventScrollReset,
+        unstable_viewTransition
+      } = _ref9,
+      props = _objectWithoutPropertiesLoose(_ref9, _excluded3);
+    let submit = useSubmit();
+    let formAction = useFormAction(action, {
+      relative
+    });
+    let formMethod = method.toLowerCase() === "get" ? "get" : "post";
+    let submitHandler = event => {
+      onSubmit && onSubmit(event);
+      if (event.defaultPrevented) return;
+      event.preventDefault();
+      let submitter = event.nativeEvent.submitter;
+      let submitMethod = (submitter == null ? void 0 : submitter.getAttribute("formmethod")) || method;
+      submit(submitter || event.currentTarget, {
+        fetcherKey,
+        method: submitMethod,
+        navigate,
+        replace,
+        state,
+        relative,
+        preventScrollReset,
+        unstable_viewTransition
+      });
+    };
+    return /*#__PURE__*/React__namespace.createElement("form", _extends({
+      ref: forwardedRef,
+      method: formMethod,
+      action: formAction,
+      onSubmit: reloadDocument ? onSubmit : submitHandler
+    }, props));
+  });
+  {
+    Form.displayName = "Form";
+  }
+  /**
+   * This component will emulate the browser's scroll restoration on location
+   * changes.
+   */
+  function ScrollRestoration(_ref10) {
+    let {
+      getKey,
+      storageKey
+    } = _ref10;
+    useScrollRestoration({
+      getKey,
+      storageKey
+    });
+    return null;
+  }
+  {
+    ScrollRestoration.displayName = "ScrollRestoration";
+  }
+  //#endregion
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //#region Hooks
+  ////////////////////////////////////////////////////////////////////////////////
+  var DataRouterHook = /*#__PURE__*/function (DataRouterHook) {
+    DataRouterHook["UseScrollRestoration"] = "useScrollRestoration";
+    DataRouterHook["UseSubmit"] = "useSubmit";
+    DataRouterHook["UseSubmitFetcher"] = "useSubmitFetcher";
+    DataRouterHook["UseFetcher"] = "useFetcher";
+    DataRouterHook["useViewTransitionState"] = "useViewTransitionState";
+    return DataRouterHook;
+  }(DataRouterHook || {});
+  var DataRouterStateHook = /*#__PURE__*/function (DataRouterStateHook) {
+    DataRouterStateHook["UseFetcher"] = "useFetcher";
+    DataRouterStateHook["UseFetchers"] = "useFetchers";
+    DataRouterStateHook["UseScrollRestoration"] = "useScrollRestoration";
+    return DataRouterStateHook;
+  }(DataRouterStateHook || {}); // Internal hooks
+  function getDataRouterConsoleError(hookName) {
+    return hookName + " must be used within a data router.  See https://reactrouter.com/routers/picking-a-router.";
+  }
+  function useDataRouterContext(hookName) {
+    let ctx = React__namespace.useContext(reactRouter.UNSAFE_DataRouterContext);
+    !ctx ? router.UNSAFE_invariant(false, getDataRouterConsoleError(hookName))  : void 0;
+    return ctx;
+  }
+  function useDataRouterState(hookName) {
+    let state = React__namespace.useContext(reactRouter.UNSAFE_DataRouterStateContext);
+    !state ? router.UNSAFE_invariant(false, getDataRouterConsoleError(hookName))  : void 0;
+    return state;
+  }
+
+  // External hooks
+
+  /**
+   * Handles the click behavior for router `<Link>` components. This is useful if
+   * you need to create custom `<Link>` components with the same click behavior we
+   * use in our exported `<Link>`.
+   */
+  function useLinkClickHandler(to, _temp) {
+    let {
+      target,
+      replace: replaceProp,
+      state,
+      preventScrollReset,
+      relative,
+      unstable_viewTransition
+    } = _temp === void 0 ? {} : _temp;
+    let navigate = reactRouter.useNavigate();
+    let location = reactRouter.useLocation();
+    let path = reactRouter.useResolvedPath(to, {
+      relative
+    });
+    return React__namespace.useCallback(event => {
+      if (shouldProcessLinkClick(event, target)) {
+        event.preventDefault();
+
+        // If the URL hasn't changed, a regular <a> will do a replace instead of
+        // a push, so do the same here unless the replace prop is explicitly set
+        let replace = replaceProp !== undefined ? replaceProp : reactRouter.createPath(location) === reactRouter.createPath(path);
+        navigate(to, {
+          replace,
+          state,
+          preventScrollReset,
+          relative,
+          unstable_viewTransition
+        });
+      }
+    }, [location, navigate, path, replaceProp, state, target, to, preventScrollReset, relative, unstable_viewTransition]);
+  }
+
+  /**
+   * A convenient wrapper for reading and writing search parameters via the
+   * URLSearchParams interface.
+   */
+  function useSearchParams(defaultInit) {
+    router.UNSAFE_warning(typeof URLSearchParams !== "undefined", "You cannot use the `useSearchParams` hook in a browser that does not " + "support the URLSearchParams API. If you need to support Internet " + "Explorer 11, we recommend you load a polyfill such as " + "https://github.com/ungap/url-search-params\n\n" + "If you're unsure how to load polyfills, we recommend you check out " + "https://polyfill.io/v3/ which provides some recommendations about how " + "to load polyfills only for users that need them, instead of for every " + "user.") ;
+    let defaultSearchParamsRef = React__namespace.useRef(createSearchParams(defaultInit));
+    let hasSetSearchParamsRef = React__namespace.useRef(false);
+    let location = reactRouter.useLocation();
+    let searchParams = React__namespace.useMemo(() =>
+    // Only merge in the defaults if we haven't yet called setSearchParams.
+    // Once we call that we want those to take precedence, otherwise you can't
+    // remove a param with setSearchParams({}) if it has an initial value
+    getSearchParamsForLocation(location.search, hasSetSearchParamsRef.current ? null : defaultSearchParamsRef.current), [location.search]);
+    let navigate = reactRouter.useNavigate();
+    let setSearchParams = React__namespace.useCallback((nextInit, navigateOptions) => {
+      const newSearchParams = createSearchParams(typeof nextInit === "function" ? nextInit(searchParams) : nextInit);
+      hasSetSearchParamsRef.current = true;
+      navigate("?" + newSearchParams, navigateOptions);
+    }, [navigate, searchParams]);
+    return [searchParams, setSearchParams];
+  }
+
+  /**
+   * Submits a HTML `<form>` to the server without reloading the page.
+   */
+
+  /**
+   * Submits a fetcher `<form>` to the server without reloading the page.
+   */
+
+  function validateClientSideSubmission() {
+    if (typeof document === "undefined") {
+      throw new Error("You are calling submit during the server render. " + "Try calling submit within a `useEffect` or callback instead.");
+    }
+  }
+  let fetcherId = 0;
+  let getUniqueFetcherId = () => "__" + String(++fetcherId) + "__";
+
+  /**
+   * Returns a function that may be used to programmatically submit a form (or
+   * some arbitrary data) to the server.
+   */
+  function useSubmit() {
+    let {
+      router
+    } = useDataRouterContext(DataRouterHook.UseSubmit);
+    let {
+      basename
+    } = React__namespace.useContext(reactRouter.UNSAFE_NavigationContext);
+    let currentRouteId = reactRouter.UNSAFE_useRouteId();
+    return React__namespace.useCallback(function (target, options) {
+      if (options === void 0) {
+        options = {};
+      }
+      validateClientSideSubmission();
+      let {
+        action,
+        method,
+        encType,
+        formData,
+        body
+      } = getFormSubmissionInfo(target, basename);
+      if (options.navigate === false) {
+        let key = options.fetcherKey || getUniqueFetcherId();
+        router.fetch(key, currentRouteId, options.action || action, {
+          preventScrollReset: options.preventScrollReset,
+          formData,
+          body,
+          formMethod: options.method || method,
+          formEncType: options.encType || encType,
+          unstable_flushSync: options.unstable_flushSync
+        });
+      } else {
+        router.navigate(options.action || action, {
+          preventScrollReset: options.preventScrollReset,
+          formData,
+          body,
+          formMethod: options.method || method,
+          formEncType: options.encType || encType,
+          replace: options.replace,
+          state: options.state,
+          fromRouteId: currentRouteId,
+          unstable_flushSync: options.unstable_flushSync,
+          unstable_viewTransition: options.unstable_viewTransition
+        });
+      }
+    }, [router, basename, currentRouteId]);
+  }
+
+  // v7: Eventually we should deprecate this entirely in favor of using the
+  // router method directly?
+  function useFormAction(action, _temp2) {
+    let {
+      relative
+    } = _temp2 === void 0 ? {} : _temp2;
+    let {
+      basename
+    } = React__namespace.useContext(reactRouter.UNSAFE_NavigationContext);
+    let routeContext = React__namespace.useContext(reactRouter.UNSAFE_RouteContext);
+    !routeContext ? router.UNSAFE_invariant(false, "useFormAction must be used inside a RouteContext")  : void 0;
+    let [match] = routeContext.matches.slice(-1);
+    // Shallow clone path so we can modify it below, otherwise we modify the
+    // object referenced by useMemo inside useResolvedPath
+    let path = _extends({}, reactRouter.useResolvedPath(action ? action : ".", {
+      relative
+    }));
+
+    // If no action was specified, browsers will persist current search params
+    // when determining the path, so match that behavior
+    // https://github.com/remix-run/remix/issues/927
+    let location = reactRouter.useLocation();
+    if (action == null) {
+      // Safe to write to this directly here since if action was undefined, we
+      // would have called useResolvedPath(".") which will never include a search
+      path.search = location.search;
+
+      // When grabbing search params from the URL, remove any included ?index param
+      // since it might not apply to our contextual route.  We add it back based
+      // on match.route.index below
+      let params = new URLSearchParams(path.search);
+      if (params.has("index") && params.get("index") === "") {
+        params.delete("index");
+        path.search = params.toString() ? "?" + params.toString() : "";
+      }
+    }
+    if ((!action || action === ".") && match.route.index) {
+      path.search = path.search ? path.search.replace(/^\?/, "?index&") : "?index";
+    }
+
+    // If we're operating within a basename, prepend it to the pathname prior
+    // to creating the form action.  If this is a root navigation, then just use
+    // the raw basename which allows the basename to have full control over the
+    // presence of a trailing slash on root actions
+    if (basename !== "/") {
+      path.pathname = path.pathname === "/" ? basename : router.joinPaths([basename, path.pathname]);
+    }
+    return reactRouter.createPath(path);
+  }
+  // TODO: (v7) Change the useFetcher generic default from `any` to `unknown`
+  /**
+   * Interacts with route loaders and actions without causing a navigation. Great
+   * for any interaction that stays on the same page.
+   */
+  function useFetcher(_temp3) {
+    var _route$matches;
+    let {
+      key
+    } = _temp3 === void 0 ? {} : _temp3;
+    let {
+      router: router$1
+    } = useDataRouterContext(DataRouterHook.UseFetcher);
+    let state = useDataRouterState(DataRouterStateHook.UseFetcher);
+    let fetcherData = React__namespace.useContext(FetchersContext);
+    let route = React__namespace.useContext(reactRouter.UNSAFE_RouteContext);
+    let routeId = (_route$matches = route.matches[route.matches.length - 1]) == null ? void 0 : _route$matches.route.id;
+    !fetcherData ? router.UNSAFE_invariant(false, "useFetcher must be used inside a FetchersContext")  : void 0;
+    !route ? router.UNSAFE_invariant(false, "useFetcher must be used inside a RouteContext")  : void 0;
+    !(routeId != null) ? router.UNSAFE_invariant(false, "useFetcher can only be used on routes that contain a unique \"id\"")  : void 0;
+
+    // Fetcher key handling
+    // OK to call conditionally to feature detect `useId`
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    let defaultKey = useIdImpl ? useIdImpl() : "";
+    let [fetcherKey, setFetcherKey] = React__namespace.useState(key || defaultKey);
+    if (key && key !== fetcherKey) {
+      setFetcherKey(key);
+    } else if (!fetcherKey) {
+      // We will only fall through here when `useId` is not available
+      setFetcherKey(getUniqueFetcherId());
+    }
+
+    // Registration/cleanup
+    React__namespace.useEffect(() => {
+      router$1.getFetcher(fetcherKey);
+      return () => {
+        // Tell the router we've unmounted - if v7_fetcherPersist is enabled this
+        // will not delete immediately but instead queue up a delete after the
+        // fetcher returns to an `idle` state
+        router$1.deleteFetcher(fetcherKey);
+      };
+    }, [router$1, fetcherKey]);
+
+    // Fetcher additions
+    let load = React__namespace.useCallback((href, opts) => {
+      !routeId ? router.UNSAFE_invariant(false, "No routeId available for fetcher.load()")  : void 0;
+      router$1.fetch(fetcherKey, routeId, href, opts);
+    }, [fetcherKey, routeId, router$1]);
+    let submitImpl = useSubmit();
+    let submit = React__namespace.useCallback((target, opts) => {
+      submitImpl(target, _extends({}, opts, {
+        navigate: false,
+        fetcherKey
+      }));
+    }, [fetcherKey, submitImpl]);
+    let FetcherForm = React__namespace.useMemo(() => {
+      let FetcherForm = /*#__PURE__*/React__namespace.forwardRef((props, ref) => {
+        return /*#__PURE__*/React__namespace.createElement(Form, _extends({}, props, {
+          navigate: false,
+          fetcherKey: fetcherKey,
+          ref: ref
+        }));
+      });
+      {
+        FetcherForm.displayName = "fetcher.Form";
+      }
+      return FetcherForm;
+    }, [fetcherKey]);
+
+    // Exposed FetcherWithComponents
+    let fetcher = state.fetchers.get(fetcherKey) || router.IDLE_FETCHER;
+    let data = fetcherData.get(fetcherKey);
+    let fetcherWithComponents = React__namespace.useMemo(() => _extends({
+      Form: FetcherForm,
+      submit,
+      load
+    }, fetcher, {
+      data
+    }), [FetcherForm, submit, load, fetcher, data]);
+    return fetcherWithComponents;
+  }
+
+  /**
+   * Provides all fetchers currently on the page. Useful for layouts and parent
+   * routes that need to provide pending/optimistic UI regarding the fetch.
+   */
+  function useFetchers() {
+    let state = useDataRouterState(DataRouterStateHook.UseFetchers);
+    return Array.from(state.fetchers.entries()).map(_ref11 => {
+      let [key, fetcher] = _ref11;
+      return _extends({}, fetcher, {
+        key
+      });
+    });
+  }
+  const SCROLL_RESTORATION_STORAGE_KEY = "react-router-scroll-positions";
+  let savedScrollPositions = {};
+
+  /**
+   * When rendered inside a RouterProvider, will restore scroll positions on navigations
+   */
+  function useScrollRestoration(_temp4) {
+    let {
+      getKey,
+      storageKey
+    } = _temp4 === void 0 ? {} : _temp4;
+    let {
+      router: router$1
+    } = useDataRouterContext(DataRouterHook.UseScrollRestoration);
+    let {
+      restoreScrollPosition,
+      preventScrollReset
+    } = useDataRouterState(DataRouterStateHook.UseScrollRestoration);
+    let {
+      basename
+    } = React__namespace.useContext(reactRouter.UNSAFE_NavigationContext);
+    let location = reactRouter.useLocation();
+    let matches = reactRouter.useMatches();
+    let navigation = reactRouter.useNavigation();
+
+    // Trigger manual scroll restoration while we're active
+    React__namespace.useEffect(() => {
+      window.history.scrollRestoration = "manual";
+      return () => {
+        window.history.scrollRestoration = "auto";
+      };
+    }, []);
+
+    // Save positions on pagehide
+    usePageHide(React__namespace.useCallback(() => {
+      if (navigation.state === "idle") {
+        let key = (getKey ? getKey(location, matches) : null) || location.key;
+        savedScrollPositions[key] = window.scrollY;
+      }
+      try {
+        sessionStorage.setItem(storageKey || SCROLL_RESTORATION_STORAGE_KEY, JSON.stringify(savedScrollPositions));
+      } catch (error) {
+        router.UNSAFE_warning(false, "Failed to save scroll positions in sessionStorage, <ScrollRestoration /> will not work properly (" + error + ").") ;
+      }
+      window.history.scrollRestoration = "auto";
+    }, [storageKey, getKey, navigation.state, location, matches]));
+
+    // Read in any saved scroll locations
+    if (typeof document !== "undefined") {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React__namespace.useLayoutEffect(() => {
+        try {
+          let sessionPositions = sessionStorage.getItem(storageKey || SCROLL_RESTORATION_STORAGE_KEY);
+          if (sessionPositions) {
+            savedScrollPositions = JSON.parse(sessionPositions);
+          }
+        } catch (e) {
+          // no-op, use default empty object
+        }
+      }, [storageKey]);
+
+      // Enable scroll restoration in the router
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React__namespace.useLayoutEffect(() => {
+        let getKeyWithoutBasename = getKey && basename !== "/" ? (location, matches) => getKey( // Strip the basename to match useLocation()
+        _extends({}, location, {
+          pathname: router.stripBasename(location.pathname, basename) || location.pathname
+        }), matches) : getKey;
+        let disableScrollRestoration = router$1 == null ? void 0 : router$1.enableScrollRestoration(savedScrollPositions, () => window.scrollY, getKeyWithoutBasename);
+        return () => disableScrollRestoration && disableScrollRestoration();
+      }, [router$1, basename, getKey]);
+
+      // Restore scrolling when state.restoreScrollPosition changes
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React__namespace.useLayoutEffect(() => {
+        // Explicit false means don't do anything (used for submissions)
+        if (restoreScrollPosition === false) {
+          return;
+        }
+
+        // been here before, scroll to it
+        if (typeof restoreScrollPosition === "number") {
+          window.scrollTo(0, restoreScrollPosition);
+          return;
+        }
+
+        // try to scroll to the hash
+        if (location.hash) {
+          let el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (el) {
+            el.scrollIntoView();
+            return;
+          }
+        }
+
+        // Don't reset if this navigation opted out
+        if (preventScrollReset === true) {
+          return;
+        }
+
+        // otherwise go to the top on new locations
+        window.scrollTo(0, 0);
+      }, [location, restoreScrollPosition, preventScrollReset]);
+    }
+  }
+
+  /**
+   * Setup a callback to be fired on the window's `beforeunload` event. This is
+   * useful for saving some data to `window.localStorage` just before the page
+   * refreshes.
+   *
+   * Note: The `callback` argument should be a function created with
+   * `React.useCallback()`.
+   */
+  function useBeforeUnload(callback, options) {
+    let {
+      capture
+    } = options || {};
+    React__namespace.useEffect(() => {
+      let opts = capture != null ? {
+        capture
+      } : undefined;
+      window.addEventListener("beforeunload", callback, opts);
+      return () => {
+        window.removeEventListener("beforeunload", callback, opts);
+      };
+    }, [callback, capture]);
+  }
+
+  /**
+   * Setup a callback to be fired on the window's `pagehide` event. This is
+   * useful for saving some data to `window.localStorage` just before the page
+   * refreshes.  This event is better supported than beforeunload across browsers.
+   *
+   * Note: The `callback` argument should be a function created with
+   * `React.useCallback()`.
+   */
+  function usePageHide(callback, options) {
+    let {
+      capture
+    } = options || {};
+    React__namespace.useEffect(() => {
+      let opts = capture != null ? {
+        capture
+      } : undefined;
+      window.addEventListener("pagehide", callback, opts);
+      return () => {
+        window.removeEventListener("pagehide", callback, opts);
+      };
+    }, [callback, capture]);
+  }
+
+  /**
+   * Wrapper around useBlocker to show a window.confirm prompt to users instead
+   * of building a custom UI with useBlocker.
+   *
+   * Warning: This has *a lot of rough edges* and behaves very differently (and
+   * very incorrectly in some cases) across browsers if user click addition
+   * back/forward navigations while the confirm is open.  Use at your own risk.
+   */
+  function usePrompt(_ref12) {
+    let {
+      when,
+      message
+    } = _ref12;
+    let blocker = reactRouter.useBlocker(when);
+    React__namespace.useEffect(() => {
+      if (blocker.state === "blocked") {
+        let proceed = window.confirm(message);
+        if (proceed) {
+          // This timeout is needed to avoid a weird "race" on POP navigations
+          // between the `window.history` revert navigation and the result of
+          // `window.confirm`
+          setTimeout(blocker.proceed, 0);
+        } else {
+          blocker.reset();
+        }
+      }
+    }, [blocker, message]);
+    React__namespace.useEffect(() => {
+      if (blocker.state === "blocked" && !when) {
+        blocker.reset();
+      }
+    }, [blocker, when]);
+  }
+
+  /**
+   * Return a boolean indicating if there is an active view transition to the
+   * given href.  You can use this value to render CSS classes or viewTransitionName
+   * styles onto your elements
+   *
+   * @param href The destination href
+   * @param [opts.relative] Relative routing type ("route" | "path")
+   */
+  function useViewTransitionState(to, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    let vtContext = React__namespace.useContext(ViewTransitionContext);
+    !(vtContext != null) ? router.UNSAFE_invariant(false, "`unstable_useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  " + "Did you accidentally import `RouterProvider` from `react-router`?")  : void 0;
+    let {
+      basename
+    } = useDataRouterContext(DataRouterHook.useViewTransitionState);
+    let path = reactRouter.useResolvedPath(to, {
+      relative: opts.relative
+    });
+    if (!vtContext.isTransitioning) {
+      return false;
+    }
+    let currentPath = router.stripBasename(vtContext.currentLocation.pathname, basename) || vtContext.currentLocation.pathname;
+    let nextPath = router.stripBasename(vtContext.nextLocation.pathname, basename) || vtContext.nextLocation.pathname;
+
+    // Transition is active if we're going to or coming from the indicated
+    // destination.  This ensures that other PUSH navigations that reverse
+    // an indicated transition apply.  I.e., on the list view you have:
+    //
+    //   <NavLink to="/details/1" unstable_viewTransition>
+    //
+    // If you click the breadcrumb back to the list view:
+    //
+    //   <NavLink to="/list" unstable_viewTransition>
+    //
+    // We should apply the transition because it's indicated as active going
+    // from /list -> /details/1 and therefore should be active on the reverse
+    // (even though this isn't strictly a POP reverse)
+    return router.matchPath(path.pathname, nextPath) != null || router.matchPath(path.pathname, currentPath) != null;
+  }
+
+  //#endregion
+
+  Object.defineProperty(exports, 'AbortedDeferredError', {
+    enumerable: true,
+    get: function () { return reactRouter.AbortedDeferredError; }
+  });
+  Object.defineProperty(exports, 'Await', {
+    enumerable: true,
+    get: function () { return reactRouter.Await; }
+  });
+  Object.defineProperty(exports, 'MemoryRouter', {
+    enumerable: true,
+    get: function () { return reactRouter.MemoryRouter; }
+  });
+  Object.defineProperty(exports, 'Navigate', {
+    enumerable: true,
+    get: function () { return reactRouter.Navigate; }
+  });
+  Object.defineProperty(exports, 'NavigationType', {
+    enumerable: true,
+    get: function () { return reactRouter.NavigationType; }
+  });
+  Object.defineProperty(exports, 'Outlet', {
+    enumerable: true,
+    get: function () { return reactRouter.Outlet; }
+  });
+  Object.defineProperty(exports, 'Route', {
+    enumerable: true,
+    get: function () { return reactRouter.Route; }
+  });
+  Object.defineProperty(exports, 'Router', {
+    enumerable: true,
+    get: function () { return reactRouter.Router; }
+  });
+  Object.defineProperty(exports, 'Routes', {
+    enumerable: true,
+    get: function () { return reactRouter.Routes; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_DataRouterContext', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_DataRouterContext; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_DataRouterStateContext', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_DataRouterStateContext; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_LocationContext', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_LocationContext; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_NavigationContext', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_NavigationContext; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_RouteContext', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_RouteContext; }
+  });
+  Object.defineProperty(exports, 'UNSAFE_useRouteId', {
+    enumerable: true,
+    get: function () { return reactRouter.UNSAFE_useRouteId; }
+  });
+  Object.defineProperty(exports, 'createMemoryRouter', {
+    enumerable: true,
+    get: function () { return reactRouter.createMemoryRouter; }
+  });
+  Object.defineProperty(exports, 'createPath', {
+    enumerable: true,
+    get: function () { return reactRouter.createPath; }
+  });
+  Object.defineProperty(exports, 'createRoutesFromChildren', {
+    enumerable: true,
+    get: function () { return reactRouter.createRoutesFromChildren; }
+  });
+  Object.defineProperty(exports, 'createRoutesFromElements', {
+    enumerable: true,
+    get: function () { return reactRouter.createRoutesFromElements; }
+  });
+  Object.defineProperty(exports, 'defer', {
+    enumerable: true,
+    get: function () { return reactRouter.defer; }
+  });
+  Object.defineProperty(exports, 'generatePath', {
+    enumerable: true,
+    get: function () { return reactRouter.generatePath; }
+  });
+  Object.defineProperty(exports, 'isRouteErrorResponse', {
+    enumerable: true,
+    get: function () { return reactRouter.isRouteErrorResponse; }
+  });
+  Object.defineProperty(exports, 'json', {
+    enumerable: true,
+    get: function () { return reactRouter.json; }
+  });
+  Object.defineProperty(exports, 'matchPath', {
+    enumerable: true,
+    get: function () { return reactRouter.matchPath; }
+  });
+  Object.defineProperty(exports, 'matchRoutes', {
+    enumerable: true,
+    get: function () { return reactRouter.matchRoutes; }
+  });
+  Object.defineProperty(exports, 'parsePath', {
+    enumerable: true,
+    get: function () { return reactRouter.parsePath; }
+  });
+  Object.defineProperty(exports, 'redirect', {
+    enumerable: true,
+    get: function () { return reactRouter.redirect; }
+  });
+  Object.defineProperty(exports, 'redirectDocument', {
+    enumerable: true,
+    get: function () { return reactRouter.redirectDocument; }
+  });
+  Object.defineProperty(exports, 'renderMatches', {
+    enumerable: true,
+    get: function () { return reactRouter.renderMatches; }
+  });
+  Object.defineProperty(exports, 'resolvePath', {
+    enumerable: true,
+    get: function () { return reactRouter.resolvePath; }
+  });
+  Object.defineProperty(exports, 'useActionData', {
+    enumerable: true,
+    get: function () { return reactRouter.useActionData; }
+  });
+  Object.defineProperty(exports, 'useAsyncError', {
+    enumerable: true,
+    get: function () { return reactRouter.useAsyncError; }
+  });
+  Object.defineProperty(exports, 'useAsyncValue', {
+    enumerable: true,
+    get: function () { return reactRouter.useAsyncValue; }
+  });
+  Object.defineProperty(exports, 'useBlocker', {
+    enumerable: true,
+    get: function () { return reactRouter.useBlocker; }
+  });
+  Object.defineProperty(exports, 'useHref', {
+    enumerable: true,
+    get: function () { return reactRouter.useHref; }
+  });
+  Object.defineProperty(exports, 'useInRouterContext', {
+    enumerable: true,
+    get: function () { return reactRouter.useInRouterContext; }
+  });
+  Object.defineProperty(exports, 'useLoaderData', {
+    enumerable: true,
+    get: function () { return reactRouter.useLoaderData; }
+  });
+  Object.defineProperty(exports, 'useLocation', {
+    enumerable: true,
+    get: function () { return reactRouter.useLocation; }
+  });
+  Object.defineProperty(exports, 'useMatch', {
+    enumerable: true,
+    get: function () { return reactRouter.useMatch; }
+  });
+  Object.defineProperty(exports, 'useMatches', {
+    enumerable: true,
+    get: function () { return reactRouter.useMatches; }
+  });
+  Object.defineProperty(exports, 'useNavigate', {
+    enumerable: true,
+    get: function () { return reactRouter.useNavigate; }
+  });
+  Object.defineProperty(exports, 'useNavigation', {
+    enumerable: true,
+    get: function () { return reactRouter.useNavigation; }
+  });
+  Object.defineProperty(exports, 'useNavigationType', {
+    enumerable: true,
+    get: function () { return reactRouter.useNavigationType; }
+  });
+  Object.defineProperty(exports, 'useOutlet', {
+    enumerable: true,
+    get: function () { return reactRouter.useOutlet; }
+  });
+  Object.defineProperty(exports, 'useOutletContext', {
+    enumerable: true,
+    get: function () { return reactRouter.useOutletContext; }
+  });
+  Object.defineProperty(exports, 'useParams', {
+    enumerable: true,
+    get: function () { return reactRouter.useParams; }
+  });
+  Object.defineProperty(exports, 'useResolvedPath', {
+    enumerable: true,
+    get: function () { return reactRouter.useResolvedPath; }
+  });
+  Object.defineProperty(exports, 'useRevalidator', {
+    enumerable: true,
+    get: function () { return reactRouter.useRevalidator; }
+  });
+  Object.defineProperty(exports, 'useRouteError', {
+    enumerable: true,
+    get: function () { return reactRouter.useRouteError; }
+  });
+  Object.defineProperty(exports, 'useRouteLoaderData', {
+    enumerable: true,
+    get: function () { return reactRouter.useRouteLoaderData; }
+  });
+  Object.defineProperty(exports, 'useRoutes', {
+    enumerable: true,
+    get: function () { return reactRouter.useRoutes; }
+  });
+  exports.BrowserRouter = BrowserRouter;
+  exports.Form = Form;
+  exports.HashRouter = HashRouter;
+  exports.Link = Link;
+  exports.NavLink = NavLink;
+  exports.RouterProvider = RouterProvider;
+  exports.ScrollRestoration = ScrollRestoration;
+  exports.UNSAFE_FetchersContext = FetchersContext;
+  exports.UNSAFE_ViewTransitionContext = ViewTransitionContext;
+  exports.UNSAFE_useScrollRestoration = useScrollRestoration;
+  exports.createBrowserRouter = createBrowserRouter;
+  exports.createHashRouter = createHashRouter;
+  exports.createSearchParams = createSearchParams;
+  exports.unstable_HistoryRouter = HistoryRouter;
+  exports.unstable_usePrompt = usePrompt;
+  exports.unstable_useViewTransitionState = useViewTransitionState;
+  exports.useBeforeUnload = useBeforeUnload;
+  exports.useFetcher = useFetcher;
+  exports.useFetchers = useFetchers;
+  exports.useFormAction = useFormAction;
+  exports.useLinkClickHandler = useLinkClickHandler;
+  exports.useSearchParams = useSearchParams;
+  exports.useSubmit = useSubmit;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+
+
+},{"@remix-run/router":301,"react":"react","react-dom":"react-dom","react-router":302}],300:[function(require,module,exports){
+/**
+ * React Router DOM v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("react"),require("react-dom"),require("react-router"),require("@remix-run/router")):"function"==typeof define&&define.amd?define(["exports","react","react-dom","react-router","@remix-run/router"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).ReactRouterDOM={},e.React,e.ReactDOM,e.ReactRouter,e.RemixRouter)}(this,(function(e,t,n,r,o){"use strict";function a(e){if(e&&e.__esModule)return e;var t=Object.create(null);return e&&Object.keys(e).forEach((function(n){if("default"!==n){var r=Object.getOwnPropertyDescriptor(e,n);Object.defineProperty(t,n,r.get?r:{enumerable:!0,get:function(){return e[n]}})}})),t.default=e,Object.freeze(t)}var i=a(t),u=a(n);function s(){return s=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},s.apply(this,arguments)}function c(e,t){if(null==e)return{};var n,r,o={},a=Object.keys(e);for(r=0;r<a.length;r++)n=a[r],t.indexOf(n)>=0||(o[n]=e[n]);return o}const l="get",f="application/x-www-form-urlencoded";function d(e){return null!=e&&"string"==typeof e.tagName}function m(e){return void 0===e&&(e=""),new URLSearchParams("string"==typeof e||Array.isArray(e)||e instanceof URLSearchParams?e:Object.keys(e).reduce(((t,n)=>{let r=e[n];return t.concat(Array.isArray(r)?r.map((e=>[n,e])):[[n,r]])}),[]))}let p=null;const b=new Set(["application/x-www-form-urlencoded","multipart/form-data","text/plain"]);function h(e){return null==e||b.has(e)?e:null}function v(e,t){let n,r,a,i,u;if(d(s=e)&&"form"===s.tagName.toLowerCase()){let u=e.getAttribute("action");r=u?o.stripBasename(u,t):null,n=e.getAttribute("method")||l,a=h(e.getAttribute("enctype"))||f,i=new FormData(e)}else if(function(e){return d(e)&&"button"===e.tagName.toLowerCase()}(e)||function(e){return d(e)&&"input"===e.tagName.toLowerCase()}(e)&&("submit"===e.type||"image"===e.type)){let u=e.form;if(null==u)throw new Error('Cannot submit a <button> or <input type="submit"> without a <form>');let s=e.getAttribute("formaction")||u.getAttribute("action");if(r=s?o.stripBasename(s,t):null,n=e.getAttribute("formmethod")||u.getAttribute("method")||l,a=h(e.getAttribute("formenctype"))||h(u.getAttribute("enctype"))||f,i=new FormData(u,e),!function(){if(null===p)try{new FormData(document.createElement("form"),0),p=!1}catch(e){p=!0}return p}()){let{name:t,type:n,value:r}=e;if("image"===n){let e=t?t+".":"";i.append(e+"x","0"),i.append(e+"y","0")}else t&&i.append(t,r)}}else{if(d(e))throw new Error('Cannot submit element that is not <form>, <button>, or <input type="submit|image">');n=l,r=null,a=f,u=e}var s;return i&&"text/plain"===a&&(u=i,i=void 0),{action:r,method:n.toLowerCase(),encType:a,formData:i,body:u}}const y=["onClick","relative","reloadDocument","replace","state","target","to","preventScrollReset","unstable_viewTransition"],g=["aria-current","caseSensitive","className","end","style","to","unstable_viewTransition","children"],w=["fetcherKey","navigate","reloadDocument","replace","state","method","action","onSubmit","relative","preventScrollReset","unstable_viewTransition"];function R(){var e;let t=null==(e=window)?void 0:e.__staticRouterHydrationData;return t&&t.errors&&(t=s({},t,{errors:S(t.errors)})),t}function S(e){if(!e)return null;let t=Object.entries(e),n={};for(let[e,r]of t)if(r&&"RouteErrorResponse"===r.__type)n[e]=new o.UNSAFE_ErrorResponseImpl(r.status,r.statusText,r.data,!0===r.internal);else if(r&&"Error"===r.__type){if(r.__subType){let t=window[r.__subType];if("function"==typeof t)try{let o=new t(r.message);o.stack="",n[e]=o}catch(e){}}if(null==n[e]){let t=new Error(r.message);t.stack="",n[e]=t}}else n[e]=r;return n}const E=i.createContext({isTransitioning:!1}),P=i.createContext(new Map),_=i.startTransition,O=u.flushSync,C=i.useId;function x(e){O?O(e):e()}class A{constructor(){this.status="pending",this.promise=new Promise(((e,t)=>{this.resolve=t=>{"pending"===this.status&&(this.status="resolved",e(t))},this.reject=e=>{"pending"===this.status&&(this.status="rejected",t(e))}}))}}function j(e){let{routes:t,future:n,state:o}=e;return r.UNSAFE_useRoutesImpl(t,void 0,o,n)}const N="undefined"!=typeof window&&void 0!==window.document&&void 0!==window.document.createElement,F=/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i,L=i.forwardRef((function(e,t){let n,{onClick:a,relative:u,reloadDocument:l,replace:f,state:d,target:m,to:p,preventScrollReset:b,unstable_viewTransition:h}=e,v=c(e,y),{basename:g}=i.useContext(r.UNSAFE_NavigationContext),w=!1;if("string"==typeof p&&F.test(p)&&(n=p,N))try{let e=new URL(window.location.href),t=p.startsWith("//")?new URL(e.protocol+p):new URL(p),n=o.stripBasename(t.pathname,g);t.origin===e.origin&&null!=n?p=n+t.search+t.hash:w=!0}catch(e){}let R=r.useHref(p,{relative:u}),S=H(p,{replace:f,state:d,target:m,preventScrollReset:b,relative:u,unstable_viewTransition:h});return i.createElement("a",s({},v,{href:n||R,onClick:w||l?a:function(e){a&&a(e),e.defaultPrevented||S(e)},ref:t,target:m}))})),T=i.forwardRef((function(e,t){let{"aria-current":n="page",caseSensitive:o=!1,className:a="",end:u=!1,style:l,to:f,unstable_viewTransition:d,children:m}=e,p=c(e,g),b=r.useResolvedPath(f,{relative:p.relative}),h=r.useLocation(),v=i.useContext(r.UNSAFE_DataRouterStateContext),{navigator:y}=i.useContext(r.UNSAFE_NavigationContext),w=null!=v&&J(b)&&!0===d,R=y.encodeLocation?y.encodeLocation(b).pathname:b.pathname,S=h.pathname,E=v&&v.navigation&&v.navigation.location?v.navigation.location.pathname:null;o||(S=S.toLowerCase(),E=E?E.toLowerCase():null,R=R.toLowerCase());const P="/"!==R&&R.endsWith("/")?R.length-1:R.length;let _,O=S===R||!u&&S.startsWith(R)&&"/"===S.charAt(P),C=null!=E&&(E===R||!u&&E.startsWith(R)&&"/"===E.charAt(R.length)),x={isActive:O,isPending:C,isTransitioning:w},A=O?n:void 0;_="function"==typeof a?a(x):[a,O?"active":null,C?"pending":null,w?"transitioning":null].filter(Boolean).join(" ");let j="function"==typeof l?l(x):l;return i.createElement(L,s({},p,{"aria-current":A,className:_,ref:t,style:j,to:f,unstable_viewTransition:d}),"function"==typeof m?m(x):m)})),U=i.forwardRef(((e,t)=>{let{fetcherKey:n,navigate:r,reloadDocument:o,replace:a,state:u,method:f=l,action:d,onSubmit:m,relative:p,preventScrollReset:b,unstable_viewTransition:h}=e,v=c(e,w),y=V(),g=z(d,{relative:p}),R="get"===f.toLowerCase()?"get":"post";return i.createElement("form",s({ref:t,method:R,action:g,onSubmit:o?m:e=>{if(m&&m(e),e.defaultPrevented)return;e.preventDefault();let t=e.nativeEvent.submitter,o=(null==t?void 0:t.getAttribute("formmethod"))||f;y(t||e.currentTarget,{fetcherKey:n,method:o,navigate:r,replace:a,state:u,relative:p,preventScrollReset:b,unstable_viewTransition:h})}},v))}));var D=function(e){return e.UseScrollRestoration="useScrollRestoration",e.UseSubmit="useSubmit",e.UseSubmitFetcher="useSubmitFetcher",e.UseFetcher="useFetcher",e.useViewTransitionState="useViewTransitionState",e}(D||{}),k=function(e){return e.UseFetcher="useFetcher",e.UseFetchers="useFetchers",e.UseScrollRestoration="useScrollRestoration",e}(k||{});function M(e){let t=i.useContext(r.UNSAFE_DataRouterContext);return t||o.UNSAFE_invariant(!1),t}function B(e){let t=i.useContext(r.UNSAFE_DataRouterStateContext);return t||o.UNSAFE_invariant(!1),t}function H(e,t){let{target:n,replace:o,state:a,preventScrollReset:u,relative:s,unstable_viewTransition:c}=void 0===t?{}:t,l=r.useNavigate(),f=r.useLocation(),d=r.useResolvedPath(e,{relative:s});return i.useCallback((t=>{if(function(e,t){return!(0!==e.button||t&&"_self"!==t||function(e){return!!(e.metaKey||e.altKey||e.ctrlKey||e.shiftKey)}(e))}(t,n)){t.preventDefault();let n=void 0!==o?o:r.createPath(f)===r.createPath(d);l(e,{replace:n,state:a,preventScrollReset:u,relative:s,unstable_viewTransition:c})}}),[f,l,d,o,a,n,e,u,s,c])}let K=0,I=()=>"__"+String(++K)+"__";function V(){let{router:e}=M(D.UseSubmit),{basename:t}=i.useContext(r.UNSAFE_NavigationContext),n=r.UNSAFE_useRouteId();return i.useCallback((function(r,o){void 0===o&&(o={}),function(){if("undefined"==typeof document)throw new Error("You are calling submit during the server render. Try calling submit within a `useEffect` or callback instead.")}();let{action:a,method:i,encType:u,formData:s,body:c}=v(r,t);if(!1===o.navigate){let t=o.fetcherKey||I();e.fetch(t,n,o.action||a,{preventScrollReset:o.preventScrollReset,formData:s,body:c,formMethod:o.method||i,formEncType:o.encType||u,unstable_flushSync:o.unstable_flushSync})}else e.navigate(o.action||a,{preventScrollReset:o.preventScrollReset,formData:s,body:c,formMethod:o.method||i,formEncType:o.encType||u,replace:o.replace,state:o.state,fromRouteId:n,unstable_flushSync:o.unstable_flushSync,unstable_viewTransition:o.unstable_viewTransition})}),[e,t,n])}function z(e,t){let{relative:n}=void 0===t?{}:t,{basename:a}=i.useContext(r.UNSAFE_NavigationContext),u=i.useContext(r.UNSAFE_RouteContext);u||o.UNSAFE_invariant(!1);let[c]=u.matches.slice(-1),l=s({},r.useResolvedPath(e||".",{relative:n})),f=r.useLocation();if(null==e){l.search=f.search;let e=new URLSearchParams(l.search);e.has("index")&&""===e.get("index")&&(e.delete("index"),l.search=e.toString()?"?"+e.toString():"")}return e&&"."!==e||!c.route.index||(l.search=l.search?l.search.replace(/^\?/,"?index&"):"?index"),"/"!==a&&(l.pathname="/"===l.pathname?a:o.joinPaths([a,l.pathname])),r.createPath(l)}const q="react-router-scroll-positions";let W={};function Y(e){let{getKey:t,storageKey:n}=void 0===e?{}:e,{router:a}=M(D.UseScrollRestoration),{restoreScrollPosition:u,preventScrollReset:c}=B(k.UseScrollRestoration),{basename:l}=i.useContext(r.UNSAFE_NavigationContext),f=r.useLocation(),d=r.useMatches(),m=r.useNavigation();i.useEffect((()=>(window.history.scrollRestoration="manual",()=>{window.history.scrollRestoration="auto"})),[]),function(e,t){let{capture:n}=t||{};i.useEffect((()=>{let t=null!=n?{capture:n}:void 0;return window.addEventListener("pagehide",e,t),()=>{window.removeEventListener("pagehide",e,t)}}),[e,n])}(i.useCallback((()=>{if("idle"===m.state){let e=(t?t(f,d):null)||f.key;W[e]=window.scrollY}try{sessionStorage.setItem(n||q,JSON.stringify(W))}catch(e){}window.history.scrollRestoration="auto"}),[n,t,m.state,f,d])),"undefined"!=typeof document&&(i.useLayoutEffect((()=>{try{let e=sessionStorage.getItem(n||q);e&&(W=JSON.parse(e))}catch(e){}}),[n]),i.useLayoutEffect((()=>{let e=t&&"/"!==l?(e,n)=>t(s({},e,{pathname:o.stripBasename(e.pathname,l)||e.pathname}),n):t,n=null==a?void 0:a.enableScrollRestoration(W,(()=>window.scrollY),e);return()=>n&&n()}),[a,l,t]),i.useLayoutEffect((()=>{if(!1!==u)if("number"!=typeof u){if(f.hash){let e=document.getElementById(decodeURIComponent(f.hash.slice(1)));if(e)return void e.scrollIntoView()}!0!==c&&window.scrollTo(0,0)}else window.scrollTo(0,u)}),[f,u,c]))}function J(e,t){void 0===t&&(t={});let n=i.useContext(E);null==n&&o.UNSAFE_invariant(!1);let{basename:a}=M(D.useViewTransitionState),u=r.useResolvedPath(e,{relative:t.relative});if(!n.isTransitioning)return!1;let s=o.stripBasename(n.currentLocation.pathname,a)||n.currentLocation.pathname,c=o.stripBasename(n.nextLocation.pathname,a)||n.nextLocation.pathname;return null!=o.matchPath(u.pathname,c)||null!=o.matchPath(u.pathname,s)}Object.defineProperty(e,"AbortedDeferredError",{enumerable:!0,get:function(){return r.AbortedDeferredError}}),Object.defineProperty(e,"Await",{enumerable:!0,get:function(){return r.Await}}),Object.defineProperty(e,"MemoryRouter",{enumerable:!0,get:function(){return r.MemoryRouter}}),Object.defineProperty(e,"Navigate",{enumerable:!0,get:function(){return r.Navigate}}),Object.defineProperty(e,"NavigationType",{enumerable:!0,get:function(){return r.NavigationType}}),Object.defineProperty(e,"Outlet",{enumerable:!0,get:function(){return r.Outlet}}),Object.defineProperty(e,"Route",{enumerable:!0,get:function(){return r.Route}}),Object.defineProperty(e,"Router",{enumerable:!0,get:function(){return r.Router}}),Object.defineProperty(e,"Routes",{enumerable:!0,get:function(){return r.Routes}}),Object.defineProperty(e,"UNSAFE_DataRouterContext",{enumerable:!0,get:function(){return r.UNSAFE_DataRouterContext}}),Object.defineProperty(e,"UNSAFE_DataRouterStateContext",{enumerable:!0,get:function(){return r.UNSAFE_DataRouterStateContext}}),Object.defineProperty(e,"UNSAFE_LocationContext",{enumerable:!0,get:function(){return r.UNSAFE_LocationContext}}),Object.defineProperty(e,"UNSAFE_NavigationContext",{enumerable:!0,get:function(){return r.UNSAFE_NavigationContext}}),Object.defineProperty(e,"UNSAFE_RouteContext",{enumerable:!0,get:function(){return r.UNSAFE_RouteContext}}),Object.defineProperty(e,"UNSAFE_useRouteId",{enumerable:!0,get:function(){return r.UNSAFE_useRouteId}}),Object.defineProperty(e,"createMemoryRouter",{enumerable:!0,get:function(){return r.createMemoryRouter}}),Object.defineProperty(e,"createPath",{enumerable:!0,get:function(){return r.createPath}}),Object.defineProperty(e,"createRoutesFromChildren",{enumerable:!0,get:function(){return r.createRoutesFromChildren}}),Object.defineProperty(e,"createRoutesFromElements",{enumerable:!0,get:function(){return r.createRoutesFromElements}}),Object.defineProperty(e,"defer",{enumerable:!0,get:function(){return r.defer}}),Object.defineProperty(e,"generatePath",{enumerable:!0,get:function(){return r.generatePath}}),Object.defineProperty(e,"isRouteErrorResponse",{enumerable:!0,get:function(){return r.isRouteErrorResponse}}),Object.defineProperty(e,"json",{enumerable:!0,get:function(){return r.json}}),Object.defineProperty(e,"matchPath",{enumerable:!0,get:function(){return r.matchPath}}),Object.defineProperty(e,"matchRoutes",{enumerable:!0,get:function(){return r.matchRoutes}}),Object.defineProperty(e,"parsePath",{enumerable:!0,get:function(){return r.parsePath}}),Object.defineProperty(e,"redirect",{enumerable:!0,get:function(){return r.redirect}}),Object.defineProperty(e,"redirectDocument",{enumerable:!0,get:function(){return r.redirectDocument}}),Object.defineProperty(e,"renderMatches",{enumerable:!0,get:function(){return r.renderMatches}}),Object.defineProperty(e,"resolvePath",{enumerable:!0,get:function(){return r.resolvePath}}),Object.defineProperty(e,"useActionData",{enumerable:!0,get:function(){return r.useActionData}}),Object.defineProperty(e,"useAsyncError",{enumerable:!0,get:function(){return r.useAsyncError}}),Object.defineProperty(e,"useAsyncValue",{enumerable:!0,get:function(){return r.useAsyncValue}}),Object.defineProperty(e,"useBlocker",{enumerable:!0,get:function(){return r.useBlocker}}),Object.defineProperty(e,"useHref",{enumerable:!0,get:function(){return r.useHref}}),Object.defineProperty(e,"useInRouterContext",{enumerable:!0,get:function(){return r.useInRouterContext}}),Object.defineProperty(e,"useLoaderData",{enumerable:!0,get:function(){return r.useLoaderData}}),Object.defineProperty(e,"useLocation",{enumerable:!0,get:function(){return r.useLocation}}),Object.defineProperty(e,"useMatch",{enumerable:!0,get:function(){return r.useMatch}}),Object.defineProperty(e,"useMatches",{enumerable:!0,get:function(){return r.useMatches}}),Object.defineProperty(e,"useNavigate",{enumerable:!0,get:function(){return r.useNavigate}}),Object.defineProperty(e,"useNavigation",{enumerable:!0,get:function(){return r.useNavigation}}),Object.defineProperty(e,"useNavigationType",{enumerable:!0,get:function(){return r.useNavigationType}}),Object.defineProperty(e,"useOutlet",{enumerable:!0,get:function(){return r.useOutlet}}),Object.defineProperty(e,"useOutletContext",{enumerable:!0,get:function(){return r.useOutletContext}}),Object.defineProperty(e,"useParams",{enumerable:!0,get:function(){return r.useParams}}),Object.defineProperty(e,"useResolvedPath",{enumerable:!0,get:function(){return r.useResolvedPath}}),Object.defineProperty(e,"useRevalidator",{enumerable:!0,get:function(){return r.useRevalidator}}),Object.defineProperty(e,"useRouteError",{enumerable:!0,get:function(){return r.useRouteError}}),Object.defineProperty(e,"useRouteLoaderData",{enumerable:!0,get:function(){return r.useRouteLoaderData}}),Object.defineProperty(e,"useRoutes",{enumerable:!0,get:function(){return r.useRoutes}}),e.BrowserRouter=function(e){let{basename:t,children:n,future:a,window:u}=e,s=i.useRef();null==s.current&&(s.current=o.createBrowserHistory({window:u,v5Compat:!0}));let c=s.current,[l,f]=i.useState({action:c.action,location:c.location}),{v7_startTransition:d}=a||{},m=i.useCallback((e=>{d&&_?_((()=>f(e))):f(e)}),[f,d]);return i.useLayoutEffect((()=>c.listen(m)),[c,m]),i.createElement(r.Router,{basename:t,children:n,location:l.location,navigationType:l.action,navigator:c,future:a})},e.Form=U,e.HashRouter=function(e){let{basename:t,children:n,future:a,window:u}=e,s=i.useRef();null==s.current&&(s.current=o.createHashHistory({window:u,v5Compat:!0}));let c=s.current,[l,f]=i.useState({action:c.action,location:c.location}),{v7_startTransition:d}=a||{},m=i.useCallback((e=>{d&&_?_((()=>f(e))):f(e)}),[f,d]);return i.useLayoutEffect((()=>c.listen(m)),[c,m]),i.createElement(r.Router,{basename:t,children:n,location:l.location,navigationType:l.action,navigator:c,future:a})},e.Link=L,e.NavLink=T,e.RouterProvider=function(e){let{fallbackElement:t,router:n,future:o}=e,[a,u]=i.useState(n.state),[s,c]=i.useState(),[l,f]=i.useState({isTransitioning:!1}),[d,m]=i.useState(),[p,b]=i.useState(),[h,v]=i.useState(),y=i.useRef(new Map),{v7_startTransition:g}=o||{},w=i.useCallback((e=>{g?function(e){_?_(e):e()}(e):e()}),[g]),R=i.useCallback(((e,t)=>{let{deletedFetchers:r,unstable_flushSync:o,unstable_viewTransitionOpts:a}=t;r.forEach((e=>y.current.delete(e))),e.fetchers.forEach(((e,t)=>{void 0!==e.data&&y.current.set(t,e.data)}));let i=null==n.window||"function"!=typeof n.window.document.startViewTransition;if(a&&!i){if(o){x((()=>{p&&(d&&d.resolve(),p.skipTransition()),f({isTransitioning:!0,flushSync:!0,currentLocation:a.currentLocation,nextLocation:a.nextLocation})}));let t=n.window.document.startViewTransition((()=>{x((()=>u(e)))}));return t.finished.finally((()=>{x((()=>{m(void 0),b(void 0),c(void 0),f({isTransitioning:!1})}))})),void x((()=>b(t)))}p?(d&&d.resolve(),p.skipTransition(),v({state:e,currentLocation:a.currentLocation,nextLocation:a.nextLocation})):(c(e),f({isTransitioning:!0,flushSync:!1,currentLocation:a.currentLocation,nextLocation:a.nextLocation}))}else o?x((()=>u(e))):w((()=>u(e)))}),[n.window,p,d,y,w]);i.useLayoutEffect((()=>n.subscribe(R)),[n,R]),i.useEffect((()=>{l.isTransitioning&&!l.flushSync&&m(new A)}),[l]),i.useEffect((()=>{if(d&&s&&n.window){let e=s,t=d.promise,r=n.window.document.startViewTransition((async()=>{w((()=>u(e))),await t}));r.finished.finally((()=>{m(void 0),b(void 0),c(void 0),f({isTransitioning:!1})})),b(r)}}),[w,s,d,n.window]),i.useEffect((()=>{d&&s&&a.location.key===s.location.key&&d.resolve()}),[d,p,a.location,s]),i.useEffect((()=>{!l.isTransitioning&&h&&(c(h.state),f({isTransitioning:!0,flushSync:!1,currentLocation:h.currentLocation,nextLocation:h.nextLocation}),v(void 0))}),[l.isTransitioning,h]),i.useEffect((()=>{}),[]);let S=i.useMemo((()=>({createHref:n.createHref,encodeLocation:n.encodeLocation,go:e=>n.navigate(e),push:(e,t,r)=>n.navigate(e,{state:t,preventScrollReset:null==r?void 0:r.preventScrollReset}),replace:(e,t,r)=>n.navigate(e,{replace:!0,state:t,preventScrollReset:null==r?void 0:r.preventScrollReset})})),[n]),O=n.basename||"/",C=i.useMemo((()=>({router:n,navigator:S,static:!1,basename:O})),[n,S,O]);return i.createElement(i.Fragment,null,i.createElement(r.UNSAFE_DataRouterContext.Provider,{value:C},i.createElement(r.UNSAFE_DataRouterStateContext.Provider,{value:a},i.createElement(P.Provider,{value:y.current},i.createElement(E.Provider,{value:l},i.createElement(r.Router,{basename:O,location:a.location,navigationType:a.historyAction,navigator:S,future:{v7_relativeSplatPath:n.future.v7_relativeSplatPath}},a.initialized||n.future.v7_partialHydration?i.createElement(j,{routes:n.routes,future:n.future,state:a}):t))))),null)},e.ScrollRestoration=function(e){let{getKey:t,storageKey:n}=e;return Y({getKey:t,storageKey:n}),null},e.UNSAFE_FetchersContext=P,e.UNSAFE_ViewTransitionContext=E,e.UNSAFE_useScrollRestoration=Y,e.createBrowserRouter=function(e,t){return o.createRouter({basename:null==t?void 0:t.basename,future:s({},null==t?void 0:t.future,{v7_prependBasename:!0}),history:o.createBrowserHistory({window:null==t?void 0:t.window}),hydrationData:(null==t?void 0:t.hydrationData)||R(),routes:e,mapRouteProperties:r.UNSAFE_mapRouteProperties,window:null==t?void 0:t.window}).initialize()},e.createHashRouter=function(e,t){return o.createRouter({basename:null==t?void 0:t.basename,future:s({},null==t?void 0:t.future,{v7_prependBasename:!0}),history:o.createHashHistory({window:null==t?void 0:t.window}),hydrationData:(null==t?void 0:t.hydrationData)||R(),routes:e,mapRouteProperties:r.UNSAFE_mapRouteProperties,window:null==t?void 0:t.window}).initialize()},e.createSearchParams=m,e.unstable_HistoryRouter=function(e){let{basename:t,children:n,future:o,history:a}=e,[u,s]=i.useState({action:a.action,location:a.location}),{v7_startTransition:c}=o||{},l=i.useCallback((e=>{c&&_?_((()=>s(e))):s(e)}),[s,c]);return i.useLayoutEffect((()=>a.listen(l)),[a,l]),i.createElement(r.Router,{basename:t,children:n,location:u.location,navigationType:u.action,navigator:a,future:o})},e.unstable_usePrompt=function(e){let{when:t,message:n}=e,o=r.useBlocker(t);i.useEffect((()=>{if("blocked"===o.state){window.confirm(n)?setTimeout(o.proceed,0):o.reset()}}),[o,n]),i.useEffect((()=>{"blocked"!==o.state||t||o.reset()}),[o,t])},e.unstable_useViewTransitionState=J,e.useBeforeUnload=function(e,t){let{capture:n}=t||{};i.useEffect((()=>{let t=null!=n?{capture:n}:void 0;return window.addEventListener("beforeunload",e,t),()=>{window.removeEventListener("beforeunload",e,t)}}),[e,n])},e.useFetcher=function(e){var t;let{key:n}=void 0===e?{}:e,{router:a}=M(D.UseFetcher),u=B(k.UseFetcher),c=i.useContext(P),l=i.useContext(r.UNSAFE_RouteContext),f=null==(t=l.matches[l.matches.length-1])?void 0:t.route.id;c||o.UNSAFE_invariant(!1),l||o.UNSAFE_invariant(!1),null==f&&o.UNSAFE_invariant(!1);let d=C?C():"",[m,p]=i.useState(n||d);n&&n!==m?p(n):m||p(I()),i.useEffect((()=>(a.getFetcher(m),()=>{a.deleteFetcher(m)})),[a,m]);let b=i.useCallback(((e,t)=>{f||o.UNSAFE_invariant(!1),a.fetch(m,f,e,t)}),[m,f,a]),h=V(),v=i.useCallback(((e,t)=>{h(e,s({},t,{navigate:!1,fetcherKey:m}))}),[m,h]),y=i.useMemo((()=>i.forwardRef(((e,t)=>i.createElement(U,s({},e,{navigate:!1,fetcherKey:m,ref:t}))))),[m]),g=u.fetchers.get(m)||o.IDLE_FETCHER,w=c.get(m);return i.useMemo((()=>s({Form:y,submit:v,load:b},g,{data:w})),[y,v,b,g,w])},e.useFetchers=function(){let e=B(k.UseFetchers);return Array.from(e.fetchers.entries()).map((e=>{let[t,n]=e;return s({},n,{key:t})}))},e.useFormAction=z,e.useLinkClickHandler=H,e.useSearchParams=function(e){let t=i.useRef(m(e)),n=i.useRef(!1),o=r.useLocation(),a=i.useMemo((()=>function(e,t){let n=m(e);return t&&t.forEach(((e,r)=>{n.has(r)||t.getAll(r).forEach((e=>{n.append(r,e)}))})),n}(o.search,n.current?null:t.current)),[o.search]),u=r.useNavigate(),s=i.useCallback(((e,t)=>{const r=m("function"==typeof e?e(a):e);n.current=!0,u("?"+r,t)}),[u,a]);return[a,s]},e.useSubmit=V,Object.defineProperty(e,"__esModule",{value:!0})}));
+
+
+},{"@remix-run/router":301,"react":"react","react-dom":"react-dom","react-router":302}],301:[function(require,module,exports){
+/**
+ * @remix-run/router v1.14.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Types and Constants
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Actions represent the type of change to a location value.
+ */
+let Action = /*#__PURE__*/function (Action) {
+  Action["Pop"] = "POP";
+  Action["Push"] = "PUSH";
+  Action["Replace"] = "REPLACE";
+  return Action;
+}({});
+
+/**
+ * The pathname, search, and hash values of a URL.
+ */
+
+// TODO: (v7) Change the Location generic default from `any` to `unknown` and
+// remove Remix `useLocation` wrapper.
+/**
+ * An entry in a history stack. A location contains information about the
+ * URL path, as well as possibly some arbitrary state and a key.
+ */
+/**
+ * A change to the current location.
+ */
+/**
+ * A function that receives notifications about location changes.
+ */
+/**
+ * Describes a location that is the destination of some navigation, either via
+ * `history.push` or `history.replace`. This may be either a URL or the pieces
+ * of a URL path.
+ */
+/**
+ * A history is an interface to the navigation stack. The history serves as the
+ * source of truth for the current location, as well as provides a set of
+ * methods that may be used to change it.
+ *
+ * It is similar to the DOM's `window.history` object, but with a smaller, more
+ * focused API.
+ */
+const PopStateEventType = "popstate";
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Memory History
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A user-supplied object that describes a location. Used when providing
+ * entries to `createMemoryHistory` via its `initialEntries` option.
+ */
+/**
+ * A memory history stores locations in memory. This is useful in stateful
+ * environments where there is no web browser, such as node tests or React
+ * Native.
+ */
+/**
+ * Memory history stores the current location in memory. It is designed for use
+ * in stateful non-browser environments like tests and React Native.
+ */
+function createMemoryHistory(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  let {
+    initialEntries = ["/"],
+    initialIndex,
+    v5Compat = false
+  } = options;
+  let entries; // Declare so we can access from createMemoryLocation
+  entries = initialEntries.map((entry, index) => createMemoryLocation(entry, typeof entry === "string" ? null : entry.state, index === 0 ? "default" : undefined));
+  let index = clampIndex(initialIndex == null ? entries.length - 1 : initialIndex);
+  let action = Action.Pop;
+  let listener = null;
+  function clampIndex(n) {
+    return Math.min(Math.max(n, 0), entries.length - 1);
+  }
+  function getCurrentLocation() {
+    return entries[index];
+  }
+  function createMemoryLocation(to, state, key) {
+    if (state === void 0) {
+      state = null;
+    }
+    let location = createLocation(entries ? getCurrentLocation().pathname : "/", to, state, key);
+    warning(location.pathname.charAt(0) === "/", "relative pathnames are not supported in memory history: " + JSON.stringify(to));
+    return location;
+  }
+  function createHref(to) {
+    return typeof to === "string" ? to : createPath(to);
+  }
+  let history = {
+    get index() {
+      return index;
+    },
+    get action() {
+      return action;
+    },
+    get location() {
+      return getCurrentLocation();
+    },
+    createHref,
+    createURL(to) {
+      return new URL(createHref(to), "http://localhost");
+    },
+    encodeLocation(to) {
+      let path = typeof to === "string" ? parsePath(to) : to;
+      return {
+        pathname: path.pathname || "",
+        search: path.search || "",
+        hash: path.hash || ""
+      };
+    },
+    push(to, state) {
+      action = Action.Push;
+      let nextLocation = createMemoryLocation(to, state);
+      index += 1;
+      entries.splice(index, entries.length, nextLocation);
+      if (v5Compat && listener) {
+        listener({
+          action,
+          location: nextLocation,
+          delta: 1
+        });
+      }
+    },
+    replace(to, state) {
+      action = Action.Replace;
+      let nextLocation = createMemoryLocation(to, state);
+      entries[index] = nextLocation;
+      if (v5Compat && listener) {
+        listener({
+          action,
+          location: nextLocation,
+          delta: 0
+        });
+      }
+    },
+    go(delta) {
+      action = Action.Pop;
+      let nextIndex = clampIndex(index + delta);
+      let nextLocation = entries[nextIndex];
+      index = nextIndex;
+      if (listener) {
+        listener({
+          action,
+          location: nextLocation,
+          delta
+        });
+      }
+    },
+    listen(fn) {
+      listener = fn;
+      return () => {
+        listener = null;
+      };
+    }
+  };
+  return history;
+}
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Browser History
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A browser history stores the current location in regular URLs in a web
+ * browser environment. This is the standard for most web apps and provides the
+ * cleanest URLs the browser's address bar.
+ *
+ * @see https://github.com/remix-run/history/tree/main/docs/api-reference.md#browserhistory
+ */
+/**
+ * Browser history stores the location in regular URLs. This is the standard for
+ * most web apps, but it requires some configuration on the server to ensure you
+ * serve the same app at multiple URLs.
+ *
+ * @see https://github.com/remix-run/history/tree/main/docs/api-reference.md#createbrowserhistory
+ */
+function createBrowserHistory(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  function createBrowserLocation(window, globalHistory) {
+    let {
+      pathname,
+      search,
+      hash
+    } = window.location;
+    return createLocation("", {
+      pathname,
+      search,
+      hash
+    },
+    // state defaults to `null` because `window.history.state` does
+    globalHistory.state && globalHistory.state.usr || null, globalHistory.state && globalHistory.state.key || "default");
+  }
+  function createBrowserHref(window, to) {
+    return typeof to === "string" ? to : createPath(to);
+  }
+  return getUrlBasedHistory(createBrowserLocation, createBrowserHref, null, options);
+}
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Hash History
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A hash history stores the current location in the fragment identifier portion
+ * of the URL in a web browser environment.
+ *
+ * This is ideal for apps that do not control the server for some reason
+ * (because the fragment identifier is never sent to the server), including some
+ * shared hosting environments that do not provide fine-grained controls over
+ * which pages are served at which URLs.
+ *
+ * @see https://github.com/remix-run/history/tree/main/docs/api-reference.md#hashhistory
+ */
+/**
+ * Hash history stores the location in window.location.hash. This makes it ideal
+ * for situations where you don't want to send the location to the server for
+ * some reason, either because you do cannot configure it or the URL space is
+ * reserved for something else.
+ *
+ * @see https://github.com/remix-run/history/tree/main/docs/api-reference.md#createhashhistory
+ */
+function createHashHistory(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  function createHashLocation(window, globalHistory) {
+    let {
+      pathname = "/",
+      search = "",
+      hash = ""
+    } = parsePath(window.location.hash.substr(1));
+
+    // Hash URL should always have a leading / just like window.location.pathname
+    // does, so if an app ends up at a route like /#something then we add a
+    // leading slash so all of our path-matching behaves the same as if it would
+    // in a browser router.  This is particularly important when there exists a
+    // root splat route (<Route path="*">) since that matches internally against
+    // "/*" and we'd expect /#something to 404 in a hash router app.
+    if (!pathname.startsWith("/") && !pathname.startsWith(".")) {
+      pathname = "/" + pathname;
+    }
+    return createLocation("", {
+      pathname,
+      search,
+      hash
+    },
+    // state defaults to `null` because `window.history.state` does
+    globalHistory.state && globalHistory.state.usr || null, globalHistory.state && globalHistory.state.key || "default");
+  }
+  function createHashHref(window, to) {
+    let base = window.document.querySelector("base");
+    let href = "";
+    if (base && base.getAttribute("href")) {
+      let url = window.location.href;
+      let hashIndex = url.indexOf("#");
+      href = hashIndex === -1 ? url : url.slice(0, hashIndex);
+    }
+    return href + "#" + (typeof to === "string" ? to : createPath(to));
+  }
+  function validateHashLocation(location, to) {
+    warning(location.pathname.charAt(0) === "/", "relative pathnames are not supported in hash history.push(" + JSON.stringify(to) + ")");
+  }
+  return getUrlBasedHistory(createHashLocation, createHashHref, validateHashLocation, options);
+}
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region UTILS
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @private
+ */
+function invariant(value, message) {
+  if (value === false || value === null || typeof value === "undefined") {
+    throw new Error(message);
+  }
+}
+function warning(cond, message) {
+  if (!cond) {
+    // eslint-disable-next-line no-console
+    if (typeof console !== "undefined") console.warn(message);
+    try {
+      // Welcome to debugging history!
+      //
+      // This error is thrown as a convenience, so you can more easily
+      // find the source for a warning that appears in the console by
+      // enabling "pause on exceptions" in your JavaScript debugger.
+      throw new Error(message);
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  }
+}
+function createKey() {
+  return Math.random().toString(36).substr(2, 8);
+}
+
+/**
+ * For browser-based histories, we combine the state and key into an object
+ */
+function getHistoryState(location, index) {
+  return {
+    usr: location.state,
+    key: location.key,
+    idx: index
+  };
+}
+
+/**
+ * Creates a Location object with a unique key from the given Path
+ */
+function createLocation(current, to, state, key) {
+  if (state === void 0) {
+    state = null;
+  }
+  let location = _extends({
+    pathname: typeof current === "string" ? current : current.pathname,
+    search: "",
+    hash: ""
+  }, typeof to === "string" ? parsePath(to) : to, {
+    state,
+    // TODO: This could be cleaned up.  push/replace should probably just take
+    // full Locations now and avoid the need to run through this flow at all
+    // But that's a pretty big refactor to the current test suite so going to
+    // keep as is for the time being and just let any incoming keys take precedence
+    key: to && to.key || key || createKey()
+  });
+  return location;
+}
+
+/**
+ * Creates a string URL path from the given pathname, search, and hash components.
+ */
+function createPath(_ref) {
+  let {
+    pathname = "/",
+    search = "",
+    hash = ""
+  } = _ref;
+  if (search && search !== "?") pathname += search.charAt(0) === "?" ? search : "?" + search;
+  if (hash && hash !== "#") pathname += hash.charAt(0) === "#" ? hash : "#" + hash;
+  return pathname;
+}
+
+/**
+ * Parses a string URL path into its separate pathname, search, and hash components.
+ */
+function parsePath(path) {
+  let parsedPath = {};
+  if (path) {
+    let hashIndex = path.indexOf("#");
+    if (hashIndex >= 0) {
+      parsedPath.hash = path.substr(hashIndex);
+      path = path.substr(0, hashIndex);
+    }
+    let searchIndex = path.indexOf("?");
+    if (searchIndex >= 0) {
+      parsedPath.search = path.substr(searchIndex);
+      path = path.substr(0, searchIndex);
+    }
+    if (path) {
+      parsedPath.pathname = path;
+    }
+  }
+  return parsedPath;
+}
+function getUrlBasedHistory(getLocation, createHref, validateLocation, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  let {
+    window = document.defaultView,
+    v5Compat = false
+  } = options;
+  let globalHistory = window.history;
+  let action = Action.Pop;
+  let listener = null;
+  let index = getIndex();
+  // Index should only be null when we initialize. If not, it's because the
+  // user called history.pushState or history.replaceState directly, in which
+  // case we should log a warning as it will result in bugs.
+  if (index == null) {
+    index = 0;
+    globalHistory.replaceState(_extends({}, globalHistory.state, {
+      idx: index
+    }), "");
+  }
+  function getIndex() {
+    let state = globalHistory.state || {
+      idx: null
+    };
+    return state.idx;
+  }
+  function handlePop() {
+    action = Action.Pop;
+    let nextIndex = getIndex();
+    let delta = nextIndex == null ? null : nextIndex - index;
+    index = nextIndex;
+    if (listener) {
+      listener({
+        action,
+        location: history.location,
+        delta
+      });
+    }
+  }
+  function push(to, state) {
+    action = Action.Push;
+    let location = createLocation(history.location, to, state);
+    if (validateLocation) validateLocation(location, to);
+    index = getIndex() + 1;
+    let historyState = getHistoryState(location, index);
+    let url = history.createHref(location);
+
+    // try...catch because iOS limits us to 100 pushState calls :/
+    try {
+      globalHistory.pushState(historyState, "", url);
+    } catch (error) {
+      // If the exception is because `state` can't be serialized, let that throw
+      // outwards just like a replace call would so the dev knows the cause
+      // https://html.spec.whatwg.org/multipage/nav-history-apis.html#shared-history-push/replace-state-steps
+      // https://html.spec.whatwg.org/multipage/structured-data.html#structuredserializeinternal
+      if (error instanceof DOMException && error.name === "DataCloneError") {
+        throw error;
+      }
+      // They are going to lose state here, but there is no real
+      // way to warn them about it since the page will refresh...
+      window.location.assign(url);
+    }
+    if (v5Compat && listener) {
+      listener({
+        action,
+        location: history.location,
+        delta: 1
+      });
+    }
+  }
+  function replace(to, state) {
+    action = Action.Replace;
+    let location = createLocation(history.location, to, state);
+    if (validateLocation) validateLocation(location, to);
+    index = getIndex();
+    let historyState = getHistoryState(location, index);
+    let url = history.createHref(location);
+    globalHistory.replaceState(historyState, "", url);
+    if (v5Compat && listener) {
+      listener({
+        action,
+        location: history.location,
+        delta: 0
+      });
+    }
+  }
+  function createURL(to) {
+    // window.location.origin is "null" (the literal string value) in Firefox
+    // under certain conditions, notably when serving from a local HTML file
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=878297
+    let base = window.location.origin !== "null" ? window.location.origin : window.location.href;
+    let href = typeof to === "string" ? to : createPath(to);
+    invariant(base, "No window.location.(origin|href) available to create URL for href: " + href);
+    return new URL(href, base);
+  }
+  let history = {
+    get action() {
+      return action;
+    },
+    get location() {
+      return getLocation(window, globalHistory);
+    },
+    listen(fn) {
+      if (listener) {
+        throw new Error("A history only accepts one active listener");
+      }
+      window.addEventListener(PopStateEventType, handlePop);
+      listener = fn;
+      return () => {
+        window.removeEventListener(PopStateEventType, handlePop);
+        listener = null;
+      };
+    },
+    createHref(to) {
+      return createHref(window, to);
+    },
+    createURL,
+    encodeLocation(to) {
+      // Encode a Location the same way window.location would
+      let url = createURL(to);
+      return {
+        pathname: url.pathname,
+        search: url.search,
+        hash: url.hash
+      };
+    },
+    push,
+    replace,
+    go(n) {
+      return globalHistory.go(n);
+    }
+  };
+  return history;
+}
+
+//#endregion
+
+/**
+ * Map of routeId -> data returned from a loader/action/error
+ */
+
+let ResultType = /*#__PURE__*/function (ResultType) {
+  ResultType["data"] = "data";
+  ResultType["deferred"] = "deferred";
+  ResultType["redirect"] = "redirect";
+  ResultType["error"] = "error";
+  return ResultType;
+}({});
+
+/**
+ * Successful result from a loader or action
+ */
+
+/**
+ * Successful defer() result from a loader or action
+ */
+
+/**
+ * Redirect result from a loader or action
+ */
+
+/**
+ * Unsuccessful result from a loader or action
+ */
+
+/**
+ * Result from a loader or action - potentially successful or unsuccessful
+ */
+
+/**
+ * Users can specify either lowercase or uppercase form methods on `<Form>`,
+ * useSubmit(), `<fetcher.Form>`, etc.
+ */
+
+/**
+ * Active navigation/fetcher form methods are exposed in lowercase on the
+ * RouterState
+ */
+
+/**
+ * In v7, active navigation/fetcher form methods are exposed in uppercase on the
+ * RouterState.  This is to align with the normalization done via fetch().
+ */
+
+// Thanks https://github.com/sindresorhus/type-fest!
+
+/**
+ * @private
+ * Internal interface to pass around for action submissions, not intended for
+ * external consumption
+ */
+
+/**
+ * @private
+ * Arguments passed to route loader/action functions.  Same for now but we keep
+ * this as a private implementation detail in case they diverge in the future.
+ */
+
+// TODO: (v7) Change the defaults from any to unknown in and remove Remix wrappers:
+//   ActionFunction, ActionFunctionArgs, LoaderFunction, LoaderFunctionArgs
+//   Also, make them a type alias instead of an interface
+/**
+ * Arguments passed to loader functions
+ */
+/**
+ * Arguments passed to action functions
+ */
+/**
+ * Loaders and actions can return anything except `undefined` (`null` is a
+ * valid return value if there is no data to return).  Responses are preferred
+ * and will ease any future migration to Remix
+ */
+/**
+ * Route loader function signature
+ */
+/**
+ * Route action function signature
+ */
+/**
+ * Arguments passed to shouldRevalidate function
+ */
+/**
+ * Route shouldRevalidate function signature.  This runs after any submission
+ * (navigation or fetcher), so we flatten the navigation/fetcher submission
+ * onto the arguments.  It shouldn't matter whether it came from a navigation
+ * or a fetcher, what really matters is the URLs and the formData since loaders
+ * have to re-run based on the data models that were potentially mutated.
+ */
+/**
+ * Function provided by the framework-aware layers to set `hasErrorBoundary`
+ * from the framework-aware `errorElement` prop
+ *
+ * @deprecated Use `mapRouteProperties` instead
+ */
+/**
+ * Function provided by the framework-aware layers to set any framework-specific
+ * properties from framework-agnostic properties
+ */
+/**
+ * Keys we cannot change from within a lazy() function. We spread all other keys
+ * onto the route. Either they're meaningful to the router, or they'll get
+ * ignored.
+ */
+const immutableRouteKeys = new Set(["lazy", "caseSensitive", "path", "id", "index", "children"]);
+
+/**
+ * lazy() function to load a route definition, which can add non-matching
+ * related properties to a route
+ */
+
+/**
+ * Base RouteObject with common props shared by all types of routes
+ */
+
+/**
+ * Index routes must not have children
+ */
+
+/**
+ * Non-index routes may have children, but cannot have index
+ */
+
+/**
+ * A route object represents a logical route, with (optionally) its child
+ * routes organized in a tree-like structure.
+ */
+
+/**
+ * A data route object, which is just a RouteObject with a required unique ID
+ */
+
+// Recursive helper for finding path parameters in the absence of wildcards
+
+/**
+ * Examples:
+ * "/a/b/*" -> "*"
+ * ":a" -> "a"
+ * "/a/:b" -> "b"
+ * "/a/blahblahblah:b" -> "b"
+ * "/:a/:b" -> "a" | "b"
+ * "/:a/b/:c/*" -> "a" | "c" | "*"
+ */
+
+// Attempt to parse the given string segment. If it fails, then just return the
+// plain string type as a default fallback. Otherwise, return the union of the
+// parsed string literals that were referenced as dynamic segments in the route.
+/**
+ * The parameters that were parsed from the URL path.
+ */
+/**
+ * A RouteMatch contains info about how a route matched a URL.
+ */
+function isIndexRoute(route) {
+  return route.index === true;
+}
+
+// Walk the route tree generating unique IDs where necessary, so we are working
+// solely with AgnosticDataRouteObject's within the Router
+function convertRoutesToDataRoutes(routes, mapRouteProperties, parentPath, manifest) {
+  if (parentPath === void 0) {
+    parentPath = [];
+  }
+  if (manifest === void 0) {
+    manifest = {};
+  }
+  return routes.map((route, index) => {
+    let treePath = [...parentPath, index];
+    let id = typeof route.id === "string" ? route.id : treePath.join("-");
+    invariant(route.index !== true || !route.children, "Cannot specify children on an index route");
+    invariant(!manifest[id], "Found a route id collision on id \"" + id + "\".  Route " + "id's must be globally unique within Data Router usages");
+    if (isIndexRoute(route)) {
+      let indexRoute = _extends({}, route, mapRouteProperties(route), {
+        id
+      });
+      manifest[id] = indexRoute;
+      return indexRoute;
+    } else {
+      let pathOrLayoutRoute = _extends({}, route, mapRouteProperties(route), {
+        id,
+        children: undefined
+      });
+      manifest[id] = pathOrLayoutRoute;
+      if (route.children) {
+        pathOrLayoutRoute.children = convertRoutesToDataRoutes(route.children, mapRouteProperties, treePath, manifest);
+      }
+      return pathOrLayoutRoute;
+    }
+  });
+}
+
+/**
+ * Matches the given routes to a location and returns the match data.
+ *
+ * @see https://reactrouter.com/utils/match-routes
+ */
+function matchRoutes(routes, locationArg, basename) {
+  if (basename === void 0) {
+    basename = "/";
+  }
+  let location = typeof locationArg === "string" ? parsePath(locationArg) : locationArg;
+  let pathname = stripBasename(location.pathname || "/", basename);
+  if (pathname == null) {
+    return null;
+  }
+  let branches = flattenRoutes(routes);
+  rankRouteBranches(branches);
+  let matches = null;
+  for (let i = 0; matches == null && i < branches.length; ++i) {
+    matches = matchRouteBranch(branches[i],
+    // Incoming pathnames are generally encoded from either window.location
+    // or from router.navigate, but we want to match against the unencoded
+    // paths in the route definitions.  Memory router locations won't be
+    // encoded here but there also shouldn't be anything to decode so this
+    // should be a safe operation.  This avoids needing matchRoutes to be
+    // history-aware.
+    safelyDecodeURI(pathname));
+  }
+  return matches;
+}
+function convertRouteMatchToUiMatch(match, loaderData) {
+  let {
+    route,
+    pathname,
+    params
+  } = match;
+  return {
+    id: route.id,
+    pathname,
+    params,
+    data: loaderData[route.id],
+    handle: route.handle
+  };
+}
+function flattenRoutes(routes, branches, parentsMeta, parentPath) {
+  if (branches === void 0) {
+    branches = [];
+  }
+  if (parentsMeta === void 0) {
+    parentsMeta = [];
+  }
+  if (parentPath === void 0) {
+    parentPath = "";
+  }
+  let flattenRoute = (route, index, relativePath) => {
+    let meta = {
+      relativePath: relativePath === undefined ? route.path || "" : relativePath,
+      caseSensitive: route.caseSensitive === true,
+      childrenIndex: index,
+      route
+    };
+    if (meta.relativePath.startsWith("/")) {
+      invariant(meta.relativePath.startsWith(parentPath), "Absolute route path \"" + meta.relativePath + "\" nested under path " + ("\"" + parentPath + "\" is not valid. An absolute child route path ") + "must start with the combined path of all its parent routes.");
+      meta.relativePath = meta.relativePath.slice(parentPath.length);
+    }
+    let path = joinPaths([parentPath, meta.relativePath]);
+    let routesMeta = parentsMeta.concat(meta);
+
+    // Add the children before adding this route to the array, so we traverse the
+    // route tree depth-first and child routes appear before their parents in
+    // the "flattened" version.
+    if (route.children && route.children.length > 0) {
+      invariant(
+      // Our types know better, but runtime JS may not!
+      // @ts-expect-error
+      route.index !== true, "Index routes must not have child routes. Please remove " + ("all child routes from route path \"" + path + "\"."));
+      flattenRoutes(route.children, branches, routesMeta, path);
+    }
+
+    // Routes without a path shouldn't ever match by themselves unless they are
+    // index routes, so don't add them to the list of possible branches.
+    if (route.path == null && !route.index) {
+      return;
+    }
+    branches.push({
+      path,
+      score: computeScore(path, route.index),
+      routesMeta
+    });
+  };
+  routes.forEach((route, index) => {
+    var _route$path;
+    // coarse-grain check for optional params
+    if (route.path === "" || !((_route$path = route.path) != null && _route$path.includes("?"))) {
+      flattenRoute(route, index);
+    } else {
+      for (let exploded of explodeOptionalSegments(route.path)) {
+        flattenRoute(route, index, exploded);
+      }
+    }
+  });
+  return branches;
+}
+
+/**
+ * Computes all combinations of optional path segments for a given path,
+ * excluding combinations that are ambiguous and of lower priority.
+ *
+ * For example, `/one/:two?/three/:four?/:five?` explodes to:
+ * - `/one/three`
+ * - `/one/:two/three`
+ * - `/one/three/:four`
+ * - `/one/three/:five`
+ * - `/one/:two/three/:four`
+ * - `/one/:two/three/:five`
+ * - `/one/three/:four/:five`
+ * - `/one/:two/three/:four/:five`
+ */
+function explodeOptionalSegments(path) {
+  let segments = path.split("/");
+  if (segments.length === 0) return [];
+  let [first, ...rest] = segments;
+
+  // Optional path segments are denoted by a trailing `?`
+  let isOptional = first.endsWith("?");
+  // Compute the corresponding required segment: `foo?` -> `foo`
+  let required = first.replace(/\?$/, "");
+  if (rest.length === 0) {
+    // Intepret empty string as omitting an optional segment
+    // `["one", "", "three"]` corresponds to omitting `:two` from `/one/:two?/three` -> `/one/three`
+    return isOptional ? [required, ""] : [required];
+  }
+  let restExploded = explodeOptionalSegments(rest.join("/"));
+  let result = [];
+
+  // All child paths with the prefix.  Do this for all children before the
+  // optional version for all children, so we get consistent ordering where the
+  // parent optional aspect is preferred as required.  Otherwise, we can get
+  // child sections interspersed where deeper optional segments are higher than
+  // parent optional segments, where for example, /:two would explode _earlier_
+  // then /:one.  By always including the parent as required _for all children_
+  // first, we avoid this issue
+  result.push(...restExploded.map(subpath => subpath === "" ? required : [required, subpath].join("/")));
+
+  // Then, if this is an optional value, add all child versions without
+  if (isOptional) {
+    result.push(...restExploded);
+  }
+
+  // for absolute paths, ensure `/` instead of empty segment
+  return result.map(exploded => path.startsWith("/") && exploded === "" ? "/" : exploded);
+}
+function rankRouteBranches(branches) {
+  branches.sort((a, b) => a.score !== b.score ? b.score - a.score // Higher score first
+  : compareIndexes(a.routesMeta.map(meta => meta.childrenIndex), b.routesMeta.map(meta => meta.childrenIndex)));
+}
+const paramRe = /^:[\w-]+$/;
+const dynamicSegmentValue = 3;
+const indexRouteValue = 2;
+const emptySegmentValue = 1;
+const staticSegmentValue = 10;
+const splatPenalty = -2;
+const isSplat = s => s === "*";
+function computeScore(path, index) {
+  let segments = path.split("/");
+  let initialScore = segments.length;
+  if (segments.some(isSplat)) {
+    initialScore += splatPenalty;
+  }
+  if (index) {
+    initialScore += indexRouteValue;
+  }
+  return segments.filter(s => !isSplat(s)).reduce((score, segment) => score + (paramRe.test(segment) ? dynamicSegmentValue : segment === "" ? emptySegmentValue : staticSegmentValue), initialScore);
+}
+function compareIndexes(a, b) {
+  let siblings = a.length === b.length && a.slice(0, -1).every((n, i) => n === b[i]);
+  return siblings ?
+  // If two routes are siblings, we should try to match the earlier sibling
+  // first. This allows people to have fine-grained control over the matching
+  // behavior by simply putting routes with identical paths in the order they
+  // want them tried.
+  a[a.length - 1] - b[b.length - 1] :
+  // Otherwise, it doesn't really make sense to rank non-siblings by index,
+  // so they sort equally.
+  0;
+}
+function matchRouteBranch(branch, pathname) {
+  let {
+    routesMeta
+  } = branch;
+  let matchedParams = {};
+  let matchedPathname = "/";
+  let matches = [];
+  for (let i = 0; i < routesMeta.length; ++i) {
+    let meta = routesMeta[i];
+    let end = i === routesMeta.length - 1;
+    let remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/";
+    let match = matchPath({
+      path: meta.relativePath,
+      caseSensitive: meta.caseSensitive,
+      end
+    }, remainingPathname);
+    if (!match) return null;
+    Object.assign(matchedParams, match.params);
+    let route = meta.route;
+    matches.push({
+      // TODO: Can this as be avoided?
+      params: matchedParams,
+      pathname: joinPaths([matchedPathname, match.pathname]),
+      pathnameBase: normalizePathname(joinPaths([matchedPathname, match.pathnameBase])),
+      route
+    });
+    if (match.pathnameBase !== "/") {
+      matchedPathname = joinPaths([matchedPathname, match.pathnameBase]);
+    }
+  }
+  return matches;
+}
+
+/**
+ * Returns a path with params interpolated.
+ *
+ * @see https://reactrouter.com/utils/generate-path
+ */
+function generatePath(originalPath, params) {
+  if (params === void 0) {
+    params = {};
+  }
+  let path = originalPath;
+  if (path.endsWith("*") && path !== "*" && !path.endsWith("/*")) {
+    warning(false, "Route path \"" + path + "\" will be treated as if it were " + ("\"" + path.replace(/\*$/, "/*") + "\" because the `*` character must ") + "always follow a `/` in the pattern. To get rid of this warning, " + ("please change the route path to \"" + path.replace(/\*$/, "/*") + "\"."));
+    path = path.replace(/\*$/, "/*");
+  }
+
+  // ensure `/` is added at the beginning if the path is absolute
+  const prefix = path.startsWith("/") ? "/" : "";
+  const stringify = p => p == null ? "" : typeof p === "string" ? p : String(p);
+  const segments = path.split(/\/+/).map((segment, index, array) => {
+    const isLastSegment = index === array.length - 1;
+
+    // only apply the splat if it's the last segment
+    if (isLastSegment && segment === "*") {
+      const star = "*";
+      // Apply the splat
+      return stringify(params[star]);
+    }
+    const keyMatch = segment.match(/^:([\w-]+)(\??)$/);
+    if (keyMatch) {
+      const [, key, optional] = keyMatch;
+      let param = params[key];
+      invariant(optional === "?" || param != null, "Missing \":" + key + "\" param");
+      return stringify(param);
+    }
+
+    // Remove any optional markers from optional static segments
+    return segment.replace(/\?$/g, "");
+  })
+  // Remove empty segments
+  .filter(segment => !!segment);
+  return prefix + segments.join("/");
+}
+
+/**
+ * A PathPattern is used to match on some portion of a URL pathname.
+ */
+
+/**
+ * A PathMatch contains info about how a PathPattern matched on a URL pathname.
+ */
+
+/**
+ * Performs pattern matching on a URL pathname and returns information about
+ * the match.
+ *
+ * @see https://reactrouter.com/utils/match-path
+ */
+function matchPath(pattern, pathname) {
+  if (typeof pattern === "string") {
+    pattern = {
+      path: pattern,
+      caseSensitive: false,
+      end: true
+    };
+  }
+  let [matcher, compiledParams] = compilePath(pattern.path, pattern.caseSensitive, pattern.end);
+  let match = pathname.match(matcher);
+  if (!match) return null;
+  let matchedPathname = match[0];
+  let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
+  let captureGroups = match.slice(1);
+  let params = compiledParams.reduce((memo, _ref, index) => {
+    let {
+      paramName,
+      isOptional
+    } = _ref;
+    // We need to compute the pathnameBase here using the raw splat value
+    // instead of using params["*"] later because it will be decoded then
+    if (paramName === "*") {
+      let splatValue = captureGroups[index] || "";
+      pathnameBase = matchedPathname.slice(0, matchedPathname.length - splatValue.length).replace(/(.)\/+$/, "$1");
+    }
+    const value = captureGroups[index];
+    if (isOptional && !value) {
+      memo[paramName] = undefined;
+    } else {
+      memo[paramName] = safelyDecodeURIComponent(value || "", paramName);
+    }
+    return memo;
+  }, {});
+  return {
+    params,
+    pathname: matchedPathname,
+    pathnameBase,
+    pattern
+  };
+}
+function compilePath(path, caseSensitive, end) {
+  if (caseSensitive === void 0) {
+    caseSensitive = false;
+  }
+  if (end === void 0) {
+    end = true;
+  }
+  warning(path === "*" || !path.endsWith("*") || path.endsWith("/*"), "Route path \"" + path + "\" will be treated as if it were " + ("\"" + path.replace(/\*$/, "/*") + "\" because the `*` character must ") + "always follow a `/` in the pattern. To get rid of this warning, " + ("please change the route path to \"" + path.replace(/\*$/, "/*") + "\"."));
+  let params = [];
+  let regexpSource = "^" + path.replace(/\/*\*?$/, "") // Ignore trailing / and /*, we'll handle it below
+  .replace(/^\/*/, "/") // Make sure it has a leading /
+  .replace(/[\\.*+^${}|()[\]]/g, "\\$&") // Escape special regex chars
+  .replace(/\/:([\w-]+)(\?)?/g, (_, paramName, isOptional) => {
+    params.push({
+      paramName,
+      isOptional: isOptional != null
+    });
+    return isOptional ? "/?([^\\/]+)?" : "/([^\\/]+)";
+  });
+  if (path.endsWith("*")) {
+    params.push({
+      paramName: "*"
+    });
+    regexpSource += path === "*" || path === "/*" ? "(.*)$" // Already matched the initial /, just match the rest
+    : "(?:\\/(.+)|\\/*)$"; // Don't include the / in params["*"]
+  } else if (end) {
+    // When matching to the end, ignore trailing slashes
+    regexpSource += "\\/*$";
+  } else if (path !== "" && path !== "/") {
+    // If our path is non-empty and contains anything beyond an initial slash,
+    // then we have _some_ form of path in our regex, so we should expect to
+    // match only if we find the end of this path segment.  Look for an optional
+    // non-captured trailing slash (to match a portion of the URL) or the end
+    // of the path (if we've matched to the end).  We used to do this with a
+    // word boundary but that gives false positives on routes like
+    // /user-preferences since `-` counts as a word boundary.
+    regexpSource += "(?:(?=\\/|$))";
+  } else ;
+  let matcher = new RegExp(regexpSource, caseSensitive ? undefined : "i");
+  return [matcher, params];
+}
+function safelyDecodeURI(value) {
+  try {
+    return decodeURI(value);
+  } catch (error) {
+    warning(false, "The URL path \"" + value + "\" could not be decoded because it is is a " + "malformed URL segment. This is probably due to a bad percent " + ("encoding (" + error + ")."));
+    return value;
+  }
+}
+function safelyDecodeURIComponent(value, paramName) {
+  try {
+    return decodeURIComponent(value);
+  } catch (error) {
+    warning(false, "The value for the URL param \"" + paramName + "\" will not be decoded because" + (" the string \"" + value + "\" is a malformed URL segment. This is probably") + (" due to a bad percent encoding (" + error + ")."));
+    return value;
+  }
+}
+
+/**
+ * @private
+ */
+function stripBasename(pathname, basename) {
+  if (basename === "/") return pathname;
+  if (!pathname.toLowerCase().startsWith(basename.toLowerCase())) {
+    return null;
+  }
+
+  // We want to leave trailing slash behavior in the user's control, so if they
+  // specify a basename with a trailing slash, we should support it
+  let startIndex = basename.endsWith("/") ? basename.length - 1 : basename.length;
+  let nextChar = pathname.charAt(startIndex);
+  if (nextChar && nextChar !== "/") {
+    // pathname does not start with basename/
+    return null;
+  }
+  return pathname.slice(startIndex) || "/";
+}
+
+/**
+ * Returns a resolved path object relative to the given pathname.
+ *
+ * @see https://reactrouter.com/utils/resolve-path
+ */
+function resolvePath(to, fromPathname) {
+  if (fromPathname === void 0) {
+    fromPathname = "/";
+  }
+  let {
+    pathname: toPathname,
+    search = "",
+    hash = ""
+  } = typeof to === "string" ? parsePath(to) : to;
+  let pathname = toPathname ? toPathname.startsWith("/") ? toPathname : resolvePathname(toPathname, fromPathname) : fromPathname;
+  return {
+    pathname,
+    search: normalizeSearch(search),
+    hash: normalizeHash(hash)
+  };
+}
+function resolvePathname(relativePath, fromPathname) {
+  let segments = fromPathname.replace(/\/+$/, "").split("/");
+  let relativeSegments = relativePath.split("/");
+  relativeSegments.forEach(segment => {
+    if (segment === "..") {
+      // Keep the root "" segment so the pathname starts at /
+      if (segments.length > 1) segments.pop();
+    } else if (segment !== ".") {
+      segments.push(segment);
+    }
+  });
+  return segments.length > 1 ? segments.join("/") : "/";
+}
+function getInvalidPathError(char, field, dest, path) {
+  return "Cannot include a '" + char + "' character in a manually specified " + ("`to." + field + "` field [" + JSON.stringify(path) + "].  Please separate it out to the ") + ("`to." + dest + "` field. Alternatively you may provide the full path as ") + "a string in <Link to=\"...\"> and the router will parse it for you.";
+}
+
+/**
+ * @private
+ *
+ * When processing relative navigation we want to ignore ancestor routes that
+ * do not contribute to the path, such that index/pathless layout routes don't
+ * interfere.
+ *
+ * For example, when moving a route element into an index route and/or a
+ * pathless layout route, relative link behavior contained within should stay
+ * the same.  Both of the following examples should link back to the root:
+ *
+ *   <Route path="/">
+ *     <Route path="accounts" element={<Link to=".."}>
+ *   </Route>
+ *
+ *   <Route path="/">
+ *     <Route path="accounts">
+ *       <Route element={<AccountsLayout />}>       // <-- Does not contribute
+ *         <Route index element={<Link to=".."} />  // <-- Does not contribute
+ *       </Route
+ *     </Route>
+ *   </Route>
+ */
+function getPathContributingMatches(matches) {
+  return matches.filter((match, index) => index === 0 || match.route.path && match.route.path.length > 0);
+}
+
+// Return the array of pathnames for the current route matches - used to
+// generate the routePathnames input for resolveTo()
+function getResolveToMatches(matches, v7_relativeSplatPath) {
+  let pathMatches = getPathContributingMatches(matches);
+
+  // When v7_relativeSplatPath is enabled, use the full pathname for the leaf
+  // match so we include splat values for "." links.  See:
+  // https://github.com/remix-run/react-router/issues/11052#issuecomment-1836589329
+  if (v7_relativeSplatPath) {
+    return pathMatches.map((match, idx) => idx === matches.length - 1 ? match.pathname : match.pathnameBase);
+  }
+  return pathMatches.map(match => match.pathnameBase);
+}
+
+/**
+ * @private
+ */
+function resolveTo(toArg, routePathnames, locationPathname, isPathRelative) {
+  if (isPathRelative === void 0) {
+    isPathRelative = false;
+  }
+  let to;
+  if (typeof toArg === "string") {
+    to = parsePath(toArg);
+  } else {
+    to = _extends({}, toArg);
+    invariant(!to.pathname || !to.pathname.includes("?"), getInvalidPathError("?", "pathname", "search", to));
+    invariant(!to.pathname || !to.pathname.includes("#"), getInvalidPathError("#", "pathname", "hash", to));
+    invariant(!to.search || !to.search.includes("#"), getInvalidPathError("#", "search", "hash", to));
+  }
+  let isEmptyPath = toArg === "" || to.pathname === "";
+  let toPathname = isEmptyPath ? "/" : to.pathname;
+  let from;
+
+  // Routing is relative to the current pathname if explicitly requested.
+  //
+  // If a pathname is explicitly provided in `to`, it should be relative to the
+  // route context. This is explained in `Note on `<Link to>` values` in our
+  // migration guide from v5 as a means of disambiguation between `to` values
+  // that begin with `/` and those that do not. However, this is problematic for
+  // `to` values that do not provide a pathname. `to` can simply be a search or
+  // hash string, in which case we should assume that the navigation is relative
+  // to the current location's pathname and *not* the route pathname.
+  if (toPathname == null) {
+    from = locationPathname;
+  } else {
+    let routePathnameIndex = routePathnames.length - 1;
+
+    // With relative="route" (the default), each leading .. segment means
+    // "go up one route" instead of "go up one URL segment".  This is a key
+    // difference from how <a href> works and a major reason we call this a
+    // "to" value instead of a "href".
+    if (!isPathRelative && toPathname.startsWith("..")) {
+      let toSegments = toPathname.split("/");
+      while (toSegments[0] === "..") {
+        toSegments.shift();
+        routePathnameIndex -= 1;
+      }
+      to.pathname = toSegments.join("/");
+    }
+    from = routePathnameIndex >= 0 ? routePathnames[routePathnameIndex] : "/";
+  }
+  let path = resolvePath(to, from);
+
+  // Ensure the pathname has a trailing slash if the original "to" had one
+  let hasExplicitTrailingSlash = toPathname && toPathname !== "/" && toPathname.endsWith("/");
+  // Or if this was a link to the current path which has a trailing slash
+  let hasCurrentTrailingSlash = (isEmptyPath || toPathname === ".") && locationPathname.endsWith("/");
+  if (!path.pathname.endsWith("/") && (hasExplicitTrailingSlash || hasCurrentTrailingSlash)) {
+    path.pathname += "/";
+  }
+  return path;
+}
+
+/**
+ * @private
+ */
+function getToPathname(to) {
+  // Empty strings should be treated the same as / paths
+  return to === "" || to.pathname === "" ? "/" : typeof to === "string" ? parsePath(to).pathname : to.pathname;
+}
+
+/**
+ * @private
+ */
+const joinPaths = paths => paths.join("/").replace(/\/\/+/g, "/");
+
+/**
+ * @private
+ */
+const normalizePathname = pathname => pathname.replace(/\/+$/, "").replace(/^\/*/, "/");
+
+/**
+ * @private
+ */
+const normalizeSearch = search => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search;
+
+/**
+ * @private
+ */
+const normalizeHash = hash => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash;
+/**
+ * This is a shortcut for creating `application/json` responses. Converts `data`
+ * to JSON and sets the `Content-Type` header.
+ */
+const json = function json(data, init) {
+  if (init === void 0) {
+    init = {};
+  }
+  let responseInit = typeof init === "number" ? {
+    status: init
+  } : init;
+  let headers = new Headers(responseInit.headers);
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json; charset=utf-8");
+  }
+  return new Response(JSON.stringify(data), _extends({}, responseInit, {
+    headers
+  }));
+};
+class AbortedDeferredError extends Error {}
+class DeferredData {
+  constructor(data, responseInit) {
+    this.pendingKeysSet = new Set();
+    this.subscribers = new Set();
+    this.deferredKeys = [];
+    invariant(data && typeof data === "object" && !Array.isArray(data), "defer() only accepts plain objects");
+
+    // Set up an AbortController + Promise we can race against to exit early
+    // cancellation
+    let reject;
+    this.abortPromise = new Promise((_, r) => reject = r);
+    this.controller = new AbortController();
+    let onAbort = () => reject(new AbortedDeferredError("Deferred data aborted"));
+    this.unlistenAbortSignal = () => this.controller.signal.removeEventListener("abort", onAbort);
+    this.controller.signal.addEventListener("abort", onAbort);
+    this.data = Object.entries(data).reduce((acc, _ref2) => {
+      let [key, value] = _ref2;
+      return Object.assign(acc, {
+        [key]: this.trackPromise(key, value)
+      });
+    }, {});
+    if (this.done) {
+      // All incoming values were resolved
+      this.unlistenAbortSignal();
+    }
+    this.init = responseInit;
+  }
+  trackPromise(key, value) {
+    if (!(value instanceof Promise)) {
+      return value;
+    }
+    this.deferredKeys.push(key);
+    this.pendingKeysSet.add(key);
+
+    // We store a little wrapper promise that will be extended with
+    // _data/_error props upon resolve/reject
+    let promise = Promise.race([value, this.abortPromise]).then(data => this.onSettle(promise, key, undefined, data), error => this.onSettle(promise, key, error));
+
+    // Register rejection listeners to avoid uncaught promise rejections on
+    // errors or aborted deferred values
+    promise.catch(() => {});
+    Object.defineProperty(promise, "_tracked", {
+      get: () => true
+    });
+    return promise;
+  }
+  onSettle(promise, key, error, data) {
+    if (this.controller.signal.aborted && error instanceof AbortedDeferredError) {
+      this.unlistenAbortSignal();
+      Object.defineProperty(promise, "_error", {
+        get: () => error
+      });
+      return Promise.reject(error);
+    }
+    this.pendingKeysSet.delete(key);
+    if (this.done) {
+      // Nothing left to abort!
+      this.unlistenAbortSignal();
+    }
+
+    // If the promise was resolved/rejected with undefined, we'll throw an error as you
+    // should always resolve with a value or null
+    if (error === undefined && data === undefined) {
+      let undefinedError = new Error("Deferred data for key \"" + key + "\" resolved/rejected with `undefined`, " + "you must resolve/reject with a value or `null`.");
+      Object.defineProperty(promise, "_error", {
+        get: () => undefinedError
+      });
+      this.emit(false, key);
+      return Promise.reject(undefinedError);
+    }
+    if (data === undefined) {
+      Object.defineProperty(promise, "_error", {
+        get: () => error
+      });
+      this.emit(false, key);
+      return Promise.reject(error);
+    }
+    Object.defineProperty(promise, "_data", {
+      get: () => data
+    });
+    this.emit(false, key);
+    return data;
+  }
+  emit(aborted, settledKey) {
+    this.subscribers.forEach(subscriber => subscriber(aborted, settledKey));
+  }
+  subscribe(fn) {
+    this.subscribers.add(fn);
+    return () => this.subscribers.delete(fn);
+  }
+  cancel() {
+    this.controller.abort();
+    this.pendingKeysSet.forEach((v, k) => this.pendingKeysSet.delete(k));
+    this.emit(true);
+  }
+  async resolveData(signal) {
+    let aborted = false;
+    if (!this.done) {
+      let onAbort = () => this.cancel();
+      signal.addEventListener("abort", onAbort);
+      aborted = await new Promise(resolve => {
+        this.subscribe(aborted => {
+          signal.removeEventListener("abort", onAbort);
+          if (aborted || this.done) {
+            resolve(aborted);
+          }
+        });
+      });
+    }
+    return aborted;
+  }
+  get done() {
+    return this.pendingKeysSet.size === 0;
+  }
+  get unwrappedData() {
+    invariant(this.data !== null && this.done, "Can only unwrap data on initialized and settled deferreds");
+    return Object.entries(this.data).reduce((acc, _ref3) => {
+      let [key, value] = _ref3;
+      return Object.assign(acc, {
+        [key]: unwrapTrackedPromise(value)
+      });
+    }, {});
+  }
+  get pendingKeys() {
+    return Array.from(this.pendingKeysSet);
+  }
+}
+function isTrackedPromise(value) {
+  return value instanceof Promise && value._tracked === true;
+}
+function unwrapTrackedPromise(value) {
+  if (!isTrackedPromise(value)) {
+    return value;
+  }
+  if (value._error) {
+    throw value._error;
+  }
+  return value._data;
+}
+const defer = function defer(data, init) {
+  if (init === void 0) {
+    init = {};
+  }
+  let responseInit = typeof init === "number" ? {
+    status: init
+  } : init;
+  return new DeferredData(data, responseInit);
+};
+/**
+ * A redirect response. Sets the status code and the `Location` header.
+ * Defaults to "302 Found".
+ */
+const redirect = function redirect(url, init) {
+  if (init === void 0) {
+    init = 302;
+  }
+  let responseInit = init;
+  if (typeof responseInit === "number") {
+    responseInit = {
+      status: responseInit
+    };
+  } else if (typeof responseInit.status === "undefined") {
+    responseInit.status = 302;
+  }
+  let headers = new Headers(responseInit.headers);
+  headers.set("Location", url);
+  return new Response(null, _extends({}, responseInit, {
+    headers
+  }));
+};
+
+/**
+ * A redirect response that will force a document reload to the new location.
+ * Sets the status code and the `Location` header.
+ * Defaults to "302 Found".
+ */
+const redirectDocument = (url, init) => {
+  let response = redirect(url, init);
+  response.headers.set("X-Remix-Reload-Document", "true");
+  return response;
+};
+/**
+ * @private
+ * Utility class we use to hold auto-unwrapped 4xx/5xx Response bodies
+ *
+ * We don't export the class for public use since it's an implementation
+ * detail, but we export the interface above so folks can build their own
+ * abstractions around instances via isRouteErrorResponse()
+ */
+class ErrorResponseImpl {
+  constructor(status, statusText, data, internal) {
+    if (internal === void 0) {
+      internal = false;
+    }
+    this.status = status;
+    this.statusText = statusText || "";
+    this.internal = internal;
+    if (data instanceof Error) {
+      this.data = data.toString();
+      this.error = data;
+    } else {
+      this.data = data;
+    }
+  }
+}
+
+/**
+ * Check if the given error is an ErrorResponse generated from a 4xx/5xx
+ * Response thrown from an action/loader
+ */
+function isRouteErrorResponse(error) {
+  return error != null && typeof error.status === "number" && typeof error.statusText === "string" && typeof error.internal === "boolean" && "data" in error;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Types and Constants
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A Router instance manages all navigation and data loading/mutations
+ */
+/**
+ * State maintained internally by the router.  During a navigation, all states
+ * reflect the the "old" location unless otherwise noted.
+ */
+/**
+ * Data that can be passed into hydrate a Router from SSR
+ */
+/**
+ * Future flags to toggle new feature behavior
+ */
+/**
+ * Initialization options for createRouter
+ */
+/**
+ * State returned from a server-side query() call
+ */
+/**
+ * A StaticHandler instance manages a singular SSR navigation/fetch event
+ */
+/**
+ * Subscriber function signature for changes to router state
+ */
+/**
+ * Function signature for determining the key to be used in scroll restoration
+ * for a given location
+ */
+/**
+ * Function signature for determining the current scroll position
+ */
+// Allowed for any navigation or fetch
+// Only allowed for navigations
+// Only allowed for submission navigations
+/**
+ * Options for a navigate() call for a normal (non-submission) navigation
+ */
+/**
+ * Options for a navigate() call for a submission navigation
+ */
+/**
+ * Options to pass to navigate() for a navigation
+ */
+/**
+ * Options for a fetch() load
+ */
+/**
+ * Options for a fetch() submission
+ */
+/**
+ * Options to pass to fetch()
+ */
+/**
+ * Potential states for state.navigation
+ */
+/**
+ * Potential states for fetchers
+ */
+/**
+ * Cached info for active fetcher.load() instances so they can participate
+ * in revalidation
+ */
+/**
+ * Identified fetcher.load() calls that need to be revalidated
+ */
+/**
+ * Wrapper object to allow us to throw any response out from callLoaderOrAction
+ * for queryRouter while preserving whether or not it was thrown or returned
+ * from the loader/action
+ */
+const validMutationMethodsArr = ["post", "put", "patch", "delete"];
+const validMutationMethods = new Set(validMutationMethodsArr);
+const validRequestMethodsArr = ["get", ...validMutationMethodsArr];
+const validRequestMethods = new Set(validRequestMethodsArr);
+const redirectStatusCodes = new Set([301, 302, 303, 307, 308]);
+const redirectPreserveMethodStatusCodes = new Set([307, 308]);
+const IDLE_NAVIGATION = {
+  state: "idle",
+  location: undefined,
+  formMethod: undefined,
+  formAction: undefined,
+  formEncType: undefined,
+  formData: undefined,
+  json: undefined,
+  text: undefined
+};
+const IDLE_FETCHER = {
+  state: "idle",
+  data: undefined,
+  formMethod: undefined,
+  formAction: undefined,
+  formEncType: undefined,
+  formData: undefined,
+  json: undefined,
+  text: undefined
+};
+const IDLE_BLOCKER = {
+  state: "unblocked",
+  proceed: undefined,
+  reset: undefined,
+  location: undefined
+};
+const ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
+const defaultMapRouteProperties = route => ({
+  hasErrorBoundary: Boolean(route.hasErrorBoundary)
+});
+const TRANSITIONS_STORAGE_KEY = "remix-router-transitions";
+
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region createRouter
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Create a router and listen to history POP navigations
+ */
+function createRouter(init) {
+  const routerWindow = init.window ? init.window : typeof window !== "undefined" ? window : undefined;
+  const isBrowser = typeof routerWindow !== "undefined" && typeof routerWindow.document !== "undefined" && typeof routerWindow.document.createElement !== "undefined";
+  const isServer = !isBrowser;
+  invariant(init.routes.length > 0, "You must provide a non-empty routes array to createRouter");
+  let mapRouteProperties;
+  if (init.mapRouteProperties) {
+    mapRouteProperties = init.mapRouteProperties;
+  } else if (init.detectErrorBoundary) {
+    // If they are still using the deprecated version, wrap it with the new API
+    let detectErrorBoundary = init.detectErrorBoundary;
+    mapRouteProperties = route => ({
+      hasErrorBoundary: detectErrorBoundary(route)
+    });
+  } else {
+    mapRouteProperties = defaultMapRouteProperties;
+  }
+
+  // Routes keyed by ID
+  let manifest = {};
+  // Routes in tree format for matching
+  let dataRoutes = convertRoutesToDataRoutes(init.routes, mapRouteProperties, undefined, manifest);
+  let inFlightDataRoutes;
+  let basename = init.basename || "/";
+  // Config driven behavior flags
+  let future = _extends({
+    v7_fetcherPersist: false,
+    v7_normalizeFormMethod: false,
+    v7_partialHydration: false,
+    v7_prependBasename: false,
+    v7_relativeSplatPath: false
+  }, init.future);
+  // Cleanup function for history
+  let unlistenHistory = null;
+  // Externally-provided functions to call on all state changes
+  let subscribers = new Set();
+  // Externally-provided object to hold scroll restoration locations during routing
+  let savedScrollPositions = null;
+  // Externally-provided function to get scroll restoration keys
+  let getScrollRestorationKey = null;
+  // Externally-provided function to get current scroll position
+  let getScrollPosition = null;
+  // One-time flag to control the initial hydration scroll restoration.  Because
+  // we don't get the saved positions from <ScrollRestoration /> until _after_
+  // the initial render, we need to manually trigger a separate updateState to
+  // send along the restoreScrollPosition
+  // Set to true if we have `hydrationData` since we assume we were SSR'd and that
+  // SSR did the initial scroll restoration.
+  let initialScrollRestored = init.hydrationData != null;
+  let initialMatches = matchRoutes(dataRoutes, init.history.location, basename);
+  let initialErrors = null;
+  if (initialMatches == null) {
+    // If we do not match a user-provided-route, fall back to the root
+    // to allow the error boundary to take over
+    let error = getInternalRouterError(404, {
+      pathname: init.history.location.pathname
+    });
+    let {
+      matches,
+      route
+    } = getShortCircuitMatches(dataRoutes);
+    initialMatches = matches;
+    initialErrors = {
+      [route.id]: error
+    };
+  }
+  let initialized;
+  let hasLazyRoutes = initialMatches.some(m => m.route.lazy);
+  let hasLoaders = initialMatches.some(m => m.route.loader);
+  if (hasLazyRoutes) {
+    // All initialMatches need to be loaded before we're ready.  If we have lazy
+    // functions around still then we'll need to run them in initialize()
+    initialized = false;
+  } else if (!hasLoaders) {
+    // If we've got no loaders to run, then we're good to go
+    initialized = true;
+  } else if (future.v7_partialHydration) {
+    // If partial hydration is enabled, we're initialized so long as we were
+    // provided with hydrationData for every route with a loader, and no loaders
+    // were marked for explicit hydration
+    let loaderData = init.hydrationData ? init.hydrationData.loaderData : null;
+    let errors = init.hydrationData ? init.hydrationData.errors : null;
+    initialized = initialMatches.every(m => m.route.loader && m.route.loader.hydrate !== true && (loaderData && loaderData[m.route.id] !== undefined || errors && errors[m.route.id] !== undefined));
+  } else {
+    // Without partial hydration - we're initialized if we were provided any
+    // hydrationData - which is expected to be complete
+    initialized = init.hydrationData != null;
+  }
+  let router;
+  let state = {
+    historyAction: init.history.action,
+    location: init.history.location,
+    matches: initialMatches,
+    initialized,
+    navigation: IDLE_NAVIGATION,
+    // Don't restore on initial updateState() if we were SSR'd
+    restoreScrollPosition: init.hydrationData != null ? false : null,
+    preventScrollReset: false,
+    revalidation: "idle",
+    loaderData: init.hydrationData && init.hydrationData.loaderData || {},
+    actionData: init.hydrationData && init.hydrationData.actionData || null,
+    errors: init.hydrationData && init.hydrationData.errors || initialErrors,
+    fetchers: new Map(),
+    blockers: new Map()
+  };
+
+  // -- Stateful internal variables to manage navigations --
+  // Current navigation in progress (to be committed in completeNavigation)
+  let pendingAction = Action.Pop;
+
+  // Should the current navigation prevent the scroll reset if scroll cannot
+  // be restored?
+  let pendingPreventScrollReset = false;
+
+  // AbortController for the active navigation
+  let pendingNavigationController;
+
+  // Should the current navigation enable document.startViewTransition?
+  let pendingViewTransitionEnabled = false;
+
+  // Store applied view transitions so we can apply them on POP
+  let appliedViewTransitions = new Map();
+
+  // Cleanup function for persisting applied transitions to sessionStorage
+  let removePageHideEventListener = null;
+
+  // We use this to avoid touching history in completeNavigation if a
+  // revalidation is entirely uninterrupted
+  let isUninterruptedRevalidation = false;
+
+  // Use this internal flag to force revalidation of all loaders:
+  //  - submissions (completed or interrupted)
+  //  - useRevalidator()
+  //  - X-Remix-Revalidate (from redirect)
+  let isRevalidationRequired = false;
+
+  // Use this internal array to capture routes that require revalidation due
+  // to a cancelled deferred on action submission
+  let cancelledDeferredRoutes = [];
+
+  // Use this internal array to capture fetcher loads that were cancelled by an
+  // action navigation and require revalidation
+  let cancelledFetcherLoads = [];
+
+  // AbortControllers for any in-flight fetchers
+  let fetchControllers = new Map();
+
+  // Track loads based on the order in which they started
+  let incrementingLoadId = 0;
+
+  // Track the outstanding pending navigation data load to be compared against
+  // the globally incrementing load when a fetcher load lands after a completed
+  // navigation
+  let pendingNavigationLoadId = -1;
+
+  // Fetchers that triggered data reloads as a result of their actions
+  let fetchReloadIds = new Map();
+
+  // Fetchers that triggered redirect navigations
+  let fetchRedirectIds = new Set();
+
+  // Most recent href/match for fetcher.load calls for fetchers
+  let fetchLoadMatches = new Map();
+
+  // Ref-count mounted fetchers so we know when it's ok to clean them up
+  let activeFetchers = new Map();
+
+  // Fetchers that have requested a delete when using v7_fetcherPersist,
+  // they'll be officially removed after they return to idle
+  let deletedFetchers = new Set();
+
+  // Store DeferredData instances for active route matches.  When a
+  // route loader returns defer() we stick one in here.  Then, when a nested
+  // promise resolves we update loaderData.  If a new navigation starts we
+  // cancel active deferreds for eliminated routes.
+  let activeDeferreds = new Map();
+
+  // Store blocker functions in a separate Map outside of router state since
+  // we don't need to update UI state if they change
+  let blockerFunctions = new Map();
+
+  // Flag to ignore the next history update, so we can revert the URL change on
+  // a POP navigation that was blocked by the user without touching router state
+  let ignoreNextHistoryUpdate = false;
+
+  // Initialize the router, all side effects should be kicked off from here.
+  // Implemented as a Fluent API for ease of:
+  //   let router = createRouter(init).initialize();
+  function initialize() {
+    // If history informs us of a POP navigation, start the navigation but do not update
+    // state.  We'll update our own state once the navigation completes
+    unlistenHistory = init.history.listen(_ref => {
+      let {
+        action: historyAction,
+        location,
+        delta
+      } = _ref;
+      // Ignore this event if it was just us resetting the URL from a
+      // blocked POP navigation
+      if (ignoreNextHistoryUpdate) {
+        ignoreNextHistoryUpdate = false;
+        return;
+      }
+      warning(blockerFunctions.size === 0 || delta != null, "You are trying to use a blocker on a POP navigation to a location " + "that was not created by @remix-run/router. This will fail silently in " + "production. This can happen if you are navigating outside the router " + "via `window.history.pushState`/`window.location.hash` instead of using " + "router navigation APIs.  This can also happen if you are using " + "createHashRouter and the user manually changes the URL.");
+      let blockerKey = shouldBlockNavigation({
+        currentLocation: state.location,
+        nextLocation: location,
+        historyAction
+      });
+      if (blockerKey && delta != null) {
+        // Restore the URL to match the current UI, but don't update router state
+        ignoreNextHistoryUpdate = true;
+        init.history.go(delta * -1);
+
+        // Put the blocker into a blocked state
+        updateBlocker(blockerKey, {
+          state: "blocked",
+          location,
+          proceed() {
+            updateBlocker(blockerKey, {
+              state: "proceeding",
+              proceed: undefined,
+              reset: undefined,
+              location
+            });
+            // Re-do the same POP navigation we just blocked
+            init.history.go(delta);
+          },
+          reset() {
+            let blockers = new Map(state.blockers);
+            blockers.set(blockerKey, IDLE_BLOCKER);
+            updateState({
+              blockers
+            });
+          }
+        });
+        return;
+      }
+      return startNavigation(historyAction, location);
+    });
+    if (isBrowser) {
+      // FIXME: This feels gross.  How can we cleanup the lines between
+      // scrollRestoration/appliedTransitions persistance?
+      restoreAppliedTransitions(routerWindow, appliedViewTransitions);
+      let _saveAppliedTransitions = () => persistAppliedTransitions(routerWindow, appliedViewTransitions);
+      routerWindow.addEventListener("pagehide", _saveAppliedTransitions);
+      removePageHideEventListener = () => routerWindow.removeEventListener("pagehide", _saveAppliedTransitions);
+    }
+
+    // Kick off initial data load if needed.  Use Pop to avoid modifying history
+    // Note we don't do any handling of lazy here.  For SPA's it'll get handled
+    // in the normal navigation flow.  For SSR it's expected that lazy modules are
+    // resolved prior to router creation since we can't go into a fallbackElement
+    // UI for SSR'd apps
+    if (!state.initialized) {
+      startNavigation(Action.Pop, state.location, {
+        initialHydration: true
+      });
+    }
+    return router;
+  }
+
+  // Clean up a router and it's side effects
+  function dispose() {
+    if (unlistenHistory) {
+      unlistenHistory();
+    }
+    if (removePageHideEventListener) {
+      removePageHideEventListener();
+    }
+    subscribers.clear();
+    pendingNavigationController && pendingNavigationController.abort();
+    state.fetchers.forEach((_, key) => deleteFetcher(key));
+    state.blockers.forEach((_, key) => deleteBlocker(key));
+  }
+
+  // Subscribe to state updates for the router
+  function subscribe(fn) {
+    subscribers.add(fn);
+    return () => subscribers.delete(fn);
+  }
+
+  // Update our state and notify the calling context of the change
+  function updateState(newState, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    state = _extends({}, state, newState);
+
+    // Prep fetcher cleanup so we can tell the UI which fetcher data entries
+    // can be removed
+    let completedFetchers = [];
+    let deletedFetchersKeys = [];
+    if (future.v7_fetcherPersist) {
+      state.fetchers.forEach((fetcher, key) => {
+        if (fetcher.state === "idle") {
+          if (deletedFetchers.has(key)) {
+            // Unmounted from the UI and can be totally removed
+            deletedFetchersKeys.push(key);
+          } else {
+            // Returned to idle but still mounted in the UI, so semi-remains for
+            // revalidations and such
+            completedFetchers.push(key);
+          }
+        }
+      });
+    }
+
+    // Iterate over a local copy so that if flushSync is used and we end up
+    // removing and adding a new subscriber due to the useCallback dependencies,
+    // we don't get ourselves into a loop calling the new subscriber immediately
+    [...subscribers].forEach(subscriber => subscriber(state, {
+      deletedFetchers: deletedFetchersKeys,
+      unstable_viewTransitionOpts: opts.viewTransitionOpts,
+      unstable_flushSync: opts.flushSync === true
+    }));
+
+    // Remove idle fetchers from state since we only care about in-flight fetchers.
+    if (future.v7_fetcherPersist) {
+      completedFetchers.forEach(key => state.fetchers.delete(key));
+      deletedFetchersKeys.forEach(key => deleteFetcher(key));
+    }
+  }
+
+  // Complete a navigation returning the state.navigation back to the IDLE_NAVIGATION
+  // and setting state.[historyAction/location/matches] to the new route.
+  // - Location is a required param
+  // - Navigation will always be set to IDLE_NAVIGATION
+  // - Can pass any other state in newState
+  function completeNavigation(location, newState, _temp) {
+    var _location$state, _location$state2;
+    let {
+      flushSync
+    } = _temp === void 0 ? {} : _temp;
+    // Deduce if we're in a loading/actionReload state:
+    // - We have committed actionData in the store
+    // - The current navigation was a mutation submission
+    // - We're past the submitting state and into the loading state
+    // - The location being loaded is not the result of a redirect
+    let isActionReload = state.actionData != null && state.navigation.formMethod != null && isMutationMethod(state.navigation.formMethod) && state.navigation.state === "loading" && ((_location$state = location.state) == null ? void 0 : _location$state._isRedirect) !== true;
+    let actionData;
+    if (newState.actionData) {
+      if (Object.keys(newState.actionData).length > 0) {
+        actionData = newState.actionData;
+      } else {
+        // Empty actionData -> clear prior actionData due to an action error
+        actionData = null;
+      }
+    } else if (isActionReload) {
+      // Keep the current data if we're wrapping up the action reload
+      actionData = state.actionData;
+    } else {
+      // Clear actionData on any other completed navigations
+      actionData = null;
+    }
+
+    // Always preserve any existing loaderData from re-used routes
+    let loaderData = newState.loaderData ? mergeLoaderData(state.loaderData, newState.loaderData, newState.matches || [], newState.errors) : state.loaderData;
+
+    // On a successful navigation we can assume we got through all blockers
+    // so we can start fresh
+    let blockers = state.blockers;
+    if (blockers.size > 0) {
+      blockers = new Map(blockers);
+      blockers.forEach((_, k) => blockers.set(k, IDLE_BLOCKER));
+    }
+
+    // Always respect the user flag.  Otherwise don't reset on mutation
+    // submission navigations unless they redirect
+    let preventScrollReset = pendingPreventScrollReset === true || state.navigation.formMethod != null && isMutationMethod(state.navigation.formMethod) && ((_location$state2 = location.state) == null ? void 0 : _location$state2._isRedirect) !== true;
+    if (inFlightDataRoutes) {
+      dataRoutes = inFlightDataRoutes;
+      inFlightDataRoutes = undefined;
+    }
+    if (isUninterruptedRevalidation) ; else if (pendingAction === Action.Pop) ; else if (pendingAction === Action.Push) {
+      init.history.push(location, location.state);
+    } else if (pendingAction === Action.Replace) {
+      init.history.replace(location, location.state);
+    }
+    let viewTransitionOpts;
+
+    // On POP, enable transitions if they were enabled on the original navigation
+    if (pendingAction === Action.Pop) {
+      // Forward takes precedence so they behave like the original navigation
+      let priorPaths = appliedViewTransitions.get(state.location.pathname);
+      if (priorPaths && priorPaths.has(location.pathname)) {
+        viewTransitionOpts = {
+          currentLocation: state.location,
+          nextLocation: location
+        };
+      } else if (appliedViewTransitions.has(location.pathname)) {
+        // If we don't have a previous forward nav, assume we're popping back to
+        // the new location and enable if that location previously enabled
+        viewTransitionOpts = {
+          currentLocation: location,
+          nextLocation: state.location
+        };
+      }
+    } else if (pendingViewTransitionEnabled) {
+      // Store the applied transition on PUSH/REPLACE
+      let toPaths = appliedViewTransitions.get(state.location.pathname);
+      if (toPaths) {
+        toPaths.add(location.pathname);
+      } else {
+        toPaths = new Set([location.pathname]);
+        appliedViewTransitions.set(state.location.pathname, toPaths);
+      }
+      viewTransitionOpts = {
+        currentLocation: state.location,
+        nextLocation: location
+      };
+    }
+    updateState(_extends({}, newState, {
+      // matches, errors, fetchers go through as-is
+      actionData,
+      loaderData,
+      historyAction: pendingAction,
+      location,
+      initialized: true,
+      navigation: IDLE_NAVIGATION,
+      revalidation: "idle",
+      restoreScrollPosition: getSavedScrollPosition(location, newState.matches || state.matches),
+      preventScrollReset,
+      blockers
+    }), {
+      viewTransitionOpts,
+      flushSync: flushSync === true
+    });
+
+    // Reset stateful navigation vars
+    pendingAction = Action.Pop;
+    pendingPreventScrollReset = false;
+    pendingViewTransitionEnabled = false;
+    isUninterruptedRevalidation = false;
+    isRevalidationRequired = false;
+    cancelledDeferredRoutes = [];
+    cancelledFetcherLoads = [];
+  }
+
+  // Trigger a navigation event, which can either be a numerical POP or a PUSH
+  // replace with an optional submission
+  async function navigate(to, opts) {
+    if (typeof to === "number") {
+      init.history.go(to);
+      return;
+    }
+    let normalizedPath = normalizeTo(state.location, state.matches, basename, future.v7_prependBasename, to, future.v7_relativeSplatPath, opts == null ? void 0 : opts.fromRouteId, opts == null ? void 0 : opts.relative);
+    let {
+      path,
+      submission,
+      error
+    } = normalizeNavigateOptions(future.v7_normalizeFormMethod, false, normalizedPath, opts);
+    let currentLocation = state.location;
+    let nextLocation = createLocation(state.location, path, opts && opts.state);
+
+    // When using navigate as a PUSH/REPLACE we aren't reading an already-encoded
+    // URL from window.location, so we need to encode it here so the behavior
+    // remains the same as POP and non-data-router usages.  new URL() does all
+    // the same encoding we'd get from a history.pushState/window.location read
+    // without having to touch history
+    nextLocation = _extends({}, nextLocation, init.history.encodeLocation(nextLocation));
+    let userReplace = opts && opts.replace != null ? opts.replace : undefined;
+    let historyAction = Action.Push;
+    if (userReplace === true) {
+      historyAction = Action.Replace;
+    } else if (userReplace === false) ; else if (submission != null && isMutationMethod(submission.formMethod) && submission.formAction === state.location.pathname + state.location.search) {
+      // By default on submissions to the current location we REPLACE so that
+      // users don't have to double-click the back button to get to the prior
+      // location.  If the user redirects to a different location from the
+      // action/loader this will be ignored and the redirect will be a PUSH
+      historyAction = Action.Replace;
+    }
+    let preventScrollReset = opts && "preventScrollReset" in opts ? opts.preventScrollReset === true : undefined;
+    let flushSync = (opts && opts.unstable_flushSync) === true;
+    let blockerKey = shouldBlockNavigation({
+      currentLocation,
+      nextLocation,
+      historyAction
+    });
+    if (blockerKey) {
+      // Put the blocker into a blocked state
+      updateBlocker(blockerKey, {
+        state: "blocked",
+        location: nextLocation,
+        proceed() {
+          updateBlocker(blockerKey, {
+            state: "proceeding",
+            proceed: undefined,
+            reset: undefined,
+            location: nextLocation
+          });
+          // Send the same navigation through
+          navigate(to, opts);
+        },
+        reset() {
+          let blockers = new Map(state.blockers);
+          blockers.set(blockerKey, IDLE_BLOCKER);
+          updateState({
+            blockers
+          });
+        }
+      });
+      return;
+    }
+    return await startNavigation(historyAction, nextLocation, {
+      submission,
+      // Send through the formData serialization error if we have one so we can
+      // render at the right error boundary after we match routes
+      pendingError: error,
+      preventScrollReset,
+      replace: opts && opts.replace,
+      enableViewTransition: opts && opts.unstable_viewTransition,
+      flushSync
+    });
+  }
+
+  // Revalidate all current loaders.  If a navigation is in progress or if this
+  // is interrupted by a navigation, allow this to "succeed" by calling all
+  // loaders during the next loader round
+  function revalidate() {
+    interruptActiveLoads();
+    updateState({
+      revalidation: "loading"
+    });
+
+    // If we're currently submitting an action, we don't need to start a new
+    // navigation, we'll just let the follow up loader execution call all loaders
+    if (state.navigation.state === "submitting") {
+      return;
+    }
+
+    // If we're currently in an idle state, start a new navigation for the current
+    // action/location and mark it as uninterrupted, which will skip the history
+    // update in completeNavigation
+    if (state.navigation.state === "idle") {
+      startNavigation(state.historyAction, state.location, {
+        startUninterruptedRevalidation: true
+      });
+      return;
+    }
+
+    // Otherwise, if we're currently in a loading state, just start a new
+    // navigation to the navigation.location but do not trigger an uninterrupted
+    // revalidation so that history correctly updates once the navigation completes
+    startNavigation(pendingAction || state.historyAction, state.navigation.location, {
+      overrideNavigation: state.navigation
+    });
+  }
+
+  // Start a navigation to the given action/location.  Can optionally provide a
+  // overrideNavigation which will override the normalLoad in the case of a redirect
+  // navigation
+  async function startNavigation(historyAction, location, opts) {
+    // Abort any in-progress navigations and start a new one. Unset any ongoing
+    // uninterrupted revalidations unless told otherwise, since we want this
+    // new navigation to update history normally
+    pendingNavigationController && pendingNavigationController.abort();
+    pendingNavigationController = null;
+    pendingAction = historyAction;
+    isUninterruptedRevalidation = (opts && opts.startUninterruptedRevalidation) === true;
+
+    // Save the current scroll position every time we start a new navigation,
+    // and track whether we should reset scroll on completion
+    saveScrollPosition(state.location, state.matches);
+    pendingPreventScrollReset = (opts && opts.preventScrollReset) === true;
+    pendingViewTransitionEnabled = (opts && opts.enableViewTransition) === true;
+    let routesToUse = inFlightDataRoutes || dataRoutes;
+    let loadingNavigation = opts && opts.overrideNavigation;
+    let matches = matchRoutes(routesToUse, location, basename);
+    let flushSync = (opts && opts.flushSync) === true;
+
+    // Short circuit with a 404 on the root error boundary if we match nothing
+    if (!matches) {
+      let error = getInternalRouterError(404, {
+        pathname: location.pathname
+      });
+      let {
+        matches: notFoundMatches,
+        route
+      } = getShortCircuitMatches(routesToUse);
+      // Cancel all pending deferred on 404s since we don't keep any routes
+      cancelActiveDeferreds();
+      completeNavigation(location, {
+        matches: notFoundMatches,
+        loaderData: {},
+        errors: {
+          [route.id]: error
+        }
+      }, {
+        flushSync
+      });
+      return;
+    }
+
+    // Short circuit if it's only a hash change and not a revalidation or
+    // mutation submission.
+    //
+    // Ignore on initial page loads because since the initial load will always
+    // be "same hash".  For example, on /page#hash and submit a <Form method="post">
+    // which will default to a navigation to /page
+    if (state.initialized && !isRevalidationRequired && isHashChangeOnly(state.location, location) && !(opts && opts.submission && isMutationMethod(opts.submission.formMethod))) {
+      completeNavigation(location, {
+        matches
+      }, {
+        flushSync
+      });
+      return;
+    }
+
+    // Create a controller/Request for this navigation
+    pendingNavigationController = new AbortController();
+    let request = createClientSideRequest(init.history, location, pendingNavigationController.signal, opts && opts.submission);
+    let pendingActionData;
+    let pendingError;
+    if (opts && opts.pendingError) {
+      // If we have a pendingError, it means the user attempted a GET submission
+      // with binary FormData so assign here and skip to handleLoaders.  That
+      // way we handle calling loaders above the boundary etc.  It's not really
+      // different from an actionError in that sense.
+      pendingError = {
+        [findNearestBoundary(matches).route.id]: opts.pendingError
+      };
+    } else if (opts && opts.submission && isMutationMethod(opts.submission.formMethod)) {
+      // Call action if we received an action submission
+      let actionOutput = await handleAction(request, location, opts.submission, matches, {
+        replace: opts.replace,
+        flushSync
+      });
+      if (actionOutput.shortCircuited) {
+        return;
+      }
+      pendingActionData = actionOutput.pendingActionData;
+      pendingError = actionOutput.pendingActionError;
+      loadingNavigation = getLoadingNavigation(location, opts.submission);
+      flushSync = false;
+
+      // Create a GET request for the loaders
+      request = new Request(request.url, {
+        signal: request.signal
+      });
+    }
+
+    // Call loaders
+    let {
+      shortCircuited,
+      loaderData,
+      errors
+    } = await handleLoaders(request, location, matches, loadingNavigation, opts && opts.submission, opts && opts.fetcherSubmission, opts && opts.replace, opts && opts.initialHydration === true, flushSync, pendingActionData, pendingError);
+    if (shortCircuited) {
+      return;
+    }
+
+    // Clean up now that the action/loaders have completed.  Don't clean up if
+    // we short circuited because pendingNavigationController will have already
+    // been assigned to a new controller for the next navigation
+    pendingNavigationController = null;
+    completeNavigation(location, _extends({
+      matches
+    }, pendingActionData ? {
+      actionData: pendingActionData
+    } : {}, {
+      loaderData,
+      errors
+    }));
+  }
+
+  // Call the action matched by the leaf route for this navigation and handle
+  // redirects/errors
+  async function handleAction(request, location, submission, matches, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    interruptActiveLoads();
+
+    // Put us in a submitting state
+    let navigation = getSubmittingNavigation(location, submission);
+    updateState({
+      navigation
+    }, {
+      flushSync: opts.flushSync === true
+    });
+
+    // Call our action and get the result
+    let result;
+    let actionMatch = getTargetMatch(matches, location);
+    if (!actionMatch.route.action && !actionMatch.route.lazy) {
+      result = {
+        type: ResultType.error,
+        error: getInternalRouterError(405, {
+          method: request.method,
+          pathname: location.pathname,
+          routeId: actionMatch.route.id
+        })
+      };
+    } else {
+      result = await callLoaderOrAction("action", request, actionMatch, matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath);
+      if (request.signal.aborted) {
+        return {
+          shortCircuited: true
+        };
+      }
+    }
+    if (isRedirectResult(result)) {
+      let replace;
+      if (opts && opts.replace != null) {
+        replace = opts.replace;
+      } else {
+        // If the user didn't explicity indicate replace behavior, replace if
+        // we redirected to the exact same location we're currently at to avoid
+        // double back-buttons
+        replace = result.location === state.location.pathname + state.location.search;
+      }
+      await startRedirectNavigation(state, result, {
+        submission,
+        replace
+      });
+      return {
+        shortCircuited: true
+      };
+    }
+    if (isErrorResult(result)) {
+      // Store off the pending error - we use it to determine which loaders
+      // to call and will commit it when we complete the navigation
+      let boundaryMatch = findNearestBoundary(matches, actionMatch.route.id);
+
+      // By default, all submissions are REPLACE navigations, but if the
+      // action threw an error that'll be rendered in an errorElement, we fall
+      // back to PUSH so that the user can use the back button to get back to
+      // the pre-submission form location to try again
+      if ((opts && opts.replace) !== true) {
+        pendingAction = Action.Push;
+      }
+      return {
+        // Send back an empty object we can use to clear out any prior actionData
+        pendingActionData: {},
+        pendingActionError: {
+          [boundaryMatch.route.id]: result.error
+        }
+      };
+    }
+    if (isDeferredResult(result)) {
+      throw getInternalRouterError(400, {
+        type: "defer-action"
+      });
+    }
+    return {
+      pendingActionData: {
+        [actionMatch.route.id]: result.data
+      }
+    };
+  }
+
+  // Call all applicable loaders for the given matches, handling redirects,
+  // errors, etc.
+  async function handleLoaders(request, location, matches, overrideNavigation, submission, fetcherSubmission, replace, initialHydration, flushSync, pendingActionData, pendingError) {
+    // Figure out the right navigation we want to use for data loading
+    let loadingNavigation = overrideNavigation || getLoadingNavigation(location, submission);
+
+    // If this was a redirect from an action we don't have a "submission" but
+    // we have it on the loading navigation so use that if available
+    let activeSubmission = submission || fetcherSubmission || getSubmissionFromNavigation(loadingNavigation);
+    let routesToUse = inFlightDataRoutes || dataRoutes;
+    let [matchesToLoad, revalidatingFetchers] = getMatchesToLoad(init.history, state, matches, activeSubmission, location, future.v7_partialHydration && initialHydration === true, isRevalidationRequired, cancelledDeferredRoutes, cancelledFetcherLoads, deletedFetchers, fetchLoadMatches, fetchRedirectIds, routesToUse, basename, pendingActionData, pendingError);
+
+    // Cancel pending deferreds for no-longer-matched routes or routes we're
+    // about to reload.  Note that if this is an action reload we would have
+    // already cancelled all pending deferreds so this would be a no-op
+    cancelActiveDeferreds(routeId => !(matches && matches.some(m => m.route.id === routeId)) || matchesToLoad && matchesToLoad.some(m => m.route.id === routeId));
+    pendingNavigationLoadId = ++incrementingLoadId;
+
+    // Short circuit if we have no loaders to run
+    if (matchesToLoad.length === 0 && revalidatingFetchers.length === 0) {
+      let updatedFetchers = markFetchRedirectsDone();
+      completeNavigation(location, _extends({
+        matches,
+        loaderData: {},
+        // Commit pending error if we're short circuiting
+        errors: pendingError || null
+      }, pendingActionData ? {
+        actionData: pendingActionData
+      } : {}, updatedFetchers ? {
+        fetchers: new Map(state.fetchers)
+      } : {}), {
+        flushSync
+      });
+      return {
+        shortCircuited: true
+      };
+    }
+
+    // If this is an uninterrupted revalidation, we remain in our current idle
+    // state.  If not, we need to switch to our loading state and load data,
+    // preserving any new action data or existing action data (in the case of
+    // a revalidation interrupting an actionReload)
+    // If we have partialHydration enabled, then don't update the state for the
+    // initial data load since iot's not a "navigation"
+    if (!isUninterruptedRevalidation && (!future.v7_partialHydration || !initialHydration)) {
+      revalidatingFetchers.forEach(rf => {
+        let fetcher = state.fetchers.get(rf.key);
+        let revalidatingFetcher = getLoadingFetcher(undefined, fetcher ? fetcher.data : undefined);
+        state.fetchers.set(rf.key, revalidatingFetcher);
+      });
+      let actionData = pendingActionData || state.actionData;
+      updateState(_extends({
+        navigation: loadingNavigation
+      }, actionData ? Object.keys(actionData).length === 0 ? {
+        actionData: null
+      } : {
+        actionData
+      } : {}, revalidatingFetchers.length > 0 ? {
+        fetchers: new Map(state.fetchers)
+      } : {}), {
+        flushSync
+      });
+    }
+    revalidatingFetchers.forEach(rf => {
+      if (fetchControllers.has(rf.key)) {
+        abortFetcher(rf.key);
+      }
+      if (rf.controller) {
+        // Fetchers use an independent AbortController so that aborting a fetcher
+        // (via deleteFetcher) does not abort the triggering navigation that
+        // triggered the revalidation
+        fetchControllers.set(rf.key, rf.controller);
+      }
+    });
+
+    // Proxy navigation abort through to revalidation fetchers
+    let abortPendingFetchRevalidations = () => revalidatingFetchers.forEach(f => abortFetcher(f.key));
+    if (pendingNavigationController) {
+      pendingNavigationController.signal.addEventListener("abort", abortPendingFetchRevalidations);
+    }
+    let {
+      results,
+      loaderResults,
+      fetcherResults
+    } = await callLoadersAndMaybeResolveData(state.matches, matches, matchesToLoad, revalidatingFetchers, request);
+    if (request.signal.aborted) {
+      return {
+        shortCircuited: true
+      };
+    }
+
+    // Clean up _after_ loaders have completed.  Don't clean up if we short
+    // circuited because fetchControllers would have been aborted and
+    // reassigned to new controllers for the next navigation
+    if (pendingNavigationController) {
+      pendingNavigationController.signal.removeEventListener("abort", abortPendingFetchRevalidations);
+    }
+    revalidatingFetchers.forEach(rf => fetchControllers.delete(rf.key));
+
+    // If any loaders returned a redirect Response, start a new REPLACE navigation
+    let redirect = findRedirect(results);
+    if (redirect) {
+      if (redirect.idx >= matchesToLoad.length) {
+        // If this redirect came from a fetcher make sure we mark it in
+        // fetchRedirectIds so it doesn't get revalidated on the next set of
+        // loader executions
+        let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+        fetchRedirectIds.add(fetcherKey);
+      }
+      await startRedirectNavigation(state, redirect.result, {
+        replace
+      });
+      return {
+        shortCircuited: true
+      };
+    }
+
+    // Process and commit output from loaders
+    let {
+      loaderData,
+      errors
+    } = processLoaderData(state, matches, matchesToLoad, loaderResults, pendingError, revalidatingFetchers, fetcherResults, activeDeferreds);
+
+    // Wire up subscribers to update loaderData as promises settle
+    activeDeferreds.forEach((deferredData, routeId) => {
+      deferredData.subscribe(aborted => {
+        // Note: No need to updateState here since the TrackedPromise on
+        // loaderData is stable across resolve/reject
+        // Remove this instance if we were aborted or if promises have settled
+        if (aborted || deferredData.done) {
+          activeDeferreds.delete(routeId);
+        }
+      });
+    });
+    let updatedFetchers = markFetchRedirectsDone();
+    let didAbortFetchLoads = abortStaleFetchLoads(pendingNavigationLoadId);
+    let shouldUpdateFetchers = updatedFetchers || didAbortFetchLoads || revalidatingFetchers.length > 0;
+    return _extends({
+      loaderData,
+      errors
+    }, shouldUpdateFetchers ? {
+      fetchers: new Map(state.fetchers)
+    } : {});
+  }
+
+  // Trigger a fetcher load/submit for the given fetcher key
+  function fetch(key, routeId, href, opts) {
+    if (isServer) {
+      throw new Error("router.fetch() was called during the server render, but it shouldn't be. " + "You are likely calling a useFetcher() method in the body of your component. " + "Try moving it to a useEffect or a callback.");
+    }
+    if (fetchControllers.has(key)) abortFetcher(key);
+    let flushSync = (opts && opts.unstable_flushSync) === true;
+    let routesToUse = inFlightDataRoutes || dataRoutes;
+    let normalizedPath = normalizeTo(state.location, state.matches, basename, future.v7_prependBasename, href, future.v7_relativeSplatPath, routeId, opts == null ? void 0 : opts.relative);
+    let matches = matchRoutes(routesToUse, normalizedPath, basename);
+    if (!matches) {
+      setFetcherError(key, routeId, getInternalRouterError(404, {
+        pathname: normalizedPath
+      }), {
+        flushSync
+      });
+      return;
+    }
+    let {
+      path,
+      submission,
+      error
+    } = normalizeNavigateOptions(future.v7_normalizeFormMethod, true, normalizedPath, opts);
+    if (error) {
+      setFetcherError(key, routeId, error, {
+        flushSync
+      });
+      return;
+    }
+    let match = getTargetMatch(matches, path);
+    pendingPreventScrollReset = (opts && opts.preventScrollReset) === true;
+    if (submission && isMutationMethod(submission.formMethod)) {
+      handleFetcherAction(key, routeId, path, match, matches, flushSync, submission);
+      return;
+    }
+
+    // Store off the match so we can call it's shouldRevalidate on subsequent
+    // revalidations
+    fetchLoadMatches.set(key, {
+      routeId,
+      path
+    });
+    handleFetcherLoader(key, routeId, path, match, matches, flushSync, submission);
+  }
+
+  // Call the action for the matched fetcher.submit(), and then handle redirects,
+  // errors, and revalidation
+  async function handleFetcherAction(key, routeId, path, match, requestMatches, flushSync, submission) {
+    interruptActiveLoads();
+    fetchLoadMatches.delete(key);
+    if (!match.route.action && !match.route.lazy) {
+      let error = getInternalRouterError(405, {
+        method: submission.formMethod,
+        pathname: path,
+        routeId: routeId
+      });
+      setFetcherError(key, routeId, error, {
+        flushSync
+      });
+      return;
+    }
+
+    // Put this fetcher into it's submitting state
+    let existingFetcher = state.fetchers.get(key);
+    updateFetcherState(key, getSubmittingFetcher(submission, existingFetcher), {
+      flushSync
+    });
+
+    // Call the action for the fetcher
+    let abortController = new AbortController();
+    let fetchRequest = createClientSideRequest(init.history, path, abortController.signal, submission);
+    fetchControllers.set(key, abortController);
+    let originatingLoadId = incrementingLoadId;
+    let actionResult = await callLoaderOrAction("action", fetchRequest, match, requestMatches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath);
+    if (fetchRequest.signal.aborted) {
+      // We can delete this so long as we weren't aborted by our own fetcher
+      // re-submit which would have put _new_ controller is in fetchControllers
+      if (fetchControllers.get(key) === abortController) {
+        fetchControllers.delete(key);
+      }
+      return;
+    }
+
+    // When using v7_fetcherPersist, we don't want errors bubbling up to the UI
+    // or redirects processed for unmounted fetchers so we just revert them to
+    // idle
+    if (future.v7_fetcherPersist && deletedFetchers.has(key)) {
+      if (isRedirectResult(actionResult) || isErrorResult(actionResult)) {
+        updateFetcherState(key, getDoneFetcher(undefined));
+        return;
+      }
+      // Let SuccessResult's fall through for revalidation
+    } else {
+      if (isRedirectResult(actionResult)) {
+        fetchControllers.delete(key);
+        if (pendingNavigationLoadId > originatingLoadId) {
+          // A new navigation was kicked off after our action started, so that
+          // should take precedence over this redirect navigation.  We already
+          // set isRevalidationRequired so all loaders for the new route should
+          // fire unless opted out via shouldRevalidate
+          updateFetcherState(key, getDoneFetcher(undefined));
+          return;
+        } else {
+          fetchRedirectIds.add(key);
+          updateFetcherState(key, getLoadingFetcher(submission));
+          return startRedirectNavigation(state, actionResult, {
+            fetcherSubmission: submission
+          });
+        }
+      }
+
+      // Process any non-redirect errors thrown
+      if (isErrorResult(actionResult)) {
+        setFetcherError(key, routeId, actionResult.error);
+        return;
+      }
+    }
+    if (isDeferredResult(actionResult)) {
+      throw getInternalRouterError(400, {
+        type: "defer-action"
+      });
+    }
+
+    // Start the data load for current matches, or the next location if we're
+    // in the middle of a navigation
+    let nextLocation = state.navigation.location || state.location;
+    let revalidationRequest = createClientSideRequest(init.history, nextLocation, abortController.signal);
+    let routesToUse = inFlightDataRoutes || dataRoutes;
+    let matches = state.navigation.state !== "idle" ? matchRoutes(routesToUse, state.navigation.location, basename) : state.matches;
+    invariant(matches, "Didn't find any matches after fetcher action");
+    let loadId = ++incrementingLoadId;
+    fetchReloadIds.set(key, loadId);
+    let loadFetcher = getLoadingFetcher(submission, actionResult.data);
+    state.fetchers.set(key, loadFetcher);
+    let [matchesToLoad, revalidatingFetchers] = getMatchesToLoad(init.history, state, matches, submission, nextLocation, false, isRevalidationRequired, cancelledDeferredRoutes, cancelledFetcherLoads, deletedFetchers, fetchLoadMatches, fetchRedirectIds, routesToUse, basename, {
+      [match.route.id]: actionResult.data
+    }, undefined // No need to send through errors since we short circuit above
+    );
+
+    // Put all revalidating fetchers into the loading state, except for the
+    // current fetcher which we want to keep in it's current loading state which
+    // contains it's action submission info + action data
+    revalidatingFetchers.filter(rf => rf.key !== key).forEach(rf => {
+      let staleKey = rf.key;
+      let existingFetcher = state.fetchers.get(staleKey);
+      let revalidatingFetcher = getLoadingFetcher(undefined, existingFetcher ? existingFetcher.data : undefined);
+      state.fetchers.set(staleKey, revalidatingFetcher);
+      if (fetchControllers.has(staleKey)) {
+        abortFetcher(staleKey);
+      }
+      if (rf.controller) {
+        fetchControllers.set(staleKey, rf.controller);
+      }
+    });
+    updateState({
+      fetchers: new Map(state.fetchers)
+    });
+    let abortPendingFetchRevalidations = () => revalidatingFetchers.forEach(rf => abortFetcher(rf.key));
+    abortController.signal.addEventListener("abort", abortPendingFetchRevalidations);
+    let {
+      results,
+      loaderResults,
+      fetcherResults
+    } = await callLoadersAndMaybeResolveData(state.matches, matches, matchesToLoad, revalidatingFetchers, revalidationRequest);
+    if (abortController.signal.aborted) {
+      return;
+    }
+    abortController.signal.removeEventListener("abort", abortPendingFetchRevalidations);
+    fetchReloadIds.delete(key);
+    fetchControllers.delete(key);
+    revalidatingFetchers.forEach(r => fetchControllers.delete(r.key));
+    let redirect = findRedirect(results);
+    if (redirect) {
+      if (redirect.idx >= matchesToLoad.length) {
+        // If this redirect came from a fetcher make sure we mark it in
+        // fetchRedirectIds so it doesn't get revalidated on the next set of
+        // loader executions
+        let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+        fetchRedirectIds.add(fetcherKey);
+      }
+      return startRedirectNavigation(state, redirect.result);
+    }
+
+    // Process and commit output from loaders
+    let {
+      loaderData,
+      errors
+    } = processLoaderData(state, state.matches, matchesToLoad, loaderResults, undefined, revalidatingFetchers, fetcherResults, activeDeferreds);
+
+    // Since we let revalidations complete even if the submitting fetcher was
+    // deleted, only put it back to idle if it hasn't been deleted
+    if (state.fetchers.has(key)) {
+      let doneFetcher = getDoneFetcher(actionResult.data);
+      state.fetchers.set(key, doneFetcher);
+    }
+    abortStaleFetchLoads(loadId);
+
+    // If we are currently in a navigation loading state and this fetcher is
+    // more recent than the navigation, we want the newer data so abort the
+    // navigation and complete it with the fetcher data
+    if (state.navigation.state === "loading" && loadId > pendingNavigationLoadId) {
+      invariant(pendingAction, "Expected pending action");
+      pendingNavigationController && pendingNavigationController.abort();
+      completeNavigation(state.navigation.location, {
+        matches,
+        loaderData,
+        errors,
+        fetchers: new Map(state.fetchers)
+      });
+    } else {
+      // otherwise just update with the fetcher data, preserving any existing
+      // loaderData for loaders that did not need to reload.  We have to
+      // manually merge here since we aren't going through completeNavigation
+      updateState({
+        errors,
+        loaderData: mergeLoaderData(state.loaderData, loaderData, matches, errors),
+        fetchers: new Map(state.fetchers)
+      });
+      isRevalidationRequired = false;
+    }
+  }
+
+  // Call the matched loader for fetcher.load(), handling redirects, errors, etc.
+  async function handleFetcherLoader(key, routeId, path, match, matches, flushSync, submission) {
+    let existingFetcher = state.fetchers.get(key);
+    updateFetcherState(key, getLoadingFetcher(submission, existingFetcher ? existingFetcher.data : undefined), {
+      flushSync
+    });
+
+    // Call the loader for this fetcher route match
+    let abortController = new AbortController();
+    let fetchRequest = createClientSideRequest(init.history, path, abortController.signal);
+    fetchControllers.set(key, abortController);
+    let originatingLoadId = incrementingLoadId;
+    let result = await callLoaderOrAction("loader", fetchRequest, match, matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath);
+
+    // Deferred isn't supported for fetcher loads, await everything and treat it
+    // as a normal load.  resolveDeferredData will return undefined if this
+    // fetcher gets aborted, so we just leave result untouched and short circuit
+    // below if that happens
+    if (isDeferredResult(result)) {
+      result = (await resolveDeferredData(result, fetchRequest.signal, true)) || result;
+    }
+
+    // We can delete this so long as we weren't aborted by our our own fetcher
+    // re-load which would have put _new_ controller is in fetchControllers
+    if (fetchControllers.get(key) === abortController) {
+      fetchControllers.delete(key);
+    }
+    if (fetchRequest.signal.aborted) {
+      return;
+    }
+
+    // We don't want errors bubbling up or redirects followed for unmounted
+    // fetchers, so short circuit here if it was removed from the UI
+    if (deletedFetchers.has(key)) {
+      updateFetcherState(key, getDoneFetcher(undefined));
+      return;
+    }
+
+    // If the loader threw a redirect Response, start a new REPLACE navigation
+    if (isRedirectResult(result)) {
+      if (pendingNavigationLoadId > originatingLoadId) {
+        // A new navigation was kicked off after our loader started, so that
+        // should take precedence over this redirect navigation
+        updateFetcherState(key, getDoneFetcher(undefined));
+        return;
+      } else {
+        fetchRedirectIds.add(key);
+        await startRedirectNavigation(state, result);
+        return;
+      }
+    }
+
+    // Process any non-redirect errors thrown
+    if (isErrorResult(result)) {
+      setFetcherError(key, routeId, result.error);
+      return;
+    }
+    invariant(!isDeferredResult(result), "Unhandled fetcher deferred data");
+
+    // Put the fetcher back into an idle state
+    updateFetcherState(key, getDoneFetcher(result.data));
+  }
+
+  /**
+   * Utility function to handle redirects returned from an action or loader.
+   * Normally, a redirect "replaces" the navigation that triggered it.  So, for
+   * example:
+   *
+   *  - user is on /a
+   *  - user clicks a link to /b
+   *  - loader for /b redirects to /c
+   *
+   * In a non-JS app the browser would track the in-flight navigation to /b and
+   * then replace it with /c when it encountered the redirect response.  In
+   * the end it would only ever update the URL bar with /c.
+   *
+   * In client-side routing using pushState/replaceState, we aim to emulate
+   * this behavior and we also do not update history until the end of the
+   * navigation (including processed redirects).  This means that we never
+   * actually touch history until we've processed redirects, so we just use
+   * the history action from the original navigation (PUSH or REPLACE).
+   */
+  async function startRedirectNavigation(state, redirect, _temp2) {
+    let {
+      submission,
+      fetcherSubmission,
+      replace
+    } = _temp2 === void 0 ? {} : _temp2;
+    if (redirect.revalidate) {
+      isRevalidationRequired = true;
+    }
+    let redirectLocation = createLocation(state.location, redirect.location, {
+      _isRedirect: true
+    });
+    invariant(redirectLocation, "Expected a location on the redirect navigation");
+    if (isBrowser) {
+      let isDocumentReload = false;
+      if (redirect.reloadDocument) {
+        // Hard reload if the response contained X-Remix-Reload-Document
+        isDocumentReload = true;
+      } else if (ABSOLUTE_URL_REGEX.test(redirect.location)) {
+        const url = init.history.createURL(redirect.location);
+        isDocumentReload =
+        // Hard reload if it's an absolute URL to a new origin
+        url.origin !== routerWindow.location.origin ||
+        // Hard reload if it's an absolute URL that does not match our basename
+        stripBasename(url.pathname, basename) == null;
+      }
+      if (isDocumentReload) {
+        if (replace) {
+          routerWindow.location.replace(redirect.location);
+        } else {
+          routerWindow.location.assign(redirect.location);
+        }
+        return;
+      }
+    }
+
+    // There's no need to abort on redirects, since we don't detect the
+    // redirect until the action/loaders have settled
+    pendingNavigationController = null;
+    let redirectHistoryAction = replace === true ? Action.Replace : Action.Push;
+
+    // Use the incoming submission if provided, fallback on the active one in
+    // state.navigation
+    let {
+      formMethod,
+      formAction,
+      formEncType
+    } = state.navigation;
+    if (!submission && !fetcherSubmission && formMethod && formAction && formEncType) {
+      submission = getSubmissionFromNavigation(state.navigation);
+    }
+
+    // If this was a 307/308 submission we want to preserve the HTTP method and
+    // re-submit the GET/POST/PUT/PATCH/DELETE as a submission navigation to the
+    // redirected location
+    let activeSubmission = submission || fetcherSubmission;
+    if (redirectPreserveMethodStatusCodes.has(redirect.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod)) {
+      await startNavigation(redirectHistoryAction, redirectLocation, {
+        submission: _extends({}, activeSubmission, {
+          formAction: redirect.location
+        }),
+        // Preserve this flag across redirects
+        preventScrollReset: pendingPreventScrollReset
+      });
+    } else {
+      // If we have a navigation submission, we will preserve it through the
+      // redirect navigation
+      let overrideNavigation = getLoadingNavigation(redirectLocation, submission);
+      await startNavigation(redirectHistoryAction, redirectLocation, {
+        overrideNavigation,
+        // Send fetcher submissions through for shouldRevalidate
+        fetcherSubmission,
+        // Preserve this flag across redirects
+        preventScrollReset: pendingPreventScrollReset
+      });
+    }
+  }
+  async function callLoadersAndMaybeResolveData(currentMatches, matches, matchesToLoad, fetchersToLoad, request) {
+    // Call all navigation loaders and revalidating fetcher loaders in parallel,
+    // then slice off the results into separate arrays so we can handle them
+    // accordingly
+    let results = await Promise.all([...matchesToLoad.map(match => callLoaderOrAction("loader", request, match, matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath)), ...fetchersToLoad.map(f => {
+      if (f.matches && f.match && f.controller) {
+        return callLoaderOrAction("loader", createClientSideRequest(init.history, f.path, f.controller.signal), f.match, f.matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath);
+      } else {
+        let error = {
+          type: ResultType.error,
+          error: getInternalRouterError(404, {
+            pathname: f.path
+          })
+        };
+        return error;
+      }
+    })]);
+    let loaderResults = results.slice(0, matchesToLoad.length);
+    let fetcherResults = results.slice(matchesToLoad.length);
+    await Promise.all([resolveDeferredResults(currentMatches, matchesToLoad, loaderResults, loaderResults.map(() => request.signal), false, state.loaderData), resolveDeferredResults(currentMatches, fetchersToLoad.map(f => f.match), fetcherResults, fetchersToLoad.map(f => f.controller ? f.controller.signal : null), true)]);
+    return {
+      results,
+      loaderResults,
+      fetcherResults
+    };
+  }
+  function interruptActiveLoads() {
+    // Every interruption triggers a revalidation
+    isRevalidationRequired = true;
+
+    // Cancel pending route-level deferreds and mark cancelled routes for
+    // revalidation
+    cancelledDeferredRoutes.push(...cancelActiveDeferreds());
+
+    // Abort in-flight fetcher loads
+    fetchLoadMatches.forEach((_, key) => {
+      if (fetchControllers.has(key)) {
+        cancelledFetcherLoads.push(key);
+        abortFetcher(key);
+      }
+    });
+  }
+  function updateFetcherState(key, fetcher, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    state.fetchers.set(key, fetcher);
+    updateState({
+      fetchers: new Map(state.fetchers)
+    }, {
+      flushSync: (opts && opts.flushSync) === true
+    });
+  }
+  function setFetcherError(key, routeId, error, opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    let boundaryMatch = findNearestBoundary(state.matches, routeId);
+    deleteFetcher(key);
+    updateState({
+      errors: {
+        [boundaryMatch.route.id]: error
+      },
+      fetchers: new Map(state.fetchers)
+    }, {
+      flushSync: (opts && opts.flushSync) === true
+    });
+  }
+  function getFetcher(key) {
+    if (future.v7_fetcherPersist) {
+      activeFetchers.set(key, (activeFetchers.get(key) || 0) + 1);
+      // If this fetcher was previously marked for deletion, unmark it since we
+      // have a new instance
+      if (deletedFetchers.has(key)) {
+        deletedFetchers.delete(key);
+      }
+    }
+    return state.fetchers.get(key) || IDLE_FETCHER;
+  }
+  function deleteFetcher(key) {
+    let fetcher = state.fetchers.get(key);
+    // Don't abort the controller if this is a deletion of a fetcher.submit()
+    // in it's loading phase since - we don't want to abort the corresponding
+    // revalidation and want them to complete and land
+    if (fetchControllers.has(key) && !(fetcher && fetcher.state === "loading" && fetchReloadIds.has(key))) {
+      abortFetcher(key);
+    }
+    fetchLoadMatches.delete(key);
+    fetchReloadIds.delete(key);
+    fetchRedirectIds.delete(key);
+    deletedFetchers.delete(key);
+    state.fetchers.delete(key);
+  }
+  function deleteFetcherAndUpdateState(key) {
+    if (future.v7_fetcherPersist) {
+      let count = (activeFetchers.get(key) || 0) - 1;
+      if (count <= 0) {
+        activeFetchers.delete(key);
+        deletedFetchers.add(key);
+      } else {
+        activeFetchers.set(key, count);
+      }
+    } else {
+      deleteFetcher(key);
+    }
+    updateState({
+      fetchers: new Map(state.fetchers)
+    });
+  }
+  function abortFetcher(key) {
+    let controller = fetchControllers.get(key);
+    invariant(controller, "Expected fetch controller: " + key);
+    controller.abort();
+    fetchControllers.delete(key);
+  }
+  function markFetchersDone(keys) {
+    for (let key of keys) {
+      let fetcher = getFetcher(key);
+      let doneFetcher = getDoneFetcher(fetcher.data);
+      state.fetchers.set(key, doneFetcher);
+    }
+  }
+  function markFetchRedirectsDone() {
+    let doneKeys = [];
+    let updatedFetchers = false;
+    for (let key of fetchRedirectIds) {
+      let fetcher = state.fetchers.get(key);
+      invariant(fetcher, "Expected fetcher: " + key);
+      if (fetcher.state === "loading") {
+        fetchRedirectIds.delete(key);
+        doneKeys.push(key);
+        updatedFetchers = true;
+      }
+    }
+    markFetchersDone(doneKeys);
+    return updatedFetchers;
+  }
+  function abortStaleFetchLoads(landedId) {
+    let yeetedKeys = [];
+    for (let [key, id] of fetchReloadIds) {
+      if (id < landedId) {
+        let fetcher = state.fetchers.get(key);
+        invariant(fetcher, "Expected fetcher: " + key);
+        if (fetcher.state === "loading") {
+          abortFetcher(key);
+          fetchReloadIds.delete(key);
+          yeetedKeys.push(key);
+        }
+      }
+    }
+    markFetchersDone(yeetedKeys);
+    return yeetedKeys.length > 0;
+  }
+  function getBlocker(key, fn) {
+    let blocker = state.blockers.get(key) || IDLE_BLOCKER;
+    if (blockerFunctions.get(key) !== fn) {
+      blockerFunctions.set(key, fn);
+    }
+    return blocker;
+  }
+  function deleteBlocker(key) {
+    state.blockers.delete(key);
+    blockerFunctions.delete(key);
+  }
+
+  // Utility function to update blockers, ensuring valid state transitions
+  function updateBlocker(key, newBlocker) {
+    let blocker = state.blockers.get(key) || IDLE_BLOCKER;
+
+    // Poor mans state machine :)
+    // https://mermaid.live/edit#pako:eNqVkc9OwzAMxl8l8nnjAYrEtDIOHEBIgwvKJTReGy3_lDpIqO27k6awMG0XcrLlnz87nwdonESogKXXBuE79rq75XZO3-yHds0RJVuv70YrPlUrCEe2HfrORS3rubqZfuhtpg5C9wk5tZ4VKcRUq88q9Z8RS0-48cE1iHJkL0ugbHuFLus9L6spZy8nX9MP2CNdomVaposqu3fGayT8T8-jJQwhepo_UtpgBQaDEUom04dZhAN1aJBDlUKJBxE1ceB2Smj0Mln-IBW5AFU2dwUiktt_2Qaq2dBfaKdEup85UV7Yd-dKjlnkabl2Pvr0DTkTreM
+    invariant(blocker.state === "unblocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "proceeding" || blocker.state === "blocked" && newBlocker.state === "unblocked" || blocker.state === "proceeding" && newBlocker.state === "unblocked", "Invalid blocker state transition: " + blocker.state + " -> " + newBlocker.state);
+    let blockers = new Map(state.blockers);
+    blockers.set(key, newBlocker);
+    updateState({
+      blockers
+    });
+  }
+  function shouldBlockNavigation(_ref2) {
+    let {
+      currentLocation,
+      nextLocation,
+      historyAction
+    } = _ref2;
+    if (blockerFunctions.size === 0) {
+      return;
+    }
+
+    // We ony support a single active blocker at the moment since we don't have
+    // any compelling use cases for multi-blocker yet
+    if (blockerFunctions.size > 1) {
+      warning(false, "A router only supports one blocker at a time");
+    }
+    let entries = Array.from(blockerFunctions.entries());
+    let [blockerKey, blockerFunction] = entries[entries.length - 1];
+    let blocker = state.blockers.get(blockerKey);
+    if (blocker && blocker.state === "proceeding") {
+      // If the blocker is currently proceeding, we don't need to re-check
+      // it and can let this navigation continue
+      return;
+    }
+
+    // At this point, we know we're unblocked/blocked so we need to check the
+    // user-provided blocker function
+    if (blockerFunction({
+      currentLocation,
+      nextLocation,
+      historyAction
+    })) {
+      return blockerKey;
+    }
+  }
+  function cancelActiveDeferreds(predicate) {
+    let cancelledRouteIds = [];
+    activeDeferreds.forEach((dfd, routeId) => {
+      if (!predicate || predicate(routeId)) {
+        // Cancel the deferred - but do not remove from activeDeferreds here -
+        // we rely on the subscribers to do that so our tests can assert proper
+        // cleanup via _internalActiveDeferreds
+        dfd.cancel();
+        cancelledRouteIds.push(routeId);
+        activeDeferreds.delete(routeId);
+      }
+    });
+    return cancelledRouteIds;
+  }
+
+  // Opt in to capturing and reporting scroll positions during navigations,
+  // used by the <ScrollRestoration> component
+  function enableScrollRestoration(positions, getPosition, getKey) {
+    savedScrollPositions = positions;
+    getScrollPosition = getPosition;
+    getScrollRestorationKey = getKey || null;
+
+    // Perform initial hydration scroll restoration, since we miss the boat on
+    // the initial updateState() because we've not yet rendered <ScrollRestoration/>
+    // and therefore have no savedScrollPositions available
+    if (!initialScrollRestored && state.navigation === IDLE_NAVIGATION) {
+      initialScrollRestored = true;
+      let y = getSavedScrollPosition(state.location, state.matches);
+      if (y != null) {
+        updateState({
+          restoreScrollPosition: y
+        });
+      }
+    }
+    return () => {
+      savedScrollPositions = null;
+      getScrollPosition = null;
+      getScrollRestorationKey = null;
+    };
+  }
+  function getScrollKey(location, matches) {
+    if (getScrollRestorationKey) {
+      let key = getScrollRestorationKey(location, matches.map(m => convertRouteMatchToUiMatch(m, state.loaderData)));
+      return key || location.key;
+    }
+    return location.key;
+  }
+  function saveScrollPosition(location, matches) {
+    if (savedScrollPositions && getScrollPosition) {
+      let key = getScrollKey(location, matches);
+      savedScrollPositions[key] = getScrollPosition();
+    }
+  }
+  function getSavedScrollPosition(location, matches) {
+    if (savedScrollPositions) {
+      let key = getScrollKey(location, matches);
+      let y = savedScrollPositions[key];
+      if (typeof y === "number") {
+        return y;
+      }
+    }
+    return null;
+  }
+  function _internalSetRoutes(newRoutes) {
+    manifest = {};
+    inFlightDataRoutes = convertRoutesToDataRoutes(newRoutes, mapRouteProperties, undefined, manifest);
+  }
+  router = {
+    get basename() {
+      return basename;
+    },
+    get future() {
+      return future;
+    },
+    get state() {
+      return state;
+    },
+    get routes() {
+      return dataRoutes;
+    },
+    get window() {
+      return routerWindow;
+    },
+    initialize,
+    subscribe,
+    enableScrollRestoration,
+    navigate,
+    fetch,
+    revalidate,
+    // Passthrough to history-aware createHref used by useHref so we get proper
+    // hash-aware URLs in DOM paths
+    createHref: to => init.history.createHref(to),
+    encodeLocation: to => init.history.encodeLocation(to),
+    getFetcher,
+    deleteFetcher: deleteFetcherAndUpdateState,
+    dispose,
+    getBlocker,
+    deleteBlocker,
+    _internalFetchControllers: fetchControllers,
+    _internalActiveDeferreds: activeDeferreds,
+    // TODO: Remove setRoutes, it's temporary to avoid dealing with
+    // updating the tree while validating the update algorithm.
+    _internalSetRoutes
+  };
+  return router;
+}
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region createStaticHandler
+////////////////////////////////////////////////////////////////////////////////
+
+const UNSAFE_DEFERRED_SYMBOL = Symbol("deferred");
+
+/**
+ * Future flags to toggle new feature behavior
+ */
+
+function createStaticHandler(routes, opts) {
+  invariant(routes.length > 0, "You must provide a non-empty routes array to createStaticHandler");
+  let manifest = {};
+  let basename = (opts ? opts.basename : null) || "/";
+  let mapRouteProperties;
+  if (opts != null && opts.mapRouteProperties) {
+    mapRouteProperties = opts.mapRouteProperties;
+  } else if (opts != null && opts.detectErrorBoundary) {
+    // If they are still using the deprecated version, wrap it with the new API
+    let detectErrorBoundary = opts.detectErrorBoundary;
+    mapRouteProperties = route => ({
+      hasErrorBoundary: detectErrorBoundary(route)
+    });
+  } else {
+    mapRouteProperties = defaultMapRouteProperties;
+  }
+  // Config driven behavior flags
+  let future = _extends({
+    v7_relativeSplatPath: false
+  }, opts ? opts.future : null);
+  let dataRoutes = convertRoutesToDataRoutes(routes, mapRouteProperties, undefined, manifest);
+
+  /**
+   * The query() method is intended for document requests, in which we want to
+   * call an optional action and potentially multiple loaders for all nested
+   * routes.  It returns a StaticHandlerContext object, which is very similar
+   * to the router state (location, loaderData, actionData, errors, etc.) and
+   * also adds SSR-specific information such as the statusCode and headers
+   * from action/loaders Responses.
+   *
+   * It _should_ never throw and should report all errors through the
+   * returned context.errors object, properly associating errors to their error
+   * boundary.  Additionally, it tracks _deepestRenderedBoundaryId which can be
+   * used to emulate React error boundaries during SSr by performing a second
+   * pass only down to the boundaryId.
+   *
+   * The one exception where we do not return a StaticHandlerContext is when a
+   * redirect response is returned or thrown from any action/loader.  We
+   * propagate that out and return the raw Response so the HTTP server can
+   * return it directly.
+   */
+  async function query(request, _temp3) {
+    let {
+      requestContext
+    } = _temp3 === void 0 ? {} : _temp3;
+    let url = new URL(request.url);
+    let method = request.method;
+    let location = createLocation("", createPath(url), null, "default");
+    let matches = matchRoutes(dataRoutes, location, basename);
+
+    // SSR supports HEAD requests while SPA doesn't
+    if (!isValidMethod(method) && method !== "HEAD") {
+      let error = getInternalRouterError(405, {
+        method
+      });
+      let {
+        matches: methodNotAllowedMatches,
+        route
+      } = getShortCircuitMatches(dataRoutes);
+      return {
+        basename,
+        location,
+        matches: methodNotAllowedMatches,
+        loaderData: {},
+        actionData: null,
+        errors: {
+          [route.id]: error
+        },
+        statusCode: error.status,
+        loaderHeaders: {},
+        actionHeaders: {},
+        activeDeferreds: null
+      };
+    } else if (!matches) {
+      let error = getInternalRouterError(404, {
+        pathname: location.pathname
+      });
+      let {
+        matches: notFoundMatches,
+        route
+      } = getShortCircuitMatches(dataRoutes);
+      return {
+        basename,
+        location,
+        matches: notFoundMatches,
+        loaderData: {},
+        actionData: null,
+        errors: {
+          [route.id]: error
+        },
+        statusCode: error.status,
+        loaderHeaders: {},
+        actionHeaders: {},
+        activeDeferreds: null
+      };
+    }
+    let result = await queryImpl(request, location, matches, requestContext);
+    if (isResponse(result)) {
+      return result;
+    }
+
+    // When returning StaticHandlerContext, we patch back in the location here
+    // since we need it for React Context.  But this helps keep our submit and
+    // loadRouteData operating on a Request instead of a Location
+    return _extends({
+      location,
+      basename
+    }, result);
+  }
+
+  /**
+   * The queryRoute() method is intended for targeted route requests, either
+   * for fetch ?_data requests or resource route requests.  In this case, we
+   * are only ever calling a single action or loader, and we are returning the
+   * returned value directly.  In most cases, this will be a Response returned
+   * from the action/loader, but it may be a primitive or other value as well -
+   * and in such cases the calling context should handle that accordingly.
+   *
+   * We do respect the throw/return differentiation, so if an action/loader
+   * throws, then this method will throw the value.  This is important so we
+   * can do proper boundary identification in Remix where a thrown Response
+   * must go to the Catch Boundary but a returned Response is happy-path.
+   *
+   * One thing to note is that any Router-initiated Errors that make sense
+   * to associate with a status code will be thrown as an ErrorResponse
+   * instance which include the raw Error, such that the calling context can
+   * serialize the error as they see fit while including the proper response
+   * code.  Examples here are 404 and 405 errors that occur prior to reaching
+   * any user-defined loaders.
+   */
+  async function queryRoute(request, _temp4) {
+    let {
+      routeId,
+      requestContext
+    } = _temp4 === void 0 ? {} : _temp4;
+    let url = new URL(request.url);
+    let method = request.method;
+    let location = createLocation("", createPath(url), null, "default");
+    let matches = matchRoutes(dataRoutes, location, basename);
+
+    // SSR supports HEAD requests while SPA doesn't
+    if (!isValidMethod(method) && method !== "HEAD" && method !== "OPTIONS") {
+      throw getInternalRouterError(405, {
+        method
+      });
+    } else if (!matches) {
+      throw getInternalRouterError(404, {
+        pathname: location.pathname
+      });
+    }
+    let match = routeId ? matches.find(m => m.route.id === routeId) : getTargetMatch(matches, location);
+    if (routeId && !match) {
+      throw getInternalRouterError(403, {
+        pathname: location.pathname,
+        routeId
+      });
+    } else if (!match) {
+      // This should never hit I don't think?
+      throw getInternalRouterError(404, {
+        pathname: location.pathname
+      });
+    }
+    let result = await queryImpl(request, location, matches, requestContext, match);
+    if (isResponse(result)) {
+      return result;
+    }
+    let error = result.errors ? Object.values(result.errors)[0] : undefined;
+    if (error !== undefined) {
+      // If we got back result.errors, that means the loader/action threw
+      // _something_ that wasn't a Response, but it's not guaranteed/required
+      // to be an `instanceof Error` either, so we have to use throw here to
+      // preserve the "error" state outside of queryImpl.
+      throw error;
+    }
+
+    // Pick off the right state value to return
+    if (result.actionData) {
+      return Object.values(result.actionData)[0];
+    }
+    if (result.loaderData) {
+      var _result$activeDeferre;
+      let data = Object.values(result.loaderData)[0];
+      if ((_result$activeDeferre = result.activeDeferreds) != null && _result$activeDeferre[match.route.id]) {
+        data[UNSAFE_DEFERRED_SYMBOL] = result.activeDeferreds[match.route.id];
+      }
+      return data;
+    }
+    return undefined;
+  }
+  async function queryImpl(request, location, matches, requestContext, routeMatch) {
+    invariant(request.signal, "query()/queryRoute() requests must contain an AbortController signal");
+    try {
+      if (isMutationMethod(request.method.toLowerCase())) {
+        let result = await submit(request, matches, routeMatch || getTargetMatch(matches, location), requestContext, routeMatch != null);
+        return result;
+      }
+      let result = await loadRouteData(request, matches, requestContext, routeMatch);
+      return isResponse(result) ? result : _extends({}, result, {
+        actionData: null,
+        actionHeaders: {}
+      });
+    } catch (e) {
+      // If the user threw/returned a Response in callLoaderOrAction, we throw
+      // it to bail out and then return or throw here based on whether the user
+      // returned or threw
+      if (isQueryRouteResponse(e)) {
+        if (e.type === ResultType.error) {
+          throw e.response;
+        }
+        return e.response;
+      }
+      // Redirects are always returned since they don't propagate to catch
+      // boundaries
+      if (isRedirectResponse(e)) {
+        return e;
+      }
+      throw e;
+    }
+  }
+  async function submit(request, matches, actionMatch, requestContext, isRouteRequest) {
+    let result;
+    if (!actionMatch.route.action && !actionMatch.route.lazy) {
+      let error = getInternalRouterError(405, {
+        method: request.method,
+        pathname: new URL(request.url).pathname,
+        routeId: actionMatch.route.id
+      });
+      if (isRouteRequest) {
+        throw error;
+      }
+      result = {
+        type: ResultType.error,
+        error
+      };
+    } else {
+      result = await callLoaderOrAction("action", request, actionMatch, matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath, {
+        isStaticRequest: true,
+        isRouteRequest,
+        requestContext
+      });
+      if (request.signal.aborted) {
+        let method = isRouteRequest ? "queryRoute" : "query";
+        throw new Error(method + "() call aborted: " + request.method + " " + request.url);
+      }
+    }
+    if (isRedirectResult(result)) {
+      // Uhhhh - this should never happen, we should always throw these from
+      // callLoaderOrAction, but the type narrowing here keeps TS happy and we
+      // can get back on the "throw all redirect responses" train here should
+      // this ever happen :/
+      throw new Response(null, {
+        status: result.status,
+        headers: {
+          Location: result.location
+        }
+      });
+    }
+    if (isDeferredResult(result)) {
+      let error = getInternalRouterError(400, {
+        type: "defer-action"
+      });
+      if (isRouteRequest) {
+        throw error;
+      }
+      result = {
+        type: ResultType.error,
+        error
+      };
+    }
+    if (isRouteRequest) {
+      // Note: This should only be non-Response values if we get here, since
+      // isRouteRequest should throw any Response received in callLoaderOrAction
+      if (isErrorResult(result)) {
+        throw result.error;
+      }
+      return {
+        matches: [actionMatch],
+        loaderData: {},
+        actionData: {
+          [actionMatch.route.id]: result.data
+        },
+        errors: null,
+        // Note: statusCode + headers are unused here since queryRoute will
+        // return the raw Response or value
+        statusCode: 200,
+        loaderHeaders: {},
+        actionHeaders: {},
+        activeDeferreds: null
+      };
+    }
+    if (isErrorResult(result)) {
+      // Store off the pending error - we use it to determine which loaders
+      // to call and will commit it when we complete the navigation
+      let boundaryMatch = findNearestBoundary(matches, actionMatch.route.id);
+      let context = await loadRouteData(request, matches, requestContext, undefined, {
+        [boundaryMatch.route.id]: result.error
+      });
+
+      // action status codes take precedence over loader status codes
+      return _extends({}, context, {
+        statusCode: isRouteErrorResponse(result.error) ? result.error.status : 500,
+        actionData: null,
+        actionHeaders: _extends({}, result.headers ? {
+          [actionMatch.route.id]: result.headers
+        } : {})
+      });
+    }
+
+    // Create a GET request for the loaders
+    let loaderRequest = new Request(request.url, {
+      headers: request.headers,
+      redirect: request.redirect,
+      signal: request.signal
+    });
+    let context = await loadRouteData(loaderRequest, matches, requestContext);
+    return _extends({}, context, result.statusCode ? {
+      statusCode: result.statusCode
+    } : {}, {
+      actionData: {
+        [actionMatch.route.id]: result.data
+      },
+      actionHeaders: _extends({}, result.headers ? {
+        [actionMatch.route.id]: result.headers
+      } : {})
+    });
+  }
+  async function loadRouteData(request, matches, requestContext, routeMatch, pendingActionError) {
+    let isRouteRequest = routeMatch != null;
+
+    // Short circuit if we have no loaders to run (queryRoute())
+    if (isRouteRequest && !(routeMatch != null && routeMatch.route.loader) && !(routeMatch != null && routeMatch.route.lazy)) {
+      throw getInternalRouterError(400, {
+        method: request.method,
+        pathname: new URL(request.url).pathname,
+        routeId: routeMatch == null ? void 0 : routeMatch.route.id
+      });
+    }
+    let requestMatches = routeMatch ? [routeMatch] : getLoaderMatchesUntilBoundary(matches, Object.keys(pendingActionError || {})[0]);
+    let matchesToLoad = requestMatches.filter(m => m.route.loader || m.route.lazy);
+
+    // Short circuit if we have no loaders to run (query())
+    if (matchesToLoad.length === 0) {
+      return {
+        matches,
+        // Add a null for all matched routes for proper revalidation on the client
+        loaderData: matches.reduce((acc, m) => Object.assign(acc, {
+          [m.route.id]: null
+        }), {}),
+        errors: pendingActionError || null,
+        statusCode: 200,
+        loaderHeaders: {},
+        activeDeferreds: null
+      };
+    }
+    let results = await Promise.all([...matchesToLoad.map(match => callLoaderOrAction("loader", request, match, matches, manifest, mapRouteProperties, basename, future.v7_relativeSplatPath, {
+      isStaticRequest: true,
+      isRouteRequest,
+      requestContext
+    }))]);
+    if (request.signal.aborted) {
+      let method = isRouteRequest ? "queryRoute" : "query";
+      throw new Error(method + "() call aborted: " + request.method + " " + request.url);
+    }
+
+    // Process and commit output from loaders
+    let activeDeferreds = new Map();
+    let context = processRouteLoaderData(matches, matchesToLoad, results, pendingActionError, activeDeferreds);
+
+    // Add a null for any non-loader matches for proper revalidation on the client
+    let executedLoaders = new Set(matchesToLoad.map(match => match.route.id));
+    matches.forEach(match => {
+      if (!executedLoaders.has(match.route.id)) {
+        context.loaderData[match.route.id] = null;
+      }
+    });
+    return _extends({}, context, {
+      matches,
+      activeDeferreds: activeDeferreds.size > 0 ? Object.fromEntries(activeDeferreds.entries()) : null
+    });
+  }
+  return {
+    dataRoutes,
+    query,
+    queryRoute
+  };
+}
+
+//#endregion
+
+////////////////////////////////////////////////////////////////////////////////
+//#region Helpers
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Given an existing StaticHandlerContext and an error thrown at render time,
+ * provide an updated StaticHandlerContext suitable for a second SSR render
+ */
+function getStaticContextFromError(routes, context, error) {
+  let newContext = _extends({}, context, {
+    statusCode: 500,
+    errors: {
+      [context._deepestRenderedBoundaryId || routes[0].id]: error
+    }
+  });
+  return newContext;
+}
+function isSubmissionNavigation(opts) {
+  return opts != null && ("formData" in opts && opts.formData != null || "body" in opts && opts.body !== undefined);
+}
+function normalizeTo(location, matches, basename, prependBasename, to, v7_relativeSplatPath, fromRouteId, relative) {
+  let contextualMatches;
+  let activeRouteMatch;
+  if (fromRouteId) {
+    // Grab matches up to the calling route so our route-relative logic is
+    // relative to the correct source route
+    contextualMatches = [];
+    for (let match of matches) {
+      contextualMatches.push(match);
+      if (match.route.id === fromRouteId) {
+        activeRouteMatch = match;
+        break;
+      }
+    }
+  } else {
+    contextualMatches = matches;
+    activeRouteMatch = matches[matches.length - 1];
+  }
+
+  // Resolve the relative path
+  let path = resolveTo(to ? to : ".", getResolveToMatches(contextualMatches, v7_relativeSplatPath), stripBasename(location.pathname, basename) || location.pathname, relative === "path");
+
+  // When `to` is not specified we inherit search/hash from the current
+  // location, unlike when to="." and we just inherit the path.
+  // See https://github.com/remix-run/remix/issues/927
+  if (to == null) {
+    path.search = location.search;
+    path.hash = location.hash;
+  }
+
+  // Add an ?index param for matched index routes if we don't already have one
+  if ((to == null || to === "" || to === ".") && activeRouteMatch && activeRouteMatch.route.index && !hasNakedIndexQuery(path.search)) {
+    path.search = path.search ? path.search.replace(/^\?/, "?index&") : "?index";
+  }
+
+  // If we're operating within a basename, prepend it to the pathname.  If
+  // this is a root navigation, then just use the raw basename which allows
+  // the basename to have full control over the presence of a trailing slash
+  // on root actions
+  if (prependBasename && basename !== "/") {
+    path.pathname = path.pathname === "/" ? basename : joinPaths([basename, path.pathname]);
+  }
+  return createPath(path);
+}
+
+// Normalize navigation options by converting formMethod=GET formData objects to
+// URLSearchParams so they behave identically to links with query params
+function normalizeNavigateOptions(normalizeFormMethod, isFetcher, path, opts) {
+  // Return location verbatim on non-submission navigations
+  if (!opts || !isSubmissionNavigation(opts)) {
+    return {
+      path
+    };
+  }
+  if (opts.formMethod && !isValidMethod(opts.formMethod)) {
+    return {
+      path,
+      error: getInternalRouterError(405, {
+        method: opts.formMethod
+      })
+    };
+  }
+  let getInvalidBodyError = () => ({
+    path,
+    error: getInternalRouterError(400, {
+      type: "invalid-body"
+    })
+  });
+
+  // Create a Submission on non-GET navigations
+  let rawFormMethod = opts.formMethod || "get";
+  let formMethod = normalizeFormMethod ? rawFormMethod.toUpperCase() : rawFormMethod.toLowerCase();
+  let formAction = stripHashFromPath(path);
+  if (opts.body !== undefined) {
+    if (opts.formEncType === "text/plain") {
+      // text only support POST/PUT/PATCH/DELETE submissions
+      if (!isMutationMethod(formMethod)) {
+        return getInvalidBodyError();
+      }
+      let text = typeof opts.body === "string" ? opts.body : opts.body instanceof FormData || opts.body instanceof URLSearchParams ?
+      // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#plain-text-form-data
+      Array.from(opts.body.entries()).reduce((acc, _ref3) => {
+        let [name, value] = _ref3;
+        return "" + acc + name + "=" + value + "\n";
+      }, "") : String(opts.body);
+      return {
+        path,
+        submission: {
+          formMethod,
+          formAction,
+          formEncType: opts.formEncType,
+          formData: undefined,
+          json: undefined,
+          text
+        }
+      };
+    } else if (opts.formEncType === "application/json") {
+      // json only supports POST/PUT/PATCH/DELETE submissions
+      if (!isMutationMethod(formMethod)) {
+        return getInvalidBodyError();
+      }
+      try {
+        let json = typeof opts.body === "string" ? JSON.parse(opts.body) : opts.body;
+        return {
+          path,
+          submission: {
+            formMethod,
+            formAction,
+            formEncType: opts.formEncType,
+            formData: undefined,
+            json,
+            text: undefined
+          }
+        };
+      } catch (e) {
+        return getInvalidBodyError();
+      }
+    }
+  }
+  invariant(typeof FormData === "function", "FormData is not available in this environment");
+  let searchParams;
+  let formData;
+  if (opts.formData) {
+    searchParams = convertFormDataToSearchParams(opts.formData);
+    formData = opts.formData;
+  } else if (opts.body instanceof FormData) {
+    searchParams = convertFormDataToSearchParams(opts.body);
+    formData = opts.body;
+  } else if (opts.body instanceof URLSearchParams) {
+    searchParams = opts.body;
+    formData = convertSearchParamsToFormData(searchParams);
+  } else if (opts.body == null) {
+    searchParams = new URLSearchParams();
+    formData = new FormData();
+  } else {
+    try {
+      searchParams = new URLSearchParams(opts.body);
+      formData = convertSearchParamsToFormData(searchParams);
+    } catch (e) {
+      return getInvalidBodyError();
+    }
+  }
+  let submission = {
+    formMethod,
+    formAction,
+    formEncType: opts && opts.formEncType || "application/x-www-form-urlencoded",
+    formData,
+    json: undefined,
+    text: undefined
+  };
+  if (isMutationMethod(submission.formMethod)) {
+    return {
+      path,
+      submission
+    };
+  }
+
+  // Flatten submission onto URLSearchParams for GET submissions
+  let parsedPath = parsePath(path);
+  // On GET navigation submissions we can drop the ?index param from the
+  // resulting location since all loaders will run.  But fetcher GET submissions
+  // only run a single loader so we need to preserve any incoming ?index params
+  if (isFetcher && parsedPath.search && hasNakedIndexQuery(parsedPath.search)) {
+    searchParams.append("index", "");
+  }
+  parsedPath.search = "?" + searchParams;
+  return {
+    path: createPath(parsedPath),
+    submission
+  };
+}
+
+// Filter out all routes below any caught error as they aren't going to
+// render so we don't need to load them
+function getLoaderMatchesUntilBoundary(matches, boundaryId) {
+  let boundaryMatches = matches;
+  if (boundaryId) {
+    let index = matches.findIndex(m => m.route.id === boundaryId);
+    if (index >= 0) {
+      boundaryMatches = matches.slice(0, index);
+    }
+  }
+  return boundaryMatches;
+}
+function getMatchesToLoad(history, state, matches, submission, location, isInitialLoad, isRevalidationRequired, cancelledDeferredRoutes, cancelledFetcherLoads, deletedFetchers, fetchLoadMatches, fetchRedirectIds, routesToUse, basename, pendingActionData, pendingError) {
+  let actionResult = pendingError ? Object.values(pendingError)[0] : pendingActionData ? Object.values(pendingActionData)[0] : undefined;
+  let currentUrl = history.createURL(state.location);
+  let nextUrl = history.createURL(location);
+
+  // Pick navigation matches that are net-new or qualify for revalidation
+  let boundaryId = pendingError ? Object.keys(pendingError)[0] : undefined;
+  let boundaryMatches = getLoaderMatchesUntilBoundary(matches, boundaryId);
+  let navigationMatches = boundaryMatches.filter((match, index) => {
+    let {
+      route
+    } = match;
+    if (route.lazy) {
+      // We haven't loaded this route yet so we don't know if it's got a loader!
+      return true;
+    }
+    if (route.loader == null) {
+      return false;
+    }
+    if (isInitialLoad) {
+      if (route.loader.hydrate) {
+        return true;
+      }
+      return state.loaderData[route.id] === undefined && (
+      // Don't re-run if the loader ran and threw an error
+      !state.errors || state.errors[route.id] === undefined);
+    }
+
+    // Always call the loader on new route instances and pending defer cancellations
+    if (isNewLoader(state.loaderData, state.matches[index], match) || cancelledDeferredRoutes.some(id => id === match.route.id)) {
+      return true;
+    }
+
+    // This is the default implementation for when we revalidate.  If the route
+    // provides it's own implementation, then we give them full control but
+    // provide this value so they can leverage it if needed after they check
+    // their own specific use cases
+    let currentRouteMatch = state.matches[index];
+    let nextRouteMatch = match;
+    return shouldRevalidateLoader(match, _extends({
+      currentUrl,
+      currentParams: currentRouteMatch.params,
+      nextUrl,
+      nextParams: nextRouteMatch.params
+    }, submission, {
+      actionResult,
+      defaultShouldRevalidate:
+      // Forced revalidation due to submission, useRevalidator, or X-Remix-Revalidate
+      isRevalidationRequired ||
+      // Clicked the same link, resubmitted a GET form
+      currentUrl.pathname + currentUrl.search === nextUrl.pathname + nextUrl.search ||
+      // Search params affect all loaders
+      currentUrl.search !== nextUrl.search || isNewRouteInstance(currentRouteMatch, nextRouteMatch)
+    }));
+  });
+
+  // Pick fetcher.loads that need to be revalidated
+  let revalidatingFetchers = [];
+  fetchLoadMatches.forEach((f, key) => {
+    // Don't revalidate:
+    //  - on initial load (shouldn't be any fetchers then anyway)
+    //  - if fetcher won't be present in the subsequent render
+    //    - no longer matches the URL (v7_fetcherPersist=false)
+    //    - was unmounted but persisted due to v7_fetcherPersist=true
+    if (isInitialLoad || !matches.some(m => m.route.id === f.routeId) || deletedFetchers.has(key)) {
+      return;
+    }
+    let fetcherMatches = matchRoutes(routesToUse, f.path, basename);
+
+    // If the fetcher path no longer matches, push it in with null matches so
+    // we can trigger a 404 in callLoadersAndMaybeResolveData.  Note this is
+    // currently only a use-case for Remix HMR where the route tree can change
+    // at runtime and remove a route previously loaded via a fetcher
+    if (!fetcherMatches) {
+      revalidatingFetchers.push({
+        key,
+        routeId: f.routeId,
+        path: f.path,
+        matches: null,
+        match: null,
+        controller: null
+      });
+      return;
+    }
+
+    // Revalidating fetchers are decoupled from the route matches since they
+    // load from a static href.  They revalidate based on explicit revalidation
+    // (submission, useRevalidator, or X-Remix-Revalidate)
+    let fetcher = state.fetchers.get(key);
+    let fetcherMatch = getTargetMatch(fetcherMatches, f.path);
+    let shouldRevalidate = false;
+    if (fetchRedirectIds.has(key)) {
+      // Never trigger a revalidation of an actively redirecting fetcher
+      shouldRevalidate = false;
+    } else if (cancelledFetcherLoads.includes(key)) {
+      // Always revalidate if the fetcher was cancelled
+      shouldRevalidate = true;
+    } else if (fetcher && fetcher.state !== "idle" && fetcher.data === undefined) {
+      // If the fetcher hasn't ever completed loading yet, then this isn't a
+      // revalidation, it would just be a brand new load if an explicit
+      // revalidation is required
+      shouldRevalidate = isRevalidationRequired;
+    } else {
+      // Otherwise fall back on any user-defined shouldRevalidate, defaulting
+      // to explicit revalidations only
+      shouldRevalidate = shouldRevalidateLoader(fetcherMatch, _extends({
+        currentUrl,
+        currentParams: state.matches[state.matches.length - 1].params,
+        nextUrl,
+        nextParams: matches[matches.length - 1].params
+      }, submission, {
+        actionResult,
+        defaultShouldRevalidate: isRevalidationRequired
+      }));
+    }
+    if (shouldRevalidate) {
+      revalidatingFetchers.push({
+        key,
+        routeId: f.routeId,
+        path: f.path,
+        matches: fetcherMatches,
+        match: fetcherMatch,
+        controller: new AbortController()
+      });
+    }
+  });
+  return [navigationMatches, revalidatingFetchers];
+}
+function isNewLoader(currentLoaderData, currentMatch, match) {
+  let isNew =
+  // [a] -> [a, b]
+  !currentMatch ||
+  // [a, b] -> [a, c]
+  match.route.id !== currentMatch.route.id;
+
+  // Handle the case that we don't have data for a re-used route, potentially
+  // from a prior error or from a cancelled pending deferred
+  let isMissingData = currentLoaderData[match.route.id] === undefined;
+
+  // Always load if this is a net-new route or we don't yet have data
+  return isNew || isMissingData;
+}
+function isNewRouteInstance(currentMatch, match) {
+  let currentPath = currentMatch.route.path;
+  return (
+    // param change for this match, /users/123 -> /users/456
+    currentMatch.pathname !== match.pathname ||
+    // splat param changed, which is not present in match.path
+    // e.g. /files/images/avatar.jpg -> files/finances.xls
+    currentPath != null && currentPath.endsWith("*") && currentMatch.params["*"] !== match.params["*"]
+  );
+}
+function shouldRevalidateLoader(loaderMatch, arg) {
+  if (loaderMatch.route.shouldRevalidate) {
+    let routeChoice = loaderMatch.route.shouldRevalidate(arg);
+    if (typeof routeChoice === "boolean") {
+      return routeChoice;
+    }
+  }
+  return arg.defaultShouldRevalidate;
+}
+
+/**
+ * Execute route.lazy() methods to lazily load route modules (loader, action,
+ * shouldRevalidate) and update the routeManifest in place which shares objects
+ * with dataRoutes so those get updated as well.
+ */
+async function loadLazyRouteModule(route, mapRouteProperties, manifest) {
+  if (!route.lazy) {
+    return;
+  }
+  let lazyRoute = await route.lazy();
+
+  // If the lazy route function was executed and removed by another parallel
+  // call then we can return - first lazy() to finish wins because the return
+  // value of lazy is expected to be static
+  if (!route.lazy) {
+    return;
+  }
+  let routeToUpdate = manifest[route.id];
+  invariant(routeToUpdate, "No route found in manifest");
+
+  // Update the route in place.  This should be safe because there's no way
+  // we could yet be sitting on this route as we can't get there without
+  // resolving lazy() first.
+  //
+  // This is different than the HMR "update" use-case where we may actively be
+  // on the route being updated.  The main concern boils down to "does this
+  // mutation affect any ongoing navigations or any current state.matches
+  // values?".  If not, it should be safe to update in place.
+  let routeUpdates = {};
+  for (let lazyRouteProperty in lazyRoute) {
+    let staticRouteValue = routeToUpdate[lazyRouteProperty];
+    let isPropertyStaticallyDefined = staticRouteValue !== undefined &&
+    // This property isn't static since it should always be updated based
+    // on the route updates
+    lazyRouteProperty !== "hasErrorBoundary";
+    warning(!isPropertyStaticallyDefined, "Route \"" + routeToUpdate.id + "\" has a static property \"" + lazyRouteProperty + "\" " + "defined but its lazy function is also returning a value for this property. " + ("The lazy route property \"" + lazyRouteProperty + "\" will be ignored."));
+    if (!isPropertyStaticallyDefined && !immutableRouteKeys.has(lazyRouteProperty)) {
+      routeUpdates[lazyRouteProperty] = lazyRoute[lazyRouteProperty];
+    }
+  }
+
+  // Mutate the route with the provided updates.  Do this first so we pass
+  // the updated version to mapRouteProperties
+  Object.assign(routeToUpdate, routeUpdates);
+
+  // Mutate the `hasErrorBoundary` property on the route based on the route
+  // updates and remove the `lazy` function so we don't resolve the lazy
+  // route again.
+  Object.assign(routeToUpdate, _extends({}, mapRouteProperties(routeToUpdate), {
+    lazy: undefined
+  }));
+}
+async function callLoaderOrAction(type, request, match, matches, manifest, mapRouteProperties, basename, v7_relativeSplatPath, opts) {
+  if (opts === void 0) {
+    opts = {};
+  }
+  let resultType;
+  let result;
+  let onReject;
+  let runHandler = handler => {
+    // Setup a promise we can race against so that abort signals short circuit
+    let reject;
+    let abortPromise = new Promise((_, r) => reject = r);
+    onReject = () => reject();
+    request.signal.addEventListener("abort", onReject);
+    return Promise.race([handler({
+      request,
+      params: match.params,
+      context: opts.requestContext
+    }), abortPromise]);
+  };
+  try {
+    let handler = match.route[type];
+    if (match.route.lazy) {
+      if (handler) {
+        // Run statically defined handler in parallel with lazy()
+        let handlerError;
+        let values = await Promise.all([
+        // If the handler throws, don't let it immediately bubble out,
+        // since we need to let the lazy() execution finish so we know if this
+        // route has a boundary that can handle the error
+        runHandler(handler).catch(e => {
+          handlerError = e;
+        }), loadLazyRouteModule(match.route, mapRouteProperties, manifest)]);
+        if (handlerError) {
+          throw handlerError;
+        }
+        result = values[0];
+      } else {
+        // Load lazy route module, then run any returned handler
+        await loadLazyRouteModule(match.route, mapRouteProperties, manifest);
+        handler = match.route[type];
+        if (handler) {
+          // Handler still run even if we got interrupted to maintain consistency
+          // with un-abortable behavior of handler execution on non-lazy or
+          // previously-lazy-loaded routes
+          result = await runHandler(handler);
+        } else if (type === "action") {
+          let url = new URL(request.url);
+          let pathname = url.pathname + url.search;
+          throw getInternalRouterError(405, {
+            method: request.method,
+            pathname,
+            routeId: match.route.id
+          });
+        } else {
+          // lazy() route has no loader to run.  Short circuit here so we don't
+          // hit the invariant below that errors on returning undefined.
+          return {
+            type: ResultType.data,
+            data: undefined
+          };
+        }
+      }
+    } else if (!handler) {
+      let url = new URL(request.url);
+      let pathname = url.pathname + url.search;
+      throw getInternalRouterError(404, {
+        pathname
+      });
+    } else {
+      result = await runHandler(handler);
+    }
+    invariant(result !== undefined, "You defined " + (type === "action" ? "an action" : "a loader") + " for route " + ("\"" + match.route.id + "\" but didn't return anything from your `" + type + "` ") + "function. Please return a value or `null`.");
+  } catch (e) {
+    resultType = ResultType.error;
+    result = e;
+  } finally {
+    if (onReject) {
+      request.signal.removeEventListener("abort", onReject);
+    }
+  }
+  if (isResponse(result)) {
+    let status = result.status;
+
+    // Process redirects
+    if (redirectStatusCodes.has(status)) {
+      let location = result.headers.get("Location");
+      invariant(location, "Redirects returned/thrown from loaders/actions must have a Location header");
+
+      // Support relative routing in internal redirects
+      if (!ABSOLUTE_URL_REGEX.test(location)) {
+        location = normalizeTo(new URL(request.url), matches.slice(0, matches.indexOf(match) + 1), basename, true, location, v7_relativeSplatPath);
+      } else if (!opts.isStaticRequest) {
+        // Strip off the protocol+origin for same-origin + same-basename absolute
+        // redirects. If this is a static request, we can let it go back to the
+        // browser as-is
+        let currentUrl = new URL(request.url);
+        let url = location.startsWith("//") ? new URL(currentUrl.protocol + location) : new URL(location);
+        let isSameBasename = stripBasename(url.pathname, basename) != null;
+        if (url.origin === currentUrl.origin && isSameBasename) {
+          location = url.pathname + url.search + url.hash;
+        }
+      }
+
+      // Don't process redirects in the router during static requests requests.
+      // Instead, throw the Response and let the server handle it with an HTTP
+      // redirect.  We also update the Location header in place in this flow so
+      // basename and relative routing is taken into account
+      if (opts.isStaticRequest) {
+        result.headers.set("Location", location);
+        throw result;
+      }
+      return {
+        type: ResultType.redirect,
+        status,
+        location,
+        revalidate: result.headers.get("X-Remix-Revalidate") !== null,
+        reloadDocument: result.headers.get("X-Remix-Reload-Document") !== null
+      };
+    }
+
+    // For SSR single-route requests, we want to hand Responses back directly
+    // without unwrapping.  We do this with the QueryRouteResponse wrapper
+    // interface so we can know whether it was returned or thrown
+    if (opts.isRouteRequest) {
+      let queryRouteResponse = {
+        type: resultType === ResultType.error ? ResultType.error : ResultType.data,
+        response: result
+      };
+      throw queryRouteResponse;
+    }
+    let data;
+    try {
+      let contentType = result.headers.get("Content-Type");
+      // Check between word boundaries instead of startsWith() due to the last
+      // paragraph of https://httpwg.org/specs/rfc9110.html#field.content-type
+      if (contentType && /\bapplication\/json\b/.test(contentType)) {
+        if (result.body == null) {
+          data = null;
+        } else {
+          data = await result.json();
+        }
+      } else {
+        data = await result.text();
+      }
+    } catch (e) {
+      return {
+        type: ResultType.error,
+        error: e
+      };
+    }
+    if (resultType === ResultType.error) {
+      return {
+        type: resultType,
+        error: new ErrorResponseImpl(status, result.statusText, data),
+        headers: result.headers
+      };
+    }
+    return {
+      type: ResultType.data,
+      data,
+      statusCode: result.status,
+      headers: result.headers
+    };
+  }
+  if (resultType === ResultType.error) {
+    return {
+      type: resultType,
+      error: result
+    };
+  }
+  if (isDeferredData(result)) {
+    var _result$init, _result$init2;
+    return {
+      type: ResultType.deferred,
+      deferredData: result,
+      statusCode: (_result$init = result.init) == null ? void 0 : _result$init.status,
+      headers: ((_result$init2 = result.init) == null ? void 0 : _result$init2.headers) && new Headers(result.init.headers)
+    };
+  }
+  return {
+    type: ResultType.data,
+    data: result
+  };
+}
+
+// Utility method for creating the Request instances for loaders/actions during
+// client-side navigations and fetches.  During SSR we will always have a
+// Request instance from the static handler (query/queryRoute)
+function createClientSideRequest(history, location, signal, submission) {
+  let url = history.createURL(stripHashFromPath(location)).toString();
+  let init = {
+    signal
+  };
+  if (submission && isMutationMethod(submission.formMethod)) {
+    let {
+      formMethod,
+      formEncType
+    } = submission;
+    // Didn't think we needed this but it turns out unlike other methods, patch
+    // won't be properly normalized to uppercase and results in a 405 error.
+    // See: https://fetch.spec.whatwg.org/#concept-method
+    init.method = formMethod.toUpperCase();
+    if (formEncType === "application/json") {
+      init.headers = new Headers({
+        "Content-Type": formEncType
+      });
+      init.body = JSON.stringify(submission.json);
+    } else if (formEncType === "text/plain") {
+      // Content-Type is inferred (https://fetch.spec.whatwg.org/#dom-request)
+      init.body = submission.text;
+    } else if (formEncType === "application/x-www-form-urlencoded" && submission.formData) {
+      // Content-Type is inferred (https://fetch.spec.whatwg.org/#dom-request)
+      init.body = convertFormDataToSearchParams(submission.formData);
+    } else {
+      // Content-Type is inferred (https://fetch.spec.whatwg.org/#dom-request)
+      init.body = submission.formData;
+    }
+  }
+  return new Request(url, init);
+}
+function convertFormDataToSearchParams(formData) {
+  let searchParams = new URLSearchParams();
+  for (let [key, value] of formData.entries()) {
+    // https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#converting-an-entry-list-to-a-list-of-name-value-pairs
+    searchParams.append(key, typeof value === "string" ? value : value.name);
+  }
+  return searchParams;
+}
+function convertSearchParamsToFormData(searchParams) {
+  let formData = new FormData();
+  for (let [key, value] of searchParams.entries()) {
+    formData.append(key, value);
+  }
+  return formData;
+}
+function processRouteLoaderData(matches, matchesToLoad, results, pendingError, activeDeferreds) {
+  // Fill in loaderData/errors from our loaders
+  let loaderData = {};
+  let errors = null;
+  let statusCode;
+  let foundError = false;
+  let loaderHeaders = {};
+
+  // Process loader results into state.loaderData/state.errors
+  results.forEach((result, index) => {
+    let id = matchesToLoad[index].route.id;
+    invariant(!isRedirectResult(result), "Cannot handle redirect results in processLoaderData");
+    if (isErrorResult(result)) {
+      // Look upwards from the matched route for the closest ancestor
+      // error boundary, defaulting to the root match
+      let boundaryMatch = findNearestBoundary(matches, id);
+      let error = result.error;
+      // If we have a pending action error, we report it at the highest-route
+      // that throws a loader error, and then clear it out to indicate that
+      // it was consumed
+      if (pendingError) {
+        error = Object.values(pendingError)[0];
+        pendingError = undefined;
+      }
+      errors = errors || {};
+
+      // Prefer higher error values if lower errors bubble to the same boundary
+      if (errors[boundaryMatch.route.id] == null) {
+        errors[boundaryMatch.route.id] = error;
+      }
+
+      // Clear our any prior loaderData for the throwing route
+      loaderData[id] = undefined;
+
+      // Once we find our first (highest) error, we set the status code and
+      // prevent deeper status codes from overriding
+      if (!foundError) {
+        foundError = true;
+        statusCode = isRouteErrorResponse(result.error) ? result.error.status : 500;
+      }
+      if (result.headers) {
+        loaderHeaders[id] = result.headers;
+      }
+    } else {
+      if (isDeferredResult(result)) {
+        activeDeferreds.set(id, result.deferredData);
+        loaderData[id] = result.deferredData.data;
+      } else {
+        loaderData[id] = result.data;
+      }
+
+      // Error status codes always override success status codes, but if all
+      // loaders are successful we take the deepest status code.
+      if (result.statusCode != null && result.statusCode !== 200 && !foundError) {
+        statusCode = result.statusCode;
+      }
+      if (result.headers) {
+        loaderHeaders[id] = result.headers;
+      }
+    }
+  });
+
+  // If we didn't consume the pending action error (i.e., all loaders
+  // resolved), then consume it here.  Also clear out any loaderData for the
+  // throwing route
+  if (pendingError) {
+    errors = pendingError;
+    loaderData[Object.keys(pendingError)[0]] = undefined;
+  }
+  return {
+    loaderData,
+    errors,
+    statusCode: statusCode || 200,
+    loaderHeaders
+  };
+}
+function processLoaderData(state, matches, matchesToLoad, results, pendingError, revalidatingFetchers, fetcherResults, activeDeferreds) {
+  let {
+    loaderData,
+    errors
+  } = processRouteLoaderData(matches, matchesToLoad, results, pendingError, activeDeferreds);
+
+  // Process results from our revalidating fetchers
+  for (let index = 0; index < revalidatingFetchers.length; index++) {
+    let {
+      key,
+      match,
+      controller
+    } = revalidatingFetchers[index];
+    invariant(fetcherResults !== undefined && fetcherResults[index] !== undefined, "Did not find corresponding fetcher result");
+    let result = fetcherResults[index];
+
+    // Process fetcher non-redirect errors
+    if (controller && controller.signal.aborted) {
+      // Nothing to do for aborted fetchers
+      continue;
+    } else if (isErrorResult(result)) {
+      let boundaryMatch = findNearestBoundary(state.matches, match == null ? void 0 : match.route.id);
+      if (!(errors && errors[boundaryMatch.route.id])) {
+        errors = _extends({}, errors, {
+          [boundaryMatch.route.id]: result.error
+        });
+      }
+      state.fetchers.delete(key);
+    } else if (isRedirectResult(result)) {
+      // Should never get here, redirects should get processed above, but we
+      // keep this to type narrow to a success result in the else
+      invariant(false, "Unhandled fetcher revalidation redirect");
+    } else if (isDeferredResult(result)) {
+      // Should never get here, deferred data should be awaited for fetchers
+      // in resolveDeferredResults
+      invariant(false, "Unhandled fetcher deferred data");
+    } else {
+      let doneFetcher = getDoneFetcher(result.data);
+      state.fetchers.set(key, doneFetcher);
+    }
+  }
+  return {
+    loaderData,
+    errors
+  };
+}
+function mergeLoaderData(loaderData, newLoaderData, matches, errors) {
+  let mergedLoaderData = _extends({}, newLoaderData);
+  for (let match of matches) {
+    let id = match.route.id;
+    if (newLoaderData.hasOwnProperty(id)) {
+      if (newLoaderData[id] !== undefined) {
+        mergedLoaderData[id] = newLoaderData[id];
+      }
+    } else if (loaderData[id] !== undefined && match.route.loader) {
+      // Preserve existing keys not included in newLoaderData and where a loader
+      // wasn't removed by HMR
+      mergedLoaderData[id] = loaderData[id];
+    }
+    if (errors && errors.hasOwnProperty(id)) {
+      // Don't keep any loader data below the boundary
+      break;
+    }
+  }
+  return mergedLoaderData;
+}
+
+// Find the nearest error boundary, looking upwards from the leaf route (or the
+// route specified by routeId) for the closest ancestor error boundary,
+// defaulting to the root match
+function findNearestBoundary(matches, routeId) {
+  let eligibleMatches = routeId ? matches.slice(0, matches.findIndex(m => m.route.id === routeId) + 1) : [...matches];
+  return eligibleMatches.reverse().find(m => m.route.hasErrorBoundary === true) || matches[0];
+}
+function getShortCircuitMatches(routes) {
+  // Prefer a root layout route if present, otherwise shim in a route object
+  let route = routes.length === 1 ? routes[0] : routes.find(r => r.index || !r.path || r.path === "/") || {
+    id: "__shim-error-route__"
+  };
+  return {
+    matches: [{
+      params: {},
+      pathname: "",
+      pathnameBase: "",
+      route
+    }],
+    route
+  };
+}
+function getInternalRouterError(status, _temp5) {
+  let {
+    pathname,
+    routeId,
+    method,
+    type
+  } = _temp5 === void 0 ? {} : _temp5;
+  let statusText = "Unknown Server Error";
+  let errorMessage = "Unknown @remix-run/router error";
+  if (status === 400) {
+    statusText = "Bad Request";
+    if (method && pathname && routeId) {
+      errorMessage = "You made a " + method + " request to \"" + pathname + "\" but " + ("did not provide a `loader` for route \"" + routeId + "\", ") + "so there is no way to handle the request.";
+    } else if (type === "defer-action") {
+      errorMessage = "defer() is not supported in actions";
+    } else if (type === "invalid-body") {
+      errorMessage = "Unable to encode submission body";
+    }
+  } else if (status === 403) {
+    statusText = "Forbidden";
+    errorMessage = "Route \"" + routeId + "\" does not match URL \"" + pathname + "\"";
+  } else if (status === 404) {
+    statusText = "Not Found";
+    errorMessage = "No route matches URL \"" + pathname + "\"";
+  } else if (status === 405) {
+    statusText = "Method Not Allowed";
+    if (method && pathname && routeId) {
+      errorMessage = "You made a " + method.toUpperCase() + " request to \"" + pathname + "\" but " + ("did not provide an `action` for route \"" + routeId + "\", ") + "so there is no way to handle the request.";
+    } else if (method) {
+      errorMessage = "Invalid request method \"" + method.toUpperCase() + "\"";
+    }
+  }
+  return new ErrorResponseImpl(status || 500, statusText, new Error(errorMessage), true);
+}
+
+// Find any returned redirect errors, starting from the lowest match
+function findRedirect(results) {
+  for (let i = results.length - 1; i >= 0; i--) {
+    let result = results[i];
+    if (isRedirectResult(result)) {
+      return {
+        result,
+        idx: i
+      };
+    }
+  }
+}
+function stripHashFromPath(path) {
+  let parsedPath = typeof path === "string" ? parsePath(path) : path;
+  return createPath(_extends({}, parsedPath, {
+    hash: ""
+  }));
+}
+function isHashChangeOnly(a, b) {
+  if (a.pathname !== b.pathname || a.search !== b.search) {
+    return false;
+  }
+  if (a.hash === "") {
+    // /page -> /page#hash
+    return b.hash !== "";
+  } else if (a.hash === b.hash) {
+    // /page#hash -> /page#hash
+    return true;
+  } else if (b.hash !== "") {
+    // /page#hash -> /page#other
+    return true;
+  }
+
+  // If the hash is removed the browser will re-perform a request to the server
+  // /page#hash -> /page
+  return false;
+}
+function isDeferredResult(result) {
+  return result.type === ResultType.deferred;
+}
+function isErrorResult(result) {
+  return result.type === ResultType.error;
+}
+function isRedirectResult(result) {
+  return (result && result.type) === ResultType.redirect;
+}
+function isDeferredData(value) {
+  let deferred = value;
+  return deferred && typeof deferred === "object" && typeof deferred.data === "object" && typeof deferred.subscribe === "function" && typeof deferred.cancel === "function" && typeof deferred.resolveData === "function";
+}
+function isResponse(value) {
+  return value != null && typeof value.status === "number" && typeof value.statusText === "string" && typeof value.headers === "object" && typeof value.body !== "undefined";
+}
+function isRedirectResponse(result) {
+  if (!isResponse(result)) {
+    return false;
+  }
+  let status = result.status;
+  let location = result.headers.get("Location");
+  return status >= 300 && status <= 399 && location != null;
+}
+function isQueryRouteResponse(obj) {
+  return obj && isResponse(obj.response) && (obj.type === ResultType.data || obj.type === ResultType.error);
+}
+function isValidMethod(method) {
+  return validRequestMethods.has(method.toLowerCase());
+}
+function isMutationMethod(method) {
+  return validMutationMethods.has(method.toLowerCase());
+}
+async function resolveDeferredResults(currentMatches, matchesToLoad, results, signals, isFetcher, currentLoaderData) {
+  for (let index = 0; index < results.length; index++) {
+    let result = results[index];
+    let match = matchesToLoad[index];
+    // If we don't have a match, then we can have a deferred result to do
+    // anything with.  This is for revalidating fetchers where the route was
+    // removed during HMR
+    if (!match) {
+      continue;
+    }
+    let currentMatch = currentMatches.find(m => m.route.id === match.route.id);
+    let isRevalidatingLoader = currentMatch != null && !isNewRouteInstance(currentMatch, match) && (currentLoaderData && currentLoaderData[match.route.id]) !== undefined;
+    if (isDeferredResult(result) && (isFetcher || isRevalidatingLoader)) {
+      // Note: we do not have to touch activeDeferreds here since we race them
+      // against the signal in resolveDeferredData and they'll get aborted
+      // there if needed
+      let signal = signals[index];
+      invariant(signal, "Expected an AbortSignal for revalidating fetcher deferred result");
+      await resolveDeferredData(result, signal, isFetcher).then(result => {
+        if (result) {
+          results[index] = result || results[index];
+        }
+      });
+    }
+  }
+}
+async function resolveDeferredData(result, signal, unwrap) {
+  if (unwrap === void 0) {
+    unwrap = false;
+  }
+  let aborted = await result.deferredData.resolveData(signal);
+  if (aborted) {
+    return;
+  }
+  if (unwrap) {
+    try {
+      return {
+        type: ResultType.data,
+        data: result.deferredData.unwrappedData
+      };
+    } catch (e) {
+      // Handle any TrackedPromise._error values encountered while unwrapping
+      return {
+        type: ResultType.error,
+        error: e
+      };
+    }
+  }
+  return {
+    type: ResultType.data,
+    data: result.deferredData.data
+  };
+}
+function hasNakedIndexQuery(search) {
+  return new URLSearchParams(search).getAll("index").some(v => v === "");
+}
+function getTargetMatch(matches, location) {
+  let search = typeof location === "string" ? parsePath(location).search : location.search;
+  if (matches[matches.length - 1].route.index && hasNakedIndexQuery(search || "")) {
+    // Return the leaf index route when index is present
+    return matches[matches.length - 1];
+  }
+  // Otherwise grab the deepest "path contributing" match (ignoring index and
+  // pathless layout routes)
+  let pathMatches = getPathContributingMatches(matches);
+  return pathMatches[pathMatches.length - 1];
+}
+function getSubmissionFromNavigation(navigation) {
+  let {
+    formMethod,
+    formAction,
+    formEncType,
+    text,
+    formData,
+    json
+  } = navigation;
+  if (!formMethod || !formAction || !formEncType) {
+    return;
+  }
+  if (text != null) {
+    return {
+      formMethod,
+      formAction,
+      formEncType,
+      formData: undefined,
+      json: undefined,
+      text
+    };
+  } else if (formData != null) {
+    return {
+      formMethod,
+      formAction,
+      formEncType,
+      formData,
+      json: undefined,
+      text: undefined
+    };
+  } else if (json !== undefined) {
+    return {
+      formMethod,
+      formAction,
+      formEncType,
+      formData: undefined,
+      json,
+      text: undefined
+    };
+  }
+}
+function getLoadingNavigation(location, submission) {
+  if (submission) {
+    let navigation = {
+      state: "loading",
+      location,
+      formMethod: submission.formMethod,
+      formAction: submission.formAction,
+      formEncType: submission.formEncType,
+      formData: submission.formData,
+      json: submission.json,
+      text: submission.text
+    };
+    return navigation;
+  } else {
+    let navigation = {
+      state: "loading",
+      location,
+      formMethod: undefined,
+      formAction: undefined,
+      formEncType: undefined,
+      formData: undefined,
+      json: undefined,
+      text: undefined
+    };
+    return navigation;
+  }
+}
+function getSubmittingNavigation(location, submission) {
+  let navigation = {
+    state: "submitting",
+    location,
+    formMethod: submission.formMethod,
+    formAction: submission.formAction,
+    formEncType: submission.formEncType,
+    formData: submission.formData,
+    json: submission.json,
+    text: submission.text
+  };
+  return navigation;
+}
+function getLoadingFetcher(submission, data) {
+  if (submission) {
+    let fetcher = {
+      state: "loading",
+      formMethod: submission.formMethod,
+      formAction: submission.formAction,
+      formEncType: submission.formEncType,
+      formData: submission.formData,
+      json: submission.json,
+      text: submission.text,
+      data
+    };
+    return fetcher;
+  } else {
+    let fetcher = {
+      state: "loading",
+      formMethod: undefined,
+      formAction: undefined,
+      formEncType: undefined,
+      formData: undefined,
+      json: undefined,
+      text: undefined,
+      data
+    };
+    return fetcher;
+  }
+}
+function getSubmittingFetcher(submission, existingFetcher) {
+  let fetcher = {
+    state: "submitting",
+    formMethod: submission.formMethod,
+    formAction: submission.formAction,
+    formEncType: submission.formEncType,
+    formData: submission.formData,
+    json: submission.json,
+    text: submission.text,
+    data: existingFetcher ? existingFetcher.data : undefined
+  };
+  return fetcher;
+}
+function getDoneFetcher(data) {
+  let fetcher = {
+    state: "idle",
+    formMethod: undefined,
+    formAction: undefined,
+    formEncType: undefined,
+    formData: undefined,
+    json: undefined,
+    text: undefined,
+    data
+  };
+  return fetcher;
+}
+function restoreAppliedTransitions(_window, transitions) {
+  try {
+    let sessionPositions = _window.sessionStorage.getItem(TRANSITIONS_STORAGE_KEY);
+    if (sessionPositions) {
+      let json = JSON.parse(sessionPositions);
+      for (let [k, v] of Object.entries(json || {})) {
+        if (v && Array.isArray(v)) {
+          transitions.set(k, new Set(v || []));
+        }
+      }
+    }
+  } catch (e) {
+    // no-op, use default empty object
+  }
+}
+function persistAppliedTransitions(_window, transitions) {
+  if (transitions.size > 0) {
+    let json = {};
+    for (let [k, v] of transitions) {
+      json[k] = [...v];
+    }
+    try {
+      _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json));
+    } catch (error) {
+      warning(false, "Failed to save applied view transitions in sessionStorage (" + error + ").");
+    }
+  }
+}
+
+//#endregion
+
+exports.AbortedDeferredError = AbortedDeferredError;
+exports.Action = Action;
+exports.IDLE_BLOCKER = IDLE_BLOCKER;
+exports.IDLE_FETCHER = IDLE_FETCHER;
+exports.IDLE_NAVIGATION = IDLE_NAVIGATION;
+exports.UNSAFE_DEFERRED_SYMBOL = UNSAFE_DEFERRED_SYMBOL;
+exports.UNSAFE_DeferredData = DeferredData;
+exports.UNSAFE_ErrorResponseImpl = ErrorResponseImpl;
+exports.UNSAFE_convertRouteMatchToUiMatch = convertRouteMatchToUiMatch;
+exports.UNSAFE_convertRoutesToDataRoutes = convertRoutesToDataRoutes;
+exports.UNSAFE_getResolveToMatches = getResolveToMatches;
+exports.UNSAFE_invariant = invariant;
+exports.UNSAFE_warning = warning;
+exports.createBrowserHistory = createBrowserHistory;
+exports.createHashHistory = createHashHistory;
+exports.createMemoryHistory = createMemoryHistory;
+exports.createPath = createPath;
+exports.createRouter = createRouter;
+exports.createStaticHandler = createStaticHandler;
+exports.defer = defer;
+exports.generatePath = generatePath;
+exports.getStaticContextFromError = getStaticContextFromError;
+exports.getToPathname = getToPathname;
+exports.isDeferredData = isDeferredData;
+exports.isRouteErrorResponse = isRouteErrorResponse;
+exports.joinPaths = joinPaths;
+exports.json = json;
+exports.matchPath = matchPath;
+exports.matchRoutes = matchRoutes;
+exports.normalizePathname = normalizePathname;
+exports.parsePath = parsePath;
+exports.redirect = redirect;
+exports.redirectDocument = redirectDocument;
+exports.resolvePath = resolvePath;
+exports.resolveTo = resolveTo;
+exports.stripBasename = stripBasename;
+
+
+},{}],302:[function(require,module,exports){
+(function (process){
+/**
+ * React Router v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+'use strict';
+
+/* eslint-env node */
+
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./umd/react-router.production.min.js");
+} else {
+  module.exports = require("./umd/react-router.development.js");
+}
+
+}).call(this,require('_process'))
+
+},{"./umd/react-router.development.js":303,"./umd/react-router.production.min.js":304,"_process":271}],303:[function(require,module,exports){
+/**
+ * React Router v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('@remix-run/router')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'react', '@remix-run/router'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactRouter = {}, global.React, global.RemixRouter));
+})(this, (function (exports, React, router) { 'use strict';
+
+  function _interopNamespace(e) {
+    if (e && e.__esModule) return e;
+    var n = Object.create(null);
+    if (e) {
+      Object.keys(e).forEach(function (k) {
+        if (k !== 'default') {
+          var d = Object.getOwnPropertyDescriptor(e, k);
+          Object.defineProperty(n, k, d.get ? d : {
+            enumerable: true,
+            get: function () { return e[k]; }
+          });
+        }
+      });
+    }
+    n["default"] = e;
+    return Object.freeze(n);
+  }
+
+  var React__namespace = /*#__PURE__*/_interopNamespace(React);
+
+  function _extends() {
+    _extends = Object.assign ? Object.assign.bind() : function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    return _extends.apply(this, arguments);
+  }
+
+  // Create react-specific types from the agnostic types in @remix-run/router to
+  // export from react-router
+  const DataRouterContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    DataRouterContext.displayName = "DataRouter";
+  }
+  const DataRouterStateContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    DataRouterStateContext.displayName = "DataRouterState";
+  }
+  const AwaitContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    AwaitContext.displayName = "Await";
+  }
+
+  /**
+   * A Navigator is a "location changer"; it's how you get to different locations.
+   *
+   * Every history instance conforms to the Navigator interface, but the
+   * distinction is useful primarily when it comes to the low-level `<Router>` API
+   * where both the location and a navigator must be provided separately in order
+   * to avoid "tearing" that may occur in a suspense-enabled app if the action
+   * and/or location were to be read directly from the history instance.
+   */
+
+  const NavigationContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    NavigationContext.displayName = "Navigation";
+  }
+  const LocationContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    LocationContext.displayName = "Location";
+  }
+  const RouteContext = /*#__PURE__*/React__namespace.createContext({
+    outlet: null,
+    matches: [],
+    isDataRoute: false
+  });
+  {
+    RouteContext.displayName = "Route";
+  }
+  const RouteErrorContext = /*#__PURE__*/React__namespace.createContext(null);
+  {
+    RouteErrorContext.displayName = "RouteError";
+  }
+
+  /**
+   * Returns the full href for the given "to" value. This is useful for building
+   * custom links that are also accessible and preserve right-click behavior.
+   *
+   * @see https://reactrouter.com/hooks/use-href
+   */
+  function useHref(to, _temp) {
+    let {
+      relative
+    } = _temp === void 0 ? {} : _temp;
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of the
+    // router loaded. We can help them understand how to avoid that.
+    "useHref() may be used only in the context of a <Router> component.")  : void 0;
+    let {
+      basename,
+      navigator
+    } = React__namespace.useContext(NavigationContext);
+    let {
+      hash,
+      pathname,
+      search
+    } = useResolvedPath(to, {
+      relative
+    });
+    let joinedPathname = pathname;
+
+    // If we're operating within a basename, prepend it to the pathname prior
+    // to creating the href.  If this is a root navigation, then just use the raw
+    // basename which allows the basename to have full control over the presence
+    // of a trailing slash on root links
+    if (basename !== "/") {
+      joinedPathname = pathname === "/" ? basename : router.joinPaths([basename, pathname]);
+    }
+    return navigator.createHref({
+      pathname: joinedPathname,
+      search,
+      hash
+    });
+  }
+
+  /**
+   * Returns true if this component is a descendant of a `<Router>`.
+   *
+   * @see https://reactrouter.com/hooks/use-in-router-context
+   */
+  function useInRouterContext() {
+    return React__namespace.useContext(LocationContext) != null;
+  }
+
+  /**
+   * Returns the current location object, which represents the current URL in web
+   * browsers.
+   *
+   * Note: If you're using this it may mean you're doing some of your own
+   * "routing" in your app, and we'd like to know what your use case is. We may
+   * be able to provide something higher-level to better suit your needs.
+   *
+   * @see https://reactrouter.com/hooks/use-location
+   */
+  function useLocation() {
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of the
+    // router loaded. We can help them understand how to avoid that.
+    "useLocation() may be used only in the context of a <Router> component.")  : void 0;
+    return React__namespace.useContext(LocationContext).location;
+  }
+
+  /**
+   * Returns the current navigation action which describes how the router came to
+   * the current location, either by a pop, push, or replace on the history stack.
+   *
+   * @see https://reactrouter.com/hooks/use-navigation-type
+   */
+  function useNavigationType() {
+    return React__namespace.useContext(LocationContext).navigationType;
+  }
+
+  /**
+   * Returns a PathMatch object if the given pattern matches the current URL.
+   * This is useful for components that need to know "active" state, e.g.
+   * `<NavLink>`.
+   *
+   * @see https://reactrouter.com/hooks/use-match
+   */
+  function useMatch(pattern) {
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of the
+    // router loaded. We can help them understand how to avoid that.
+    "useMatch() may be used only in the context of a <Router> component.")  : void 0;
+    let {
+      pathname
+    } = useLocation();
+    return React__namespace.useMemo(() => router.matchPath(pattern, pathname), [pathname, pattern]);
+  }
+
+  /**
+   * The interface for the navigate() function returned from useNavigate().
+   */
+
+  const navigateEffectWarning = "You should call navigate() in a React.useEffect(), not when " + "your component is first rendered.";
+
+  // Mute warnings for calls to useNavigate in SSR environments
+  function useIsomorphicLayoutEffect(cb) {
+    let isStatic = React__namespace.useContext(NavigationContext).static;
+    if (!isStatic) {
+      // We should be able to get rid of this once react 18.3 is released
+      // See: https://github.com/facebook/react/pull/26395
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      React__namespace.useLayoutEffect(cb);
+    }
+  }
+
+  /**
+   * Returns an imperative method for changing the location. Used by `<Link>`s, but
+   * may also be used by other elements to change the location.
+   *
+   * @see https://reactrouter.com/hooks/use-navigate
+   */
+  function useNavigate() {
+    let {
+      isDataRoute
+    } = React__namespace.useContext(RouteContext);
+    // Conditional usage is OK here because the usage of a data router is static
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return isDataRoute ? useNavigateStable() : useNavigateUnstable();
+  }
+  function useNavigateUnstable() {
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of the
+    // router loaded. We can help them understand how to avoid that.
+    "useNavigate() may be used only in the context of a <Router> component.")  : void 0;
+    let dataRouterContext = React__namespace.useContext(DataRouterContext);
+    let {
+      basename,
+      future,
+      navigator
+    } = React__namespace.useContext(NavigationContext);
+    let {
+      matches
+    } = React__namespace.useContext(RouteContext);
+    let {
+      pathname: locationPathname
+    } = useLocation();
+    let routePathnamesJson = JSON.stringify(router.UNSAFE_getResolveToMatches(matches, future.v7_relativeSplatPath));
+    let activeRef = React__namespace.useRef(false);
+    useIsomorphicLayoutEffect(() => {
+      activeRef.current = true;
+    });
+    let navigate = React__namespace.useCallback(function (to, options) {
+      if (options === void 0) {
+        options = {};
+      }
+      router.UNSAFE_warning(activeRef.current, navigateEffectWarning) ;
+
+      // Short circuit here since if this happens on first render the navigate
+      // is useless because we haven't wired up our history listener yet
+      if (!activeRef.current) return;
+      if (typeof to === "number") {
+        navigator.go(to);
+        return;
+      }
+      let path = router.resolveTo(to, JSON.parse(routePathnamesJson), locationPathname, options.relative === "path");
+
+      // If we're operating within a basename, prepend it to the pathname prior
+      // to handing off to history (but only if we're not in a data router,
+      // otherwise it'll prepend the basename inside of the router).
+      // If this is a root navigation, then we navigate to the raw basename
+      // which allows the basename to have full control over the presence of a
+      // trailing slash on root links
+      if (dataRouterContext == null && basename !== "/") {
+        path.pathname = path.pathname === "/" ? basename : router.joinPaths([basename, path.pathname]);
+      }
+      (!!options.replace ? navigator.replace : navigator.push)(path, options.state, options);
+    }, [basename, navigator, routePathnamesJson, locationPathname, dataRouterContext]);
+    return navigate;
+  }
+  const OutletContext = /*#__PURE__*/React__namespace.createContext(null);
+
+  /**
+   * Returns the context (if provided) for the child route at this level of the route
+   * hierarchy.
+   * @see https://reactrouter.com/hooks/use-outlet-context
+   */
+  function useOutletContext() {
+    return React__namespace.useContext(OutletContext);
+  }
+
+  /**
+   * Returns the element for the child route at this level of the route
+   * hierarchy. Used internally by `<Outlet>` to render child routes.
+   *
+   * @see https://reactrouter.com/hooks/use-outlet
+   */
+  function useOutlet(context) {
+    let outlet = React__namespace.useContext(RouteContext).outlet;
+    if (outlet) {
+      return /*#__PURE__*/React__namespace.createElement(OutletContext.Provider, {
+        value: context
+      }, outlet);
+    }
+    return outlet;
+  }
+
+  /**
+   * Returns an object of key/value pairs of the dynamic params from the current
+   * URL that were matched by the route path.
+   *
+   * @see https://reactrouter.com/hooks/use-params
+   */
+  function useParams() {
+    let {
+      matches
+    } = React__namespace.useContext(RouteContext);
+    let routeMatch = matches[matches.length - 1];
+    return routeMatch ? routeMatch.params : {};
+  }
+
+  /**
+   * Resolves the pathname of the given `to` value against the current location.
+   *
+   * @see https://reactrouter.com/hooks/use-resolved-path
+   */
+  function useResolvedPath(to, _temp2) {
+    let {
+      relative
+    } = _temp2 === void 0 ? {} : _temp2;
+    let {
+      future
+    } = React__namespace.useContext(NavigationContext);
+    let {
+      matches
+    } = React__namespace.useContext(RouteContext);
+    let {
+      pathname: locationPathname
+    } = useLocation();
+    let routePathnamesJson = JSON.stringify(router.UNSAFE_getResolveToMatches(matches, future.v7_relativeSplatPath));
+    return React__namespace.useMemo(() => router.resolveTo(to, JSON.parse(routePathnamesJson), locationPathname, relative === "path"), [to, routePathnamesJson, locationPathname, relative]);
+  }
+
+  /**
+   * Returns the element of the route that matched the current location, prepared
+   * with the correct context to render the remainder of the route tree. Route
+   * elements in the tree must render an `<Outlet>` to render their child route's
+   * element.
+   *
+   * @see https://reactrouter.com/hooks/use-routes
+   */
+  function useRoutes(routes, locationArg) {
+    return useRoutesImpl(routes, locationArg);
+  }
+
+  // Internal implementation with accept optional param for RouterProvider usage
+  function useRoutesImpl(routes, locationArg, dataRouterState, future) {
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of the
+    // router loaded. We can help them understand how to avoid that.
+    "useRoutes() may be used only in the context of a <Router> component.")  : void 0;
+    let {
+      navigator
+    } = React__namespace.useContext(NavigationContext);
+    let {
+      matches: parentMatches
+    } = React__namespace.useContext(RouteContext);
+    let routeMatch = parentMatches[parentMatches.length - 1];
+    let parentParams = routeMatch ? routeMatch.params : {};
+    let parentPathname = routeMatch ? routeMatch.pathname : "/";
+    let parentPathnameBase = routeMatch ? routeMatch.pathnameBase : "/";
+    let parentRoute = routeMatch && routeMatch.route;
+    {
+      // You won't get a warning about 2 different <Routes> under a <Route>
+      // without a trailing *, but this is a best-effort warning anyway since we
+      // cannot even give the warning unless they land at the parent route.
+      //
+      // Example:
+      //
+      // <Routes>
+      //   {/* This route path MUST end with /* because otherwise
+      //       it will never match /blog/post/123 */}
+      //   <Route path="blog" element={<Blog />} />
+      //   <Route path="blog/feed" element={<BlogFeed />} />
+      // </Routes>
+      //
+      // function Blog() {
+      //   return (
+      //     <Routes>
+      //       <Route path="post/:id" element={<Post />} />
+      //     </Routes>
+      //   );
+      // }
+      let parentPath = parentRoute && parentRoute.path || "";
+      warningOnce(parentPathname, !parentRoute || parentPath.endsWith("*"), "You rendered descendant <Routes> (or called `useRoutes()`) at " + ("\"" + parentPathname + "\" (under <Route path=\"" + parentPath + "\">) but the ") + "parent route path has no trailing \"*\". This means if you navigate " + "deeper, the parent won't match anymore and therefore the child " + "routes will never render.\n\n" + ("Please change the parent <Route path=\"" + parentPath + "\"> to <Route ") + ("path=\"" + (parentPath === "/" ? "*" : parentPath + "/*") + "\">."));
+    }
+    let locationFromContext = useLocation();
+    let location;
+    if (locationArg) {
+      var _parsedLocationArg$pa;
+      let parsedLocationArg = typeof locationArg === "string" ? router.parsePath(locationArg) : locationArg;
+      !(parentPathnameBase === "/" || ((_parsedLocationArg$pa = parsedLocationArg.pathname) == null ? void 0 : _parsedLocationArg$pa.startsWith(parentPathnameBase))) ? router.UNSAFE_invariant(false, "When overriding the location using `<Routes location>` or `useRoutes(routes, location)`, " + "the location pathname must begin with the portion of the URL pathname that was " + ("matched by all parent routes. The current pathname base is \"" + parentPathnameBase + "\" ") + ("but pathname \"" + parsedLocationArg.pathname + "\" was given in the `location` prop."))  : void 0;
+      location = parsedLocationArg;
+    } else {
+      location = locationFromContext;
+    }
+    let pathname = location.pathname || "/";
+    let remainingPathname = parentPathnameBase === "/" ? pathname : pathname.slice(parentPathnameBase.length) || "/";
+    let matches = router.matchRoutes(routes, {
+      pathname: remainingPathname
+    });
+    {
+      router.UNSAFE_warning(parentRoute || matches != null, "No routes matched location \"" + location.pathname + location.search + location.hash + "\" ") ;
+      router.UNSAFE_warning(matches == null || matches[matches.length - 1].route.element !== undefined || matches[matches.length - 1].route.Component !== undefined || matches[matches.length - 1].route.lazy !== undefined, "Matched leaf route at location \"" + location.pathname + location.search + location.hash + "\" " + "does not have an element or Component. This means it will render an <Outlet /> with a " + "null value by default resulting in an \"empty\" page.") ;
+    }
+    let renderedMatches = _renderMatches(matches && matches.map(match => Object.assign({}, match, {
+      params: Object.assign({}, parentParams, match.params),
+      pathname: router.joinPaths([parentPathnameBase,
+      // Re-encode pathnames that were decoded inside matchRoutes
+      navigator.encodeLocation ? navigator.encodeLocation(match.pathname).pathname : match.pathname]),
+      pathnameBase: match.pathnameBase === "/" ? parentPathnameBase : router.joinPaths([parentPathnameBase,
+      // Re-encode pathnames that were decoded inside matchRoutes
+      navigator.encodeLocation ? navigator.encodeLocation(match.pathnameBase).pathname : match.pathnameBase])
+    })), parentMatches, dataRouterState, future);
+
+    // When a user passes in a `locationArg`, the associated routes need to
+    // be wrapped in a new `LocationContext.Provider` in order for `useLocation`
+    // to use the scoped location instead of the global location.
+    if (locationArg && renderedMatches) {
+      return /*#__PURE__*/React__namespace.createElement(LocationContext.Provider, {
+        value: {
+          location: _extends({
+            pathname: "/",
+            search: "",
+            hash: "",
+            state: null,
+            key: "default"
+          }, location),
+          navigationType: router.Action.Pop
+        }
+      }, renderedMatches);
+    }
+    return renderedMatches;
+  }
+  function DefaultErrorComponent() {
+    let error = useRouteError();
+    let message = router.isRouteErrorResponse(error) ? error.status + " " + error.statusText : error instanceof Error ? error.message : JSON.stringify(error);
+    let stack = error instanceof Error ? error.stack : null;
+    let lightgrey = "rgba(200,200,200, 0.5)";
+    let preStyles = {
+      padding: "0.5rem",
+      backgroundColor: lightgrey
+    };
+    let codeStyles = {
+      padding: "2px 4px",
+      backgroundColor: lightgrey
+    };
+    let devInfo = null;
+    {
+      console.error("Error handled by React Router default ErrorBoundary:", error);
+      devInfo = /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement("p", null, "\uD83D\uDCBF Hey developer \uD83D\uDC4B"), /*#__PURE__*/React__namespace.createElement("p", null, "You can provide a way better UX than this when your app throws errors by providing your own ", /*#__PURE__*/React__namespace.createElement("code", {
+        style: codeStyles
+      }, "ErrorBoundary"), " or", " ", /*#__PURE__*/React__namespace.createElement("code", {
+        style: codeStyles
+      }, "errorElement"), " prop on your route."));
+    }
+    return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement("h2", null, "Unexpected Application Error!"), /*#__PURE__*/React__namespace.createElement("h3", {
+      style: {
+        fontStyle: "italic"
+      }
+    }, message), stack ? /*#__PURE__*/React__namespace.createElement("pre", {
+      style: preStyles
+    }, stack) : null, devInfo);
+  }
+  const defaultErrorElement = /*#__PURE__*/React__namespace.createElement(DefaultErrorComponent, null);
+  class RenderErrorBoundary extends React__namespace.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        location: props.location,
+        revalidation: props.revalidation,
+        error: props.error
+      };
+    }
+    static getDerivedStateFromError(error) {
+      return {
+        error: error
+      };
+    }
+    static getDerivedStateFromProps(props, state) {
+      // When we get into an error state, the user will likely click "back" to the
+      // previous page that didn't have an error. Because this wraps the entire
+      // application, that will have no effect--the error page continues to display.
+      // This gives us a mechanism to recover from the error when the location changes.
+      //
+      // Whether we're in an error state or not, we update the location in state
+      // so that when we are in an error state, it gets reset when a new location
+      // comes in and the user recovers from the error.
+      if (state.location !== props.location || state.revalidation !== "idle" && props.revalidation === "idle") {
+        return {
+          error: props.error,
+          location: props.location,
+          revalidation: props.revalidation
+        };
+      }
+
+      // If we're not changing locations, preserve the location but still surface
+      // any new errors that may come through. We retain the existing error, we do
+      // this because the error provided from the app state may be cleared without
+      // the location changing.
+      return {
+        error: props.error !== undefined ? props.error : state.error,
+        location: state.location,
+        revalidation: props.revalidation || state.revalidation
+      };
+    }
+    componentDidCatch(error, errorInfo) {
+      console.error("React Router caught the following error during render", error, errorInfo);
+    }
+    render() {
+      return this.state.error !== undefined ? /*#__PURE__*/React__namespace.createElement(RouteContext.Provider, {
+        value: this.props.routeContext
+      }, /*#__PURE__*/React__namespace.createElement(RouteErrorContext.Provider, {
+        value: this.state.error,
+        children: this.props.component
+      })) : this.props.children;
+    }
+  }
+  function RenderedRoute(_ref) {
+    let {
+      routeContext,
+      match,
+      children
+    } = _ref;
+    let dataRouterContext = React__namespace.useContext(DataRouterContext);
+
+    // Track how deep we got in our render pass to emulate SSR componentDidCatch
+    // in a DataStaticRouter
+    if (dataRouterContext && dataRouterContext.static && dataRouterContext.staticContext && (match.route.errorElement || match.route.ErrorBoundary)) {
+      dataRouterContext.staticContext._deepestRenderedBoundaryId = match.route.id;
+    }
+    return /*#__PURE__*/React__namespace.createElement(RouteContext.Provider, {
+      value: routeContext
+    }, children);
+  }
+  function _renderMatches(matches, parentMatches, dataRouterState, future) {
+    var _dataRouterState2;
+    if (parentMatches === void 0) {
+      parentMatches = [];
+    }
+    if (dataRouterState === void 0) {
+      dataRouterState = null;
+    }
+    if (future === void 0) {
+      future = null;
+    }
+    if (matches == null) {
+      var _dataRouterState;
+      if ((_dataRouterState = dataRouterState) != null && _dataRouterState.errors) {
+        // Don't bail if we have data router errors so we can render them in the
+        // boundary.  Use the pre-matched (or shimmed) matches
+        matches = dataRouterState.matches;
+      } else {
+        return null;
+      }
+    }
+    let renderedMatches = matches;
+
+    // If we have data errors, trim matches to the highest error boundary
+    let errors = (_dataRouterState2 = dataRouterState) == null ? void 0 : _dataRouterState2.errors;
+    if (errors != null) {
+      let errorIndex = renderedMatches.findIndex(m => m.route.id && (errors == null ? void 0 : errors[m.route.id]));
+      !(errorIndex >= 0) ? router.UNSAFE_invariant(false, "Could not find a matching route for errors on route IDs: " + Object.keys(errors).join(","))  : void 0;
+      renderedMatches = renderedMatches.slice(0, Math.min(renderedMatches.length, errorIndex + 1));
+    }
+
+    // If we're in a partial hydration mode, detect if we need to render down to
+    // a given HydrateFallback while we load the rest of the hydration data
+    let renderFallback = false;
+    let fallbackIndex = -1;
+    if (dataRouterState && future && future.v7_partialHydration) {
+      for (let i = 0; i < renderedMatches.length; i++) {
+        let match = renderedMatches[i];
+        // Track the deepest fallback up until the first route without data
+        if (match.route.HydrateFallback || match.route.hydrateFallbackElement) {
+          fallbackIndex = i;
+        }
+        if (match.route.id) {
+          let {
+            loaderData,
+            errors
+          } = dataRouterState;
+          let needsToRunLoader = match.route.loader && loaderData[match.route.id] === undefined && (!errors || errors[match.route.id] === undefined);
+          if (match.route.lazy || needsToRunLoader) {
+            // We found the first route that's not ready to render (waiting on
+            // lazy, or has a loader that hasn't run yet).  Flag that we need to
+            // render a fallback and render up until the appropriate fallback
+            renderFallback = true;
+            if (fallbackIndex >= 0) {
+              renderedMatches = renderedMatches.slice(0, fallbackIndex + 1);
+            } else {
+              renderedMatches = [renderedMatches[0]];
+            }
+            break;
+          }
+        }
+      }
+    }
+    return renderedMatches.reduceRight((outlet, match, index) => {
+      // Only data routers handle errors/fallbacks
+      let error;
+      let shouldRenderHydrateFallback = false;
+      let errorElement = null;
+      let hydrateFallbackElement = null;
+      if (dataRouterState) {
+        error = errors && match.route.id ? errors[match.route.id] : undefined;
+        errorElement = match.route.errorElement || defaultErrorElement;
+        if (renderFallback) {
+          if (fallbackIndex < 0 && index === 0) {
+            warningOnce("route-fallback", false, "No `HydrateFallback` element provided to render during initial hydration");
+            shouldRenderHydrateFallback = true;
+            hydrateFallbackElement = null;
+          } else if (fallbackIndex === index) {
+            shouldRenderHydrateFallback = true;
+            hydrateFallbackElement = match.route.hydrateFallbackElement || null;
+          }
+        }
+      }
+      let matches = parentMatches.concat(renderedMatches.slice(0, index + 1));
+      let getChildren = () => {
+        let children;
+        if (error) {
+          children = errorElement;
+        } else if (shouldRenderHydrateFallback) {
+          children = hydrateFallbackElement;
+        } else if (match.route.Component) {
+          // Note: This is a de-optimized path since React won't re-use the
+          // ReactElement since it's identity changes with each new
+          // React.createElement call.  We keep this so folks can use
+          // `<Route Component={...}>` in `<Routes>` but generally `Component`
+          // usage is only advised in `RouterProvider` when we can convert it to
+          // `element` ahead of time.
+          children = /*#__PURE__*/React__namespace.createElement(match.route.Component, null);
+        } else if (match.route.element) {
+          children = match.route.element;
+        } else {
+          children = outlet;
+        }
+        return /*#__PURE__*/React__namespace.createElement(RenderedRoute, {
+          match: match,
+          routeContext: {
+            outlet,
+            matches,
+            isDataRoute: dataRouterState != null
+          },
+          children: children
+        });
+      };
+      // Only wrap in an error boundary within data router usages when we have an
+      // ErrorBoundary/errorElement on this route.  Otherwise let it bubble up to
+      // an ancestor ErrorBoundary/errorElement
+      return dataRouterState && (match.route.ErrorBoundary || match.route.errorElement || index === 0) ? /*#__PURE__*/React__namespace.createElement(RenderErrorBoundary, {
+        location: dataRouterState.location,
+        revalidation: dataRouterState.revalidation,
+        component: errorElement,
+        error: error,
+        children: getChildren(),
+        routeContext: {
+          outlet: null,
+          matches,
+          isDataRoute: true
+        }
+      }) : getChildren();
+    }, null);
+  }
+  var DataRouterHook = /*#__PURE__*/function (DataRouterHook) {
+    DataRouterHook["UseBlocker"] = "useBlocker";
+    DataRouterHook["UseRevalidator"] = "useRevalidator";
+    DataRouterHook["UseNavigateStable"] = "useNavigate";
+    return DataRouterHook;
+  }(DataRouterHook || {});
+  var DataRouterStateHook = /*#__PURE__*/function (DataRouterStateHook) {
+    DataRouterStateHook["UseBlocker"] = "useBlocker";
+    DataRouterStateHook["UseLoaderData"] = "useLoaderData";
+    DataRouterStateHook["UseActionData"] = "useActionData";
+    DataRouterStateHook["UseRouteError"] = "useRouteError";
+    DataRouterStateHook["UseNavigation"] = "useNavigation";
+    DataRouterStateHook["UseRouteLoaderData"] = "useRouteLoaderData";
+    DataRouterStateHook["UseMatches"] = "useMatches";
+    DataRouterStateHook["UseRevalidator"] = "useRevalidator";
+    DataRouterStateHook["UseNavigateStable"] = "useNavigate";
+    DataRouterStateHook["UseRouteId"] = "useRouteId";
+    return DataRouterStateHook;
+  }(DataRouterStateHook || {});
+  function getDataRouterConsoleError(hookName) {
+    return hookName + " must be used within a data router.  See https://reactrouter.com/routers/picking-a-router.";
+  }
+  function useDataRouterContext(hookName) {
+    let ctx = React__namespace.useContext(DataRouterContext);
+    !ctx ? router.UNSAFE_invariant(false, getDataRouterConsoleError(hookName))  : void 0;
+    return ctx;
+  }
+  function useDataRouterState(hookName) {
+    let state = React__namespace.useContext(DataRouterStateContext);
+    !state ? router.UNSAFE_invariant(false, getDataRouterConsoleError(hookName))  : void 0;
+    return state;
+  }
+  function useRouteContext(hookName) {
+    let route = React__namespace.useContext(RouteContext);
+    !route ? router.UNSAFE_invariant(false, getDataRouterConsoleError(hookName))  : void 0;
+    return route;
+  }
+
+  // Internal version with hookName-aware debugging
+  function useCurrentRouteId(hookName) {
+    let route = useRouteContext(hookName);
+    let thisRoute = route.matches[route.matches.length - 1];
+    !thisRoute.route.id ? router.UNSAFE_invariant(false, hookName + " can only be used on routes that contain a unique \"id\"")  : void 0;
+    return thisRoute.route.id;
+  }
+
+  /**
+   * Returns the ID for the nearest contextual route
+   */
+  function useRouteId() {
+    return useCurrentRouteId(DataRouterStateHook.UseRouteId);
+  }
+
+  /**
+   * Returns the current navigation, defaulting to an "idle" navigation when
+   * no navigation is in progress
+   */
+  function useNavigation() {
+    let state = useDataRouterState(DataRouterStateHook.UseNavigation);
+    return state.navigation;
+  }
+
+  /**
+   * Returns a revalidate function for manually triggering revalidation, as well
+   * as the current state of any manual revalidations
+   */
+  function useRevalidator() {
+    let dataRouterContext = useDataRouterContext(DataRouterHook.UseRevalidator);
+    let state = useDataRouterState(DataRouterStateHook.UseRevalidator);
+    return React__namespace.useMemo(() => ({
+      revalidate: dataRouterContext.router.revalidate,
+      state: state.revalidation
+    }), [dataRouterContext.router.revalidate, state.revalidation]);
+  }
+
+  /**
+   * Returns the active route matches, useful for accessing loaderData for
+   * parent/child routes or the route "handle" property
+   */
+  function useMatches() {
+    let {
+      matches,
+      loaderData
+    } = useDataRouterState(DataRouterStateHook.UseMatches);
+    return React__namespace.useMemo(() => matches.map(m => router.UNSAFE_convertRouteMatchToUiMatch(m, loaderData)), [matches, loaderData]);
+  }
+
+  /**
+   * Returns the loader data for the nearest ancestor Route loader
+   */
+  function useLoaderData() {
+    let state = useDataRouterState(DataRouterStateHook.UseLoaderData);
+    let routeId = useCurrentRouteId(DataRouterStateHook.UseLoaderData);
+    if (state.errors && state.errors[routeId] != null) {
+      console.error("You cannot `useLoaderData` in an errorElement (routeId: " + routeId + ")");
+      return undefined;
+    }
+    return state.loaderData[routeId];
+  }
+
+  /**
+   * Returns the loaderData for the given routeId
+   */
+  function useRouteLoaderData(routeId) {
+    let state = useDataRouterState(DataRouterStateHook.UseRouteLoaderData);
+    return state.loaderData[routeId];
+  }
+
+  /**
+   * Returns the action data for the nearest ancestor Route action
+   */
+  function useActionData() {
+    let state = useDataRouterState(DataRouterStateHook.UseActionData);
+    let routeId = useCurrentRouteId(DataRouterStateHook.UseLoaderData);
+    return state.actionData ? state.actionData[routeId] : undefined;
+  }
+
+  /**
+   * Returns the nearest ancestor Route error, which could be a loader/action
+   * error or a render error.  This is intended to be called from your
+   * ErrorBoundary/errorElement to display a proper error message.
+   */
+  function useRouteError() {
+    var _state$errors;
+    let error = React__namespace.useContext(RouteErrorContext);
+    let state = useDataRouterState(DataRouterStateHook.UseRouteError);
+    let routeId = useCurrentRouteId(DataRouterStateHook.UseRouteError);
+
+    // If this was a render error, we put it in a RouteError context inside
+    // of RenderErrorBoundary
+    if (error !== undefined) {
+      return error;
+    }
+
+    // Otherwise look for errors from our data router state
+    return (_state$errors = state.errors) == null ? void 0 : _state$errors[routeId];
+  }
+
+  /**
+   * Returns the happy-path data from the nearest ancestor `<Await />` value
+   */
+  function useAsyncValue() {
+    let value = React__namespace.useContext(AwaitContext);
+    return value == null ? void 0 : value._data;
+  }
+
+  /**
+   * Returns the error from the nearest ancestor `<Await />` value
+   */
+  function useAsyncError() {
+    let value = React__namespace.useContext(AwaitContext);
+    return value == null ? void 0 : value._error;
+  }
+  let blockerId = 0;
+
+  /**
+   * Allow the application to block navigations within the SPA and present the
+   * user a confirmation dialog to confirm the navigation.  Mostly used to avoid
+   * using half-filled form data.  This does not handle hard-reloads or
+   * cross-origin navigations.
+   */
+  function useBlocker(shouldBlock) {
+    let {
+      router: router$1,
+      basename
+    } = useDataRouterContext(DataRouterHook.UseBlocker);
+    let state = useDataRouterState(DataRouterStateHook.UseBlocker);
+    let [blockerKey, setBlockerKey] = React__namespace.useState("");
+    let blockerFunction = React__namespace.useCallback(arg => {
+      if (typeof shouldBlock !== "function") {
+        return !!shouldBlock;
+      }
+      if (basename === "/") {
+        return shouldBlock(arg);
+      }
+
+      // If they provided us a function and we've got an active basename, strip
+      // it from the locations we expose to the user to match the behavior of
+      // useLocation
+      let {
+        currentLocation,
+        nextLocation,
+        historyAction
+      } = arg;
+      return shouldBlock({
+        currentLocation: _extends({}, currentLocation, {
+          pathname: router.stripBasename(currentLocation.pathname, basename) || currentLocation.pathname
+        }),
+        nextLocation: _extends({}, nextLocation, {
+          pathname: router.stripBasename(nextLocation.pathname, basename) || nextLocation.pathname
+        }),
+        historyAction
+      });
+    }, [basename, shouldBlock]);
+
+    // This effect is in charge of blocker key assignment and deletion (which is
+    // tightly coupled to the key)
+    React__namespace.useEffect(() => {
+      let key = String(++blockerId);
+      setBlockerKey(key);
+      return () => router$1.deleteBlocker(key);
+    }, [router$1]);
+
+    // This effect handles assigning the blockerFunction.  This is to handle
+    // unstable blocker function identities, and happens only after the prior
+    // effect so we don't get an orphaned blockerFunction in the router with a
+    // key of "".  Until then we just have the IDLE_BLOCKER.
+    React__namespace.useEffect(() => {
+      if (blockerKey !== "") {
+        router$1.getBlocker(blockerKey, blockerFunction);
+      }
+    }, [router$1, blockerKey, blockerFunction]);
+
+    // Prefer the blocker from `state` not `router.state` since DataRouterContext
+    // is memoized so this ensures we update on blocker state updates
+    return blockerKey && state.blockers.has(blockerKey) ? state.blockers.get(blockerKey) : router.IDLE_BLOCKER;
+  }
+
+  /**
+   * Stable version of useNavigate that is used when we are in the context of
+   * a RouterProvider.
+   */
+  function useNavigateStable() {
+    let {
+      router: router$1
+    } = useDataRouterContext(DataRouterHook.UseNavigateStable);
+    let id = useCurrentRouteId(DataRouterStateHook.UseNavigateStable);
+    let activeRef = React__namespace.useRef(false);
+    useIsomorphicLayoutEffect(() => {
+      activeRef.current = true;
+    });
+    let navigate = React__namespace.useCallback(function (to, options) {
+      if (options === void 0) {
+        options = {};
+      }
+      router.UNSAFE_warning(activeRef.current, navigateEffectWarning) ;
+
+      // Short circuit here since if this happens on first render the navigate
+      // is useless because we haven't wired up our router subscriber yet
+      if (!activeRef.current) return;
+      if (typeof to === "number") {
+        router$1.navigate(to);
+      } else {
+        router$1.navigate(to, _extends({
+          fromRouteId: id
+        }, options));
+      }
+    }, [router$1, id]);
+    return navigate;
+  }
+  const alreadyWarned = {};
+  function warningOnce(key, cond, message) {
+    if (!cond && !alreadyWarned[key]) {
+      alreadyWarned[key] = true;
+      router.UNSAFE_warning(false, message) ;
+    }
+  }
+
+  /**
+    Webpack + React 17 fails to compile on any of the following because webpack
+    complains that `startTransition` doesn't exist in `React`:
+    * import { startTransition } from "react"
+    * import * as React from from "react";
+      "startTransition" in React ? React.startTransition(() => setState()) : setState()
+    * import * as React from from "react";
+      "startTransition" in React ? React["startTransition"](() => setState()) : setState()
+
+    Moving it to a constant such as the following solves the Webpack/React 17 issue:
+    * import * as React from from "react";
+      const START_TRANSITION = "startTransition";
+      START_TRANSITION in React ? React[START_TRANSITION](() => setState()) : setState()
+
+    However, that introduces webpack/terser minification issues in production builds
+    in React 18 where minification/obfuscation ends up removing the call of
+    React.startTransition entirely from the first half of the ternary.  Grabbing
+    this exported reference once up front resolves that issue.
+
+    See https://github.com/remix-run/react-router/issues/10579
+  */
+  const START_TRANSITION = "startTransition";
+  const startTransitionImpl = React__namespace[START_TRANSITION];
+
+  /**
+   * Given a Remix Router instance, render the appropriate UI
+   */
+  function RouterProvider(_ref) {
+    let {
+      fallbackElement,
+      router: router$1,
+      future
+    } = _ref;
+    let [state, setStateImpl] = React__namespace.useState(router$1.state);
+    let {
+      v7_startTransition
+    } = future || {};
+    let setState = React__namespace.useCallback(newState => {
+      if (v7_startTransition && startTransitionImpl) {
+        startTransitionImpl(() => setStateImpl(newState));
+      } else {
+        setStateImpl(newState);
+      }
+    }, [setStateImpl, v7_startTransition]);
+
+    // Need to use a layout effect here so we are subscribed early enough to
+    // pick up on any render-driven redirects/navigations (useEffect/<Navigate>)
+    React__namespace.useLayoutEffect(() => router$1.subscribe(setState), [router$1, setState]);
+    React__namespace.useEffect(() => {
+      router.UNSAFE_warning(fallbackElement == null || !router$1.future.v7_partialHydration, "`<RouterProvider fallbackElement>` is deprecated when using " + "`v7_partialHydration`, use a `HydrateFallback` component instead") ;
+      // Only log this once on initial mount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    let navigator = React__namespace.useMemo(() => {
+      return {
+        createHref: router$1.createHref,
+        encodeLocation: router$1.encodeLocation,
+        go: n => router$1.navigate(n),
+        push: (to, state, opts) => router$1.navigate(to, {
+          state,
+          preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+        }),
+        replace: (to, state, opts) => router$1.navigate(to, {
+          replace: true,
+          state,
+          preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+        })
+      };
+    }, [router$1]);
+    let basename = router$1.basename || "/";
+    let dataRouterContext = React__namespace.useMemo(() => ({
+      router: router$1,
+      navigator,
+      static: false,
+      basename
+    }), [router$1, navigator, basename]);
+
+    // The fragment and {null} here are important!  We need them to keep React 18's
+    // useId happy when we are server-rendering since we may have a <script> here
+    // containing the hydrated server-side staticContext (from StaticRouterProvider).
+    // useId relies on the component tree structure to generate deterministic id's
+    // so we need to ensure it remains the same on the client even though
+    // we don't need the <script> tag
+    return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, /*#__PURE__*/React__namespace.createElement(DataRouterContext.Provider, {
+      value: dataRouterContext
+    }, /*#__PURE__*/React__namespace.createElement(DataRouterStateContext.Provider, {
+      value: state
+    }, /*#__PURE__*/React__namespace.createElement(Router, {
+      basename: basename,
+      location: state.location,
+      navigationType: state.historyAction,
+      navigator: navigator,
+      future: {
+        v7_relativeSplatPath: router$1.future.v7_relativeSplatPath
+      }
+    }, state.initialized || router$1.future.v7_partialHydration ? /*#__PURE__*/React__namespace.createElement(DataRoutes, {
+      routes: router$1.routes,
+      future: router$1.future,
+      state: state
+    }) : fallbackElement))), null);
+  }
+  function DataRoutes(_ref2) {
+    let {
+      routes,
+      future,
+      state
+    } = _ref2;
+    return useRoutesImpl(routes, undefined, state, future);
+  }
+  /**
+   * A `<Router>` that stores all entries in memory.
+   *
+   * @see https://reactrouter.com/router-components/memory-router
+   */
+  function MemoryRouter(_ref3) {
+    let {
+      basename,
+      children,
+      initialEntries,
+      initialIndex,
+      future
+    } = _ref3;
+    let historyRef = React__namespace.useRef();
+    if (historyRef.current == null) {
+      historyRef.current = router.createMemoryHistory({
+        initialEntries,
+        initialIndex,
+        v5Compat: true
+      });
+    }
+    let history = historyRef.current;
+    let [state, setStateImpl] = React__namespace.useState({
+      action: history.action,
+      location: history.location
+    });
+    let {
+      v7_startTransition
+    } = future || {};
+    let setState = React__namespace.useCallback(newState => {
+      v7_startTransition && startTransitionImpl ? startTransitionImpl(() => setStateImpl(newState)) : setStateImpl(newState);
+    }, [setStateImpl, v7_startTransition]);
+    React__namespace.useLayoutEffect(() => history.listen(setState), [history, setState]);
+    return /*#__PURE__*/React__namespace.createElement(Router, {
+      basename: basename,
+      children: children,
+      location: state.location,
+      navigationType: state.action,
+      navigator: history,
+      future: future
+    });
+  }
+  /**
+   * Changes the current location.
+   *
+   * Note: This API is mostly useful in React.Component subclasses that are not
+   * able to use hooks. In functional components, we recommend you use the
+   * `useNavigate` hook instead.
+   *
+   * @see https://reactrouter.com/components/navigate
+   */
+  function Navigate(_ref4) {
+    let {
+      to,
+      replace,
+      state,
+      relative
+    } = _ref4;
+    !useInRouterContext() ? router.UNSAFE_invariant(false, // TODO: This error is probably because they somehow have 2 versions of
+    // the router loaded. We can help them understand how to avoid that.
+    "<Navigate> may be used only in the context of a <Router> component.")  : void 0;
+    let {
+      future,
+      static: isStatic
+    } = React__namespace.useContext(NavigationContext);
+    router.UNSAFE_warning(!isStatic, "<Navigate> must not be used on the initial render in a <StaticRouter>. " + "This is a no-op, but you should modify your code so the <Navigate> is " + "only ever rendered in response to some user interaction or state change.") ;
+    let {
+      matches
+    } = React__namespace.useContext(RouteContext);
+    let {
+      pathname: locationPathname
+    } = useLocation();
+    let navigate = useNavigate();
+
+    // Resolve the path outside of the effect so that when effects run twice in
+    // StrictMode they navigate to the same place
+    let path = router.resolveTo(to, router.UNSAFE_getResolveToMatches(matches, future.v7_relativeSplatPath), locationPathname, relative === "path");
+    let jsonPath = JSON.stringify(path);
+    React__namespace.useEffect(() => navigate(JSON.parse(jsonPath), {
+      replace,
+      state,
+      relative
+    }), [navigate, jsonPath, relative, replace, state]);
+    return null;
+  }
+  /**
+   * Renders the child route's element, if there is one.
+   *
+   * @see https://reactrouter.com/components/outlet
+   */
+  function Outlet(props) {
+    return useOutlet(props.context);
+  }
+  /**
+   * Declares an element that should be rendered at a certain URL path.
+   *
+   * @see https://reactrouter.com/components/route
+   */
+  function Route(_props) {
+    router.UNSAFE_invariant(false, "A <Route> is only ever to be used as the child of <Routes> element, " + "never rendered directly. Please wrap your <Route> in a <Routes>.")  ;
+  }
+  /**
+   * Provides location context for the rest of the app.
+   *
+   * Note: You usually won't render a `<Router>` directly. Instead, you'll render a
+   * router that is more specific to your environment such as a `<BrowserRouter>`
+   * in web browsers or a `<StaticRouter>` for server rendering.
+   *
+   * @see https://reactrouter.com/router-components/router
+   */
+  function Router(_ref5) {
+    let {
+      basename: basenameProp = "/",
+      children = null,
+      location: locationProp,
+      navigationType = router.Action.Pop,
+      navigator,
+      static: staticProp = false,
+      future
+    } = _ref5;
+    !!useInRouterContext() ? router.UNSAFE_invariant(false, "You cannot render a <Router> inside another <Router>." + " You should never have more than one in your app.")  : void 0;
+
+    // Preserve trailing slashes on basename, so we can let the user control
+    // the enforcement of trailing slashes throughout the app
+    let basename = basenameProp.replace(/^\/*/, "/");
+    let navigationContext = React__namespace.useMemo(() => ({
+      basename,
+      navigator,
+      static: staticProp,
+      future: _extends({
+        v7_relativeSplatPath: false
+      }, future)
+    }), [basename, future, navigator, staticProp]);
+    if (typeof locationProp === "string") {
+      locationProp = router.parsePath(locationProp);
+    }
+    let {
+      pathname = "/",
+      search = "",
+      hash = "",
+      state = null,
+      key = "default"
+    } = locationProp;
+    let locationContext = React__namespace.useMemo(() => {
+      let trailingPathname = router.stripBasename(pathname, basename);
+      if (trailingPathname == null) {
+        return null;
+      }
+      return {
+        location: {
+          pathname: trailingPathname,
+          search,
+          hash,
+          state,
+          key
+        },
+        navigationType
+      };
+    }, [basename, pathname, search, hash, state, key, navigationType]);
+    router.UNSAFE_warning(locationContext != null, "<Router basename=\"" + basename + "\"> is not able to match the URL " + ("\"" + pathname + search + hash + "\" because it does not start with the ") + "basename, so the <Router> won't render anything.") ;
+    if (locationContext == null) {
+      return null;
+    }
+    return /*#__PURE__*/React__namespace.createElement(NavigationContext.Provider, {
+      value: navigationContext
+    }, /*#__PURE__*/React__namespace.createElement(LocationContext.Provider, {
+      children: children,
+      value: locationContext
+    }));
+  }
+  /**
+   * A container for a nested tree of `<Route>` elements that renders the branch
+   * that best matches the current location.
+   *
+   * @see https://reactrouter.com/components/routes
+   */
+  function Routes(_ref6) {
+    let {
+      children,
+      location
+    } = _ref6;
+    return useRoutes(createRoutesFromChildren(children), location);
+  }
+  /**
+   * Component to use for rendering lazily loaded data from returning defer()
+   * in a loader function
+   */
+  function Await(_ref7) {
+    let {
+      children,
+      errorElement,
+      resolve
+    } = _ref7;
+    return /*#__PURE__*/React__namespace.createElement(AwaitErrorBoundary, {
+      resolve: resolve,
+      errorElement: errorElement
+    }, /*#__PURE__*/React__namespace.createElement(ResolveAwait, null, children));
+  }
+  var AwaitRenderStatus = /*#__PURE__*/function (AwaitRenderStatus) {
+    AwaitRenderStatus[AwaitRenderStatus["pending"] = 0] = "pending";
+    AwaitRenderStatus[AwaitRenderStatus["success"] = 1] = "success";
+    AwaitRenderStatus[AwaitRenderStatus["error"] = 2] = "error";
+    return AwaitRenderStatus;
+  }(AwaitRenderStatus || {});
+  const neverSettledPromise = new Promise(() => {});
+  class AwaitErrorBoundary extends React__namespace.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        error: null
+      };
+    }
+    static getDerivedStateFromError(error) {
+      return {
+        error
+      };
+    }
+    componentDidCatch(error, errorInfo) {
+      console.error("<Await> caught the following error during render", error, errorInfo);
+    }
+    render() {
+      let {
+        children,
+        errorElement,
+        resolve
+      } = this.props;
+      let promise = null;
+      let status = AwaitRenderStatus.pending;
+      if (!(resolve instanceof Promise)) {
+        // Didn't get a promise - provide as a resolved promise
+        status = AwaitRenderStatus.success;
+        promise = Promise.resolve();
+        Object.defineProperty(promise, "_tracked", {
+          get: () => true
+        });
+        Object.defineProperty(promise, "_data", {
+          get: () => resolve
+        });
+      } else if (this.state.error) {
+        // Caught a render error, provide it as a rejected promise
+        status = AwaitRenderStatus.error;
+        let renderError = this.state.error;
+        promise = Promise.reject().catch(() => {}); // Avoid unhandled rejection warnings
+        Object.defineProperty(promise, "_tracked", {
+          get: () => true
+        });
+        Object.defineProperty(promise, "_error", {
+          get: () => renderError
+        });
+      } else if (resolve._tracked) {
+        // Already tracked promise - check contents
+        promise = resolve;
+        status = promise._error !== undefined ? AwaitRenderStatus.error : promise._data !== undefined ? AwaitRenderStatus.success : AwaitRenderStatus.pending;
+      } else {
+        // Raw (untracked) promise - track it
+        status = AwaitRenderStatus.pending;
+        Object.defineProperty(resolve, "_tracked", {
+          get: () => true
+        });
+        promise = resolve.then(data => Object.defineProperty(resolve, "_data", {
+          get: () => data
+        }), error => Object.defineProperty(resolve, "_error", {
+          get: () => error
+        }));
+      }
+      if (status === AwaitRenderStatus.error && promise._error instanceof router.AbortedDeferredError) {
+        // Freeze the UI by throwing a never resolved promise
+        throw neverSettledPromise;
+      }
+      if (status === AwaitRenderStatus.error && !errorElement) {
+        // No errorElement, throw to the nearest route-level error boundary
+        throw promise._error;
+      }
+      if (status === AwaitRenderStatus.error) {
+        // Render via our errorElement
+        return /*#__PURE__*/React__namespace.createElement(AwaitContext.Provider, {
+          value: promise,
+          children: errorElement
+        });
+      }
+      if (status === AwaitRenderStatus.success) {
+        // Render children with resolved value
+        return /*#__PURE__*/React__namespace.createElement(AwaitContext.Provider, {
+          value: promise,
+          children: children
+        });
+      }
+
+      // Throw to the suspense boundary
+      throw promise;
+    }
+  }
+
+  /**
+   * @private
+   * Indirection to leverage useAsyncValue for a render-prop API on `<Await>`
+   */
+  function ResolveAwait(_ref8) {
+    let {
+      children
+    } = _ref8;
+    let data = useAsyncValue();
+    let toRender = typeof children === "function" ? children(data) : children;
+    return /*#__PURE__*/React__namespace.createElement(React__namespace.Fragment, null, toRender);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // UTILS
+  ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Creates a route config from a React "children" object, which is usually
+   * either a `<Route>` element or an array of them. Used internally by
+   * `<Routes>` to create a route config from its children.
+   *
+   * @see https://reactrouter.com/utils/create-routes-from-children
+   */
+  function createRoutesFromChildren(children, parentPath) {
+    if (parentPath === void 0) {
+      parentPath = [];
+    }
+    let routes = [];
+    React__namespace.Children.forEach(children, (element, index) => {
+      if (! /*#__PURE__*/React__namespace.isValidElement(element)) {
+        // Ignore non-elements. This allows people to more easily inline
+        // conditionals in their route config.
+        return;
+      }
+      let treePath = [...parentPath, index];
+      if (element.type === React__namespace.Fragment) {
+        // Transparently support React.Fragment and its children.
+        routes.push.apply(routes, createRoutesFromChildren(element.props.children, treePath));
+        return;
+      }
+      !(element.type === Route) ? router.UNSAFE_invariant(false, "[" + (typeof element.type === "string" ? element.type : element.type.name) + "] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>")  : void 0;
+      !(!element.props.index || !element.props.children) ? router.UNSAFE_invariant(false, "An index route cannot have child routes.")  : void 0;
+      let route = {
+        id: element.props.id || treePath.join("-"),
+        caseSensitive: element.props.caseSensitive,
+        element: element.props.element,
+        Component: element.props.Component,
+        index: element.props.index,
+        path: element.props.path,
+        loader: element.props.loader,
+        action: element.props.action,
+        errorElement: element.props.errorElement,
+        ErrorBoundary: element.props.ErrorBoundary,
+        hasErrorBoundary: element.props.ErrorBoundary != null || element.props.errorElement != null,
+        shouldRevalidate: element.props.shouldRevalidate,
+        handle: element.props.handle,
+        lazy: element.props.lazy
+      };
+      if (element.props.children) {
+        route.children = createRoutesFromChildren(element.props.children, treePath);
+      }
+      routes.push(route);
+    });
+    return routes;
+  }
+
+  /**
+   * Renders the result of `matchRoutes()` into a React element.
+   */
+  function renderMatches(matches) {
+    return _renderMatches(matches);
+  }
+
+  function mapRouteProperties(route) {
+    let updates = {
+      // Note: this check also occurs in createRoutesFromChildren so update
+      // there if you change this -- please and thank you!
+      hasErrorBoundary: route.ErrorBoundary != null || route.errorElement != null
+    };
+    if (route.Component) {
+      {
+        if (route.element) {
+          router.UNSAFE_warning(false, "You should not include both `Component` and `element` on your route - " + "`Component` will be used.") ;
+        }
+      }
+      Object.assign(updates, {
+        element: /*#__PURE__*/React__namespace.createElement(route.Component),
+        Component: undefined
+      });
+    }
+    if (route.HydrateFallback) {
+      {
+        if (route.hydrateFallbackElement) {
+          router.UNSAFE_warning(false, "You should not include both `HydrateFallback` and `hydrateFallbackElement` on your route - " + "`HydrateFallback` will be used.") ;
+        }
+      }
+      Object.assign(updates, {
+        hydrateFallbackElement: /*#__PURE__*/React__namespace.createElement(route.HydrateFallback),
+        HydrateFallback: undefined
+      });
+    }
+    if (route.ErrorBoundary) {
+      {
+        if (route.errorElement) {
+          router.UNSAFE_warning(false, "You should not include both `ErrorBoundary` and `errorElement` on your route - " + "`ErrorBoundary` will be used.") ;
+        }
+      }
+      Object.assign(updates, {
+        errorElement: /*#__PURE__*/React__namespace.createElement(route.ErrorBoundary),
+        ErrorBoundary: undefined
+      });
+    }
+    return updates;
+  }
+  function createMemoryRouter(routes, opts) {
+    return router.createRouter({
+      basename: opts == null ? void 0 : opts.basename,
+      future: _extends({}, opts == null ? void 0 : opts.future, {
+        v7_prependBasename: true
+      }),
+      history: router.createMemoryHistory({
+        initialEntries: opts == null ? void 0 : opts.initialEntries,
+        initialIndex: opts == null ? void 0 : opts.initialIndex
+      }),
+      hydrationData: opts == null ? void 0 : opts.hydrationData,
+      routes,
+      mapRouteProperties
+    }).initialize();
+  }
+
+  Object.defineProperty(exports, 'AbortedDeferredError', {
+    enumerable: true,
+    get: function () { return router.AbortedDeferredError; }
+  });
+  Object.defineProperty(exports, 'NavigationType', {
+    enumerable: true,
+    get: function () { return router.Action; }
+  });
+  Object.defineProperty(exports, 'createPath', {
+    enumerable: true,
+    get: function () { return router.createPath; }
+  });
+  Object.defineProperty(exports, 'defer', {
+    enumerable: true,
+    get: function () { return router.defer; }
+  });
+  Object.defineProperty(exports, 'generatePath', {
+    enumerable: true,
+    get: function () { return router.generatePath; }
+  });
+  Object.defineProperty(exports, 'isRouteErrorResponse', {
+    enumerable: true,
+    get: function () { return router.isRouteErrorResponse; }
+  });
+  Object.defineProperty(exports, 'json', {
+    enumerable: true,
+    get: function () { return router.json; }
+  });
+  Object.defineProperty(exports, 'matchPath', {
+    enumerable: true,
+    get: function () { return router.matchPath; }
+  });
+  Object.defineProperty(exports, 'matchRoutes', {
+    enumerable: true,
+    get: function () { return router.matchRoutes; }
+  });
+  Object.defineProperty(exports, 'parsePath', {
+    enumerable: true,
+    get: function () { return router.parsePath; }
+  });
+  Object.defineProperty(exports, 'redirect', {
+    enumerable: true,
+    get: function () { return router.redirect; }
+  });
+  Object.defineProperty(exports, 'redirectDocument', {
+    enumerable: true,
+    get: function () { return router.redirectDocument; }
+  });
+  Object.defineProperty(exports, 'resolvePath', {
+    enumerable: true,
+    get: function () { return router.resolvePath; }
+  });
+  exports.Await = Await;
+  exports.MemoryRouter = MemoryRouter;
+  exports.Navigate = Navigate;
+  exports.Outlet = Outlet;
+  exports.Route = Route;
+  exports.Router = Router;
+  exports.RouterProvider = RouterProvider;
+  exports.Routes = Routes;
+  exports.UNSAFE_DataRouterContext = DataRouterContext;
+  exports.UNSAFE_DataRouterStateContext = DataRouterStateContext;
+  exports.UNSAFE_LocationContext = LocationContext;
+  exports.UNSAFE_NavigationContext = NavigationContext;
+  exports.UNSAFE_RouteContext = RouteContext;
+  exports.UNSAFE_mapRouteProperties = mapRouteProperties;
+  exports.UNSAFE_useRouteId = useRouteId;
+  exports.UNSAFE_useRoutesImpl = useRoutesImpl;
+  exports.createMemoryRouter = createMemoryRouter;
+  exports.createRoutesFromChildren = createRoutesFromChildren;
+  exports.createRoutesFromElements = createRoutesFromChildren;
+  exports.renderMatches = renderMatches;
+  exports.useActionData = useActionData;
+  exports.useAsyncError = useAsyncError;
+  exports.useAsyncValue = useAsyncValue;
+  exports.useBlocker = useBlocker;
+  exports.useHref = useHref;
+  exports.useInRouterContext = useInRouterContext;
+  exports.useLoaderData = useLoaderData;
+  exports.useLocation = useLocation;
+  exports.useMatch = useMatch;
+  exports.useMatches = useMatches;
+  exports.useNavigate = useNavigate;
+  exports.useNavigation = useNavigation;
+  exports.useNavigationType = useNavigationType;
+  exports.useOutlet = useOutlet;
+  exports.useOutletContext = useOutletContext;
+  exports.useParams = useParams;
+  exports.useResolvedPath = useResolvedPath;
+  exports.useRevalidator = useRevalidator;
+  exports.useRouteError = useRouteError;
+  exports.useRouteLoaderData = useRouteLoaderData;
+  exports.useRoutes = useRoutes;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+
+
+},{"@remix-run/router":301,"react":"react"}],304:[function(require,module,exports){
+/**
+ * React Router v6.21.2
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports,require("react"),require("@remix-run/router")):"function"==typeof define&&define.amd?define(["exports","react","@remix-run/router"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).ReactRouter={},e.React,e.RemixRouter)}(this,(function(e,t,r){"use strict";function n(e){if(e&&e.__esModule)return e;var t=Object.create(null);return e&&Object.keys(e).forEach((function(r){if("default"!==r){var n=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,n.get?n:{enumerable:!0,get:function(){return e[r]}})}})),t.default=e,Object.freeze(t)}var a=n(t);function o(){return o=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},o.apply(this,arguments)}const i=a.createContext(null),u=a.createContext(null),l=a.createContext(null),s=a.createContext(null),c=a.createContext(null),d=a.createContext({outlet:null,matches:[],isDataRoute:!1}),p=a.createContext(null);function f(){return null!=a.useContext(c)}function m(){return f()||r.UNSAFE_invariant(!1),a.useContext(c).location}function v(e){a.useContext(s).static||a.useLayoutEffect(e)}function h(){let{isDataRoute:e}=a.useContext(d);return e?function(){let{router:e}=O(_.UseNavigateStable),t=F(N.UseNavigateStable),r=a.useRef(!1);return v((()=>{r.current=!0})),a.useCallback((function(n,a){void 0===a&&(a={}),r.current&&("number"==typeof n?e.navigate(n):e.navigate(n,o({fromRouteId:t},a)))}),[e,t])}():function(){f()||r.UNSAFE_invariant(!1);let e=a.useContext(i),{basename:t,future:n,navigator:o}=a.useContext(s),{matches:u}=a.useContext(d),{pathname:l}=m(),c=JSON.stringify(r.UNSAFE_getResolveToMatches(u,n.v7_relativeSplatPath)),p=a.useRef(!1);return v((()=>{p.current=!0})),a.useCallback((function(n,a){if(void 0===a&&(a={}),!p.current)return;if("number"==typeof n)return void o.go(n);let i=r.resolveTo(n,JSON.parse(c),l,"path"===a.relative);null==e&&"/"!==t&&(i.pathname="/"===i.pathname?t:r.joinPaths([t,i.pathname])),(a.replace?o.replace:o.push)(i,a.state,a)}),[t,o,c,l,e])}()}const E=a.createContext(null);function g(e){let t=a.useContext(d).outlet;return t?a.createElement(E.Provider,{value:e},t):t}function y(e,t){let{relative:n}=void 0===t?{}:t,{future:o}=a.useContext(s),{matches:i}=a.useContext(d),{pathname:u}=m(),l=JSON.stringify(r.UNSAFE_getResolveToMatches(i,o.v7_relativeSplatPath));return a.useMemo((()=>r.resolveTo(e,JSON.parse(l),u,"path"===n)),[e,l,u,n])}function b(e,t){return R(e,t)}function R(e,t,n,i){f()||r.UNSAFE_invariant(!1);let{navigator:u}=a.useContext(s),{matches:l}=a.useContext(d),p=l[l.length-1],v=p?p.params:{};!p||p.pathname;let h=p?p.pathnameBase:"/";p&&p.route;let E,g=m();if(t){var y;let e="string"==typeof t?r.parsePath(t):t;"/"===h||(null==(y=e.pathname)?void 0:y.startsWith(h))||r.UNSAFE_invariant(!1),E=e}else E=g;let b=E.pathname||"/",R="/"===h?b:b.slice(h.length)||"/",P=r.matchRoutes(e,{pathname:R}),x=U(P&&P.map((e=>Object.assign({},e,{params:Object.assign({},v,e.params),pathname:r.joinPaths([h,u.encodeLocation?u.encodeLocation(e.pathname).pathname:e.pathname]),pathnameBase:"/"===e.pathnameBase?h:r.joinPaths([h,u.encodeLocation?u.encodeLocation(e.pathnameBase).pathname:e.pathnameBase])}))),l,n,i);return t&&x?a.createElement(c.Provider,{value:{location:o({pathname:"/",search:"",hash:"",state:null,key:"default"},E),navigationType:r.Action.Pop}},x):x}function P(){let e=j(),t=r.isRouteErrorResponse(e)?e.status+" "+e.statusText:e instanceof Error?e.message:JSON.stringify(e),n=e instanceof Error?e.stack:null,o={padding:"0.5rem",backgroundColor:"rgba(200,200,200, 0.5)"};return a.createElement(a.Fragment,null,a.createElement("h2",null,"Unexpected Application Error!"),a.createElement("h3",{style:{fontStyle:"italic"}},t),n?a.createElement("pre",{style:o},n):null,null)}const x=a.createElement(P,null);class C extends a.Component{constructor(e){super(e),this.state={location:e.location,revalidation:e.revalidation,error:e.error}}static getDerivedStateFromError(e){return{error:e}}static getDerivedStateFromProps(e,t){return t.location!==e.location||"idle"!==t.revalidation&&"idle"===e.revalidation?{error:e.error,location:e.location,revalidation:e.revalidation}:{error:void 0!==e.error?e.error:t.error,location:t.location,revalidation:e.revalidation||t.revalidation}}componentDidCatch(e,t){console.error("React Router caught the following error during render",e,t)}render(){return void 0!==this.state.error?a.createElement(d.Provider,{value:this.props.routeContext},a.createElement(p.Provider,{value:this.state.error,children:this.props.component})):this.props.children}}function S(e){let{routeContext:t,match:r,children:n}=e,o=a.useContext(i);return o&&o.static&&o.staticContext&&(r.route.errorElement||r.route.ErrorBoundary)&&(o.staticContext._deepestRenderedBoundaryId=r.route.id),a.createElement(d.Provider,{value:t},n)}function U(e,t,n,o){var i;if(void 0===t&&(t=[]),void 0===n&&(n=null),void 0===o&&(o=null),null==e){var u;if(null==(u=n)||!u.errors)return null;e=n.matches}let l=e,s=null==(i=n)?void 0:i.errors;if(null!=s){let e=l.findIndex((e=>e.route.id&&(null==s?void 0:s[e.route.id])));e>=0||r.UNSAFE_invariant(!1),l=l.slice(0,Math.min(l.length,e+1))}let c=!1,d=-1;if(n&&o&&o.v7_partialHydration)for(let e=0;e<l.length;e++){let t=l[e];if((t.route.HydrateFallback||t.route.hydrateFallbackElement)&&(d=e),t.route.id){let{loaderData:e,errors:r}=n,a=t.route.loader&&void 0===e[t.route.id]&&(!r||void 0===r[t.route.id]);if(t.route.lazy||a){c=!0,l=d>=0?l.slice(0,d+1):[l[0]];break}}}return l.reduceRight(((e,r,o)=>{let i,u=!1,p=null,f=null;var m;n&&(i=s&&r.route.id?s[r.route.id]:void 0,p=r.route.errorElement||x,c&&(d<0&&0===o?(m="route-fallback",!1||B[m]||(B[m]=!0),u=!0,f=null):d===o&&(u=!0,f=r.route.hydrateFallbackElement||null)));let v=t.concat(l.slice(0,o+1)),h=()=>{let t;return t=i?p:u?f:r.route.Component?a.createElement(r.route.Component,null):r.route.element?r.route.element:e,a.createElement(S,{match:r,routeContext:{outlet:e,matches:v,isDataRoute:null!=n},children:t})};return n&&(r.route.ErrorBoundary||r.route.errorElement||0===o)?a.createElement(C,{location:n.location,revalidation:n.revalidation,component:p,error:i,children:h(),routeContext:{outlet:null,matches:v,isDataRoute:!0}}):h()}),null)}var _=function(e){return e.UseBlocker="useBlocker",e.UseRevalidator="useRevalidator",e.UseNavigateStable="useNavigate",e}(_||{}),N=function(e){return e.UseBlocker="useBlocker",e.UseLoaderData="useLoaderData",e.UseActionData="useActionData",e.UseRouteError="useRouteError",e.UseNavigation="useNavigation",e.UseRouteLoaderData="useRouteLoaderData",e.UseMatches="useMatches",e.UseRevalidator="useRevalidator",e.UseNavigateStable="useNavigate",e.UseRouteId="useRouteId",e}(N||{});function O(e){let t=a.useContext(i);return t||r.UNSAFE_invariant(!1),t}function A(e){let t=a.useContext(u);return t||r.UNSAFE_invariant(!1),t}function F(e){let t=function(e){let t=a.useContext(d);return t||r.UNSAFE_invariant(!1),t}(),n=t.matches[t.matches.length-1];return n.route.id||r.UNSAFE_invariant(!1),n.route.id}function j(){var e;let t=a.useContext(p),r=A(N.UseRouteError),n=F(N.UseRouteError);return void 0!==t?t:null==(e=r.errors)?void 0:e[n]}function D(){let e=a.useContext(l);return null==e?void 0:e._data}let k=0;const B={};const L=a.startTransition;function M(e){let{routes:t,future:r,state:n}=e;return R(t,void 0,n,r)}function T(e){r.UNSAFE_invariant(!1)}function I(e){let{basename:t="/",children:n=null,location:i,navigationType:u=r.Action.Pop,navigator:l,static:d=!1,future:p}=e;f()&&r.UNSAFE_invariant(!1);let m=t.replace(/^\/*/,"/"),v=a.useMemo((()=>({basename:m,navigator:l,static:d,future:o({v7_relativeSplatPath:!1},p)})),[m,p,l,d]);"string"==typeof i&&(i=r.parsePath(i));let{pathname:h="/",search:E="",hash:g="",state:y=null,key:b="default"}=i,R=a.useMemo((()=>{let e=r.stripBasename(h,m);return null==e?null:{location:{pathname:e,search:E,hash:g,state:y,key:b},navigationType:u}}),[m,h,E,g,y,b,u]);return null==R?null:a.createElement(s.Provider,{value:v},a.createElement(c.Provider,{children:n,value:R}))}var H=function(e){return e[e.pending=0]="pending",e[e.success=1]="success",e[e.error=2]="error",e}(H||{});const w=new Promise((()=>{}));class J extends a.Component{constructor(e){super(e),this.state={error:null}}static getDerivedStateFromError(e){return{error:e}}componentDidCatch(e,t){console.error("<Await> caught the following error during render",e,t)}render(){let{children:e,errorElement:t,resolve:n}=this.props,o=null,i=H.pending;if(n instanceof Promise)if(this.state.error){i=H.error;let e=this.state.error;o=Promise.reject().catch((()=>{})),Object.defineProperty(o,"_tracked",{get:()=>!0}),Object.defineProperty(o,"_error",{get:()=>e})}else n._tracked?(o=n,i=void 0!==o._error?H.error:void 0!==o._data?H.success:H.pending):(i=H.pending,Object.defineProperty(n,"_tracked",{get:()=>!0}),o=n.then((e=>Object.defineProperty(n,"_data",{get:()=>e})),(e=>Object.defineProperty(n,"_error",{get:()=>e}))));else i=H.success,o=Promise.resolve(),Object.defineProperty(o,"_tracked",{get:()=>!0}),Object.defineProperty(o,"_data",{get:()=>n});if(i===H.error&&o._error instanceof r.AbortedDeferredError)throw w;if(i===H.error&&!t)throw o._error;if(i===H.error)return a.createElement(l.Provider,{value:o,children:t});if(i===H.success)return a.createElement(l.Provider,{value:o,children:e});throw o}}function z(e){let{children:t}=e,r=D(),n="function"==typeof t?t(r):t;return a.createElement(a.Fragment,null,n)}function q(e,t){void 0===t&&(t=[]);let n=[];return a.Children.forEach(e,((e,o)=>{if(!a.isValidElement(e))return;let i=[...t,o];if(e.type===a.Fragment)return void n.push.apply(n,q(e.props.children,i));e.type!==T&&r.UNSAFE_invariant(!1),e.props.index&&e.props.children&&r.UNSAFE_invariant(!1);let u={id:e.props.id||i.join("-"),caseSensitive:e.props.caseSensitive,element:e.props.element,Component:e.props.Component,index:e.props.index,path:e.props.path,loader:e.props.loader,action:e.props.action,errorElement:e.props.errorElement,ErrorBoundary:e.props.ErrorBoundary,hasErrorBoundary:null!=e.props.ErrorBoundary||null!=e.props.errorElement,shouldRevalidate:e.props.shouldRevalidate,handle:e.props.handle,lazy:e.props.lazy};e.props.children&&(u.children=q(e.props.children,i)),n.push(u)})),n}function V(e){let t={hasErrorBoundary:null!=e.ErrorBoundary||null!=e.errorElement};return e.Component&&Object.assign(t,{element:a.createElement(e.Component),Component:void 0}),e.HydrateFallback&&Object.assign(t,{hydrateFallbackElement:a.createElement(e.HydrateFallback),HydrateFallback:void 0}),e.ErrorBoundary&&Object.assign(t,{errorElement:a.createElement(e.ErrorBoundary),ErrorBoundary:void 0}),t}Object.defineProperty(e,"AbortedDeferredError",{enumerable:!0,get:function(){return r.AbortedDeferredError}}),Object.defineProperty(e,"NavigationType",{enumerable:!0,get:function(){return r.Action}}),Object.defineProperty(e,"createPath",{enumerable:!0,get:function(){return r.createPath}}),Object.defineProperty(e,"defer",{enumerable:!0,get:function(){return r.defer}}),Object.defineProperty(e,"generatePath",{enumerable:!0,get:function(){return r.generatePath}}),Object.defineProperty(e,"isRouteErrorResponse",{enumerable:!0,get:function(){return r.isRouteErrorResponse}}),Object.defineProperty(e,"json",{enumerable:!0,get:function(){return r.json}}),Object.defineProperty(e,"matchPath",{enumerable:!0,get:function(){return r.matchPath}}),Object.defineProperty(e,"matchRoutes",{enumerable:!0,get:function(){return r.matchRoutes}}),Object.defineProperty(e,"parsePath",{enumerable:!0,get:function(){return r.parsePath}}),Object.defineProperty(e,"redirect",{enumerable:!0,get:function(){return r.redirect}}),Object.defineProperty(e,"redirectDocument",{enumerable:!0,get:function(){return r.redirectDocument}}),Object.defineProperty(e,"resolvePath",{enumerable:!0,get:function(){return r.resolvePath}}),e.Await=function(e){let{children:t,errorElement:r,resolve:n}=e;return a.createElement(J,{resolve:n,errorElement:r},a.createElement(z,null,t))},e.MemoryRouter=function(e){let{basename:t,children:n,initialEntries:o,initialIndex:i,future:u}=e,l=a.useRef();null==l.current&&(l.current=r.createMemoryHistory({initialEntries:o,initialIndex:i,v5Compat:!0}));let s=l.current,[c,d]=a.useState({action:s.action,location:s.location}),{v7_startTransition:p}=u||{},f=a.useCallback((e=>{p&&L?L((()=>d(e))):d(e)}),[d,p]);return a.useLayoutEffect((()=>s.listen(f)),[s,f]),a.createElement(I,{basename:t,children:n,location:c.location,navigationType:c.action,navigator:s,future:u})},e.Navigate=function(e){let{to:t,replace:n,state:o,relative:i}=e;f()||r.UNSAFE_invariant(!1);let{future:u,static:l}=a.useContext(s),{matches:c}=a.useContext(d),{pathname:p}=m(),v=h(),E=r.resolveTo(t,r.UNSAFE_getResolveToMatches(c,u.v7_relativeSplatPath),p,"path"===i),g=JSON.stringify(E);return a.useEffect((()=>v(JSON.parse(g),{replace:n,state:o,relative:i})),[v,g,i,n,o]),null},e.Outlet=function(e){return g(e.context)},e.Route=T,e.Router=I,e.RouterProvider=function(e){let{fallbackElement:t,router:r,future:n}=e,[o,l]=a.useState(r.state),{v7_startTransition:s}=n||{},c=a.useCallback((e=>{s&&L?L((()=>l(e))):l(e)}),[l,s]);a.useLayoutEffect((()=>r.subscribe(c)),[r,c]),a.useEffect((()=>{}),[]);let d=a.useMemo((()=>({createHref:r.createHref,encodeLocation:r.encodeLocation,go:e=>r.navigate(e),push:(e,t,n)=>r.navigate(e,{state:t,preventScrollReset:null==n?void 0:n.preventScrollReset}),replace:(e,t,n)=>r.navigate(e,{replace:!0,state:t,preventScrollReset:null==n?void 0:n.preventScrollReset})})),[r]),p=r.basename||"/",f=a.useMemo((()=>({router:r,navigator:d,static:!1,basename:p})),[r,d,p]);return a.createElement(a.Fragment,null,a.createElement(i.Provider,{value:f},a.createElement(u.Provider,{value:o},a.createElement(I,{basename:p,location:o.location,navigationType:o.historyAction,navigator:d,future:{v7_relativeSplatPath:r.future.v7_relativeSplatPath}},o.initialized||r.future.v7_partialHydration?a.createElement(M,{routes:r.routes,future:r.future,state:o}):t))),null)},e.Routes=function(e){let{children:t,location:r}=e;return b(q(t),r)},e.UNSAFE_DataRouterContext=i,e.UNSAFE_DataRouterStateContext=u,e.UNSAFE_LocationContext=c,e.UNSAFE_NavigationContext=s,e.UNSAFE_RouteContext=d,e.UNSAFE_mapRouteProperties=V,e.UNSAFE_useRouteId=function(){return F(N.UseRouteId)},e.UNSAFE_useRoutesImpl=R,e.createMemoryRouter=function(e,t){return r.createRouter({basename:null==t?void 0:t.basename,future:o({},null==t?void 0:t.future,{v7_prependBasename:!0}),history:r.createMemoryHistory({initialEntries:null==t?void 0:t.initialEntries,initialIndex:null==t?void 0:t.initialIndex}),hydrationData:null==t?void 0:t.hydrationData,routes:e,mapRouteProperties:V}).initialize()},e.createRoutesFromChildren=q,e.createRoutesFromElements=q,e.renderMatches=function(e){return U(e)},e.useActionData=function(){let e=A(N.UseActionData),t=F(N.UseLoaderData);return e.actionData?e.actionData[t]:void 0},e.useAsyncError=function(){let e=a.useContext(l);return null==e?void 0:e._error},e.useAsyncValue=D,e.useBlocker=function(e){let{router:t,basename:n}=O(_.UseBlocker),i=A(N.UseBlocker),[u,l]=a.useState(""),s=a.useCallback((t=>{if("function"!=typeof e)return!!e;if("/"===n)return e(t);let{currentLocation:a,nextLocation:i,historyAction:u}=t;return e({currentLocation:o({},a,{pathname:r.stripBasename(a.pathname,n)||a.pathname}),nextLocation:o({},i,{pathname:r.stripBasename(i.pathname,n)||i.pathname}),historyAction:u})}),[n,e]);return a.useEffect((()=>{let e=String(++k);return l(e),()=>t.deleteBlocker(e)}),[t]),a.useEffect((()=>{""!==u&&t.getBlocker(u,s)}),[t,u,s]),u&&i.blockers.has(u)?i.blockers.get(u):r.IDLE_BLOCKER},e.useHref=function(e,t){let{relative:n}=void 0===t?{}:t;f()||r.UNSAFE_invariant(!1);let{basename:o,navigator:i}=a.useContext(s),{hash:u,pathname:l,search:c}=y(e,{relative:n}),d=l;return"/"!==o&&(d="/"===l?o:r.joinPaths([o,l])),i.createHref({pathname:d,search:c,hash:u})},e.useInRouterContext=f,e.useLoaderData=function(){let e=A(N.UseLoaderData),t=F(N.UseLoaderData);if(!e.errors||null==e.errors[t])return e.loaderData[t];console.error("You cannot `useLoaderData` in an errorElement (routeId: "+t+")")},e.useLocation=m,e.useMatch=function(e){f()||r.UNSAFE_invariant(!1);let{pathname:t}=m();return a.useMemo((()=>r.matchPath(e,t)),[t,e])},e.useMatches=function(){let{matches:e,loaderData:t}=A(N.UseMatches);return a.useMemo((()=>e.map((e=>r.UNSAFE_convertRouteMatchToUiMatch(e,t)))),[e,t])},e.useNavigate=h,e.useNavigation=function(){return A(N.UseNavigation).navigation},e.useNavigationType=function(){return a.useContext(c).navigationType},e.useOutlet=g,e.useOutletContext=function(){return a.useContext(E)},e.useParams=function(){let{matches:e}=a.useContext(d),t=e[e.length-1];return t?t.params:{}},e.useResolvedPath=y,e.useRevalidator=function(){let e=O(_.UseRevalidator),t=A(N.UseRevalidator);return a.useMemo((()=>({revalidate:e.router.revalidate,state:t.revalidation})),[e.router.revalidate,t.revalidation])},e.useRouteError=j,e.useRouteLoaderData=function(e){return A(N.UseRouteLoaderData).loaderData[e]},e.useRoutes=b,Object.defineProperty(e,"__esModule",{value:!0})}));
+
+
+},{"@remix-run/router":301,"react":"react"}],305:[function(require,module,exports){
 'use strict';
 
 var setFunctionName = require('set-function-name');
@@ -24640,7 +33247,7 @@ module.exports = setFunctionName(function flags() {
 }, 'get flags', true);
 
 
-},{"set-function-name":298}],294:[function(require,module,exports){
+},{"set-function-name":310}],306:[function(require,module,exports){
 'use strict';
 
 var define = require('define-properties');
@@ -24660,7 +33267,7 @@ define(flagsBound, {
 
 module.exports = flagsBound;
 
-},{"./implementation":293,"./polyfill":295,"./shim":296,"call-bind":49,"define-properties":187}],295:[function(require,module,exports){
+},{"./implementation":305,"./polyfill":307,"./shim":308,"call-bind":54,"define-properties":192}],307:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
@@ -24698,7 +33305,7 @@ module.exports = function getPolyfill() {
 	return implementation;
 };
 
-},{"./implementation":293,"define-properties":187}],296:[function(require,module,exports){
+},{"./implementation":305,"define-properties":192}],308:[function(require,module,exports){
 'use strict';
 
 var supportsDescriptors = require('define-properties').supportsDescriptors;
@@ -24726,7 +33333,7 @@ module.exports = function shimFlags() {
 	return polyfill;
 };
 
-},{"./polyfill":295,"define-properties":187}],297:[function(require,module,exports){
+},{"./polyfill":307,"define-properties":192}],309:[function(require,module,exports){
 'use strict';
 
 var callBound = require('call-bind/callBound');
@@ -24745,7 +33352,7 @@ module.exports = function regexTester(regex) {
 	};
 };
 
-},{"call-bind/callBound":48,"get-intrinsic":247,"is-regex":259}],298:[function(require,module,exports){
+},{"call-bind/callBound":53,"get-intrinsic":252,"is-regex":264}],310:[function(require,module,exports){
 'use strict';
 
 var define = require('define-data-property');
@@ -24769,7 +33376,7 @@ module.exports = function setFunctionName(fn, name) {
 	return fn;
 };
 
-},{"define-data-property":186,"functions-have-names":246,"has-property-descriptors":249}],299:[function(require,module,exports){
+},{"define-data-property":191,"functions-have-names":251,"has-property-descriptors":254}],311:[function(require,module,exports){
 'use strict';
 
 var GetIntrinsic = require('get-intrinsic');
@@ -24895,7 +33502,7 @@ module.exports = function getSideChannel() {
 	return channel;
 };
 
-},{"call-bind/callBound":48,"get-intrinsic":247,"object-inspect":262}],300:[function(require,module,exports){
+},{"call-bind/callBound":53,"get-intrinsic":252,"object-inspect":267}],312:[function(require,module,exports){
 'use strict';
 
 var Call = require('es-abstract/2023/Call');
@@ -24953,7 +33560,7 @@ module.exports = function matchAll(regexp) {
 	return Call(getMatcher(rx), rx, [S]);
 };
 
-},{"./polyfill-regexp-matchall":302,"call-bind/callBound":48,"es-abstract/2023/Call":189,"es-abstract/2023/Get":196,"es-abstract/2023/GetMethod":197,"es-abstract/2023/IsRegExp":205,"es-abstract/2023/RequireObjectCoercible":208,"es-abstract/2023/ToString":219,"has-symbols":251,"regexp.prototype.flags":294}],301:[function(require,module,exports){
+},{"./polyfill-regexp-matchall":314,"call-bind/callBound":53,"es-abstract/2023/Call":194,"es-abstract/2023/Get":201,"es-abstract/2023/GetMethod":202,"es-abstract/2023/IsRegExp":210,"es-abstract/2023/RequireObjectCoercible":213,"es-abstract/2023/ToString":224,"has-symbols":256,"regexp.prototype.flags":306}],313:[function(require,module,exports){
 'use strict';
 
 var callBind = require('call-bind');
@@ -24973,7 +33580,7 @@ define(boundMatchAll, {
 
 module.exports = boundMatchAll;
 
-},{"./implementation":300,"./polyfill":303,"./shim":305,"call-bind":49,"define-properties":187}],302:[function(require,module,exports){
+},{"./implementation":312,"./polyfill":315,"./shim":317,"call-bind":54,"define-properties":192}],314:[function(require,module,exports){
 'use strict';
 
 var hasSymbols = require('has-symbols')();
@@ -24986,7 +33593,7 @@ module.exports = function getRegExpMatchAllPolyfill() {
 	return RegExp.prototype[Symbol.matchAll];
 };
 
-},{"./regexp-matchall":304,"has-symbols":251}],303:[function(require,module,exports){
+},{"./regexp-matchall":316,"has-symbols":256}],315:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
@@ -25002,7 +33609,7 @@ module.exports = function getPolyfill() {
 	return implementation;
 };
 
-},{"./implementation":300}],304:[function(require,module,exports){
+},{"./implementation":312}],316:[function(require,module,exports){
 'use strict';
 
 // var Construct = require('es-abstract/2023/Construct');
@@ -25061,7 +33668,7 @@ var regexMatchAll = setFunctionName(function SymbolMatchAll(string) {
 
 module.exports = regexMatchAll;
 
-},{"call-bind/callBound":48,"es-abstract/2023/CreateRegExpStringIterator":193,"es-abstract/2023/Get":196,"es-abstract/2023/Set":210,"es-abstract/2023/SpeciesConstructor":211,"es-abstract/2023/ToLength":215,"es-abstract/2023/ToString":219,"es-abstract/2023/Type":220,"regexp.prototype.flags":294,"set-function-name":298}],305:[function(require,module,exports){
+},{"call-bind/callBound":53,"es-abstract/2023/CreateRegExpStringIterator":198,"es-abstract/2023/Get":201,"es-abstract/2023/Set":215,"es-abstract/2023/SpeciesConstructor":216,"es-abstract/2023/ToLength":220,"es-abstract/2023/ToString":224,"es-abstract/2023/Type":225,"regexp.prototype.flags":306,"set-function-name":310}],317:[function(require,module,exports){
 'use strict';
 
 var define = require('define-properties');
@@ -25112,7 +33719,7 @@ module.exports = function shimMatchAll() {
 	return polyfill;
 };
 
-},{"./polyfill":303,"./polyfill-regexp-matchall":302,"define-properties":187,"has-symbols":251}],306:[function(require,module,exports){
+},{"./polyfill":315,"./polyfill-regexp-matchall":314,"define-properties":192,"has-symbols":256}],318:[function(require,module,exports){
 'use strict';
 
 var RequireObjectCoercible = require('es-abstract/2023/RequireObjectCoercible');
@@ -25135,7 +33742,7 @@ module.exports = function trim() {
 	return $replace($replace(S, leftWhitespace, ''), rightWhitespace, '');
 };
 
-},{"call-bind/callBound":48,"es-abstract/2023/RequireObjectCoercible":208,"es-abstract/2023/ToString":219}],307:[function(require,module,exports){
+},{"call-bind/callBound":53,"es-abstract/2023/RequireObjectCoercible":213,"es-abstract/2023/ToString":224}],319:[function(require,module,exports){
 'use strict';
 
 var callBind = require('call-bind');
@@ -25160,7 +33767,7 @@ define(boundMethod, {
 
 module.exports = boundMethod;
 
-},{"./implementation":306,"./polyfill":308,"./shim":309,"call-bind":49,"define-properties":187,"es-abstract/2023/RequireObjectCoercible":208}],308:[function(require,module,exports){
+},{"./implementation":318,"./polyfill":320,"./shim":321,"call-bind":54,"define-properties":192,"es-abstract/2023/RequireObjectCoercible":213}],320:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
@@ -25181,7 +33788,7 @@ module.exports = function getPolyfill() {
 	return implementation;
 };
 
-},{"./implementation":306}],309:[function(require,module,exports){
+},{"./implementation":318}],321:[function(require,module,exports){
 'use strict';
 
 var define = require('define-properties');
@@ -25197,7 +33804,7 @@ module.exports = function shimStringTrim() {
 	return polyfill;
 };
 
-},{"./polyfill":308,"define-properties":187}],310:[function(require,module,exports){
+},{"./polyfill":320,"define-properties":192}],322:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25359,7 +33966,7 @@ var Cookies = /*#__PURE__*/function () {
 }();
 exports["default"] = Cookies;
 module.exports = exports.default;
-},{"./utils":313,"cookie":51}],311:[function(require,module,exports){
+},{"./utils":325,"cookie":56}],323:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25383,9 +33990,9 @@ Object.keys(_types).forEach(function (key) {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var _default = _Cookies["default"];
 exports["default"] = _default;
-},{"./Cookies":310,"./types":312}],312:[function(require,module,exports){
-arguments[4][276][0].apply(exports,arguments)
-},{"dup":276}],313:[function(require,module,exports){
+},{"./Cookies":322,"./types":324}],324:[function(require,module,exports){
+arguments[4][281][0].apply(exports,arguments)
+},{"dup":281}],325:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25438,7 +34045,7 @@ function cleanupCookieValue(value) {
   }
   return value;
 }
-},{"cookie":51}],314:[function(require,module,exports){
+},{"cookie":56}],326:[function(require,module,exports){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -25502,5 +34109,5 @@ if (__DEV__) {
 
 module.exports = warning;
 
-},{}]},{},[14])
+},{}]},{},[19])
 //# sourceMappingURL=wise-analytics.js.map

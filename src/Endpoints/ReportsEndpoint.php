@@ -17,7 +17,7 @@ class ReportsEndpoint {
 	private $pagesReportsService;
 
 	/** @var VisitorsReportsService */
-	private $usersReportsService;
+	private $visitorsReportsService;
 
 	/** @var EventsReportsService */
 	private $eventsReportsService;
@@ -29,15 +29,15 @@ class ReportsEndpoint {
 	 * ReportsEndpoint constructor.
 	 * @param HighlightsService $highlightsService
 	 * @param PagesReportsService $pagesReportsService
-	 * @param VisitorsReportsService $usersReportsService
+	 * @param VisitorsReportsService $visitorsReportsService
 	 * @param EventsReportsService $eventsReportsService
 	 * @param SessionsReportsService $sessionsReportsService
 	 */
-	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $usersReportsService, EventsReportsService $eventsReportsService, SessionsReportsService $sessionsReportsService)
+	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $visitorsReportsService, EventsReportsService $eventsReportsService, SessionsReportsService $sessionsReportsService)
 	{
 		$this->highlightsService = $highlightsService;
 		$this->pagesReportsService = $pagesReportsService;
-		$this->usersReportsService = $usersReportsService;
+		$this->visitorsReportsService = $visitorsReportsService;
 		$this->eventsReportsService = $eventsReportsService;
 		$this->sessionsReportsService = $sessionsReportsService;
 	}
@@ -80,9 +80,11 @@ class ReportsEndpoint {
 				case 'pages.views.daily';
 					return $this->pagesReportsService->getPagesViewsDaily($startDate, $endDate);
 				case 'visitors.last';
-					return $this->usersReportsService->getLastVisitors($startDate, $endDate);
+					return $this->visitorsReportsService->getLastVisitors($startDate, $endDate);
 				case 'visitors.daily';
-					return $this->usersReportsService->getVisitorsDaily($startDate, $endDate);
+					return $this->visitorsReportsService->getVisitorsDaily($startDate, $endDate);
+				case 'visitors.languages';
+					return $this->visitorsReportsService->getLanguages($startDate, $endDate);
 				case 'sessions.daily';
 					return $this->sessionsReportsService->getSessionsDaily($startDate, $endDate);
 				case 'events';
