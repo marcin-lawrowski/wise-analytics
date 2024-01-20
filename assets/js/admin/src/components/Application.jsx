@@ -20,6 +20,7 @@ class Application extends React.Component {
 	}
 
 	render() {
+
 		return <div className="container-fluid" data-bs-theme="light">
 			<div className="d-flex align-items-center justify-content-between">
 				<h5>Analytics: Overview</h5>
