@@ -1132,11 +1132,12 @@ var LanguagesChart = /*#__PURE__*/function (_React$Component) {
         }
       }, /*#__PURE__*/_react["default"].createElement(_pie.ResponsivePie, {
         data: data,
+        sortByValue: true,
         margin: {
           top: 20,
-          right: 40,
-          bottom: 40,
-          left: 40
+          right: 50,
+          bottom: 50,
+          left: 50
         },
         innerRadius: 0,
         padAngle: 0.7,
@@ -1151,6 +1152,8 @@ var LanguagesChart = /*#__PURE__*/function (_React$Component) {
           modifiers: [['darker', 0.2]]
         },
         arcLinkLabelsSkipAngle: 10,
+        arcLinkLabelsDiagonalLength: 4,
+        arcLinkLabelsStraightLength: 10,
         arcLinkLabelsTextColor: "#333333",
         arcLinkLabelsThickness: 2,
         arcLinkLabelsColor: {

@@ -52,6 +52,7 @@ class EventsService {
 	 * @param string $checksum
 	 * @param array $inputData
 	 * @return Event
+	 * @throws \Exception
 	 */
 	public function createEventWithChecksum(User $user, string $typeSlug, string $checksum, array $inputData): Event {
 		if (!$checksum) {
@@ -136,7 +137,6 @@ class EventsService {
 		switch ($eventTypeSlug) {
 			case 'page-view':
 				$output = array_filter([
-					'ip' => $inputData['ip'],
 					'uri' => $inputData['uri'],
 					'referer' => $inputData['referer']
 				]);
@@ -145,11 +145,6 @@ class EventsService {
 				$output = array_filter([
 					'id' => $inputData['id'],
 					'login' => $inputData['login'],
-					'ip' => $inputData['ip']
-				]);
-				break;
-			case 'form-submission':
-				$output = array_filter([
 					'ip' => $inputData['ip']
 				]);
 				break;

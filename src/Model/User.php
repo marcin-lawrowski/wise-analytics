@@ -34,6 +34,9 @@ class User {
     /** @var string|null */
     private $language;
 
+    /** @var string|null */
+    private $ip;
+
     /**
      * @var \DateTime
      */
@@ -180,6 +183,22 @@ class User {
 	public function setLanguage(?string $language): void
 	{
 		$this->language = $language;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getIp(): ?string
+	{
+		return $this->ip;
+	}
+
+	/**
+	 * @param string|null $ip
+	 */
+	public function setIp(?string $ip): void
+	{
+		$this->ip = $ip;
 	}
 
 }

@@ -38,7 +38,8 @@ class LanguagesChart extends React.Component {
 				<div style={ { height: 300 }}>
 					<ResponsivePie
 				        data={data}
-				        margin={{ top: 20, right: 40, bottom: 40, left: 40 }}
+				        sortByValue={true}
+				        margin={{ top: 20, right: 50, bottom: 50, left: 50 }}
 				        innerRadius={0}
 				        padAngle={0.7}
 				        cornerRadius={3}
@@ -55,6 +56,8 @@ class LanguagesChart extends React.Component {
 				            ]
 				        }}
 				        arcLinkLabelsSkipAngle={10}
+				        arcLinkLabelsDiagonalLength={4}
+				        arcLinkLabelsStraightLength={10}
 				        arcLinkLabelsTextColor="#333333"
 				        arcLinkLabelsThickness={2}
 				        arcLinkLabelsColor={{ from: 'color' }}

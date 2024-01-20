@@ -5,6 +5,7 @@ namespace Kainex\WiseAnalytics\Services\Users;
 use Kainex\WiseAnalytics\DAO\UsersDAO;
 use Kainex\WiseAnalytics\Model\User;
 use Kainex\WiseAnalytics\Options;
+use Kainex\WiseAnalytics\Utils\IPUtils;
 use Kainex\WiseAnalytics\Utils\StringUtils;
 
 class VisitorsService {
@@ -41,6 +42,11 @@ class VisitorsService {
 	 * @throws \Exception
 	 */
 	public function getOrCreate(array $configuration = []): User {
+		$ip = IPUtils::getIpAddress();
+		if ($ip) {
+			$configuration['ip'] = $ip;
+		}
+
 		if (!isset($_COOKIE[VisitorsService::UUID_COOKIE])) {
 			return $this->create($configuration);
 		} else {
@@ -49,8 +55,16 @@ class VisitorsService {
 				return $this->create($configuration);
 			}
 
+			$changed = false;
 			if (isset($configuration['language']) && $configuration['language'] && $configuration['language'] !== $visitor->getLanguage()) {
 				$visitor->setLanguage($configuration['language']);
+				$changed = true;
+			}
+			if (isset($configuration['ip']) && $configuration['ip'] && $configuration['ip'] !== $visitor->getIp()) {
+				$visitor->setIp($configuration['ip']);
+				$changed = true;
+			}
+			if ($changed) {
 				$visitor = $this->usersDAO->save($visitor);
 			}
 
@@ -63,6 +77,7 @@ class VisitorsService {
 	}
 
 	/**
+	 * @param array $configuration
 	 * @return User
 	 * @throws \Exception
 	 */
@@ -70,8 +85,11 @@ class VisitorsService {
 		$visitor = new User();
 		$visitor->setUuid(StringUtils::createUuid());
 		$visitor->setCreated(new \DateTime());
-		if (isset($configuration['language']) && $configuration['language']) {
+		if (isset($configuration['language'])) {
 			$visitor->setLanguage($configuration['language']);
+		}
+		if (isset($configuration['ip'])) {
+			$visitor->setIp($configuration['ip']);
 		}
 		$visitor = $this->usersDAO->save($visitor);
 
