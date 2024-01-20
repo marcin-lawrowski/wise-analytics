@@ -80,7 +80,7 @@ class ReportsEndpoint {
 				case 'pages.views.daily';
 					return $this->pagesReportsService->getPagesViewsDaily($startDate, $endDate);
 				case 'visitors.last';
-					return $this->visitorsReportsService->getLastVisitors($startDate, $endDate);
+					return $this->visitorsReportsService->getLastVisitors($startDate, $endDate, $offset);
 				case 'visitors.daily';
 					return $this->visitorsReportsService->getVisitorsDaily($startDate, $endDate);
 				case 'visitors.languages';

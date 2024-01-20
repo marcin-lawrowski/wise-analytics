@@ -12,6 +12,7 @@ class StatsTable extends React.Component {
 		this.handleNext = this.handleNext.bind(this);
 		this.hasNext = this.hasNext.bind(this);
 		this.hasPrev = this.hasPrev.bind(this);
+		this.handleFirst = this.handleFirst.bind(this);
 	}
 
 	renderPaginationSummary() {
@@ -19,7 +20,7 @@ class StatsTable extends React.Component {
 			return null;
 		}
 
-		let upperLimit = this.props.offset + this.props.limit + 1;
+		let upperLimit = this.props.offset + this.props.limit;
 		if (upperLimit > this.props.total) {
 			upperLimit = this.props.total;
 		}
@@ -27,6 +28,12 @@ class StatsTable extends React.Component {
 		return <div>
 			{ this.props.offset + 1} - { upperLimit } / { this.props.total }
 		</div>
+	}
+
+	handleFirst(e) {
+		e.preventDefault();
+
+		this.props.onOffsetChange(0);
 	}
 
 	handlePrev(e) {
@@ -67,6 +74,11 @@ class StatsTable extends React.Component {
 					<div className="d-flex align-items-center">
 						<nav className="me-2" aria-label="Page navigation example">
 							<ul className="pagination pagination-sm justify-content-center m-0">
+								{this.props.offset > 0 &&
+									<li className={"page-item m-0"}>
+										<a className="page-link" href="#" tabIndex="-1" aria-disabled="true" onClick={this.handleFirst}>First</a>
+									</li>
+								}
 								<li className={ "page-item m-0" + (!this.hasPrev() ? ' disabled' : '') }>
 									<a className="page-link" href="#" tabIndex="-1" aria-disabled="true" onClick={ this.handlePrev }>Prev</a>
 								</li>

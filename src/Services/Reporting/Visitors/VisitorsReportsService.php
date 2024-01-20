@@ -30,7 +30,7 @@ class VisitorsReportsService extends ReportingService {
 		return $output;
 	}
 
-	public function getLastVisitors(\DateTime $startDate, \DateTime $endDate): array {
+	public function getLastVisitors(\DateTime $startDate, \DateTime $endDate, int $offset): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -46,10 +46,11 @@ class VisitorsReportsService extends ReportingService {
 				'us.last_name as lastName',
 			],
 			'join' => [[Installer::getUsersTable().' us', ['se.user_id = us.id']]],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "us.id IS NOT NULL"],
 			'group' => ['se.user_id'],
 			'order' => ['lastVisit DESC'],
-			'limit' => 20
+			'offset' => $offset,
+			'limit' => self::RESULTS_LIMIT
 		]);
 
 		$output = [];
@@ -60,8 +61,20 @@ class VisitorsReportsService extends ReportingService {
 			$output[] = $record;
 		}
 
+		$count = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(distinct us.id) as total'
+			],
+			'join' => [[Installer::getUsersTable().' us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "us.id IS NOT NULL"],
+		]);
+
 		return [
-			'visitors' => $output
+			'visitors' => $output,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
 		];
 	}
 

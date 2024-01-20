@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import LanguagesChart from "reporting/components/visitors/LanguagesChart";
+import MainTable from "reporting/components/visitors/MainTable";
 
 class Home extends React.Component {
 
@@ -9,7 +10,7 @@ class Home extends React.Component {
 		return <React.Fragment>
 			<div className="row">
 				<div className="col-md-9">
-					table
+					<MainTable startDate={ this.props.startDate } endDate={ this.props.endDate } />
 				</div>
 				<div className="col-md-3">
 					<LanguagesChart startDate={ this.props.startDate } endDate={ this.props.endDate } />
