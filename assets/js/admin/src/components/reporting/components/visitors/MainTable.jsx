@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
+import { Link } from "react-router-dom";
 
 class MainTable extends React.Component {
 
@@ -42,7 +43,7 @@ class MainTable extends React.Component {
 			name = 'Visitor #' + visitor.id;
 		}
 
-		return name;
+		return <Link to={ '/visitors/' + visitor.id }>{ name }</Link>;
 	}
 
 	render() {

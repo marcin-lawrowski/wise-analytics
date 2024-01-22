@@ -32,7 +32,8 @@ class HighlightsService extends ReportingService {
 		$this->sessionsReportsService = $sessionsReportsService;
 	}
 
-	public function getHighlights(\DateTime $startDate, \DateTime $endDate) {
+	public function getHighlights(array $queryParams) {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$totalVisits = $this->visitorsReportsService->getVisitorsHighlights($startDate, $endDate);
 		$totalPageViews = $this->pagesReportsService->getTotalPageViews($startDate, $endDate);
 		$avgSessionTime = $this->sessionsReportsService->getAverageTime($startDate, $endDate);

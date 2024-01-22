@@ -7,3 +7,9 @@ export function requestReport(params) {
 		`/report`, params, { actionsPrefix: resultPrefix + params.name.toUpperCase() }
 	);
 }
+
+export function clearReport(name) {
+	return function(dispatch) {
+		dispatch({ type: resultPrefix + name.toUpperCase() + "_CLEAR" });
+	}
+}

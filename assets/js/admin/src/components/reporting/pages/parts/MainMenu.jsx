@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { withLocation } from 'utils/router';
+import { withRouter } from 'utils/router';
 
 class MainMenu extends React.Component {
 
@@ -28,4 +28,4 @@ export default connect(
 	(state) => ({
 		configuration: state.configuration
 	})
-)(withLocation(MainMenu));
+)(withRouter(MainMenu));

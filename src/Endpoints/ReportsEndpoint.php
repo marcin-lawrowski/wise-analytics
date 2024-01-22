@@ -55,40 +55,27 @@ class ReportsEndpoint {
 	// TODO: report all errors through exceptions
 	public function reportEndpoint(\WP_REST_Request $request) {
 		$queryParams = $request->get_query_params();
-		$filters = $queryParams['filters'];
-		$offset = $queryParams['offset'] ?? 0;
 
 		try {
-			$startDate = \DateTime::createFromFormat("Y-m-d", $filters['startDate']);
-			$endDate = \DateTime::createFromFormat("Y-m-d", $filters['endDate']);
-			if ($startDate === false || $endDate === false) {
-				throw new \Exception('Invalid dates format');
-			}
-
-			$startDate->setTime(0, 0, 0);
-			$endDate->setTime(23, 59, 59);
-
-			if ($startDate >= $endDate) {
-				throw new \Exception('Invalid dates');
-			}
-
 			switch ($queryParams['name']) {
 				case 'overview.highlights';
-					return $this->highlightsService->getHighlights($startDate, $endDate);
+					return $this->highlightsService->getHighlights($queryParams);
 				case 'pages.top';
-					return $this->pagesReportsService->getTopPagesViews($startDate, $endDate, $offset);
+					return $this->pagesReportsService->getTopPagesViews($queryParams);
 				case 'pages.views.daily';
-					return $this->pagesReportsService->getPagesViewsDaily($startDate, $endDate);
+					return $this->pagesReportsService->getPagesViewsDaily($queryParams);
 				case 'visitors.last';
-					return $this->visitorsReportsService->getLastVisitors($startDate, $endDate, $offset);
+					return $this->visitorsReportsService->getLastVisitors($queryParams);
 				case 'visitors.daily';
-					return $this->visitorsReportsService->getVisitorsDaily($startDate, $endDate);
+					return $this->visitorsReportsService->getVisitorsDaily($queryParams);
 				case 'visitors.languages';
-					return $this->visitorsReportsService->getLanguages($startDate, $endDate);
+					return $this->visitorsReportsService->getLanguages($queryParams);
+				case 'visitor.information';
+					return $this->visitorsReportsService->getInformation($queryParams);
 				case 'sessions.daily';
-					return $this->sessionsReportsService->getSessionsDaily($startDate, $endDate);
+					return $this->sessionsReportsService->getSessionsDaily($queryParams);
 				case 'events';
-					return $this->eventsReportsService->getEvents($startDate, $endDate, $offset);
+					return $this->eventsReportsService->getEvents($queryParams);
 			}
 
 		} catch (\Exception $e) {

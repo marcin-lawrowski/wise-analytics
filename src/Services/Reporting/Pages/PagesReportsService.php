@@ -33,7 +33,9 @@ class PagesReportsService extends ReportingService {
 		return count($result) > 0 ? (int) $result[0]->total : 0;
 	}
 
-	public function getTopPagesViews(\DateTime $startDate, \DateTime $endDate, int $offset): array {
+	public function getTopPagesViews(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$offset = $queryParams['offset'] ?? 0;
 		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
@@ -68,7 +70,8 @@ class PagesReportsService extends ReportingService {
 		];
 	}
 
-	public function getPagesViewsDaily(\DateTime $startDate, \DateTime $endDate): array {
+	public function getPagesViewsDaily(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$eventType = $this->getPageViewEventType();
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');

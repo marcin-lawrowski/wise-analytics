@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import {Route, Routes} from "react-router-dom";
 import Home from "./home/Home";
+import Visitor from "./visitor/Visitor";
 
 class Visitors extends React.Component {
 
@@ -10,6 +11,7 @@ class Visitors extends React.Component {
 		return <Routes>
 			<Route path="/">
 				<Route index element={<Home startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
+				<Route path=":id" element={<Visitor startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 			</Route>
 		</Routes>
 	}

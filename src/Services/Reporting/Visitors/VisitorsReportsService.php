@@ -30,7 +30,9 @@ class VisitorsReportsService extends ReportingService {
 		return $output;
 	}
 
-	public function getLastVisitors(\DateTime $startDate, \DateTime $endDate, int $offset): array {
+	public function getLastVisitors(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$offset = $queryParams['offset'] ?? 0;
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -78,7 +80,8 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
-	public function getVisitorsDaily(\DateTime $startDate, \DateTime $endDate): array {
+	public function getVisitorsDaily(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -116,7 +119,8 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
-	public function getLanguages(\DateTime $startDate, \DateTime $endDate): array {
+	public function getLanguages(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -131,6 +135,50 @@ class VisitorsReportsService extends ReportingService {
 				'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
 				'group' => ['us.language']
 			])
+		];
+	}
+
+	public function getInformation(array $params) {
+		if (!isset($params['filters']['id'])) {
+			throw new \Exception('Missing ID');
+		}
+
+		$id = intval($params['filters']['id']);
+		$visitor = $this->query(Installer::getUsersTable(), [
+			'select' => ['*'],
+			'where' => ["id = {$id}"],
+		]);
+
+		if (!$visitor) {
+			throw new \Exception('Visitor not found');
+		}
+		$visitor = $visitor[0];
+
+		$sessions = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(se.id) as totalSessions',
+				'sum(se.duration) / count(se.id) as avgSessionDuration',
+				'sum(JSON_LENGTH(JSON_EXTRACT(se.events, "$"))) as totalEvents',
+				'max(start) as lastVisit'
+			],
+			'where' => ["se.user_id = {$id}"]
+		]);
+		$sessions = $sessions[0];
+		$avgSessionDuration = intval($sessions->avgSessionDuration);
+
+		return [
+			'id' => $visitor->id,
+			'name' => trim($visitor->first_name.' '.$visitor->last_name),
+			'email' => $visitor->email,
+			'company' => $visitor->company,
+			'language' => $visitor->language,
+			'firstVisit' => $visitor->created,
+			'lastVisit' => TimeUtils::formatTimestamp($sessions->lastVisit),
+			'data' => json_decode($visitor->data),
+			'totalSessions' => intval($sessions->totalSessions),
+			'totalEvents' => intval($sessions->totalEvents),
+			'avgSessionDuration' => $avgSessionDuration > 0 ? TimeUtils::formatDuration($avgSessionDuration, 'suffixes') : '0s',
 		];
 	}
 

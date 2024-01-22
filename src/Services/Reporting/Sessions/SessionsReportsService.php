@@ -18,7 +18,8 @@ class SessionsReportsService extends ReportingService {
 		return count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
 	}
 
-	public function getSessionsDaily(\DateTime $startDate, \DateTime $endDate) {
+	public function getSessionsDaily(array $queryParams) {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
