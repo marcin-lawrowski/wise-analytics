@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
+import { Link } from "react-router-dom";
 
 class Events extends React.Component {
 
@@ -21,7 +22,7 @@ class Events extends React.Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
-			this.refresh();
+			this.setState({ offset: 0 }, this.refresh);
 		}
 	}
 
@@ -42,7 +43,7 @@ class Events extends React.Component {
 			name = 'Visitor #' + event.visitorId;
 		}
 
-		return name;
+		return <Link to={ '/visitors/' + event.visitorId } title="Go to details">{ name }</Link>;
 	}
 
 	render() {

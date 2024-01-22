@@ -35,7 +35,7 @@ class PagesReportsService extends ReportingService {
 
 	public function getTopPagesViews(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
-		$offset = $queryParams['offset'] ?? 0;
+		$offset = intval($queryParams['offset'] ?? 0);
 		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');

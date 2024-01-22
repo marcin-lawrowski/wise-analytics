@@ -11,9 +11,15 @@ class EventsReportsService extends ReportingService {
 
 	public function getEvents(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
-		$offset = $queryParams['offset'] ?? 0;
+		$filters = $queryParams['filters'];
+		$offset = intval($queryParams['offset'] ?? 0);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$conditions = ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"];
+		if (isset($filters['visitorId'])) {
+			$conditions[] = intval($filters['visitorId']);
+		}
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
@@ -32,7 +38,7 @@ class EventsReportsService extends ReportingService {
 				[Installer::getUsersTable().' us', ['ev.user_id = us.id']],
 				[Installer::getEventResourcesTable().' re', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]
 			],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
+			'where' => $conditions,
 			'order' => ['created DESC'],
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
@@ -49,7 +55,7 @@ class EventsReportsService extends ReportingService {
 			'select' => [
 				'count(ev.id) as total'
 			],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"]
+			'where' => $conditions
 		]);
 
 		return [

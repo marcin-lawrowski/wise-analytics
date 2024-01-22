@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import Loader from "common/Loader";
+import {Link} from "react-router-dom";
 
 class Visitors extends React.Component {
 
@@ -33,14 +34,14 @@ class Visitors extends React.Component {
 			name = 'Visitor #' + visitor.id;
 		}
 
-		return name;
+		return <Link to={ '/visitors/' + visitor.id } title="Go to details">{ name }</Link>;
 	}
 
 	render() {
 		return <React.Fragment>
 			<div className="card p-1">
 				<div className="card-body">
-					<h6 className="card-title">Visitors daily <Loader show={ this.props.loading } /></h6>
+					<h6 className="card-title">Recent Visitors <Loader show={ this.props.loading } /></h6>
 					<table className="table table-striped">
 						<thead>
 							<tr>

@@ -32,7 +32,7 @@ class VisitorsReportsService extends ReportingService {
 
 	public function getLastVisitors(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
-		$offset = $queryParams['offset'] ?? 0;
+		$offset = intval($queryParams['offset'] ?? 0);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 

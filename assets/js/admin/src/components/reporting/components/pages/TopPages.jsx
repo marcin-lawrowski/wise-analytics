@@ -21,7 +21,7 @@ class TopPages extends React.Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
-			this.refresh();
+			this.setState({ offset: 0 }, this.refresh);
 		}
 	}
 

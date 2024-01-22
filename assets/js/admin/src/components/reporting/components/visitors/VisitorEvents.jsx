@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import { requestReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
-import { Link } from "react-router-dom";
 
-class MainTable extends React.Component {
+class VisitorEvents extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -28,45 +27,43 @@ class MainTable extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'visitors.last',
+			name: 'events',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
-				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
+				endDate: moment(this.props.endDate).format('YYYY-MM-DD'),
+				visitorId: this.props.id
 			},
 			offset: this.state.offset
 		});
 	}
 
-	renderVisitor(visitor) {
-		let name = [visitor.firstName, visitor.lastName].join(' ').trim();
+	renderVisitor(event) {
+		let name = [event.visitorFirstName, event.visitorLastName].join(' ').trim();
 		if (!name) {
-			name = 'Visitor #' + visitor.id;
+			name = 'Visitor #' + event.visitorId;
 		}
 
-		return <Link to={ '/visitors/' + visitor.id } title="Go to details">{ name }</Link>;
+		return name;
 	}
 
 	render() {
 		return <StatsTable
-			title="Visitors"
+			title="Recent Activity"
 			loading={ this.props.loading }
 			columns={[
-				{ 'name': 'Name' },
-				{ 'name': 'Visits' },
-				{ 'name': 'Avg. Visit' },
-				{ 'name': 'Last Visit' }
+				{ 'name': 'Event' },
+				{ 'name': 'URI' },
+				{ 'name': 'Date' }
 			]}
-			data={ this.props.report.visitors }
-			cellRenderer={ (columnIndex, visitor) => {
+			data={ this.props.report.events }
+			cellRenderer={ (columnIndex, row) => {
 				switch (columnIndex) {
 					case 0:
-						return this.renderVisitor(visitor);
+						return row.typeName ? row.typeName : 'Unknown';
 					case 1:
-						return visitor.totalSessions;
+						return <a href={ this.props.configuration.baseUrl + row.uri } target="_blank">{ row.title ? row.title : row.uri }</a>;
 					case 2:
-						return visitor.avgSessionDuration;
-					case 3:
-						return visitor.lastVisit;
+						return row.created;
 				}
 			}}
 			offset={ this.props.report.offset }
@@ -75,10 +72,12 @@ class MainTable extends React.Component {
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
 		/>
 	}
+
 }
 
-MainTable.propTypes = {
+VisitorEvents.propTypes = {
 	configuration: PropTypes.object.isRequired,
+	id: PropTypes.number.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object
 };
@@ -86,7 +85,7 @@ MainTable.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['visitors.last'].inProgress,
-		report: state.reports['visitors.last'].result
+		loading: state.reports['events'].inProgress,
+		report: state.reports['events'].result
 	}), { requestReport }
-)(MainTable);
+)(VisitorEvents);

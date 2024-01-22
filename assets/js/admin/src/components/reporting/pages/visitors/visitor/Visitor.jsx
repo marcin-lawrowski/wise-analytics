@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "utils/router";
 import { requestReport, clearReport } from "actions/reports";
 import Loader from "common/Loader";
+import VisitorEvents from "reporting/components/visitors/VisitorEvents";
 
 class Visitor extends React.Component {
 
@@ -60,7 +61,7 @@ class Visitor extends React.Component {
 		return <React.Fragment>
 			<div className="row">
 				<div className="col-md-9">
-					recent activity
+					<VisitorEvents startDate={ this.props.startDate } endDate={ this.props.endDate } id={ this.props.params.id } />
 				</div>
 				<div className="col-md-3">
 					<div className="card p-1">
