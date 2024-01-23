@@ -18,7 +18,7 @@ class EventsReportsService extends ReportingService {
 
 		$conditions = ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"];
 		if (isset($filters['visitorId'])) {
-			$conditions[] = intval($filters['visitorId']);
+			$conditions[] = 'ev.user_id = '.intval($filters['visitorId']);
 		}
 
 		$result = $this->queryEvents([

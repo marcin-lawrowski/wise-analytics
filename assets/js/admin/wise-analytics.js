@@ -450,6 +450,11 @@ var Events = /*#__PURE__*/function (_React$Component) {
       this.refresh();
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.props.clearReport('events');
+    }
+  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
       if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
@@ -539,7 +544,8 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
     report: state.reports['events'].result
   };
 }, {
-  requestReport: _reports.requestReport
+  requestReport: _reports.requestReport,
+  clearReport: _reports.clearReport
 })(Events);
 
 },{"@babel/runtime/helpers/classCallCheck":37,"@babel/runtime/helpers/createClass":38,"@babel/runtime/helpers/getPrototypeOf":43,"@babel/runtime/helpers/inherits":44,"@babel/runtime/helpers/interopRequireDefault":45,"@babel/runtime/helpers/possibleConstructorReturn":49,"actions/reports":24,"common/data/StatsTable":4,"moment":271,"prop-types":"prop-types","react":"react","react-redux":"react-redux","react-router-dom":303}],6:[function(require,module,exports){
@@ -552,6 +558,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
@@ -566,9 +573,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 var Highlights = /*#__PURE__*/function (_React$Component) {
   (0, _inherits2["default"])(Highlights, _React$Component);
   var _super = _createSuper(Highlights);
-  function Highlights() {
+  function Highlights(props) {
+    var _this;
     (0, _classCallCheck2["default"])(this, Highlights);
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.renderDiffPercent = _this.renderDiffPercent.bind((0, _assertThisInitialized2["default"])(_this));
+    return _this;
   }
   (0, _createClass2["default"])(Highlights, [{
     key: "componentDidMount",
@@ -594,6 +604,24 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "renderDiffPercent",
+    value: function renderDiffPercent(percent) {
+      if (percent > 0) {
+        return /*#__PURE__*/_react["default"].createElement("h6", {
+          className: "text-success"
+        }, /*#__PURE__*/_react["default"].createElement("strong", null, /*#__PURE__*/_react["default"].createElement("i", {
+          className: "bi bi-arrow-up"
+        }), " ", percent, " %"));
+      } else if (percent < 0) {
+        return /*#__PURE__*/_react["default"].createElement("h6", {
+          className: "text-danger"
+        }, /*#__PURE__*/_react["default"].createElement("strong", null, /*#__PURE__*/_react["default"].createElement("i", {
+          className: "bi bi-arrow-down"
+        }), " ", percent, " %"));
+      }
+      return null;
+    }
+  }, {
     key: "render",
     value: function render() {
       return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
@@ -608,7 +636,7 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-title text-muted"
       }, "Visitors ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.visitors.total, " "), this.props.report.visitors.percentNew, "% ", /*#__PURE__*/_react["default"].createElement("span", {
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.visitors.total, " "), this.renderDiffPercent(this.props.report.visitors.totalDiffPercent), this.props.report.visitors.percentNew, "% ", /*#__PURE__*/_react["default"].createElement("span", {
         className: "text-muted"
       }, "new")))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col"
@@ -620,7 +648,7 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-title text-muted"
       }, "Page Views ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.pageViews)))), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.pageViews.total), this.renderDiffPercent(this.props.report.pageViews.totalDiffPercent)))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1"
@@ -660,7 +688,7 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   requestReport: _reports.requestReport
 })(Highlights);
 
-},{"@babel/runtime/helpers/classCallCheck":37,"@babel/runtime/helpers/createClass":38,"@babel/runtime/helpers/getPrototypeOf":43,"@babel/runtime/helpers/inherits":44,"@babel/runtime/helpers/interopRequireDefault":45,"@babel/runtime/helpers/possibleConstructorReturn":49,"actions/reports":24,"common/Loader":2,"moment":271,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],7:[function(require,module,exports){
+},{"@babel/runtime/helpers/assertThisInitialized":36,"@babel/runtime/helpers/classCallCheck":37,"@babel/runtime/helpers/createClass":38,"@babel/runtime/helpers/getPrototypeOf":43,"@babel/runtime/helpers/inherits":44,"@babel/runtime/helpers/interopRequireDefault":45,"@babel/runtime/helpers/possibleConstructorReturn":49,"actions/reports":24,"common/Loader":2,"moment":271,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],7:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1375,6 +1403,11 @@ var VisitorEvents = /*#__PURE__*/function (_React$Component) {
       this.refresh();
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.props.clearReport('events');
+    }
+  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
       if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
@@ -1459,7 +1492,8 @@ var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
     report: state.reports['events'].result
   };
 }, {
-  requestReport: _reports.requestReport
+  requestReport: _reports.requestReport,
+  clearReport: _reports.clearReport
 })(VisitorEvents);
 
 },{"@babel/runtime/helpers/classCallCheck":37,"@babel/runtime/helpers/createClass":38,"@babel/runtime/helpers/getPrototypeOf":43,"@babel/runtime/helpers/inherits":44,"@babel/runtime/helpers/interopRequireDefault":45,"@babel/runtime/helpers/possibleConstructorReturn":49,"actions/reports":24,"common/data/StatsTable":4,"moment":271,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],14:[function(require,module,exports){

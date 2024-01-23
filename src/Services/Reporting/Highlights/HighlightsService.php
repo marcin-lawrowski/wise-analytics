@@ -41,7 +41,7 @@ class HighlightsService extends ReportingService {
 		return [
 			'visitors' => $totalVisits,
 			'pageViews' => $totalPageViews,
-			'avgPagesPerVisit' => $totalVisits['total'] ? round($totalPageViews / $totalVisits['total'], 2) : 0.0,
+			'avgPagesPerVisit' => $totalVisits['total'] ? round($totalPageViews['total'] / $totalVisits['total'], 2) : 0.0,
 			'avgSessionTime' => $avgSessionTime > 0 ? TimeUtils::formatDuration($avgSessionTime, 'suffixes') : '0s'
 		];
 	}

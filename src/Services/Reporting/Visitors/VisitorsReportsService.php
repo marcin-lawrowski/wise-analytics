@@ -27,6 +27,17 @@ class VisitorsReportsService extends ReportingService {
 		$output['percentReturning'] = $output['total'] ? round($output['returning'] / $output['total'] * 100, 2) : 0;
 		$output['percentNew'] = $output['total'] ? round($output['new'] / $output['total'] * 100, 2) : 0;
 
+		// compare to the previous period:
+		list($startDate, $endDate) = $this->getDatesToCompare($startDate, $endDate);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$result = $this->queryEvents(['select' => ['COUNT(DISTINCT user_id) AS users'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+		$previousTotal = $result ? (int) $result[0]->users : 0;
+		$output['previousTotal'] = $previousTotal;
+		$output['totalDiffPercent'] = $previousTotal > 0
+			? round((($output['total'] - $previousTotal) / $previousTotal * 100), 2)
+			: null;
+
 		return $output;
 	}
 

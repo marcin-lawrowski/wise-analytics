@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { requestReport } from "actions/reports";
+import { requestReport, clearReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
 import { Link } from "react-router-dom";
@@ -18,6 +18,10 @@ class Events extends React.Component {
 
 	componentDidMount() {
 		this.refresh();
+	}
+
+	componentWillUnmount() {
+		this.props.clearReport('events');
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
@@ -89,5 +93,5 @@ export default connect(
 		configuration: state.configuration,
 		loading: state.reports['events'].inProgress,
 		report: state.reports['events'].result
-	}), { requestReport }
+	}), { requestReport, clearReport }
 )(Events);

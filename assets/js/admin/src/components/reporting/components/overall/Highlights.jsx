@@ -7,6 +7,12 @@ import Loader from "common/Loader";
 
 class Highlights extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.renderDiffPercent = this.renderDiffPercent.bind(this);
+	}
+
 	componentDidMount() {
 		this.refresh();
 	}
@@ -27,6 +33,19 @@ class Highlights extends React.Component {
 		});
 	}
 
+	renderDiffPercent(percent) {
+		if (percent > 0) {
+			return <h6 className="text-success">
+				<strong><i className="bi bi-arrow-up"/> { percent } %</strong>
+			</h6>
+		} else if (percent < 0) {
+			return <h6 className="text-danger">
+				<strong><i className="bi bi-arrow-down"/> { percent } %</strong>
+			</h6>
+		}
+
+		return null;
+	}
 
 	render() {
 		return <React.Fragment>
@@ -36,6 +55,8 @@ class Highlights extends React.Component {
 						<div className="card-body text-center">
 							<h6 className="card-title text-muted">Visitors <Loader show={ this.props.loading } /></h6>
 							<h3>{ this.props.report.visitors.total } </h3>
+							{ this.renderDiffPercent(this.props.report.visitors.totalDiffPercent) }
+
 							{ this.props.report.visitors.percentNew }% <span className="text-muted">new</span>
 						</div>
 					</div>
@@ -44,7 +65,8 @@ class Highlights extends React.Component {
 					<div className="card p-1">
 						<div className="card-body text-center">
 							<h6 className="card-title text-muted">Page Views <Loader show={ this.props.loading } /></h6>
-							<h3>{ this.props.report.pageViews }</h3>
+							<h3>{ this.props.report.pageViews.total }</h3>
+							{ this.renderDiffPercent(this.props.report.pageViews.totalDiffPercent) }
 						</div>
 					</div>
 				</div>

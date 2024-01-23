@@ -46,4 +46,24 @@ abstract class ReportingService {
 
 		return [$startDate, $endDate];
 	}
+
+	/**
+	 * @param \DateTime $startDate
+	 * @param \DateTime $endDate
+	 * @return \DateTime[]
+	 */
+	protected function getDatesToCompare(\DateTime $startDate, \DateTime $endDate): array {
+		$interval = $startDate->diff($endDate);
+
+		$date1 = clone $startDate;
+		$date1->modify('-'.($interval->days + 1).' days');
+		$date2 = clone $startDate;
+		$date2->modify('-1 days');
+
+		$date1->setTime(0, 0, 0);
+		$date2->setTime(23, 59, 59);
+
+		return [$date1, $date2];
+	}
+
 }

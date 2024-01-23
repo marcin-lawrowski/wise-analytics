@@ -22,15 +22,29 @@ class PagesReportsService extends ReportingService {
 		$this->eventTypesDAO = $eventTypesDAO;
 	}
 
-	public function getTotalPageViews(\DateTime $startDate, \DateTime $endDate): int {
+	public function getTotalPageViews(\DateTime $startDate, \DateTime $endDate): array {
 		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
 		$result = $this->queryEvents(['select' => ['COUNT(*) AS total'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'", "type_id" => $eventType->getId()]]);
+		$total = count($result) > 0 ? (int) $result[0]->total : 0;
 
-		return count($result) > 0 ? (int) $result[0]->total : 0;
+		// compare to the previous period:
+		list($startDate, $endDate) = $this->getDatesToCompare($startDate, $endDate);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$result = $this->queryEvents(['select' => ['COUNT(*) AS total'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'", "type_id" => $eventType->getId()]]);
+		$previousTotal = count($result) > 0 ? (int) $result[0]->total : 0;
+
+		return [
+			'total' => $total,
+			'previousTotal' => $previousTotal,
+			'totalDiffPercent' => $previousTotal > 0
+				? round((($total - $previousTotal) / $previousTotal * 100), 2)
+				: null
+		];
 	}
 
 	public function getTopPagesViews(array $queryParams): array {
