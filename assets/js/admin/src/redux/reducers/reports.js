@@ -1,7 +1,7 @@
 import { handleServerActions } from "utils/actions";
 
 const defaultServerActions = {
-	'overview.highlights': { result: { visitors: { total: 0, new: 0, returning: 0, percentNew: 0 }, pageViews: 0, avgPagesPerVisit: 0.0, avgSessionTime: '0s' } },
+	'overview.highlights': { result: { visitors: { total: 0, new: 0, returning: 0, percentNew: 0 }, pageViews: { total: 0 }, avgPagesPerVisit: { ratio: 0.0 }, avgSessionTime: { time: '0s' } } },
 	'pages.top': { result: { pages: [], total: 0, offset: 0 } },
 	'visitors.last': { result: { visitors: [] } },
 	'visitors.daily': { result: { visitors: [] } },

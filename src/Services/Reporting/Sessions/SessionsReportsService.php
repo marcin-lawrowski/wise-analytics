@@ -3,10 +3,11 @@
 namespace Kainex\WiseAnalytics\Services\Reporting\Sessions;
 
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
+use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class SessionsReportsService extends ReportingService {
 
-	public function getAverageTime(\DateTime $startDate, \DateTime $endDate): int {
+	public function getAverageTime(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -15,7 +16,22 @@ class SessionsReportsService extends ReportingService {
 			'where' => ["start >= '$startDateStr'", "start <= '$endDateStr'"]
 		]);
 
-		return count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
+		$avgSessionTime = count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
+
+		list($startDate, $endDate) = $this->getDatesToCompare($startDate, $endDate);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$result = $this->querySessions([
+			'select' => ['SUM(duration) / COUNT(*) as avgSessionTime'],
+			'where' => ["start >= '$startDateStr'", "start <= '$endDateStr'"]
+		]);
+		$previousAvgSessionTime = count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
+
+		return [
+			'time' => TimeUtils::formatDuration($avgSessionTime, 'suffixes'),
+			'previousTime' => TimeUtils::formatDuration($previousAvgSessionTime, 'suffixes'),
+			'timeDiffPercent' => $previousAvgSessionTime > 0 ? round((($avgSessionTime - $previousAvgSessionTime) / $previousAvgSessionTime * 100), 2) : null
+		];
 	}
 
 	public function getSessionsDaily(array $queryParams) {

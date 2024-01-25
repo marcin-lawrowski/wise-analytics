@@ -74,7 +74,8 @@ class Highlights extends React.Component {
 					<div className="card p-1">
 						<div className="card-body text-center">
 							<h6 className="card-title text-muted">Pages / visit <Loader show={ this.props.loading } /></h6>
-							<h3>{ this.props.report.avgPagesPerVisit }</h3>
+							<h3>{ this.props.report.avgPagesPerVisit.ratio }</h3>
+							{ this.renderDiffPercent(this.props.report.avgPagesPerVisit.ratioDiffPercent) }
 						</div>
 					</div>
 				</div>
@@ -82,7 +83,8 @@ class Highlights extends React.Component {
 					<div className="card p-1">
 						<div className="card-body text-center">
 							<h6 className="card-title text-muted">Avg. Time <Loader show={ this.props.loading } /></h6>
-							<h3>{ this.props.report.avgSessionTime }</h3>
+							<h3>{ this.props.report.avgSessionTime.time }</h3>
+							{ this.renderDiffPercent(this.props.report.avgSessionTime.timeDiffPercent) }
 						</div>
 					</div>
 				</div>

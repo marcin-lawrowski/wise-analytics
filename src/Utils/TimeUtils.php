@@ -28,7 +28,7 @@ class TimeUtils {
 	 */
 	public static function formatDuration(int $seconds, ?string $mode = null, bool $roundSeconds = false): string {
 		if ($seconds === 0) {
-			return '';
+			return '0s';
 		}
 
 		$periods = [

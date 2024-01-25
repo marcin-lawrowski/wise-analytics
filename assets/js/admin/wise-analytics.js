@@ -658,7 +658,7 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-title text-muted"
       }, "Pages / visit ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.avgPagesPerVisit)))), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.avgPagesPerVisit.ratio), this.renderDiffPercent(this.props.report.avgPagesPerVisit.ratioDiffPercent)))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card p-1"
@@ -668,7 +668,7 @@ var Highlights = /*#__PURE__*/function (_React$Component) {
         className: "card-title text-muted"
       }, "Avg. Time ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
-      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.avgSessionTime))))));
+      })), /*#__PURE__*/_react["default"].createElement("h3", null, this.props.report.avgSessionTime.time), this.renderDiffPercent(this.props.report.avgSessionTime.timeDiffPercent))))));
     }
   }]);
   return Highlights;
@@ -2327,9 +2327,15 @@ var defaultServerActions = {
         returning: 0,
         percentNew: 0
       },
-      pageViews: 0,
-      avgPagesPerVisit: 0.0,
-      avgSessionTime: '0s'
+      pageViews: {
+        total: 0
+      },
+      avgPagesPerVisit: {
+        ratio: 0.0
+      },
+      avgSessionTime: {
+        time: '0s'
+      }
     }
   },
   'pages.top': {

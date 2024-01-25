@@ -6,7 +6,6 @@ use Kainex\WiseAnalytics\Services\Reporting\Pages\PagesReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Visitors\VisitorsReportsService;
-use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class HighlightsService extends ReportingService {
 
@@ -36,13 +35,19 @@ class HighlightsService extends ReportingService {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$totalVisits = $this->visitorsReportsService->getVisitorsHighlights($startDate, $endDate);
 		$totalPageViews = $this->pagesReportsService->getTotalPageViews($startDate, $endDate);
-		$avgSessionTime = $this->sessionsReportsService->getAverageTime($startDate, $endDate);
+
+		$avgPagesPerVisit = $totalVisits['total'] ? round($totalPageViews['total'] / $totalVisits['total'], 2) : 0.0;
+		$previousAvgPagesPerVisit = $totalVisits['previousTotal'] ? round($totalPageViews['previousTotal'] / $totalVisits['previousTotal'], 2) : 0.0;
 
 		return [
 			'visitors' => $totalVisits,
 			'pageViews' => $totalPageViews,
-			'avgPagesPerVisit' => $totalVisits['total'] ? round($totalPageViews['total'] / $totalVisits['total'], 2) : 0.0,
-			'avgSessionTime' => $avgSessionTime > 0 ? TimeUtils::formatDuration($avgSessionTime, 'suffixes') : '0s'
+			'avgPagesPerVisit' => [
+				'ratio' => $avgPagesPerVisit,
+				'previousRatio' => $previousAvgPagesPerVisit,
+				'ratioDiffPercent' => $previousAvgPagesPerVisit > 0 ? round((($avgPagesPerVisit - $previousAvgPagesPerVisit) / $previousAvgPagesPerVisit * 100), 2) : null
+			],
+			'avgSessionTime' => $this->sessionsReportsService->getAverageTime($startDate, $endDate)
 		];
 	}
 
