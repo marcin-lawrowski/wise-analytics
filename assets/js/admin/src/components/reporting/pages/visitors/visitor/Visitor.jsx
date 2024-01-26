@@ -38,6 +38,8 @@ class Visitor extends React.Component {
 			['E-mail', data.email],
 			['Company', data.company],
 			['Language', data.language],
+			['Screen Width', data.screenWidth],
+			['Screen Height', data.screenHeight],
 			['First Visit', data.firstVisit],
 			['Last Visit', data.lastVisit],
 			['Total Visit', data.totalSessions],

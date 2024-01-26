@@ -60,10 +60,14 @@ class FrontHandler {
 	private function handleEvent() {
 		try {
 			$language = $this->getRequestParam('la');
+			$screenHeight = $this->getRequestParam('sh');
+			$screenWidth = $this->getRequestParam('sw');
 
 			$event = $this->eventsService->createEventWithChecksum(
 				$this->visitorsService->getOrCreate([
-					'language' => $language
+					'language' => $language,
+					'screenHeight' => $screenHeight,
+					'screenWidth' => $screenWidth
 				]),
 				$this->getRequestParam('ty'),
 				$this->getRequestParam('cs'), [

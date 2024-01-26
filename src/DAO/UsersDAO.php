@@ -124,6 +124,8 @@ class UsersDAO extends AbstractDAO {
 			'company' => $user->getCompany(),
 			'language' => $user->getLanguage(),
 			'ip' => $user->getIp(),
+			'screen_height' => $user->getScreenHeight(),
+			'screen_width' => $user->getScreenWidth(),
 			'data' => json_encode($user->getData()),
 			'created' => $user->getCreated()->format('Y-m-d H:i:s')
 		];
@@ -167,6 +169,13 @@ class UsersDAO extends AbstractDAO {
 		$user->setIp($rawUserData->ip);
 		$user->setCompany($rawUserData->company);
 		$user->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', $rawUserData->created));
+
+		if ($rawUserData->screen_height) {
+			$user->setScreenHeight(intval($rawUserData->screen_height));
+		}
+		if ($rawUserData->screen_width) {
+			$user->setScreenWidth(intval($rawUserData->screen_width));
+		}
 
 		return $user;
 	}

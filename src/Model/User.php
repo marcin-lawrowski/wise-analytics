@@ -34,6 +34,12 @@ class User {
     /** @var string|null */
     private $language;
 
+    /** @var int|null */
+    private $screenWidth;
+
+    /** @var int|null */
+    private $screenHeight;
+
     /** @var string|null */
     private $ip;
 
@@ -199,6 +205,38 @@ class User {
 	public function setIp(?string $ip): void
 	{
 		$this->ip = $ip;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getScreenWidth(): ?int
+	{
+		return $this->screenWidth;
+	}
+
+	/**
+	 * @param int|null $screenWidth
+	 */
+	public function setScreenWidth(?int $screenWidth): void
+	{
+		$this->screenWidth = $screenWidth;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getScreenHeight(): ?int
+	{
+		return $this->screenHeight;
+	}
+
+	/**
+	 * @param int|null $screenHeight
+	 */
+	public function setScreenHeight(?int $screenHeight): void
+	{
+		$this->screenHeight = $screenHeight;
 	}
 
 }

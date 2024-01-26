@@ -359,7 +359,7 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
         tabIndex: "-1",
         "aria-disabled": "true",
         onClick: this.handleFirst
-      }, "First")), /*#__PURE__*/_react["default"].createElement("li", {
+      }, "First")), this.props.total > this.props.limit && /*#__PURE__*/_react["default"].createElement("li", {
         className: "page-item m-0" + (!this.hasPrev() ? ' disabled' : '')
       }, /*#__PURE__*/_react["default"].createElement("a", {
         className: "page-link",
@@ -367,7 +367,7 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
         tabIndex: "-1",
         "aria-disabled": "true",
         onClick: this.handlePrev
-      }, "Prev")), /*#__PURE__*/_react["default"].createElement("li", {
+      }, "Prev")), this.props.total > this.props.limit && /*#__PURE__*/_react["default"].createElement("li", {
         className: "page-item m-0" + (!this.hasNext() ? ' disabled' : '')
       }, /*#__PURE__*/_react["default"].createElement("a", {
         className: "page-link",
@@ -2129,7 +2129,7 @@ var Visitor = /*#__PURE__*/function (_React$Component) {
     key: "renderInformation",
     value: function renderInformation() {
       var data = this.props.information;
-      var toRender = [['Name', data.name.length ? data.name : 'Visitor #' + data.id], ['E-mail', data.email], ['Company', data.company], ['Language', data.language], ['First Visit', data.firstVisit], ['Last Visit', data.lastVisit], ['Total Visit', data.totalSessions], ['Avg. Visit', data.avgSessionDuration], ['Total Events', data.totalEvents]];
+      var toRender = [['Name', data.name.length ? data.name : 'Visitor #' + data.id], ['E-mail', data.email], ['Company', data.company], ['Language', data.language], ['Screen Width', data.screenWidth], ['Screen Height', data.screenHeight], ['First Visit', data.firstVisit], ['Last Visit', data.lastVisit], ['Total Visit', data.totalSessions], ['Avg. Visit', data.avgSessionDuration], ['Total Events', data.totalEvents]];
       return /*#__PURE__*/_react["default"].createElement("table", {
         className: "table"
       }, /*#__PURE__*/_react["default"].createElement("tbody", null, toRender.filter(function (entry) {

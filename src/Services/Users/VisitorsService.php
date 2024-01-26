@@ -64,6 +64,16 @@ class VisitorsService {
 				$visitor->setIp($configuration['ip']);
 				$changed = true;
 			}
+
+			if (isset($configuration['screenHeight']) && is_numeric($configuration['screenHeight']) && $configuration['screenHeight'] !== $visitor->getScreenHeight()) {
+				$visitor->setScreenHeight(intval($configuration['screenHeight']));
+				$changed = true;
+			}
+			if (isset($configuration['screenWidth']) && is_numeric($configuration['screenWidth']) && $configuration['screenWidth'] !== $visitor->getScreenWidth()) {
+				$visitor->setScreenWidth(intval($configuration['screenWidth']));
+				$changed = true;
+			}
+
 			if ($changed) {
 				$visitor = $this->usersDAO->save($visitor);
 			}

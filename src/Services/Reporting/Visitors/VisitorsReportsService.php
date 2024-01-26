@@ -184,6 +184,8 @@ class VisitorsReportsService extends ReportingService {
 			'email' => $visitor->email,
 			'company' => $visitor->company,
 			'language' => $visitor->language,
+			'screenWidth' => $visitor->screen_width,
+			'screenHeight' => $visitor->screen_height,
 			'firstVisit' => $visitor->created,
 			'lastVisit' => TimeUtils::formatTimestamp($sessions->lastVisit),
 			'data' => json_decode($visitor->data),

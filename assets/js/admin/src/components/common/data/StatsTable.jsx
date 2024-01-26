@@ -79,12 +79,16 @@ class StatsTable extends React.Component {
 										<a className="page-link" href="#" tabIndex="-1" aria-disabled="true" onClick={this.handleFirst}>First</a>
 									</li>
 								}
-								<li className={ "page-item m-0" + (!this.hasPrev() ? ' disabled' : '') }>
-									<a className="page-link" href="#" tabIndex="-1" aria-disabled="true" onClick={ this.handlePrev }>Prev</a>
-								</li>
-								<li className={ "page-item m-0" + (!this.hasNext() ? ' disabled' : '') }>
-									<a className="page-link" href="#" onClick={ this.handleNext }>Next</a>
-								</li>
+								{ this.props.total > this.props.limit &&
+									<li className={ "page-item m-0" + (!this.hasPrev() ? ' disabled' : '') }>
+										<a className="page-link" href="#" tabIndex="-1" aria-disabled="true" onClick={ this.handlePrev }>Prev</a>
+									</li>
+								}
+								{ this.props.total > this.props.limit &&
+									<li className={ "page-item m-0" + (!this.hasNext() ? ' disabled' : '') }>
+										<a className="page-link" href="#" onClick={ this.handleNext }>Next</a>
+									</li>
+								}
 							</ul>
 						</nav>
 						{ this.renderPaginationSummary() }

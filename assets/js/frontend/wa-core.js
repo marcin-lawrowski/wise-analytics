@@ -66,6 +66,22 @@ waConnector.api.Core = function() {
 
 		return canonical ? canonical.getAttribute("href") : '';
 	}
+
+	function getScreenWidth() {
+		if (window.screen || window.screen.width) {
+			return window.screen.width;
+		}
+
+		return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	}
+
+	function getScreenHeight() {
+		if (window.screen || window.screen.height) {
+			return window.screen.height;
+		}
+
+		return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	}
 	
 	/**
 	 * Tracks event with additional data.
@@ -82,7 +98,9 @@ waConnector.api.Core = function() {
 			ti: document.title,
 			re: document.referrer,
 			la: window.navigator.userLanguage || window.navigator.language,
-			cs: getApiHash()
+			cs: getApiHash(),
+			sw: getScreenWidth(),
+			sh: getScreenHeight()
 		};
 		
 		if (typeof customData !== 'undefined') {
