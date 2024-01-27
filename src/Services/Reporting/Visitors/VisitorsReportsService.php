@@ -4,6 +4,7 @@ namespace Kainex\WiseAnalytics\Services\Reporting\Visitors;
 
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
+use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class VisitorsReportsService extends ReportingService {
@@ -146,6 +147,39 @@ class VisitorsReportsService extends ReportingService {
 				'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
 				'group' => ['us.language']
 			])
+		];
+	}
+
+	public function getDevices(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$devicesMap = [
+			VisitorsService::DEVICE_DESKTOP => 'Desktop',
+			VisitorsService::DEVICE_TABLET => 'Table',
+			VisitorsService::DEVICE_MOBILE => 'Mobile',
+		];
+		$devicesOut = [];
+		$devices = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(distinct ev.user_id) as totalVisitors',
+				'us.device'
+			],
+			'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
+			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
+			'group' => ['us.device']
+		]);
+		foreach ($devices as $deviceEntry) {
+			$devicesOut[] = [
+				'device' => isset($devicesMap[$deviceEntry->device]) ? $devicesMap[$deviceEntry->device] : '(not set)',
+				'totalVisitors' => $deviceEntry->totalVisitors
+			];
+		}
+
+		return [
+			'devices' => $devicesOut
 		];
 	}
 

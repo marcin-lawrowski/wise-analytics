@@ -126,6 +126,7 @@ class UsersDAO extends AbstractDAO {
 			'ip' => $user->getIp(),
 			'screen_height' => $user->getScreenHeight(),
 			'screen_width' => $user->getScreenWidth(),
+			'device' => $user->getDevice(),
 			'data' => json_encode($user->getData()),
 			'created' => $user->getCreated()->format('Y-m-d H:i:s')
 		];
@@ -175,6 +176,9 @@ class UsersDAO extends AbstractDAO {
 		}
 		if ($rawUserData->screen_width) {
 			$user->setScreenWidth(intval($rawUserData->screen_width));
+		}
+		if ($rawUserData->device) {
+			$user->setDevice($rawUserData->device);
 		}
 
 		return $user;

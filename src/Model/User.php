@@ -40,6 +40,9 @@ class User {
     /** @var int|null */
     private $screenHeight;
 
+    /** @var int|null */
+    private $device;
+
     /** @var string|null */
     private $ip;
 
@@ -237,6 +240,22 @@ class User {
 	public function setScreenHeight(?int $screenHeight): void
 	{
 		$this->screenHeight = $screenHeight;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getDevice(): ?int
+	{
+		return $this->device;
+	}
+
+	/**
+	 * @param int|null $device
+	 */
+	public function setDevice(?int $device): void
+	{
+		$this->device = $device;
 	}
 
 }

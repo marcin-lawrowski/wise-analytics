@@ -6,6 +6,7 @@ const defaultServerActions = {
 	'visitors.last': { result: { visitors: [] } },
 	'visitors.daily': { result: { visitors: [] } },
 	'visitors.languages': { result: { languages: [] } },
+	'visitors.devices': { result: { devices: [] } },
 	'visitor.information': { result: undefined },
 	'sessions.daily': { result: { sessions: [] } },
 	'pages.views.daily': { result: { pageViews: [] } },

@@ -120,7 +120,8 @@ class StatsTable extends React.Component {
 
 StatsTable.defaultProps = {
 	loading: false,
-	onOffsetChange: () => null
+	onOffsetChange: () => null,
+	className: ''
 }
 
 StatsTable.propTypes = {

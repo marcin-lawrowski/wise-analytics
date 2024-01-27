@@ -159,6 +159,7 @@ class Installer {
 				ip text,
 				screen_width int,
 				screen_height int,
+				device int,
 				created datetime NOT NULL default now(),
 				data json
 		) $charsetCollate;";

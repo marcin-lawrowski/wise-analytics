@@ -70,6 +70,8 @@ class ReportsEndpoint {
 					return $this->visitorsReportsService->getVisitorsDaily($queryParams);
 				case 'visitors.languages';
 					return $this->visitorsReportsService->getLanguages($queryParams);
+				case 'visitors.devices';
+					return $this->visitorsReportsService->getDevices($queryParams);
 				case 'visitor.information';
 					return $this->visitorsReportsService->getInformation($queryParams);
 				case 'sessions.daily';
