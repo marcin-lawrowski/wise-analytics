@@ -112,6 +112,13 @@ class VisitorsService {
 		if (isset($configuration['ip'])) {
 			$visitor->setIp($configuration['ip']);
 		}
+		if (isset($configuration['screenHeight']) && is_numeric($configuration['screenHeight'])) {
+			$visitor->setScreenHeight(intval($configuration['screenHeight']));
+		}
+		if (isset($configuration['screenWidth']) && is_numeric($configuration['screenWidth'])) {
+			$visitor->setScreenWidth(intval($configuration['screenWidth']));
+		}
+		$this->determineDeviceType($visitor);
 		$visitor = $this->usersDAO->save($visitor);
 
 		setcookie(self::UUID_COOKIE, $visitor->getUuid(), time() + self::UUID_COOKIE_TIME, '/');
