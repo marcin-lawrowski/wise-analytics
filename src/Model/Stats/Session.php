@@ -22,6 +22,9 @@ class Session {
     /** @var integer */
     private $duration;
 
+    /** @var string|null */
+    private $source;
+
 	/**
 	 * @return int|null
 	 */
@@ -116,6 +119,22 @@ class Session {
 	public function setDuration(int $duration): void
 	{
 		$this->duration = $duration;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSource(): ?string
+	{
+		return $this->source;
+	}
+
+	/**
+	 * @param string|null $source
+	 */
+	public function setSource(?string $source): void
+	{
+		$this->source = $source;
 	}
 
 }

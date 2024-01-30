@@ -199,7 +199,8 @@ class Installer {
 				start datetime not null,
 				end datetime not null,
 				duration int default 0,
-				events json
+				events json,
+				source text
 		) $charsetCollate;";
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);

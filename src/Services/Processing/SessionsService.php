@@ -128,9 +128,24 @@ class SessionsService {
 			$session->setDuration($duration);
 			$session->setStart($startDate);
 			$session->setEnd($endDate);
+			$session->setSource($this->getSource($firstEvent));
 
 			$this->sessionsDAO->save($session);
 		}
+	}
+
+	private function getSource(object $firstEvent): ?string {
+		$data = json_decode($firstEvent->data, true);
+		if (!is_array($data) || !isset($data['referer']) || !$data['referer']) {
+			return null;
+		}
+
+		$sourceDomain = parse_url($data['referer'], PHP_URL_HOST);
+		if ($sourceDomain && filter_var($sourceDomain, FILTER_VALIDATE_DOMAIN)) {
+			return preg_replace('/^www\./', '', $sourceDomain);
+		}
+
+		return null;
 	}
 
 }

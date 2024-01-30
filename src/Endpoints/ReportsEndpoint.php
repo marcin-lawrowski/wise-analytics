@@ -76,6 +76,8 @@ class ReportsEndpoint {
 					return $this->visitorsReportsService->getInformation($queryParams);
 				case 'sessions.daily';
 					return $this->sessionsReportsService->getSessionsDaily($queryParams);
+				case 'sessions.sources';
+					return $this->sessionsReportsService->getSources($queryParams);
 				case 'events';
 					return $this->eventsReportsService->getEvents($queryParams);
 			}

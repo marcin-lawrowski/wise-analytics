@@ -73,4 +73,31 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
+	public function getSources(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$sourcesOut = [];
+		$sources = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(distinct se.user_id) as totalVisitors',
+				'se.source'
+			],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'group' => ['se.source']
+		]);
+		foreach ($sources as $sourceEntry) {
+			$sourcesOut[] = [
+				'source' => $sourceEntry->source ? $sourceEntry->source : 'Direct',
+				'totalVisitors' => intval($sourceEntry->totalVisitors)
+			];
+		}
+
+		return [
+			'sources' => $sourcesOut
+		];
+	}
+
 }
