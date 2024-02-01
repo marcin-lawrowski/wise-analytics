@@ -25,6 +25,12 @@ class Session {
     /** @var string|null */
     private $source;
 
+    /** @var string|null */
+    private $sourceGroup;
+
+    /** @var string|null */
+    private $sourceCategory;
+
 	/**
 	 * @return int|null
 	 */
@@ -135,6 +141,38 @@ class Session {
 	public function setSource(?string $source): void
 	{
 		$this->source = $source;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSourceCategory(): ?string
+	{
+		return $this->sourceCategory;
+	}
+
+	/**
+	 * @param string|null $sourceCategory
+	 */
+	public function setSourceCategory(?string $sourceCategory): void
+	{
+		$this->sourceCategory = $sourceCategory;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSourceGroup(): ?string
+	{
+		return $this->sourceGroup;
+	}
+
+	/**
+	 * @param string|null $sourceGroup
+	 */
+	public function setSourceGroup(?string $sourceGroup): void
+	{
+		$this->sourceGroup = $sourceGroup;
 	}
 
 }

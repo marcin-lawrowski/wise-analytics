@@ -10,6 +10,7 @@ const defaultServerActions = {
 	'visitor.information': { result: undefined },
 	'sessions.daily': { result: { sessions: [] } },
 	'sessions.sources': { result: { sources: [] } },
+	'sessions.sourceCategories': { result: { sourceCategories: [] } },
 	'pages.views.daily': { result: { pageViews: [] } },
 	'events': { result: { events: [], total: 0, offset: 0 } }
 }

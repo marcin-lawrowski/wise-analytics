@@ -100,4 +100,31 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
+	public function getSourceCategories(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$sourcesOut = [];
+		$sources = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(distinct se.user_id) as totalVisitors',
+				'se.source_category'
+			],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'group' => ['se.source_category']
+		]);
+		foreach ($sources as $sourceEntry) {
+			$sourcesOut[] = [
+				'source' => $sourceEntry->source_category ? $sourceEntry->source_category : 'Unknown',
+				'totalVisitors' => intval($sourceEntry->totalVisitors)
+			];
+		}
+
+		return [
+			'sourceCategories' => $sourcesOut
+		];
+	}
+
 }

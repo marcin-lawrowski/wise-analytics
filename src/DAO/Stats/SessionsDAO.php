@@ -47,6 +47,8 @@ class SessionsDAO extends AbstractDAO {
 			'user_id' => $session->getUserId(),
 			'duration' => $session->getDuration(),
 			'source' => $session->getSource(),
+			'source_group' => $session->getSourceGroup(),
+			'source_category' => $session->getSourceCategory(),
 			'events' => json_encode($session->getEvents()),
 			'start' => $session->getStart()->format('Y-m-d H:i:s'),
 			'end' => $session->getEnd()->format('Y-m-d H:i:s')
@@ -78,6 +80,8 @@ class SessionsDAO extends AbstractDAO {
 		$session->setEvents(json_decode($rawData->events, true));
 		$session->setDuration($rawData->duration);
 		$session->setSource($rawData->source);
+		$session->setSourceGroup($rawData->source_group);
+		$session->setSourceCategory($rawData->source_category);
 		$session->setStart(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->start));
 		$session->setEnd(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->end));
 

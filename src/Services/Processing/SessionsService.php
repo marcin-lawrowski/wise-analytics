@@ -128,12 +128,19 @@ class SessionsService {
 			$session->setDuration($duration);
 			$session->setStart($startDate);
 			$session->setEnd($endDate);
-			$session->setSource($this->getSource($firstEvent));
+
+			$this->setSources($session, $firstEvent);
 
 			$this->sessionsDAO->save($session);
 		}
 	}
 
+	/**
+	 * Returns source domain.
+	 *
+	 * @param object $firstEvent
+	 * @return string|null
+	 */
 	private function getSource(object $firstEvent): ?string {
 		$data = json_decode($firstEvent->data, true);
 		if (!is_array($data) || !isset($data['referer']) || !$data['referer']) {
@@ -147,5 +154,116 @@ class SessionsService {
 
 		return null;
 	}
+
+	private function setSources(Session $session, object $firstEvent) {
+		$domain = $this->getSource($firstEvent);
+
+		if (!$domain) {
+			$session->setSourceCategory('Direct');
+			return;
+		}
+		$session->setSource($domain);
+
+		// social networks:
+		foreach (self::SOCIAL_NETWORKS as $pattern => $networkName) {
+			if (preg_match('/'.$pattern.'$/', $domain)) {
+				$session->setSourceCategory('Social Network');
+				$session->setSourceGroup($networkName);
+				return;
+			}
+		}
+
+		// search engines:
+		foreach (self::SEARCH_ENGINES as $pattern => $engineName) {
+			if (preg_match('/'.$pattern.'$/', $domain)) {
+				$session->setSourceCategory('Organic');
+				$session->setSourceGroup($engineName);
+				return;
+			}
+		}
+
+		$session->setSourceCategory('Referral');
+	}
+
+	const SEARCH_ENGINES = [
+		'google.[a-z]{2,3}' => 'Google',
+		'yahoo.com' => 'Yahoo',
+		'yandex.ru' => 'Yandex',
+		'yandex.com' => 'Yandex',
+		'ya.ru' => 'Yandex',
+		'duckduckgo.com' => 'DuckDuckGo',
+		'bing.com' => 'Bing',
+		'naver.com' => 'Naver',
+		'baidu.com' => 'Baidu',
+		'ecosia.org' => 'Ecosia',
+		'seznam.cz' => 'Seznam',
+		'aol.com' => 'AOL',
+		'qwant.com' => 'Qwant',
+		'search.brave.com' => 'Brave Search',
+		'startpage.com' => 'StartPage',
+		'you.com' => 'You.com',
+		'sogou.com' => 'Sogou',
+		'coccoc.com' => 'Cốc Cốc Search',
+		'so.com' => 'Haosou',
+		'dogpile.com' => 'Dogpile',
+		'swisscows.com' => 'Swisscows',
+		'ask.com' => 'Ask',
+		'yippyinc.com' => 'Yippy',
+		'gibiru.com' => 'Gibiru'
+	];
+
+	const SOCIAL_NETWORKS = [
+		'wordpress.org' => 'WordPress.org',
+		'facebook.com' => 'Facebook',
+		'instagram.com' => 'Instagram',
+		'twitter.com' => 'X',
+		'whatsapp.com' => 'Whatsapp',
+		'tiktok.com' => 'TikTok',
+		'reddit.com' => 'Reddit',
+		'linkedin.com' => 'LinkedIn',
+		'vk.com' => 'VK',
+		'pinterest.com' => 'Pinterest',
+		'discord.com' => 'Discord',
+		'ok.ru' => 'OK',
+		'zhihu.com' => 'Zhihu',
+		'line.me' => 'Line',
+		'messenger.com' => 'Messenger',
+		'telegram.org' => 'Telegram',
+		'peachavocado.com' => 'Peachavocado',
+		'snapchat.com' => 'Snapchat',
+		'namu.wiki' => 'Namuwiki',
+		'tumblr.com' => 'Tumblr',
+		'ameblo.jp' => 'Ameba',
+		'nextdoor.com' => 'Nextdoor',
+		'heylink.me' => 'HeyLink',
+		'xiaohongshu.com' => 'XiaoHongShu',
+		'weibo.com' => 'Sina Weibo',
+		'zalo.me' => 'Zalo',
+		'patreon.com' => 'Patreon',
+		'slack.com' => 'Slack',
+		'zaloapp.com' => 'Zalo App',
+		'hatenablog.com' => 'Hatenablog',
+		'threads.net' => 'Threads',
+		'pinterest.es' => 'Pinterest',
+		'livejournal.com' => 'LiveJournal',
+		'discordapp.com' => 'Discord',
+		'pinterest.com.mx' => 'Pinterest',
+		'atid.me' => 'Atid',
+		'slideshare.net' => 'SlideShare',
+		'kwai.com' => 'Kwai',
+		'ssstik.io' => 'SSSTik',
+		'bakusai.com' => 'Bakusai',
+		'fb.com' => 'Facebook',
+		'snaptik.app' => 'SnapTik',
+		'pinterest.co.uk' => 'Pinterest',
+		'ptt.cc' => 'Ptt',
+		'saveinsta.app' => 'Saveinsta',
+		'redd.it' => 'Reddit',
+		'pinterest.fr' => 'Pinterest',
+		'youtubekids.com' => 'YouTube Kids',
+		'pinterest.de' => 'Pinterest',
+		'feishu.cn' => 'Feishu',
+		'pinterest.ca' => 'Pinterest',
+	];
 
 }

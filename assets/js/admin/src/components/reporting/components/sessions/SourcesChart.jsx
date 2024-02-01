@@ -20,7 +20,7 @@ class SourcesChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sessions.sources',
+			name: 'sessions.sourceCategories',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -29,7 +29,7 @@ class SourcesChart extends React.Component {
 	}
 
 	render() {
-		const data = this.props.report.sources.map( (record, index) => ({ "id": record.source, "value": record.totalVisitors }) );
+		const data = this.props.report.sourceCategories.map( (record, index) => ({ "id": record.source, "value": record.totalVisitors }) );
 
 		return <div className="card">
 			<div className="card-body p-0">
@@ -87,7 +87,7 @@ SourcesChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sessions.sources'].inProgress,
-		report: state.reports['sessions.sources'].result
+		loading: state.reports['sessions.sourceCategories'].inProgress,
+		report: state.reports['sessions.sourceCategories'].result
 	}), { requestReport }
 )(SourcesChart);

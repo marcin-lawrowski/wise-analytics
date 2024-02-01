@@ -1153,7 +1153,7 @@ var SourcesChart = /*#__PURE__*/function (_React$Component) {
     key: "refresh",
     value: function refresh() {
       this.props.requestReport({
-        name: 'sessions.sources',
+        name: 'sessions.sourceCategories',
         filters: {
           startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
@@ -1163,7 +1163,7 @@ var SourcesChart = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var data = this.props.report.sources.map(function (record, index) {
+      var data = this.props.report.sourceCategories.map(function (record, index) {
         return {
           "id": record.source,
           "value": record.totalVisitors
@@ -1228,8 +1228,8 @@ SourcesChart.propTypes = {
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration,
-    loading: state.reports['sessions.sources'].inProgress,
-    report: state.reports['sessions.sources'].result
+    loading: state.reports['sessions.sourceCategories'].inProgress,
+    report: state.reports['sessions.sourceCategories'].result
   };
 }, {
   requestReport: _reports.requestReport
@@ -2639,6 +2639,11 @@ var defaultServerActions = {
   'sessions.sources': {
     result: {
       sources: []
+    }
+  },
+  'sessions.sourceCategories': {
+    result: {
+      sourceCategories: []
     }
   },
   'pages.views.daily': {
