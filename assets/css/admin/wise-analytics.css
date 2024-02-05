@@ -43,9 +43,16 @@ div.waContainer {
    * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)
    */
   margin-top: 2em;
+  --wa-color-primary: #31525b;
+  --wa-color-primary-light: #b3dee5;
+  --wa-color-secondary: #ffa101;
+  --wa-color-secondary-light: #fae6b1;
 }
 div.waContainer .card {
   max-width: unset;
+}
+div.waContainer dd, div.waContainer li {
+  margin-bottom: auto;
 }
 div.waContainer :root,
 div.waContainer [data-bs-theme=light] {
@@ -19430,4 +19437,44 @@ div.waContainer .react-datepicker__calendar-icon {
 }
 div.waContainer .card {
   --bs-card-border-color: #f7f9fc;
+}
+div.waContainer .wa-text-color-primary {
+  color: var(--wa-color-primary);
+}
+div.waContainer .wa-text-color-primary-light {
+  color: var(--wa-color-primary-light);
+}
+div.waContainer .wa-text-color-secondary {
+  color: var(--wa-color-secondary);
+}
+div.waContainer .wa-text-color-secondary-light {
+  color: var(--wa-color-secondary-light);
+}
+div.waContainer .wa-bg-color-primary {
+  background-color: var(--wa-color-primary);
+}
+div.waContainer .wa-bg-color-primary-light {
+  background-color: var(--wa-color-primary-light);
+}
+div.waContainer .wa-bg-color-secondary {
+  background-color: var(--wa-color-secondary);
+}
+div.waContainer .wa-bg-color-secondary-light {
+  background-color: var(--wa-color-secondary-light);
+}
+div.waContainer .main-menu a {
+  text-decoration: none;
+  padding: 6px;
+  outline: none;
+  color: inherit;
+  border-radius: 0.25rem;
+}
+div.waContainer .main-menu a:focus, div.waContainer .main-menu a:active {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+div.waContainer .main-menu a.top-item {
+  font-size: 1.2em;
+  font-weight: 500;
 }

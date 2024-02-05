@@ -127,4 +127,52 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
+	public function getSourceCategoriesDaily(array $queryParams) {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$result = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'DATE_FORMAT(se.start, \'%Y-%m-%d\') as date',
+				'se.source_category',
+				'count(*) as sessions'
+			],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'group' => ['DATE_FORMAT(se.start, \'%Y-%m-%d\')', 'se.source_category']
+		]);
+
+		$output = [];
+		$allCategories = [];
+		foreach ($result as $record) {
+			$sourceCategory = $record->source_category ?? 'Unknown';
+			$output[$record->date][$sourceCategory] = intval($record->sessions);
+			$allCategories[] = $sourceCategory;
+		}
+
+		$allCategories = array_values(array_unique($allCategories));
+
+		$sourceCategories = [];
+		$endDate->modify('+1 day');
+		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
+			$dateStr = $startDate->format('Y-m-d');
+
+			$entry = [
+				'date' => $dateStr
+			];
+			foreach ($allCategories as $category) {
+				$entry[$category] = isset($output[$dateStr]) && isset($output[$dateStr][$category]) ? $output[$dateStr][$category] : 0;
+			}
+
+			$sourceCategories[] = $entry;
+
+			$startDate->modify('+1 day');
+		}
+
+		return [
+			'sourceCategories' => $sourceCategories
+		];
+	}
+
 }

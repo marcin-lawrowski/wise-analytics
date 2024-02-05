@@ -7,9 +7,9 @@ import { getNumberTickValues } from 'utils/charts';
 class LineChart extends React.Component {
 
 	render() {
-		const series1 = this.props.data[0];
-		const yMax = Math.max( ...series1.data.map( record => record.y ) );
+		const yMax = Math.max( ...this.props.data.map( serie => serie.data.map( record => record.y ) ).flat() );
 		const yTickValues = getNumberTickValues(yMax);
+		const series = this.props.data.reduce( (prev, cur) => ({...prev, [cur.id]: cur }), {});
 
 		return <ResponsiveLine
 			data={ this.props.data }
@@ -20,12 +20,12 @@ class LineChart extends React.Component {
 				type: 'linear',
 				min: 0,
 				max: yTickValues[yTickValues.length - 1],
-				stacked: true,
+				stacked: false,
 				reverse: false
 			}}
 			enableGridX={ false }
 			gridYValues={ yTickValues }
-			enableArea={ true } // background below the lines
+			enableArea={ this.props.enableArea } // background below the lines
 			xFormat="time:%Y-%m-%d"
 			yFormat=" >-.0d"
 			tickInterval={ 100 }
@@ -59,15 +59,20 @@ class LineChart extends React.Component {
 		                border: '1px solid #92b7d5',
 		                alignItems: 'center'
 	                }}
-	            >{ point.data.yFormatted } { point.data.y !== 1 ? series1.plural : series1.single}<br /> { moment(point.data.x).format('MMM D') }</div>
+	            >{ point.data.yFormatted } { point.data.y !== 1 ? series[point.serieId].plural : series[point.serieId].single}<br /> { moment(point.data.x).format('MMM D') }</div>
 	        )}
 		/>
 	}
 
 }
 
+LineChart.defaultProps = {
+	enableArea: true
+}
+
 LineChart.propTypes = {
 	data: PropTypes.array.isRequired,
+	enableArea: PropTypes.bool.isRequired,
 };
 
 export default LineChart;

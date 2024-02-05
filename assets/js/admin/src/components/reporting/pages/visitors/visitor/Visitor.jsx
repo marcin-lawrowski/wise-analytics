@@ -3,18 +3,25 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { withRouter } from "utils/router";
 import { requestReport, clearReport } from "actions/reports";
+import { setTitle } from "actions/ui";
 import Loader from "common/Loader";
 import VisitorEvents from "reporting/components/visitors/VisitorEvents";
 
 class Visitor extends React.Component {
 
 	componentDidMount() {
+		this.props.setTitle('Visitor - #' + this.props.params.id);
 		this.refresh();
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (prevProps.params.id !== this.props.params.id && this.props.params.id) {
 			this.refresh();
+		}
+		if (prevProps.information !== this.props.information && this.props.information) {
+			if (this.props.information.name.length) {
+				this.props.setTitle('Visitor - ' + this.props.information.name);
+			}
 		}
 	}
 
@@ -87,5 +94,5 @@ export default connect(
 		configuration: state.configuration,
 		informationLoading: state.reports['visitor.information'].inProgress,
 		information: state.reports['visitor.information'].result
-	}), { requestReport, clearReport }
+	}), { requestReport, clearReport, setTitle }
 )(withRouter(Visitor));

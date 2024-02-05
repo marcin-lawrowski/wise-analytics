@@ -5,8 +5,13 @@ import LanguagesChart from "reporting/components/visitors/LanguagesChart";
 import DevicesChart from "reporting/components/visitors/DevicesChart";
 import MainTable from "reporting/components/visitors/MainTable";
 import SourcesChart from "reporting/components/sessions/SourcesChart";
+import { setTitle } from "actions/ui";
 
 class Home extends React.Component {
+
+	componentDidMount() {
+		this.props.setTitle('Visitors Overview');
+	}
 
 	render() {
 		return <React.Fragment>
@@ -33,5 +38,5 @@ Home.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration
-	})
+	}), { setTitle }
 )(Home);

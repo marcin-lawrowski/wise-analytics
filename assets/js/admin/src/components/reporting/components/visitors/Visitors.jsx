@@ -34,7 +34,7 @@ class Visitors extends React.Component {
 			name = 'Visitor #' + visitor.id;
 		}
 
-		return <Link to={ '/visitors/' + visitor.id } title="Go to details">{ name }</Link>;
+		return <Link to={ '/visitors/browse/visitor/' + visitor.id } title="Go to details">{ name }</Link>;
 	}
 
 	render() {

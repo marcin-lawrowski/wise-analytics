@@ -6,8 +6,13 @@ import TopPages from "reporting/components/pages/TopPages";
 import Visitors from "reporting/components/visitors/Visitors";
 import Events from "reporting/components/events/Events";
 import LeadLineChart from "reporting/components/overall/LeadLineChart";
+import { setTitle } from "actions/ui";
 
 class Overview extends React.Component {
+
+	componentDidMount() {
+		this.props.setTitle('Overview');
+	}
 
 	render() {
 		return <React.Fragment>
@@ -60,5 +65,5 @@ Overview.propTypes = {
 export default connect(
 	(props) => ({
 		configuration: props.configuration
-	})
+	}), { setTitle }
 )(Overview);

@@ -11,6 +11,7 @@ const defaultServerActions = {
 	'sessions.daily': { result: { sessions: [] } },
 	'sessions.sources': { result: { sources: [] } },
 	'sessions.sourceCategories': { result: { sourceCategories: [] } },
+	'sessions.sources.categories.daily': { result: { sourceCategories: [] } },
 	'pages.views.daily': { result: { pageViews: [] } },
 	'events': { result: { events: [], total: 0, offset: 0 } }
 }

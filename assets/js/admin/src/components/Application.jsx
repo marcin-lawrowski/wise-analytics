@@ -23,7 +23,7 @@ class Application extends React.Component {
 
 		return <div className="container-fluid" data-bs-theme="light">
 			<div className="d-flex align-items-center justify-content-between">
-				<h5>Analytics: Overview</h5>
+				<h5>Analytics: { this.props.title }</h5>
 				<DatesRangeFilter
 					onDatesRangeChange={ (startDate, endDate, range) => this.setState({ startDate: startDate, endDate: endDate, range: range }) }
 					range={ this.state.range }
@@ -32,10 +32,10 @@ class Application extends React.Component {
 				/>
 			</div>
 			<div className="row">
-				<div className="col-md-1">
+				<div className="col-md-2">
 					<MainMenu />
 				</div>
-				<div className="col-md-11 pt-4">
+				<div className="col-md-10">
 					<Routes>
 						<Route path="/">
 							<Route index element={ <Overview startDate={ this.state.startDate } endDate={ this.state.endDate } /> } />
@@ -56,6 +56,7 @@ Application.propTypes = {
 
 export default connect(
 	(state) => ({
-		configuration: state.configuration
+		configuration: state.configuration,
+		title: state.ui.title
 	})
 )(Application);

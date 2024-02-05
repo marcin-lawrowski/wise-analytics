@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { requestReport } from "actions/reports";
+import { requestReport, clearReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
 import { Link } from "react-router-dom";
@@ -26,6 +26,10 @@ class MainTable extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.clearReport('visitors.last');
+	}
+
 	refresh() {
 		this.props.requestReport({
 			name: 'visitors.last',
@@ -43,7 +47,7 @@ class MainTable extends React.Component {
 			name = 'Visitor #' + visitor.id;
 		}
 
-		return <Link to={ '/visitors/' + visitor.id } title="Go to details">{ name }</Link>;
+		return <Link to={ '/visitors/browse/visitor/' + visitor.id } title="Go to details">{ name }</Link>;
 	}
 
 	render() {
@@ -88,5 +92,5 @@ export default connect(
 		configuration: state.configuration,
 		loading: state.reports['visitors.last'].inProgress,
 		report: state.reports['visitors.last'].result
-	}), { requestReport }
+	}), { requestReport, clearReport }
 )(MainTable);
