@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { setTitle } from "actions/ui";
 import SourcesLineChart from "reporting/components/sessions/SourcesLineChart";
+import SourcesCategoryTable from "reporting/components/sessions/SourcesCategoryTable";
+import SourcesChart from "reporting/components/sessions/SourcesChart";
 
 class Sources extends React.Component {
 
@@ -15,6 +17,14 @@ class Sources extends React.Component {
 			<div className="row">
 				<div className="col-md-12">
 					<SourcesLineChart startDate={ this.props.startDate } endDate={ this.props.endDate } />
+				</div>
+			</div>
+			<div className="row">
+				<div className="col-md-9">
+					<SourcesCategoryTable startDate={ this.props.startDate } endDate={ this.props.endDate } />
+				</div>
+				<div className="col-md-3">
+					<SourcesChart startDate={ this.props.startDate } endDate={ this.props.endDate } />
 				</div>
 			</div>
 		</React.Fragment>;

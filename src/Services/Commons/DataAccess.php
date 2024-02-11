@@ -57,9 +57,14 @@ trait DataAccess {
 		$offsetSQL = isset($definition['offset']) ? ' OFFSET '.$definition['offset'] : '';
 
 		$sql = sprintf(
-			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s %s;",
+			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s %s",
 			$selectSQL, $table, $aliasSQL, $joinsSQL, $whereSQL, $groupBySQL, $orderBySQL, $limitSQL, $offsetSQL
 		);
+
+		if (isset($definition['outerQuery'])) {
+			$sql = sprintf($definition['outerQuery'], $sql);
+		}
+
 		$results = $wpdb->get_results($sql);
 		if ($wpdb->last_error) {
 			throw new \Exception('Data layer error: '.$wpdb->last_error);

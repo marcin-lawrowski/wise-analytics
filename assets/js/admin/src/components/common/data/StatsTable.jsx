@@ -94,6 +94,10 @@ class StatsTable extends React.Component {
 						{ this.renderPaginationSummary() }
 					</div>
 				</div>
+				{ this.props.filters.length > 0 && <div className="row">
+						{ this.props.filters.map( filter => <div className='col-auto'>{ filter }</div>	)}
+					</div>
+				}
 
 				<table className="table table-striped">
 					<thead>
@@ -121,7 +125,8 @@ class StatsTable extends React.Component {
 StatsTable.defaultProps = {
 	loading: false,
 	onOffsetChange: () => null,
-	className: ''
+	className: '',
+	filters: []
 }
 
 StatsTable.propTypes = {
@@ -134,7 +139,8 @@ StatsTable.propTypes = {
 	total: PropTypes.number,
 	offset: PropTypes.number,
 	limit: PropTypes.number,
-	onOffsetChange: PropTypes.func.isRequired
+	onOffsetChange: PropTypes.func.isRequired,
+	filters: PropTypes.array.isRequired
 };
 
 export default StatsTable;

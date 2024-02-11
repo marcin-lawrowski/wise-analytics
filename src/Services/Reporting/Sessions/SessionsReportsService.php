@@ -105,25 +105,18 @@ class SessionsReportsService extends ReportingService {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
-		$sourcesOut = [];
 		$sources = $this->querySessions([
 			'alias' => 'se',
 			'select' => [
-				'count(distinct se.user_id) as totalVisitors',
-				'se.source_category'
+				'count(distinct se.user_id) AS totalVisitors',
+				'se.source_category AS source'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
 			'group' => ['se.source_category']
 		]);
-		foreach ($sources as $sourceEntry) {
-			$sourcesOut[] = [
-				'source' => $sourceEntry->source_category ? $sourceEntry->source_category : 'Unknown',
-				'totalVisitors' => intval($sourceEntry->totalVisitors)
-			];
-		}
 
 		return [
-			'sourceCategories' => $sourcesOut
+			'sourceCategories' => $sources
 		];
 	}
 
@@ -139,7 +132,7 @@ class SessionsReportsService extends ReportingService {
 				'se.source_category',
 				'count(*) as sessions'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
 			'group' => ['DATE_FORMAT(se.start, \'%Y-%m-%d\')', 'se.source_category']
 		]);
 
@@ -172,6 +165,61 @@ class SessionsReportsService extends ReportingService {
 
 		return [
 			'sourceCategories' => $sourceCategories
+		];
+	}
+
+	/**
+	 * Queries sessions of particular source category.
+	 *
+	 * @param array $queryParams
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getSourceCategory(array $queryParams) {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$offset = intval($queryParams['offset'] ?? 0);
+		$category = $queryParams['filters']['category'];
+
+		$args = [
+			'alias' => 'se',
+			'select' => ['SUM(se.duration) / COUNT(*) as avgSessionTime', 'COUNT(*) AS totalSessions', 'JSON_LENGTH(se.events) / COUNT(*) AS eventsPerSession'],
+			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "se.source_category = '".addslashes($category)."'"],
+			'order' => ["totalSessions DESC"],
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		];
+
+		if (in_array($category, ['Social Network', 'Organic'])) {
+			$args['select'][] = 'se.source_group AS sourceGroup';
+			$args['group'] = ['se.source_group'];
+		} else if ($category === 'Referral') {
+			$args['select'][] = 'se.source AS sourceGroup';
+			$args['group'] = ['se.source'];
+		}
+
+		$count = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				$args['group'][0]
+			],
+			'group' => $args['group'],
+			'where' => $args['where'],
+			'outerQuery' => 'SELECT COUNT(*) AS total FROM (%s) innerSQL'
+		]);
+
+		$sources = $this->querySessions($args);
+		foreach ($sources as $key => $source) {
+			$source->avgSessionTime = $source->avgSessionTime > 0 ? TimeUtils::formatDuration($source->avgSessionTime, 'suffixes') : '0s';
+			$source->eventsPerSession = round($source->eventsPerSession, 1);
+		}
+
+		return [
+			'sources' => $sources,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
 		];
 	}
 

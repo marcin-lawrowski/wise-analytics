@@ -47,7 +47,7 @@ class Events extends React.Component {
 			name = 'Visitor #' + event.visitorId;
 		}
 
-		return <Link to={ '/visitors/browse/visitor' + event.visitorId } title="Go to details">{ name }</Link>;
+		return <Link to={ '/visitors/browse/visitor/' + event.visitorId } title="Go to details">{ name }</Link>;
 	}
 
 	render() {
