@@ -35,11 +35,11 @@ class DevicesChart extends React.Component {
 			<div className="card-body p-0">
 				<h6 className="card-title text-muted">Devices <Loader show={ this.props.loading } /></h6>
 
-				<div style={ { height: 300 }}>
+				<div style={ { height: 220 }}>
 					<ResponsivePie
 				        data={data}
 				        sortByValue={true}
-				        margin={{ top: 20, right: 50, bottom: 50, left: 50 }}
+				        margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
 				        innerRadius={0}
 				        padAngle={0.7}
 				        cornerRadius={3}
@@ -71,6 +71,18 @@ class DevicesChart extends React.Component {
 				                ]
 				            ]
 				        }}
+				        tooltip={({datum}) => (
+				            <div
+				                style={{
+				                    padding: 12,
+					                display: 'flex',
+					                background: '#ffffff',
+					                borderRadius: 5,
+					                border: '1px solid #92b7d5',
+					                alignItems: 'center'
+				                }}
+				            ><strong>{ datum.label }</strong>: { datum.value } { datum.value > 1 ? 'Visitors' : 'Visitor' }</div>
+				        )}
 				    />
 				</div>
 			</div>

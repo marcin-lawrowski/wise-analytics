@@ -1349,16 +1349,16 @@ var SourcesChart = /*#__PURE__*/function (_React$Component) {
         show: this.props.loading
       })), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
-          height: 300
+          height: 220
         }
       }, /*#__PURE__*/_react["default"].createElement(_pie.ResponsivePie, {
         data: data,
         sortByValue: true,
         margin: {
-          top: 20,
-          right: 50,
-          bottom: 50,
-          left: 50
+          top: 40,
+          right: 80,
+          bottom: 40,
+          left: 80
         },
         innerRadius: 0,
         padAngle: 0.7,
@@ -1381,6 +1381,19 @@ var SourcesChart = /*#__PURE__*/function (_React$Component) {
           from: 'color'
         },
         arcLabelsSkipAngle: 10,
+        tooltip: function tooltip(_ref) {
+          var datum = _ref.datum;
+          return /*#__PURE__*/_react["default"].createElement("div", {
+            style: {
+              padding: 12,
+              display: 'flex',
+              background: '#ffffff',
+              borderRadius: 5,
+              border: '1px solid #92b7d5',
+              alignItems: 'center'
+            }
+          }, /*#__PURE__*/_react["default"].createElement("strong", null, datum.label), ": ", datum.value, " ", datum.value > 1 ? 'Visitors' : 'Visitor');
+        },
         arcLabelsTextColor: {
           from: 'color',
           modifiers: [['darker', 2]]
@@ -1589,16 +1602,16 @@ var DevicesChart = /*#__PURE__*/function (_React$Component) {
         show: this.props.loading
       })), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
-          height: 300
+          height: 220
         }
       }, /*#__PURE__*/_react["default"].createElement(_pie.ResponsivePie, {
         data: data,
         sortByValue: true,
         margin: {
-          top: 20,
-          right: 50,
-          bottom: 50,
-          left: 50
+          top: 40,
+          right: 80,
+          bottom: 40,
+          left: 80
         },
         innerRadius: 0,
         padAngle: 0.7,
@@ -1624,6 +1637,19 @@ var DevicesChart = /*#__PURE__*/function (_React$Component) {
         arcLabelsTextColor: {
           from: 'color',
           modifiers: [['darker', 2]]
+        },
+        tooltip: function tooltip(_ref) {
+          var datum = _ref.datum;
+          return /*#__PURE__*/_react["default"].createElement("div", {
+            style: {
+              padding: 12,
+              display: 'flex',
+              background: '#ffffff',
+              borderRadius: 5,
+              border: '1px solid #92b7d5',
+              alignItems: 'center'
+            }
+          }, /*#__PURE__*/_react["default"].createElement("strong", null, datum.label), ": ", datum.value, " ", datum.value > 1 ? 'Visitors' : 'Visitor');
         }
       }))));
     }
@@ -1717,16 +1743,16 @@ var LanguagesChart = /*#__PURE__*/function (_React$Component) {
         show: this.props.loading
       })), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
-          height: 300
+          height: 220
         }
       }, /*#__PURE__*/_react["default"].createElement(_pie.ResponsivePie, {
         data: data,
         sortByValue: true,
         margin: {
-          top: 20,
-          right: 50,
-          bottom: 50,
-          left: 50
+          top: 40,
+          right: 80,
+          bottom: 40,
+          left: 80
         },
         innerRadius: 0,
         padAngle: 0.7,
@@ -1752,6 +1778,19 @@ var LanguagesChart = /*#__PURE__*/function (_React$Component) {
         arcLabelsTextColor: {
           from: 'color',
           modifiers: [['darker', 2]]
+        },
+        tooltip: function tooltip(_ref) {
+          var datum = _ref.datum;
+          return /*#__PURE__*/_react["default"].createElement("div", {
+            style: {
+              padding: 12,
+              display: 'flex',
+              background: '#ffffff',
+              borderRadius: 5,
+              border: '1px solid #92b7d5',
+              alignItems: 'center'
+            }
+          }, /*#__PURE__*/_react["default"].createElement("strong", null, datum.label), ": ", datum.value, " ", datum.value > 1 ? 'Visitors' : 'Visitor');
         }
       }))));
     }

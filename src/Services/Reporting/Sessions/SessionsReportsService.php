@@ -184,7 +184,7 @@ class SessionsReportsService extends ReportingService {
 
 		$args = [
 			'alias' => 'se',
-			'select' => ['SUM(se.duration) / COUNT(*) as avgSessionTime', 'COUNT(*) AS totalSessions', 'JSON_LENGTH(se.events) / COUNT(*) AS eventsPerSession'],
+			'select' => ['SUM(se.duration) / COUNT(*) as avgSessionTime', 'COUNT(*) AS totalSessions', 'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession'],
 			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "se.source_category = '".addslashes($category)."'"],
 			'order' => ["totalSessions DESC"],
 			'limit' => self::RESULTS_LIMIT,
