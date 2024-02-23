@@ -11,8 +11,8 @@ class MainMenu extends React.Component {
 		if (this.props.location.pathname.match(/^\/visitors/)) {
 			section = 'visitors';
 		}
-		if (this.props.location.pathname.match(/^\/actions/)) {
-			section = 'actions';
+		if (this.props.location.pathname.match(/^\/events/)) {
+			section = 'events';
 		}
 		if (this.props.location.pathname.match(/^\/conversions/)) {
 			section = 'conversions';
@@ -37,11 +37,11 @@ class MainMenu extends React.Component {
 						</ul>
 					</div>
 
-					<Link className="d-block w-100 text-start top-item text-muted" to="/actions/overview"><i className={ section !== 'actions' ? "bi bi-chevron-right" : "bi bi-chevron-down" }/>Actions</Link>
+					<Link className="d-block w-100 text-start top-item text-muted" to="/events/overview"><i className={ section !== 'events' ? "bi bi-chevron-right" : "bi bi-chevron-down" }/>Actions</Link>
 
-					<div className={ section !== 'actions' ? 'd-none' : ''}>
+					<div className={ section !== 'events' ? 'd-none' : ''}>
 						<ul className="mb-1">
-							<li><Link to="/actions/overview" className={ linkClass("/actions/overview") }>Overview</Link></li>
+							<li><Link to="/events/overview" className={ linkClass("/events/overview") }>Overview</Link></li>
 						</ul>
 					</div>
 
@@ -56,46 +56,6 @@ class MainMenu extends React.Component {
 				</div>
 			</div>
 		</React.Fragment>
-
-		return <div className="list-group mt-4">
-
-			<button type="button" className="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">A second item</button>
-
-
-			<div className="collapse show list-group" id="collapseExample">
-				<a className="list-group-item list-group-item-action" href="#">Aaaa</a>
-				<a className="list-group-item list-group-item-action" href="#">BBB</a>
-
-			</div>
-
-		</div>
-
-
-		return <ul className="list-group">
-			<li className="list-group-item"><Link to="/" className={ "list-group-item list-group-item-action " + (current === 'overview' ? 'list-group-item-primary' : '') }>Overview</Link></li>
-			<li className="list-group-item">
-				<ul className="list-group">
-					<li className="list-group-item">An item</li>
-					<li className="list-group-item">A second item</li>
-					<li className="list-group-item">A third item</li>
-					<li className="list-group-item">A fourth item</li>
-					<li className="list-group-item">And a fifth one</li>
-				</ul>
-
-			</li>
-			<li className="list-group-item">A third item</li>
-			<li className="list-group-item">A fourth item</li>
-			<li className="list-group-item">And a fifth one</li>
-		</ul>;
-
-		return <div className="list-group mt-4">
-			<Link to="/" className={ "list-group-item list-group-item-action " + (current === 'overview' ? 'list-group-item-primary' : '') }>Overview</Link>
-			<Link to="/visitors" className={ "list-group-item list-group-item-action " + (current === 'visitors' ? 'list-group-item-primary' : '') }>Visitors</Link>
-			<div className="list-group">
-				<Link to="/visitors/overview" className={ "list-group-item list-group-item-action " + (current === 'visitors' ? 'list-group-item-primary' : '') }>Overview</Link>
-				<Link to="/visitors/sources" className={ "list-group-item list-group-item-action " + (current === 'visitors' ? 'list-group-item-primary' : '') }>Sources</Link>
-			</div>
-		</div>
 	}
 
 }

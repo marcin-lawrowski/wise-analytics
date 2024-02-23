@@ -4,9 +4,11 @@ import { connect } from "react-redux";
 import Overview from "./reporting/pages/Overview";
 import { Routes, Route } from "react-router-dom";
 import Visitors from "./reporting/pages/visitors/Visitors";
+import Events from "./reporting/pages/events/Events";
 import {getDatesRange} from "utils/dates";
 import DatesRangeFilter from "./reporting/pages/parts/DatesRangeFilter";
 import MainMenu from "./reporting/pages/parts/MainMenu";
+import Conversions from "./reporting/pages/conversions/Conversions";
 
 class Application extends React.Component {
 
@@ -40,6 +42,8 @@ class Application extends React.Component {
 						<Route path="/">
 							<Route index element={ <Overview startDate={ this.state.startDate } endDate={ this.state.endDate } /> } />
 							<Route path="visitors/*" element={<Visitors startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
+							<Route path="events/*" element={<Events startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
+							<Route path="conversions/*" element={<Conversions startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 						</Route>
 					</Routes>
 				</div>
