@@ -46,7 +46,7 @@ class EventsReportsService extends ReportingService {
 
 		$output = [];
 		foreach ($result as $record) {
-			$record->created = TimeUtils::formatTimestamp($record->created);
+			$record->createdPretty = TimeUtils::formatTimestamp($record->created);
 			$output[] = $record;
 		}
 

@@ -67,13 +67,30 @@ class VisitorEvents extends React.Component {
 					case 1:
 						return <a href={ this.props.configuration.baseUrl + row.uri } target="_blank">{ row.title ? row.title : row.uri }</a>;
 					case 2:
-						return row.created;
+						return row.createdPretty;
 				}
 			}}
 			offset={ this.props.report.offset }
 			limit={ this.props.report.limit }
 			total={ this.props.report.total }
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+			rowDivider={ (currentRow, currentIndex, data) => {
+				if (data.length <= currentIndex + 1) {
+					return null;
+				}
+
+				const currentDate = moment(currentRow.created).unix();
+				const nextDate = moment(data[currentIndex + 1].created).unix();
+				const diff = currentDate - nextDate;
+
+				if (diff < 60 * 30) {
+					return null;
+				}
+
+				return <tr>
+					<td className="pt-2 pb-2 text-center" colSpan="3"><i className="bi bi-chevron-bar-expand h6"/> <span className="text-muted">{ moment.duration(diff, "seconds").humanize() }</span></td>
+				</tr>;
+			} }
 		/>
 	}
 

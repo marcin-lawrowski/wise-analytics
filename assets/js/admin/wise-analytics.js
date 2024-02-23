@@ -398,11 +398,11 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
           scope: "col"
         }, column.name);
       }))), /*#__PURE__*/_react["default"].createElement("tbody", null, this.props.data.map(function (row, index) {
-        return /*#__PURE__*/_react["default"].createElement("tr", {
+        return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, {
           key: index
-        }, _this2.props.columns.map(function (column, columnIndex) {
+        }, /*#__PURE__*/_react["default"].createElement("tr", null, _this2.props.columns.map(function (column, columnIndex) {
           return /*#__PURE__*/_react["default"].createElement("td", null, _this2.props.cellRenderer(columnIndex, row));
-        }));
+        })), _this2.props.rowDivider ? _this2.props.rowDivider(row, index, _this2.props.data) : null);
       })))));
     }
   }]);
@@ -427,7 +427,8 @@ StatsTable.propTypes = {
   offset: _propTypes["default"].number,
   limit: _propTypes["default"].number,
   onOffsetChange: _propTypes["default"].func.isRequired,
-  filters: _propTypes["default"].array.isRequired
+  filters: _propTypes["default"].array.isRequired,
+  rowDivider: _propTypes["default"].func
 };
 var _default = exports["default"] = StatsTable;
 
@@ -2046,7 +2047,7 @@ var VisitorEvents = /*#__PURE__*/function (_React$Component) {
                 target: "_blank"
               }, row.title ? row.title : row.uri);
             case 2:
-              return row.created;
+              return row.createdPretty;
           }
         },
         offset: this.props.report.offset,
@@ -2056,6 +2057,25 @@ var VisitorEvents = /*#__PURE__*/function (_React$Component) {
           return _this2.setState({
             offset: offset
           }, _this2.refresh);
+        },
+        rowDivider: function rowDivider(currentRow, currentIndex, data) {
+          if (data.length <= currentIndex + 1) {
+            return null;
+          }
+          var currentDate = (0, _moment["default"])(currentRow.created).unix();
+          var nextDate = (0, _moment["default"])(data[currentIndex + 1].created).unix();
+          var diff = currentDate - nextDate;
+          if (diff < 60 * 30) {
+            return null;
+          }
+          return /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("td", {
+            className: "pt-2 pb-2 text-center",
+            colSpan: "3"
+          }, /*#__PURE__*/_react["default"].createElement("i", {
+            className: "bi bi-chevron-bar-expand h6"
+          }), " ", /*#__PURE__*/_react["default"].createElement("span", {
+            className: "text-muted"
+          }, _moment["default"].duration(diff, "seconds").humanize())));
         }
       });
     }

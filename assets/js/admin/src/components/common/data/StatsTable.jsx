@@ -109,11 +109,14 @@ class StatsTable extends React.Component {
 					</thead>
 					<tbody>
 					{ this.props.data.map( (row, index) =>
-						<tr key={ index }>
-							{ this.props.columns.map( (column, columnIndex) =>
-								<td>{ this.props.cellRenderer(columnIndex, row) }</td>
-							)}
-						</tr>
+						<React.Fragment key={ index }>
+							<tr>
+								{ this.props.columns.map( (column, columnIndex) =>
+									<td>{ this.props.cellRenderer(columnIndex, row) }</td>
+								)}
+							</tr>
+							{ this.props.rowDivider ? this.props.rowDivider(row, index, this.props.data) : null }
+						</React.Fragment>
 					)}
 					</tbody>
 				</table>
@@ -140,7 +143,8 @@ StatsTable.propTypes = {
 	offset: PropTypes.number,
 	limit: PropTypes.number,
 	onOffsetChange: PropTypes.func.isRequired,
-	filters: PropTypes.array.isRequired
+	filters: PropTypes.array.isRequired,
+	rowDivider: PropTypes.func
 };
 
 export default StatsTable;
