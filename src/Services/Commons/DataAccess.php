@@ -33,10 +33,65 @@ trait DataAccess {
 	protected function query(string $table, array $definition): array {
 		global $wpdb;
 
+		$definition['table'] = $table;
+		$definition['type'] = 'select';
+		$results = $wpdb->get_results($this->getSQL($definition));
+		if ($wpdb->last_error) {
+			throw new \Exception('Data layer error: '.$wpdb->last_error);
+		}
+
+		if (is_array($results)) {
+			return $results;
+		}
+
+		return [];
+	}
+
+	/**
+	 * @param array $definition
+	 * @return object[]
+	 * @throws \Exception
+	 */
+	protected function execute(array $definition) {
+		global $wpdb;
+
+		$results = $wpdb->get_results($this->getSQL($definition));
+		if ($wpdb->last_error) {
+			throw new \Exception('Data layer error: '.$wpdb->last_error);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * @param array $definition
+	 * @return string
+	 * @throws \Exception
+	 */
+	protected function getSQL(array $definition): string {
+		switch ($definition['type']) {
+			case 'select':
+				return $this->getSelectSQL($definition);
+			case 'delete':
+				return $this->getDeleteSQL($definition);
+		}
+
+		throw new \Exception('Unknown query type');
+	}
+
+	/**
+	 * @param array $definition
+	 * @return string
+	 * @throws \Exception
+	 */
+	protected function getSelectSQL(array $definition): string {
+		global $wpdb;
+
 		if (!isset($definition['where'])) {
 			throw new \Exception('No "where" conditions specified');
 		}
 
+		$table = $definition['table'];
 		if (strpos($table, $wpdb->prefix) !== 0) {
 			$table = $wpdb->prefix.$table;
 		}
@@ -65,16 +120,29 @@ trait DataAccess {
 			$sql = sprintf($definition['outerQuery'], $sql);
 		}
 
-		$results = $wpdb->get_results($sql);
-		if ($wpdb->last_error) {
-			throw new \Exception('Data layer error: '.$wpdb->last_error);
+		return $sql;
+	}
+
+	/**
+	 * @param array $definition
+	 * @return string
+	 * @throws \Exception
+	 */
+	protected function getDeleteSQL(array $definition): string {
+		global $wpdb;
+
+		if (!isset($definition['where'])) {
+			throw new \Exception('No "where" conditions specified');
 		}
 
-		if (is_array($results)) {
-			return $results;
+		$table = $definition['table'];
+		if (strpos($table, $wpdb->prefix) !== 0) {
+			$table = $wpdb->prefix.$table;
 		}
 
-		return [];
+		$whereSQL = implode(' AND ', $definition['where']);
+
+		return sprintf("DELETE FROM `%s` WHERE %s", $table, $whereSQL);
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace Kainex\WiseAnalytics\Services\Processing;
 
 use Kainex\WiseAnalytics\DAO\Stats\SessionsDAO;
+use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\Stats\Session;
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;
 use Kainex\WiseAnalytics\Utils\Logger;
@@ -47,18 +48,27 @@ class SessionsService {
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$endDate->modify('-'.$endDate->format('i').' days');
 
 		try {
-
+			$args = ['table' => Installer::getEventsTable(), 'select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]];
 			$this->logger->info('Refreshing sessions, time range: ' . $startDateStr . ' - ' . $endDateStr);
 
-			$users = $this->queryEvents(['select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+			$users = $this->queryEvents($args);
+			$args['where'][0] = str_replace(['>', $startDateStr], ['<', $endDate->format('Y-m-d H:i:s')], $args['where'][0]);
 			$totalEvents = 0;
 			foreach ($users as $user) {
 				$totalEvents += $this->refreshUserSessions($user->user_id, $startDateStr, $endDateStr);
 			}
+			$args['type'] = 'delete';
+			$this->execute($args);
 
 			$this->logger->info('Refreshed users: ' . count($users) . ', events processed: ' . $totalEvents);
+			$args['table'] = Installer::getSessionsTable();
+			$args['where'][0] = str_replace('created', 'start', $args['where'][0]);
+			array_pop($args['where']);
+			$this->execute($args);
+
 		} catch (\Exception $exception) {
 			$this->logger->error('Error when refreshing sessions: ' . $exception->getMessage());
 		}
