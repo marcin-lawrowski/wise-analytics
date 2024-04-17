@@ -1,21 +1,20 @@
-var waConnector = waConnector || {};
-waConnector.api = waConnector.api || {};
+var botd = require('./libs/botd.cjs.js');
 
-waConnector.api.Core = function() {
+var Core = function() {
 	var API_BASE_URL = waConfig.url + '/wa-api/';
 	var baseDeferred = typeof jQuery !== 'undefined' && typeof jQuery.when !== 'undefined' ? jQuery.when({}) : null;
 	var isUUIDCookie = typeof getUUIDCookie() !== 'undefined';
 	var gaSettingDone = false;
-	
+
 	// in case of presence wa cookie all events can be posted in parallel:
 	if (isUUIDCookie) {
 		baseDeferred = null;
 	}
-	
+
 	function initOnLoad() {
-		
+
 	}
-	
+
 	/**
 	 * @returns {String}
 	 */
@@ -26,7 +25,7 @@ waConnector.api.Core = function() {
 			return undefined;
 		}
 	}
-	
+
 	/**
 	 * Returns cookie by name
 	 *
@@ -42,21 +41,21 @@ waConnector.api.Core = function() {
 			while (cookie.charAt(0) == ' ') {
 				cookie = cookie.substring(1);
 			}
-			
+
 			if (cookie.indexOf(name) == 0) {
 				return cookie.substring(name.length, cookie.length);
 			}
 		}
-		
+
 		return undefined;
 	}
-	
+
 	function onUUIDCookieSet() {
 		if (gaSettingDone) {
 			return;
 		}
 		gaSettingDone = true;
-		
+
 		var uuid = getCookie(waConfig.cookie);
 		// UUID - related code goes here
 	}
@@ -82,7 +81,7 @@ waConnector.api.Core = function() {
 
 		return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 	}
-	
+
 	/**
 	 * Tracks event with additional data.
 	 *
@@ -102,7 +101,7 @@ waConnector.api.Core = function() {
 			sw: getScreenWidth(),
 			sh: getScreenHeight()
 		};
-		
+
 		if (typeof customData !== 'undefined') {
 			// custom URL parameter:
 			if ('url' in customData) {
@@ -111,7 +110,7 @@ waConnector.api.Core = function() {
 				}
 				delete customData['url'];
 			}
-		
+
 			// attach custom data:
 			params['da'] = JSON.stringify(customData);
 		}
@@ -132,7 +131,7 @@ waConnector.api.Core = function() {
 			})
 			.catch(function(error) { console.error(error) });
 	}
-	
+
 	function apiCallDeferred(category, params, doneCallback) {
 		return function() {
 			var defer = jQuery.Deferred();
@@ -140,24 +139,24 @@ waConnector.api.Core = function() {
 				if (!isUUIDCookie && typeof getUUIDCookie() !== 'undefined') {
 					onUUIDCookieSet();
 				}
-				
+
 				if (typeof doneCallback !== 'undefined') {
 					doneCallback();
 				}
 				defer.resolve();
 			}
 			apiCall(category, params, alteredDoneCallback);
-			
+
 			return defer.promise();
 		};
 	}
-	
+
 	function apiCall(endpoint, data, doneCallback) {
 		var imgSrc = API_BASE_URL + endpoint + objectToUrlParams(data);
-		
+
 		var imageNode = typeof IEWIN !== 'undefined' ? new Image() : document.createElement('img');
 		imageNode.style.display = "none";
-		
+
 		// register done callback:
 		imageNode.onload = function() {
 			if (!isUUIDCookie && typeof getUUIDCookie() !== 'undefined') {
@@ -168,35 +167,35 @@ waConnector.api.Core = function() {
 				doneCallback();
 			}
 		};
-		
+
 		imageNode.src = imgSrc;
 		imageNode.alt = '#';
 		document.getElementsByTagName('body')[0].appendChild(imageNode);
 	}
-	
+
 	function log() {
 		console.log.apply(window, arguments);
 	}
-	
+
 	function getApiHash() {
 		function randPart() {
 			return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 		}
-		
+
 		var num1 = randPart();
 		var num2 = randPart();
 		var num3 = randPart();
 		var num4 = num1[0] + '' +  num2[1] + '' + num3[2] + '' + num1[1] + '' +  num2[2] + '' + num3[3];
-		
+
 		return num1 + '' + num2 + '' + num3 + '' + num4;
 	}
-	
+
 	function objectToUrlParams(data) {
 		var out = [];
 		for (var key in data) {
 			out.push(key + '=' + encodeURIComponent(data[key]));
 		}
-		
+
 		return (out.length > 0 ? '?' : '') + out.join('&');
 	}
 
@@ -211,7 +210,7 @@ waConnector.api.Core = function() {
 			    resolve(true);
 			} else {
 				// 2nd check:
-				waConnector.libs.botDetectLoad
+				botd.load()
 					.then(function(botDetector) { return botDetector.detect(); })
 					.then(function(result) {
 						if (result && result.bot === false) {
@@ -224,15 +223,15 @@ waConnector.api.Core = function() {
 			}
 		});
 	}
-	
+
 	this.initOnLoad = initOnLoad;
 	this.track = track;
 };
 
-var wa = new waConnector.api.Core();
+window.wa = new Core();
 
 (function() {
 	document.addEventListener("DOMContentLoaded", function(event) {
-		wa.initOnLoad();
+		window.wa.initOnLoad();
 	});
 })();

@@ -50,6 +50,12 @@ var cssFiles = {
 	]
 };
 
+// use this to expose libraries written as ES module only, they are added to vendors file:
+const ecmaScriptModules = [/* EXAMPLE: {
+	name: '@nosferatu500/react-sortable-tree',
+	esModuleFile: './node_modules/@nosferatu500/react-sortable-tree/esm/index.js'
+}*/];
+
 // lint JS/JSX files:
 gulp.task('eslint', function() {
 	return gulp.src(jsFiles.source)
@@ -70,7 +76,7 @@ gulp.task('eslint', function() {
 });
 
 const libVendors = [
-	'react', 'react-select', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', '@nivo/core', '@nivo/line', '@nivo/pie'
+	'react', 'react-select', 'react-datepicker', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', 'react-router', 'react-router-dom', 'react-is', '@nivo/core', '@nivo/line', '@nivo/pie'
 ]
 
 gulp.task('build:vendor', () => {
@@ -81,6 +87,11 @@ gulp.task('build:vendor', () => {
 		b.require(lib, { expose: lib });
 	});
 
+	ecmaScriptModules.forEach(lib => {
+		b.add(lib.esModuleFile, { expose: lib.name });
+	});
+
+	// needed to transform ES modules added via add() method:
 	b.transform(babelify.configure({
 		presets : ["@babel/preset-env", "@babel/preset-react"],
 		plugins : ["@babel/plugin-transform-runtime"],
@@ -104,11 +115,11 @@ gulp.task("build-sources-dev", function() {
 	var bundler = watchify(browserify({
 		entries: jsFiles.main,
 		paths: ['./node_modules', './assets/js/admin/src/redux', './assets/js/admin/src/components', './assets/js/admin/src'],
-		extensions: ['.jsx', '.js'],
+		extensions: ['.jsx'],
 		debug: true,
 		detectGlobals: true,
 		cache: {}, packageCache: {}
-	}).external([ ...libVendors ]), args);
+	}).external([...libVendors, ...ecmaScriptModules.map(lib => { return lib.name } ) ]), args);
 
 	bundler.transform(babelify.configure({
 		presets : ["@babel/preset-env", "@babel/preset-react"],
@@ -150,11 +161,12 @@ gulp.task('build-sources-prod', function() {
 	return browserify({
 			entries: jsFiles.main,
 			paths: ['./node_modules', './assets/js/admin/src/redux', './assets/js/admin/src/components', './assets/js/admin/src'],
-			extensions: ['.jsx', '.js'],
-			debug: false,
+			extensions: ['.jsx'],
+			debug: true,
 			detectGlobals: true,
 			cache: {}, packageCache: {}
 		})
+		.external([...libVendors, ...ecmaScriptModules.map(lib => { return lib.name } ) ])
 		.transform(babelify.configure({
 			presets : ["@babel/preset-env", "@babel/preset-react"],
 			plugins : ["@babel/plugin-transform-runtime"]
@@ -195,6 +207,28 @@ gulp.task('sass', function() {
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('assets/css/admin'));
+});
+
+gulp.task('build-frontend', function() {
+	return browserify({
+			entries: './assets/js/frontend/src/index.js',
+			paths: ['./node_modules', './assets/js/frontend/src'],
+			extensions: ['.js'],
+			debug: true,
+			detectGlobals: true,
+			cache: {}, packageCache: {}
+		})
+		.bundle()
+		.on('error', err => {
+			console.log(err.message);
+		})
+		.pipe(exorcist('assets/js/frontend/wise-analytics-frontend.js.map'))
+		.pipe(source('wise-analytics-frontend.js'))
+		.pipe(buffer())
+		.pipe(gulp.dest('assets/js/frontend' ))
+		.pipe(uglify())
+		.pipe(rename( { suffix: '.min' }))
+		.pipe(gulp.dest( 'assets/js/frontend' ));
 });
 
 // gather all vendor CSS files and combine them into single library file:
