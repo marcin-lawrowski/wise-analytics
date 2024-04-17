@@ -15,6 +15,8 @@ Advanced web traffic tracking and analytics plugin for WordPress sites.
 
 **Wise Analytics** is a fully fledged site traffic statistics plugin that helps to track visitors behavior, measure the sources and actions taken on your website. The plugin provides a platform to analyze the traffic as tables and charts. It is easy to setup and configure. Our development team is constantly working on new features and supporting the existing ones.
 
+**[Source code on GitHub]**(https://github.com/marcin-lawrowski/wise-analytics)
+
 **[Read More](https://kainex.pl/projects/wp-plugins/wise-analytics?utm_source=wiseanalytics-page&utm_medium=lead&utm_campaign=readme)**
 
 = List of features: =
