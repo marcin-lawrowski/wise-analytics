@@ -63,7 +63,11 @@ var Application = /*#__PURE__*/function (_React$Component) {
         className: "row"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "col-md-2"
-      }, /*#__PURE__*/_react["default"].createElement(_MainMenu["default"], null)), /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement(_MainMenu["default"], null), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "card p-1"
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        className: "card-body"
+      }, /*#__PURE__*/_react["default"].createElement("strong", null, "Notice: "), "Some statistic like sessions or sources are refreshed periodically."))), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col-md-10"
       }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Routes, null, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Route, {
         path: "/"

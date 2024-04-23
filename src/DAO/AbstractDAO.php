@@ -15,7 +15,7 @@ abstract class AbstractDAO {
 	protected function getByField(string $fieldName, string $fieldValue): ?object {
 		global $wpdb;
 
-		$sql = $wpdb->prepare("SELECT * FROM %i WHERE %i = %s;", $this->getTable(), $fieldName, addslashes($fieldValue));
+		$sql = $wpdb->prepare("SELECT * FROM %i WHERE %i = %s;", $this->getTable(), $fieldName, $fieldValue);
 		$results = $wpdb->get_results($sql);
 		if (is_array($results) && count($results) > 0) {
 			return $results[0];

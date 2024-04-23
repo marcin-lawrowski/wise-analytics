@@ -35,7 +35,7 @@ class MappingsService {
 			$ids[] = $form->ID;
 		}
 
-		$fields = $this->query('postmeta', [
+		$fields = $ids ? $this->query('postmeta', [
 			'alias' => 'pm',
 			'select' => [
 				'pm.post_id',
@@ -43,7 +43,7 @@ class MappingsService {
 			],
 			'where' => ["pm.meta_key = '_form'", "pm.post_id IN (".implode(',', array_fill(0, count($ids), '%d')).")"],
 			'whereArgs' => $ids
-		]);
+		]) : [];
 
 		$fieldsList = [];
 		foreach ($fields as $fieldDefinition) {

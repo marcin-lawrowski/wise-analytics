@@ -98,7 +98,7 @@ class VisitorsTab extends AbstractTab {
 						$mappedStatus = '<span style="color:green">Partially Mapped</span>';
 					}
 					$url = sprintf('options-general.php?page=wise-analytics-admin&visitors-mapping-edit=%s&action-id=%s#tab=visitors', $definition['type'], urlencode($action['id']));
-					print '<li><a href="' . esc_url($url) . '">' . esc_html($action['item']) . '</a> ['.esc_html($mappedStatus).']</li>';
+					print '<li><a href="' . esc_url($url) . '">' . esc_html($action['item']) . '</a> ['.wp_kses($mappedStatus, array('span' => array('style' => array()))).']</li>';
 				}
 				print '</ul>';
 			}
@@ -143,9 +143,9 @@ class VisitorsTab extends AbstractTab {
 	private function getVisitorFieldsSelect(string $actionsSource, string $actionId, string $actionFieldId, array $currentMappings): string {
 		$currentFieldId = isset($currentMappings[$actionFieldId]) ? $currentMappings[$actionFieldId] : null;
 
-		$html = sprintf('<select name="%s[visitors_mappings][%s][%s]"><option value="">-- not mapped --</option>', Options::OPTIONS_NAME, $actionsSource.'.'.$actionId, $actionFieldId);
+		$html = sprintf('<select name="%s[visitors_mappings][%s][%s]"><option value="">-- not mapped --</option>', Options::OPTIONS_NAME, esc_attr($actionsSource.'.'.$actionId), esc_attr($actionFieldId));
 		foreach ($this->visitorsService->getVisitorFields() as $visitorField) {
-			$html .= sprintf('<option %s value="%s">%s</option>', $currentFieldId === $visitorField['id'] ? 'selected' : '', $visitorField['id'], $visitorField['name']);
+			$html .= sprintf('<option %s value="%s">%s</option>', $currentFieldId === $visitorField['id'] ? 'selected' : '', esc_attr($visitorField['id']), esc_html($visitorField['name']));
 		}
 		$html .= '</select>';
 

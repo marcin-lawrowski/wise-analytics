@@ -66,7 +66,7 @@ class Installer {
 		if (function_exists('is_multisite') && is_multisite()) {
 			if ($networkWide) {
 				$oldBlogID = $wpdb->blogid;
-				$blogIDs = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+				$blogIDs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM %i", $wpdb->blogs));
 				foreach ($blogIDs as $blogID) {
 					switch_to_blog($blogID);
 					self::doActivation();
@@ -192,6 +192,7 @@ class Installer {
 		dbDelta($sql);
 
 		self::installCron();
+		self::addRewriteRules();
 		
 		// set default options after installation:
 		$container = Container::getInstance();
@@ -264,6 +265,15 @@ class Installer {
 		if (!wp_next_scheduled('wa_processing_hook_'.get_current_blog_id())) {
 			wp_schedule_event(time(), 'hourly', 'wa_processing_hook_'.get_current_blog_id());
 		}
+	}
+
+	/**
+	 * Registers API endpoints using rewrite rules.
+     */
+	private static function addRewriteRules() {
+		add_rewrite_tag('%_wa_api_action%', '([a-zA-Z\d\-_+]+)');
+		add_rewrite_rule('wa-api/([a-zA-Z\d\-_+]+)/?', 'index.php?_wa_api_action=$matches[1]', 'top');
+		flush_rewrite_rules();
 	}
 
 	private static function uninstallCron($blogId) {

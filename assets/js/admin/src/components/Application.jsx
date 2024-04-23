@@ -36,6 +36,11 @@ class Application extends React.Component {
 			<div className="row">
 				<div className="col-md-2">
 					<MainMenu />
+					<div className="card p-1">
+						<div className="card-body">
+							<strong>Notice: </strong>Some statistic like sessions or sources are refreshed periodically.
+						</div>
+					</div>
 				</div>
 				<div className="col-md-10">
 					<Routes>

@@ -237,7 +237,7 @@ class VisitorsReportsService extends ReportingService {
 			'screenWidth' => $visitor->screen_width,
 			'screenHeight' => $visitor->screen_height,
 			'firstVisit' => $visitor->created,
-			'lastVisit' => TimeUtils::formatTimestamp($sessions->lastVisit),
+			'lastVisit' => $sessions->lastVisit ? TimeUtils::formatTimestamp($sessions->lastVisit) : '',
 			'data' => json_decode($visitor->data),
 			'totalSessions' => intval($sessions->totalSessions),
 			'totalEvents' => intval($sessions->totalEvents),

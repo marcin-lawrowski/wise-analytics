@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
 	exit;
 } // Exit if accessed directly
 
-define('WISE_ANALYTICS_VERSION', '1.0.0.1');
+define('WISE_ANALYTICS_VERSION', '1.0.0');
 define('WISE_ANALYTICS_ROOT', dirname(__FILE__));
 define('WISE_ANALYTICS_NAME', 'Wise Analytics');
 
