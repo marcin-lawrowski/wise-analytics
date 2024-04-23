@@ -40,7 +40,7 @@ class Core {
 			$customDataParameter = ','.json_encode($customData);
 		}
 		
-		echo '<script type="text/javascript">wa.track("'.$eventType.'"'.$customDataParameter.');</script>';
+		echo '<script type="text/javascript">wa.track("'.esc_html($eventType).'"'.esc_html($customDataParameter).');</script>';
 	}
 	
 }

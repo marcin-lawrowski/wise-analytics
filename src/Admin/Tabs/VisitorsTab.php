@@ -80,14 +80,14 @@ class VisitorsTab extends AbstractTab {
 
 		if (isset($_GET['visitors-mapping-edit'])) {
 			foreach ($objects as $definition) {
-				if ($definition['type'] === $_GET['visitors-mapping-edit']) {
-					$this->mappingEdit($definition, $_GET['action-id']);
+				if ($definition['type'] === sanitize_text_field($_GET['visitors-mapping-edit'])) {
+					$this->mappingEdit($definition, sanitize_text_field($_GET['action-id']));
 				}
 			}
 		} else {
 			foreach ($objects as $definition) {
 				print '<p>Click and set mappings for each of the items below in order to gather as much visitors data as possible</p>';
-				print '<h3>' . $definition['typeName'] . '</h3>';
+				print '<h3>' . esc_html($definition['typeName']) . '</h3>';
 				print '<ul>';
 				foreach ($definition['actions'] as $action) {
 					$mappedRatio = $this->getCurrentMappingRatio($definition['type'], $action['id'], $action['fields']);
@@ -98,7 +98,7 @@ class VisitorsTab extends AbstractTab {
 						$mappedStatus = '<span style="color:green">Partially Mapped</span>';
 					}
 					$url = sprintf('options-general.php?page=wise-analytics-admin&visitors-mapping-edit=%s&action-id=%s#tab=visitors', $definition['type'], urlencode($action['id']));
-					print '<li><a href="' . $url . '">' . $action['item'] . '</a> ['.$mappedStatus.']</li>';
+					print '<li><a href="' . esc_url($url) . '">' . esc_html($action['item']) . '</a> ['.esc_html($mappedStatus).']</li>';
 				}
 				print '</ul>';
 			}
@@ -123,15 +123,15 @@ class VisitorsTab extends AbstractTab {
 		$visitorsConfiguration = (array) $this->options->getOption('visitors_mappings', []);
 		$currentMappings = isset($visitorsConfiguration[$mappingKey]) ? $visitorsConfiguration[$mappingKey] : [];
 
-		print '<h3>' . $typeDefinition['typeName'] . '</h3>';
-		print '<h4>"' . $action['item'] .'" ' . $action['name'] . '</h4>';
+		print '<h3>' . esc_html($typeDefinition['typeName']) . '</h3>';
+		print '<h4>"' . esc_html($action['item']) .'" ' . esc_html($action['name']) . '</h4>';
 		print '<p>Fill as much as possible mappings below, but only those who hold the same information.</p>';
 		print '<table class="wp-list-table widefat emotstable">';
-		print '<thead><tr><th>&nbsp;' . $action['item'] . ' Field</th><th>Maps To Visitor Field</th></tr></thead>';
+		print '<thead><tr><th>&nbsp;' . esc_html($action['item']) . ' Field</th><th>Maps To Visitor Field</th></tr></thead>';
 
 		print '<tbody>';
 		foreach ($action['fields'] as $field) {
-			print '<tr><td>'.$field['name'].'</td><td>'.$this->getVisitorFieldsSelect($typeDefinition['type'], $actionId, $field['id'], $currentMappings).'</td></tr>';
+			print '<tr><td>'.esc_html($field['name']).'</td><td>'.wp_kses($this->getVisitorFieldsSelect($typeDefinition['type'], $actionId, $field['id'], $currentMappings), array('select' => array('name' => array()), 'option' => array('value' => array(), 'selected' => array()))).'</td></tr>';
 		}
 		print '</tbody>';
 

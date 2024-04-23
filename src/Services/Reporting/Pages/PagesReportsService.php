@@ -28,14 +28,22 @@ class PagesReportsService extends ReportingService {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
-		$result = $this->queryEvents(['select' => ['COUNT(*) AS total'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'", "type_id" => $eventType->getId()]]);
+		$result = $this->queryEvents([
+			'select' => ['COUNT(*) AS total'],
+			'where' => ["created >= %s", "created <= %s", "type_id = %d"],
+			'whereArgs' => [$startDateStr, $endDateStr, $eventType->getId()]
+		]);
 		$total = count($result) > 0 ? (int) $result[0]->total : 0;
 
 		// compare to the previous period:
 		list($startDate, $endDate) = $this->getDatesToCompare($startDate, $endDate);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
-		$result = $this->queryEvents(['select' => ['COUNT(*) AS total'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'", "type_id" => $eventType->getId()]]);
+		$result = $this->queryEvents([
+			'select' => ['COUNT(*) AS total'],
+			'where' => ["created >= %s", "created <= %s", "type_id = %d"],
+			'whereArgs' => [$startDateStr, $endDateStr, $eventType->getId()]
+		]);
 		$previousTotal = count($result) > 0 ? (int) $result[0]->total : 0;
 
 		return [
@@ -54,13 +62,15 @@ class PagesReportsService extends ReportingService {
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
-		$condition = ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "ev.type_id" => $eventType->getId()];
+		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
+		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => ['count(ev.uri) as pageViews, ev.uri, re.text_value as title'],
-			'join' => [[Installer::getEventResourcesTable().' re', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]],
+			'join' => [[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]],
 			'where' => $condition,
+			'whereArgs' => $conditionArgs,
 			'group' => ['ev.uri'],
 			'order' => ['pageViews DESC'],
 			'limit' => self::RESULTS_LIMIT,
@@ -73,7 +83,8 @@ class PagesReportsService extends ReportingService {
 				'count(ev.id) as total'
 			],
 			'group' => ['ev.uri'],
-			'where' => $condition
+			'where' => $condition,
+			'whereArgs' => $conditionArgs
 		]);
 
 		return [
@@ -93,11 +104,12 @@ class PagesReportsService extends ReportingService {
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => [
-				'DATE_FORMAT(ev.created, \'%Y-%m-%d\') as date',
+				'DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\') as date',
 				'count(*) as pageViews'
 			],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "ev.type_id" => $eventType->getId()],
-			'group' => ['DATE_FORMAT(ev.created, \'%Y-%m-%d\')']
+			'where' => ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"],
+			'whereArgs' => [$startDateStr, $endDateStr, $eventType->getId()],
+			'group' => ['DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\')']
 		]);
 
 

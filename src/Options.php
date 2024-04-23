@@ -192,13 +192,5 @@ class Options {
 	public function onOptionsUpdated($oldValue, $value, $option) {
 		delete_transient('wise_analytics_pro_wp_users_cache');
 	}
-	
-	/**
-	* Dumps all options to stdout.
-	*/
-	public function dump() {
-		foreach ($this->options as $key => $value) {
-			echo "$key=\"$value\"\n";
-		}
-	}
+
 }

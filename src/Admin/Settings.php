@@ -105,7 +105,7 @@ class Settings {
 	public function renderAdminPage() {
 		?>
 			<div class="wrap">
-				<h2><?php echo self::MENU_TITLE ?></h2>
+				<h2><?php echo esc_html(self::MENU_TITLE) ?></h2>
 
 				<form method="post" action="options.php" class="metabox-holder">
 					<!-- Disabling autocomplete: -->
@@ -120,16 +120,16 @@ class Settings {
 						$isFirstContainer = true;
 						foreach ($this->tabs->getTabs() as $tabId => $tabObject) {
 							$hideContainer = $isFirstContainer ? '' : 'display:none';
-							echo "<div id='{$tabId}Container' class='wcAdminTabContainer' style='{$hideContainer}'>";
+							echo "<div id='".esc_attr($tabId)."Container' class='wcAdminTabContainer' style='".esc_attr($hideContainer)."'>";
 
 							$sections = $this->sections[$tabId];
 							foreach ($sections as $sectionKey => $section) {
-								echo "<div data-section-id='{$section['sectionId']}' class='postbox'>";
-								echo "<h3 class='hndle'><span>".$section['name']."</span></h3>";
+								echo "<div data-section-id='".esc_attr($section['sectionId'])."' class='postbox'>";
+								echo "<h3 class='hndle'><span>".esc_html($section['name'])."</span></h3>";
 								echo "<div class='inside'>";
 								echo '<table class="form-table">';
 								if (strlen($section['hint']) > 0) {
-									echo '<tr><td colspan="2" style="padding:0"><p class="description">'.$section['hint'].'</p></td></tr>';
+									echo '<tr><td colspan="2" style="padding:0"><p class="description">'.esc_html($section['hint']).'</p></td></tr>';
 								}
 								do_settings_fields($tabId, $section['id']);
 								echo '<tr><td colspan="2">';
@@ -153,20 +153,16 @@ class Settings {
 	}
 
 	private function renderMenu() {
-		$outHtml = '';
-
-		$outHtml .= '<div class="wcAdminMenu wcAdminFl">';
-		$outHtml .= '<ul>';
+		echo '<div class="wcAdminMenu wcAdminFl">';
+		echo '<ul>';
 		$isFirstTab = true;
 		foreach ($this->tabs->getTabs() as $key => $tabObject) {
 			$isActive = $isFirstTab ? 'wcAdminMenuActive' : '';
-			$outHtml .= '<li><a id="'.$key.'" class="'.$isActive.'" href="javascript://">'.$tabObject->getName().'</a></li>';
+			echo '<li><a id="'.esc_attr($key).'" class="'.esc_attr($isActive).'" href="javascript://">'.esc_html($tabObject->getName()).'</a></li>';
 			$isFirstTab = false;
 		}
-		$outHtml .= '</ul>';
-		$outHtml .= '</div>';
-
-		echo $outHtml;
+		echo '</ul>';
+		echo '</div>';
 	}
 
 	/**
@@ -175,15 +171,15 @@ class Settings {
 	public function handleActions() {
 		if (isset($_GET['wa_action'])) {
 			foreach ($this->tabs->getTabs() as $tabKey => $tabObject) {
-				$actionMethod = $_GET['wa_action'].'Action';
+				$actionMethod = sanitize_text_field($_GET['wa_action']).'Action';
 				if (method_exists($tabObject, $actionMethod)) {
 					$tabObject->$actionMethod();
 					break;
 				}
 			}
 
-			$redirURL = admin_url("options-general.php?page=".self::MENU_SLUG).(isset($_GET['tab']) ? '#wc_tab='.urlencode($_GET['tab']) : '');
-			echo '<script type="text/javascript">location.replace("' . $redirURL . '");</script>';
+			$redirURL = admin_url("options-general.php?page=".self::MENU_SLUG).(isset($_GET['tab']) ? '#wc_tab='.urlencode(sanitize_text_field($_GET['tab'])) : '');
+			echo '<script type="text/javascript">location.replace("' . esc_url($redirURL) . '");</script>';
 		} else {
 			$this->showUpdatedMessage();
 			$this->showErrorMessage();
@@ -211,10 +207,10 @@ class Settings {
 	 * Shows a message stored in the transient.
 	 */
 	private function showUpdatedMessage() {
-		$message = get_transient('wc_admin_settings_message');
+		$message = get_transient('kainex_wiseanalytics_admin_settings_message');
 		if (is_string($message) && strlen($message) > 0) {
 			add_settings_error(md5($message), esc_attr('settings_updated'), strip_tags($message), 'updated');
-			delete_transient('wc_admin_settings_message');
+			delete_transient('kainex_wiseanalytics_admin_settings_message');
 		}
 	}
 
@@ -222,44 +218,11 @@ class Settings {
 	 * Shows a message stored in the transient.
 	 */
 	private function showErrorMessage() {
-		$message = get_transient('wc_admin_settings_error_message');
+		$message = get_transient('kainex_wiseanalytics_admin_settings_error_message');
 		if (is_string($message) && strlen($message) > 0) {
 			add_settings_error(md5($message), esc_attr('settings_updated'), strip_tags($message), 'error');
-			delete_transient('wc_admin_settings_error_message');
+			delete_transient('kainex_wiseanalytics_admin_settings_error_message');
 		}
-	}
-
-	public function userSearchEndpoint() {
-		$searchTerm = $_POST['keyword'];
-		$out = array('type' => 'success', 'users' => array());
-
-		$args = array (
-			'order' => 'ASC',
-			'orderby' => 'display_name',
-			'search' => '*'.esc_attr($searchTerm).'*',
-			'number' => 5,
-			'search_columns' => array(
-				'user_login',
-				'user_nicename',
-				'user_email',
-				'user_url',
-				'display_name',
-			)
-		);
-		$query = new \WP_User_Query($args);
-		$users = $query->get_results();
-
-		if (!empty($users)) {
-			foreach ($users as $user) {
-				$out['users'][] = array(
-					'login' => $user->user_login,
-					'text' => $user->user_login.' ('.$user->display_name.')'
-				);
-			}
-		}
-
-		echo json_encode($out);
-		die();
 	}
 
 }

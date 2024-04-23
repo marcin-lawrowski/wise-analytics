@@ -42,9 +42,7 @@ var jsFiles = {
 };
 
 var cssFiles = {
-	vendor: [
-		'node_modules/reactjs-popup/dist/index.css'
-	],
+	vendor: [ ],
 	source: [
 		'assets/css/admin/src/**/*.scss'
 	]
@@ -242,8 +240,8 @@ gulp.task('sass-watchify', function() {
 	gulp.watch('assets/css/admin/src/**/*.scss', gulp.series('sass'));
 });
 
-gulp.task('build-dev', gulp.series('eslint', gulp.parallel('sass', 'concat-vendors-css'), 'build-sources-dev', 'sass-watchify'));
-gulp.task('build-prod', gulp.series('eslint', gulp.parallel('sass', 'concat-vendors-css'), 'build-sources-prod'));
+gulp.task('build-dev', gulp.series('eslint', gulp.parallel('sass'/*, 'concat-vendors-css'*/), 'build-sources-dev', 'sass-watchify'));
+gulp.task('build-prod', gulp.series('eslint', gulp.parallel('sass'/*, 'concat-vendors-css'*/), 'build-sources-prod'));
 
 // set the default task:
 gulp.task('default', gulp.series('build-dev'));

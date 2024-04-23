@@ -29,7 +29,7 @@ class URLUtils {
 
 	public static function getRefererURL(): string {
 		if (isset($_SERVER['HTTP_REFERER'])) {
-			return $_SERVER['HTTP_REFERER'];
+			return sanitize_text_field($_SERVER['HTTP_REFERER']);
 		}
 
 		return self::getCurrentURL();
@@ -42,7 +42,7 @@ class URLUtils {
 	        $protocol = 'http://';
 	    }
 
-	    return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	    return $protocol . sanitize_text_field($_SERVER['HTTP_HOST']) . sanitize_text_field($_SERVER['REQUEST_URI']);
 	}
 
 }

@@ -13,7 +13,8 @@ class SessionsReportsService extends ReportingService {
 
 		$result = $this->querySessions([
 			'select' => ['SUM(duration) / COUNT(*) as avgSessionTime'],
-			'where' => ["start >= '$startDateStr'", "start <= '$endDateStr'"]
+			'where' => ["start >= %s", "start <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr]
 		]);
 
 		$avgSessionTime = count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
@@ -23,7 +24,8 @@ class SessionsReportsService extends ReportingService {
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 		$result = $this->querySessions([
 			'select' => ['SUM(duration) / COUNT(*) as avgSessionTime'],
-			'where' => ["start >= '$startDateStr'", "start <= '$endDateStr'"]
+			'where' => ["start >= %s", "start <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr]
 		]);
 		$previousAvgSessionTime = count($result) > 0 ? (int) $result[0]->avgSessionTime : 0;
 
@@ -42,11 +44,12 @@ class SessionsReportsService extends ReportingService {
 		$result = $this->querySessions([
 			'alias' => 'se',
 			'select' => [
-				'DATE_FORMAT(se.start, \'%Y-%m-%d\') as date',
+				'DATE_FORMAT(se.start, \'%%Y-%%m-%%d\') as date',
 				'count(*) as sessions'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
-			'group' => ['DATE_FORMAT(se.start, \'%Y-%m-%d\')']
+			'where' => ["se.start >= %s", "se.start <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['DATE_FORMAT(se.start, \'%%Y-%%m-%%d\')']
 		]);
 
 
@@ -85,7 +88,8 @@ class SessionsReportsService extends ReportingService {
 				'count(distinct se.user_id) as totalVisitors',
 				'se.source'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'"],
+			'where' => ["se.start >= %s", "se.start <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr],
 			'group' => ['se.source']
 		]);
 		foreach ($sources as $sourceEntry) {
@@ -111,7 +115,8 @@ class SessionsReportsService extends ReportingService {
 				'count(distinct se.user_id) AS totalVisitors',
 				'se.source_category AS source'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
+			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
+			'whereArgs' => [$startDateStr, $endDateStr],
 			'group' => ['se.source_category']
 		]);
 
@@ -128,12 +133,13 @@ class SessionsReportsService extends ReportingService {
 		$result = $this->querySessions([
 			'alias' => 'se',
 			'select' => [
-				'DATE_FORMAT(se.start, \'%Y-%m-%d\') as date',
+				'DATE_FORMAT(se.start, \'%%Y-%%m-%%d\') as date',
 				'se.source_category',
 				'count(*) as sessions'
 			],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
-			'group' => ['DATE_FORMAT(se.start, \'%Y-%m-%d\')', 'se.source_category']
+			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['DATE_FORMAT(se.start, \'%%Y-%%m-%%d\')', 'se.source_category']
 		]);
 
 		$output = [];
@@ -185,7 +191,8 @@ class SessionsReportsService extends ReportingService {
 		$args = [
 			'alias' => 'se',
 			'select' => ['SUM(se.duration) / COUNT(*) as avgSessionTime', 'COUNT(*) AS totalSessions', 'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession'],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "se.source_category = '".addslashes($category)."'"],
+			'where' => ["se.start >= %s", "se.start <= %s", "se.source_category = %s"],
+			'whereArgs' => [$startDateStr, $endDateStr, $category],
 			'order' => ["totalSessions DESC"],
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
@@ -206,6 +213,7 @@ class SessionsReportsService extends ReportingService {
 			],
 			'group' => $args['group'],
 			'where' => $args['where'],
+			'whereArgs' => $args['whereArgs'],
 			'outerQuery' => 'SELECT COUNT(*) AS total FROM (%s) innerSQL'
 		]);
 

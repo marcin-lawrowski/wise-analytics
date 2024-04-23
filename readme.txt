@@ -2,7 +2,7 @@
 Contributors: marcin.lawrowski
 Donate link: https://kainex.pl/projects/wp-plugins/wise-analytics/wise-analytics-donate?utm_source=wiseanalytics-page&utm_medium=lead&utm_campaign=readme
 Tags: stats, analytics, statistics, tracking, traffic
-Requires at least: 6.0.0
+Requires at least: 6.2.0
 Requires PHP: 7.2.0
 Tested up to: 6.4.3
 Stable tag: 1.0.0

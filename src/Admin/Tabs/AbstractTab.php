@@ -30,7 +30,7 @@ abstract class AbstractTab {
 	 * @param string $message
 	 */
 	protected function addMessage($message) {
-		set_transient("wc_admin_settings_message", $message, 10);
+		set_transient("kainex_wiseanalytics_admin_settings_message", $message, 10);
 	}
 
 	/**
@@ -39,7 +39,7 @@ abstract class AbstractTab {
 	 * @param string $message
 	 */
 	protected function addErrorMessage($message) {
-		set_transient("wc_admin_settings_error_message", $message, 10);
+		set_transient("kainex_wiseanalytics_admin_settings_error_message", $message, 10);
 	}
 	
 	/**
@@ -153,14 +153,14 @@ abstract class AbstractTab {
 		$parentId = $this->getFieldParent($id);
 	
 		printf(
-			'<input type="text" id="%s" name="'.Options::OPTIONS_NAME.'[%s]" value="%s" %s data-parent-field="%s" />',
-			$id, $id,
-			$this->fixImunify360Rule($id, $this->options->getEncodedOption($id, $defaultValue)),
-			$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-			$parentId != null ? $parentId : ''
+			'<input type="text" id="%s" name="'.esc_attr(Options::OPTIONS_NAME).'[%s]" value="%s" %s data-parent-field="%s" />',
+			esc_attr($id), esc_attr($id),
+			esc_attr($this->fixImunify360Rule($id, $this->options->getEncodedOption($id, $defaultValue))),
+			esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+			$parentId != null ? esc_attr($parentId) : ''
 		);
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 
@@ -186,14 +186,14 @@ abstract class AbstractTab {
 		$parentId = $this->getFieldParent($id);
 		
 		printf(
-			'<textarea id="%s" name="'.Options::OPTIONS_NAME.'[%s]" cols="70" rows="6" %s data-parent-field="%s">%s</textarea>',
-			$id, $id,
-			$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-			$parentId != null ? $parentId : '',
-			$this->fixImunify360Rule($id, $this->options->getEncodedOption($id, $defaultValue))
+			'<textarea id="%s" name="'.esc_attr(Options::OPTIONS_NAME).'[%s]" cols="70" rows="6" %s data-parent-field="%s">%s</textarea>',
+			esc_attr($id), esc_attr($id),
+			esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+			$parentId != null ? esc_attr($parentId) : '',
+			esc_html($this->fixImunify360Rule($id, $this->options->getEncodedOption($id, $defaultValue)))
 		);
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 
@@ -229,14 +229,14 @@ abstract class AbstractTab {
 		$parentId = $this->getFieldParent($id);
 	
 		printf(
-			'<input type="text" id="%s" name="'.Options::OPTIONS_NAME.'[%s]" value="%s" %s data-parent-field="%s" class="wc-color-picker" />',
-			$id, $id,
-			$this->options->getEncodedOption($id, $defaultValue),
-			$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-			$parentId != null ? $parentId : ''
+			'<input type="text" id="%s" name="'.esc_attr(Options::OPTIONS_NAME).'[%s]" value="%s" %s data-parent-field="%s" class="wc-color-picker" />',
+			esc_attr($id), esc_attr($id),
+			esc_attr($this->options->getEncodedOption($id, $defaultValue)),
+			esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+			$parentId != null ? esc_attr($parentId) : ''
 		);
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 	
@@ -253,14 +253,14 @@ abstract class AbstractTab {
 		$parentId = $this->getFieldParent($id);
 	
 		printf(
-			'<input type="checkbox" id="%s" name="'.Options::OPTIONS_NAME.'[%s]" value="1" %s  %s data-parent-field="%s" />',
-			$id, $id, 
-			$this->options->isOptionEnabled($id, $defaultValue == 1) ? ' checked="1" ' : '',
-			$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-			$parentId != null ? $parentId : ''
+			'<input type="checkbox" id="%s" name="'.esc_attr(Options::OPTIONS_NAME).'[%s]" value="1" %s  %s data-parent-field="%s" />',
+			esc_attr($id), esc_attr($id), 
+			esc_attr($this->options->isOptionEnabled($id, $defaultValue == 1) ? ' checked="1" ' : ''),
+			esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+			$parentId != null ? esc_attr($parentId) : ''
 		);
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 	
@@ -280,18 +280,18 @@ abstract class AbstractTab {
 		
 		$optionsHtml = '';
 		foreach ($options as $name => $label) {
-			$optionsHtml .= sprintf("<option value='%s'%s>%s</option>", $name, $name == $value ? ' selected="1"' : '', $label);
+			$optionsHtml .= sprintf("<option value='%s' %s>%s</option>", esc_attr($name), esc_attr($name == $value ? 'selected' : ''), esc_html($label));
 		}
 		
 		printf(
-			'<select id="%s" name="'.Options::OPTIONS_NAME.'[%s]" %s data-parent-field="%s">%s</select>',
-			$id, $id,
-			$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-			$parentId != null ? $parentId : '',
-			$optionsHtml
+			'<select id="%s" name="'.esc_attr(Options::OPTIONS_NAME).'[%s]" %s data-parent-field="%s">%s</select>',
+			esc_attr($id), esc_attr($id),
+			esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+			$parentId != null ? esc_attr($parentId) : '',
+			wp_kses($optionsHtml, array('option' => array('value' => array(), 'selected' => array())))
 		);
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 
@@ -314,36 +314,34 @@ abstract class AbstractTab {
 			$groupDef = $groups[$id];
 		}
 
-
-		$optionHints = array();
 		foreach ($options as $optionValue => $optionDisplay) {
 			$optionLabel = is_array($optionDisplay) ? $optionDisplay[0] : $optionDisplay;
 			$radioId = $id.'_'.$optionValue;
 
 			printf(
 				"<label><input id='%s' class='wc-radio-option' data-radio-group-id='%s' type='radio' name='%s[%s]' value='%s' %s %s data-parent-field='%s' data-group-def='%s'/>%s&nbsp;&nbsp;&nbsp;&nbsp;</label>",
-				$radioId, $id, Options::OPTIONS_NAME, $id, $optionValue,
-				$optionValue == $value ? ' checked' : '',
-				$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? ' disabled="1" ' : '',
-				$parentId != null ? $parentId : '',
-				array_key_exists($optionValue, $groupDef) ? implode(',', $groupDef[$optionValue]) : '',
-				$optionLabel
+				esc_attr($radioId), esc_attr($id), esc_attr(Options::OPTIONS_NAME), esc_attr($id), esc_attr($optionValue),
+				esc_attr($optionValue == $value ? 'checked' : ''),
+				esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+				$parentId != null ? esc_attr($parentId) : '',
+				esc_attr(array_key_exists($optionValue, $groupDef) ? implode(',', $groupDef[$optionValue]) : ''),
+				esc_html($optionLabel)
 			);
+		}
+
+		foreach ($options as $optionValue => $optionDisplay) {
+			$radioId = $id.'_'.$optionValue;
 
 			if (is_array($optionDisplay) && count($optionDisplay) > 1) {
-				$optionHints[] = sprintf(
+				printf(
 					'<p class="description wc-radio-hint-group-%s wc-radio-hint-%s" %s>%s</p>',
-					$id, $radioId, $optionValue == $value ? '' : 'style="display: none"', $optionDisplay[1]
+					esc_attr($id), esc_attr($radioId), $optionValue == $value ? '' : 'style="display: none"', esc_html($optionDisplay[1])
 				);
 			}
 		}
 
-		print(implode('', $optionHints));
-
-
-
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 	
@@ -360,23 +358,20 @@ abstract class AbstractTab {
 		$defaultValue = array_key_exists($id, $defaults) ? $defaults[$id] : '';
 		$values = $this->options->getOption($id, $defaultValue);
 		$parentId = $this->getFieldParent($id);
-		
-		$html = '';
+
 		foreach ($options as $key => $value) {
-			$html .= sprintf(
+			printf(
 				'<label><input type="checkbox" value="%s" name="%s[%s][]" %s %s data-parent-field="%s" />%s</label>&nbsp;&nbsp; ', 
-				$key, Options::OPTIONS_NAME, $id, 
-				in_array($key, (array) $values) ? 'checked="1"' : '',
-				$parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled="1"' : '',
-				$parentId != null ? $parentId : '',
-				$value
+				esc_attr($key), esc_attr(Options::OPTIONS_NAME), esc_attr($id),
+				esc_attr(in_array($key, (array) $values) ? 'checked' : ''),
+				esc_attr($parentId != null && !$this->options->isOptionEnabled($parentId, false) ? 'disabled' : ''),
+				$parentId != null ? esc_attr($parentId) : '',
+				esc_html($value)
 			);
 		}
 		
-		printf($html);
-		
 		if ($hint) {
-			printf('<p class="description">%s</p>', $hint);
+			printf('<p class="description">%s</p>', esc_html($hint));
 		}
 	}
 	
@@ -390,7 +385,7 @@ abstract class AbstractTab {
 		
 		printf(
 			'<p class="description">%s</p>',
-			$name
+			esc_html($name)
 		);
 	}
 	
@@ -401,88 +396,6 @@ abstract class AbstractTab {
 		}
 		
 		return null;
-	}
-
-	public function deleteUserFromListAction() {
-		if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['nonce'], 'deleteUserFromList')) {
-			return;
-		}
-		if (!isset($_GET['index']) || !isset($_GET['source'])) {
-			return;
-		}
-
-		$index = $_GET['index'];
-		$source = $_GET['source'];
-		$index = intval($index);
-		$accessUsers = (array) $this->options->getOption($source, array());
-		if ($index < count($accessUsers)) {
-			unset($accessUsers[$index]);
-			$this->options->setOption($source, array_values($accessUsers));
-			$this->options->saveOptions();
-			$this->addMessage('User has been removed from the list');
-		}
-	}
-
-	public function addUserToListAction() {
-		if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['nonce'], 'addUserToList')) {
-			return;
-		}
-		if (!isset($_GET['userLogin']) || !isset($_GET['source'])) {
-			return;
-		}
-
-		$source = $_GET['source'];
-		$userLogin = trim($_GET['userLogin']);
-		$wpUser = $this->usersDAO->getWpUserByLogin($userLogin);
-		if ($wpUser === null) {
-			$this->addErrorMessage('User login is not correct');
-		} else {
-			$accessUsers = (array) $this->options->getOption($source, array());
-			$accessUsers[] = $wpUser->ID;
-			$this->options->setOption($source, $accessUsers);
-			$this->options->saveOptions();
-
-			$this->addMessage("User has been added to the list");
-		}
-	}
-
-	protected function usersCallback($optionName, $hintHtml) {
-		$url = admin_url("options-general.php?page=".Settings::MENU_SLUG);
-		$users = (array) $this->options->getOption($optionName, array());
-
-		$html = "<div style='height: 150px; overflow-y: auto; border: 1px solid #aaa; padding: 5px;'>";
-		if (count($users) == 0) {
-			$html .= '<small>No users were added yet</small>';
-		} else {
-			$html .= '<table class="wp-list-table widefat fixed striped users wcCondensedTable">';
-			$html .= '<tr><th style="width:100px">ID</th><th>Login</th><th>Display Name</th><th></th></tr>';
-			foreach ($users as $userKey => $userID) {
-				$deleteURL = $url . '&wa_action=deleteUserFromList&index=' . $userKey.'&source='.$optionName.'&nonce='.wp_create_nonce('deleteUserFromList');
-				$deleteLink = "<a href='{$deleteURL}' onclick='return confirm(\"Are you sure?\")'>Delete</a><br />";
-				$user = $this->usersDAO->getWpUserByID(intval($userID));
-				if ($user !== null) {
-					$html .= sprintf("<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>", $userID, $user->user_login, $user->display_name, $deleteLink);
-				} else {
-					$html .= sprintf("<tr><td>%d</td><td colspan='2'>Unknown user</td><td>%s</td></tr>", $userID, $deleteLink);
-				}
-			}
-			$html .= '</table>';
-		}
-		$html .= "</div>";
-		$html .= '<p class="description">'.$hintHtml.'</p>';
-		print($html);
-	}
-
-	public function userAddCallback($optionName) {
-		$url = admin_url("options-general.php?page=".Settings::MENU_SLUG."&wa_action=addUserToList&source=".$optionName.'&nonce='.wp_create_nonce('addUserToList'));
-
-		printf(
-			'<input type="text" value="" placeholder="User login" id="userSelector%s" class="wcUserLoginHint" />'.
-			'<a class="button-secondary" href="%s" title="Adds user to the list" onclick="%s">Add User</a>',
-			$optionName,
-			$url,
-			'this.href += \'&userLogin=\' + encodeURIComponent(jQuery(\'#userSelector'.$optionName.'\').val());'
-		);
 	}
 
 }

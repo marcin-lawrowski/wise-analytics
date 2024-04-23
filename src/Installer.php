@@ -42,12 +42,6 @@ class Installer {
 		return $wpdb->prefix.'wise_analytics_resources';
 	}
 
-	public static function getMetricsTable() {
-		global $wpdb;
-
-		return $wpdb->prefix.'wise_analytics_metrics';
-	}
-
 	public static function getEventsTable() {
 		global $wpdb;
 		
@@ -58,24 +52,6 @@ class Installer {
 		global $wpdb;
 
 		return $wpdb->prefix.'wise_analytics_sessions';
-	}
-
-	public static function getDailyStatsTable() {
-		global $wpdb;
-
-		return $wpdb->prefix.'wise_analytics_stats_daily';
-	}
-
-	public static function getWeeklyStatsTable() {
-		global $wpdb;
-
-		return $wpdb->prefix.'wise_analytics_stats_weekly';
-	}
-
-	public static function getMonthlyStatsTable() {
-		global $wpdb;
-
-		return $wpdb->prefix.'wise_analytics_stats_monthly';
 	}
 
 	/**
@@ -139,11 +115,9 @@ class Installer {
 	}
 
 	private static function doActivation() {
-		global $wpdb, $user_level, $sac_admin_user_level;
-		
-		if ($user_level < $sac_admin_user_level) {
-			return;
-		}
+		global $wpdb;
+
+		self::dropTable('aaa');
 
 		$charsetCollate = $wpdb->get_charset_collate();
 
@@ -217,48 +191,6 @@ class Installer {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 
-		$tableName = self::getMetricsTable();
-		$sql = "CREATE TABLE ".$tableName." (
-				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				name text NOT NULL,
-				slug text NOT NULL
-		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-
-		$tableName = self::getDailyStatsTable();
-		$sql = "CREATE TABLE ".$tableName." (
-				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				time_dimension datetime not null,
-				metric_id bigint(11),
-				metric_int_value bigint(11),
-				dimensions json
-		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-
-		$tableName = self::getWeeklyStatsTable();
-		$sql = "CREATE TABLE ".$tableName." (
-				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				time_dimension datetime not null,
-				metric_id bigint(11),
-				metric_int_value bigint(11),
-				dimensions json
-		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-
-		$tableName = self::getMonthlyStatsTable();
-		$sql = "CREATE TABLE ".$tableName." (
-				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				time_dimension datetime not null,
-				metric_id bigint(11),
-				metric_int_value bigint(11),
-				dimensions json
-		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-
 		self::installCron();
 		
 		// set default options after installation:
@@ -272,11 +204,7 @@ class Installer {
 	 * Plugin's deactivation action.
 	 */
 	public static function deactivate() {
-		global $wpdb, $user_level, $sac_admin_user_level;
-		
-		if ($user_level < $sac_admin_user_level) {
-			return;
-		}
+		global $wpdb;
 
 		if (function_exists('is_multisite') && is_multisite()) {
 			$blogIDs = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
@@ -316,46 +244,20 @@ class Installer {
 		if ($refererCheck !== null) {
 			check_admin_referer($refererCheck);
 		}
-        
-        global $wpdb;
 		
-		$tableName = self::getEventTypesTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getEventsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getSessionsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getUsersTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getDailyStatsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getWeeklyStatsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getMonthlyStatsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getMetricsTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
-
-		$tableName = self::getEventResourcesTable();
-		$sql = "DROP TABLE IF EXISTS {$tableName};";
-		$wpdb->query($sql);
+		self::dropTable(self::getEventTypesTable());
+		self::dropTable(self::getEventsTable());
+		self::dropTable(self::getSessionsTable());
+		self::dropTable(self::getUsersTable());
+		self::dropTable(self::getEventResourcesTable());
 		
 		//WiseAnalyticsOptions::getInstance()->dropAllOptions();
+	}
+
+	private static function dropTable($tableName) {
+		global $wpdb;
+
+		$wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %i", $tableName));
 	}
 
 	private static function installCron() {

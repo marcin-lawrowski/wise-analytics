@@ -51,11 +51,12 @@ class SessionsService {
 		$endDate->modify('-'.$endDate->format('i').' days');
 
 		try {
-			$args = ['table' => Installer::getEventsTable(), 'select' => ['DISTINCT user_id'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]];
+			$args = ['table' => Installer::getEventsTable(), 'select' => ['DISTINCT user_id'], 'where' => ["created >= %s", "created <= %s"], 'whereArgs' => [$startDateStr, $endDateStr]];
 			$this->logger->info('Refreshing sessions, time range: ' . $startDateStr . ' - ' . $endDateStr);
 
 			$users = $this->queryEvents($args);
-			$args['where'][0] = str_replace(['>', $startDateStr], ['<', $endDate->format('Y-m-d H:i:s')], $args['where'][0]);
+			$args['where'][0] = str_replace(['>'], ['<'], $args['where'][0]);
+			$args['whereArgs'][0] = $endDate->format('Y-m-d H:i:s');
 			$totalEvents = 0;
 			foreach ($users as $user) {
 				$totalEvents += $this->refreshUserSessions($user->user_id, $startDateStr, $endDateStr);
@@ -67,6 +68,7 @@ class SessionsService {
 			$args['table'] = Installer::getSessionsTable();
 			$args['where'][0] = str_replace('created', 'start', $args['where'][0]);
 			array_pop($args['where']);
+			array_pop($args['whereArgs']);
 			$this->execute($args);
 
 		} catch (\Exception $exception) {
@@ -77,7 +79,11 @@ class SessionsService {
 	private function refreshUserSessions(int $userId, string $startDate, string $endDate): int {
 		$this->sessionsDAO->deleteByUserAndDate($userId, $startDate, $endDate);
 
-		$events = $this->queryEvents(['select' => ['*'], 'where' => ["user_id = $userId", "created >= '$startDate'", "created <= '$endDate'"]]);
+		$events = $this->queryEvents([
+			'select' => ['*'],
+			'where' => ["user_id = %d", "created >= %s", "created <= %s"],
+			'whereArgs' => [$userId, $startDate, $endDate]
+		]);
 
 		$this->createSessions($userId, $this->getGroupedEvents($events));
 

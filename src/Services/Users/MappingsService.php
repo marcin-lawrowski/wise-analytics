@@ -41,7 +41,8 @@ class MappingsService {
 				'pm.post_id',
 				'pm.meta_value'
 			],
-			'where' => ["pm.meta_key = '_form'", "pm.post_id IN (".implode(', ', $ids).")"]
+			'where' => ["pm.meta_key = '_form'", "pm.post_id IN (".implode(',', array_fill(0, count($ids), '%d')).")"],
+			'whereArgs' => $ids
 		]);
 
 		$fieldsList = [];

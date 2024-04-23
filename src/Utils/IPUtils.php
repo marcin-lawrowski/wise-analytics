@@ -22,7 +22,7 @@ class IPUtils {
         }
 
         if (isset($_SERVER['REMOTE_ADDR'])) {
-            return $_SERVER['REMOTE_ADDR'];
+            return sanitize_text_field($_SERVER['REMOTE_ADDR']);
         }
 
         return '';
@@ -41,7 +41,7 @@ class IPUtils {
             return false;
         }
 
-        $ips = explode(',', $_SERVER[$header]);
+        $ips = explode(',', sanitize_text_field($_SERVER[$header]));
         $ips = array_map('trim', $ips);
 
         if (empty($ips)) {

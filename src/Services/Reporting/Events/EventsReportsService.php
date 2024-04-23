@@ -16,9 +16,11 @@ class EventsReportsService extends ReportingService {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
-		$conditions = ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"];
+		$conditionsArgs = [$startDateStr, $endDateStr];
+		$conditions = ["ev.created >= %s", "ev.created <= %s"];
 		if (isset($filters['visitorId'])) {
-			$conditions[] = 'ev.user_id = '.intval($filters['visitorId']);
+			$conditions[] = 'ev.user_id = %d';
+			$conditionsArgs[] = intval($filters['visitorId']);
 		}
 
 		$result = $this->queryEvents([
@@ -34,11 +36,12 @@ class EventsReportsService extends ReportingService {
 				're.text_value as title'
 			],
 			'join' => [
-				[Installer::getEventTypesTable().' et', ['ev.type_id = et.id']],
-				[Installer::getUsersTable().' us', ['ev.user_id = us.id']],
-				[Installer::getEventResourcesTable().' re', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]
+				[Installer::getEventTypesTable(), 'et', ['ev.type_id = et.id']],
+				[Installer::getUsersTable(), 'us', ['ev.user_id = us.id']],
+				[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]
 			],
 			'where' => $conditions,
+			'whereArgs' => $conditionsArgs,
 			'order' => ['created DESC'],
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
@@ -55,7 +58,8 @@ class EventsReportsService extends ReportingService {
 			'select' => [
 				'count(ev.id) as total'
 			],
-			'where' => $conditions
+			'where' => $conditions,
+			'whereArgs' => $conditionsArgs
 		]);
 
 		return [

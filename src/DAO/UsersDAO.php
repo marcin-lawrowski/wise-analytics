@@ -84,7 +84,9 @@ class UsersDAO extends AbstractDAO {
 		}
 
 		$users = array();
-		$sql = sprintf('SELECT * FROM %s WHERE id IN (%s);', $this->getTable(), implode(',', $idsFiltered));
+		$que = implode(',', array_fill(0, count($idsFiltered), '%d'));
+
+		$sql = $wpdb->prepare('SELECT * FROM %i WHERE id IN ('.$que.');', array_merge([$this->getTable()], $idsFiltered));
 		$results = $wpdb->get_results($sql);
 		if (is_array($results)) {
 			foreach ($results as $result) {

@@ -90,10 +90,10 @@ class SessionsDAO extends AbstractDAO {
 
 	public function deleteByUserAndDate(int $userId, string $startDateStr, string $endDateStr) {
 		$this->deleteByConditions([
-			'user_id = '.$userId,
-			"start >= '$startDateStr'",
-			"start <= '$endDateStr'"
-		]);
+			'user_id = %d',
+			"start >= %s",
+			"start <= %s"
+		], [$userId, $startDateStr, $endDateStr]);
 	}
 
 }

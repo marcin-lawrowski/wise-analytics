@@ -75,7 +75,7 @@ class FrontHandler {
 					'uri' => $this->getRequestParam('ur'),
 					'canonicalUri' => $this->getRequestParam('cur'),
 					'title' => $this->getRequestParam('ti'),
-					'userAgent' => $_SERVER['HTTP_USER_AGENT'],
+					'userAgent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT']),
 					'referer' => $this->getRequestParam('re'),
 					'language' => $language,
 				]
@@ -96,7 +96,7 @@ class FrontHandler {
 	 * @return mixed
 	 */
 	private function getRequestParam($name, $default = null) {
-		return array_key_exists($name, $_GET) ? stripslashes_deep($_GET[$name]) : $default;
+		return array_key_exists($name, $_GET) ? sanitize_text_field($_GET[$name]) : $default;
 	}
 
 	/**

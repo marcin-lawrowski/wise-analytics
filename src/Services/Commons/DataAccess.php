@@ -90,6 +90,7 @@ trait DataAccess {
 		if (!isset($definition['where'])) {
 			throw new \Exception('No "where" conditions specified');
 		}
+		$whereArgs = $definition['whereArgs'] ?? [];
 
 		$table = $definition['table'];
 		if (strpos($table, $wpdb->prefix) !== 0) {
@@ -98,22 +99,22 @@ trait DataAccess {
 
 		$aliasSQL = isset($definition['alias']) ? ' AS '.$definition['alias'] : '';
 		$selectSQL = isset($definition['select']) ? implode(', ', $definition['select']) : '*';
-		$whereSQL = implode(' AND ', $definition['where']);
+		$whereSQL = $wpdb->prepare(implode(' AND ', $definition['where']), $whereArgs);
 		$groupBySQL = isset($definition['group']) ? 'GROUP BY '.implode(', ', $definition['group']) : '';
 		$orderBySQL = isset($definition['order']) ? 'ORDER BY '.implode(', ', $definition['order']) : '';
 		$joins = [];
 		if (isset($definition['join'])) {
 			foreach ($definition['join'] as $join) {
-				$joins[] = sprintf('LEFT JOIN %s ON (%s)', $join[0], implode(' AND ', $join[1]));
+				$joins[] = $wpdb->prepare('LEFT JOIN %i '.$join[1].' ON ('.implode(' AND ', $join[2]).')', $join[0]);
 			}
 		}
 		$joinsSQL = implode(" ", $joins);
 		$limitSQL = isset($definition['limit']) ? ' LIMIT '.$definition['limit'] : '';
 		$offsetSQL = isset($definition['offset']) ? ' OFFSET '.$definition['offset'] : '';
 
-		$sql = sprintf(
-			"SELECT %s FROM `%s` %s %s WHERE %s %s %s %s %s",
-			$selectSQL, $table, $aliasSQL, $joinsSQL, $whereSQL, $groupBySQL, $orderBySQL, $limitSQL, $offsetSQL
+		$sql = $wpdb->prepare(
+			'SELECT '.$selectSQL.' FROM %i '.$aliasSQL.' '.$joinsSQL.' WHERE '.$whereSQL.' '.$groupBySQL.' '.$orderBySQL.' '.$limitSQL.' '.$offsetSQL,
+			$table
 		);
 
 		if (isset($definition['outerQuery'])) {
@@ -134,15 +135,16 @@ trait DataAccess {
 		if (!isset($definition['where'])) {
 			throw new \Exception('No "where" conditions specified');
 		}
+		$whereArgs = $definition['whereArgs'] ?? [];
 
 		$table = $definition['table'];
 		if (strpos($table, $wpdb->prefix) !== 0) {
 			$table = $wpdb->prefix.$table;
 		}
 
-		$whereSQL = implode(' AND ', $definition['where']);
+		$whereSQL = $wpdb->prepare(implode(' AND ', $definition['where']), $whereArgs);
 
-		return sprintf("DELETE FROM `%s` WHERE %s", $table, $whereSQL);
+		return $wpdb->prepare("DELETE FROM %i WHERE ".$whereSQL, $table);
 	}
 
 }

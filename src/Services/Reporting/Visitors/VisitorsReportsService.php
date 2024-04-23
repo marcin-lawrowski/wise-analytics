@@ -14,14 +14,19 @@ class VisitorsReportsService extends ReportingService {
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
 		$output = [];
-		$result = $this->queryEvents(['select' => ['COUNT(DISTINCT user_id) AS users'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+		$result = $this->queryEvents([
+			'select' => ['COUNT(DISTINCT user_id) AS users'],
+			'where' => ["created >= %s", "created <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr]
+		]);
 		$output['total'] = $result ? (int) $result[0]->users : 0;
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => ['COUNT(DISTINCT ev.user_id) AS newUsers'],
-			'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'", "us.created >= '$startDateStr'"]
+			'join' => [[Installer::getUsersTable(), 'us', ['ev.user_id = us.id']]],
+			'where' => ["ev.created >= %s", "ev.created <= %s", "us.created >= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr, $startDateStr]
 		]);
 		$output['new'] = $result ? (int) $result[0]->newUsers : 0;
 		$output['returning'] = $output['total'] - $output['new'];
@@ -32,7 +37,11 @@ class VisitorsReportsService extends ReportingService {
 		list($startDate, $endDate) = $this->getDatesToCompare($startDate, $endDate);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
-		$result = $this->queryEvents(['select' => ['COUNT(DISTINCT user_id) AS users'], 'where' => ["created >= '$startDateStr'", "created <= '$endDateStr'"]]);
+		$result = $this->queryEvents([
+			'select' => ['COUNT(DISTINCT user_id) AS users'],
+			'where' => ["created >= %s", "created <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr]
+		]);
 		$previousTotal = $result ? (int) $result[0]->users : 0;
 		$output['previousTotal'] = $previousTotal;
 		$output['totalDiffPercent'] = $previousTotal > 0
@@ -59,8 +68,9 @@ class VisitorsReportsService extends ReportingService {
 				'us.first_name as firstName',
 				'us.last_name as lastName',
 			],
-			'join' => [[Installer::getUsersTable().' us', ['se.user_id = us.id']]],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "us.id IS NOT NULL"],
+			'join' => [[Installer::getUsersTable(), 'us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= %s", "se.start <= %s", "us.id IS NOT NULL"],
+			'whereArgs' => [$startDateStr, $endDateStr],
 			'group' => ['se.user_id'],
 			'order' => ['lastVisit DESC'],
 			'offset' => $offset,
@@ -80,8 +90,9 @@ class VisitorsReportsService extends ReportingService {
 			'select' => [
 				'count(distinct us.id) as total'
 			],
-			'join' => [[Installer::getUsersTable().' us', ['se.user_id = us.id']]],
-			'where' => ["se.start >= '$startDateStr'", "se.start <= '$endDateStr'", "us.id IS NOT NULL"],
+			'join' => [[Installer::getUsersTable(), 'us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= %s", "se.start <= %s", "us.id IS NOT NULL"],
+			'whereArgs' => [$startDateStr, $endDateStr],
 		]);
 
 		return [
@@ -100,11 +111,12 @@ class VisitorsReportsService extends ReportingService {
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => [
-				'DATE_FORMAT(ev.created, \'%Y-%m-%d\') as date',
+				'DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\') as date',
 				'count(distinct ev.user_id) as visitors'
 			],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
-			'group' => ['DATE_FORMAT(ev.created, \'%Y-%m-%d\')']
+			'where' => ["ev.created >= %s", "ev.created <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\')']
 		]);
 
 
@@ -143,8 +155,9 @@ class VisitorsReportsService extends ReportingService {
 					'count(distinct ev.user_id) as totalVisitors',
 					'us.language'
 				],
-				'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
-				'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
+				'join' => [[Installer::getUsersTable(), 'us', ['ev.user_id = us.id']]],
+				'where' => ["ev.created >= %s", "ev.created <= %s"],
+				'whereArgs' => [$startDateStr, $endDateStr],
 				'group' => ['us.language']
 			])
 		];
@@ -167,8 +180,9 @@ class VisitorsReportsService extends ReportingService {
 				'count(distinct ev.user_id) as totalVisitors',
 				'us.device'
 			],
-			'join' => [[Installer::getUsersTable().' us', ['ev.user_id = us.id']]],
-			'where' => ["ev.created >= '$startDateStr'", "ev.created <= '$endDateStr'"],
+			'join' => [[Installer::getUsersTable(), 'us', ['ev.user_id = us.id']]],
+			'where' => ["ev.created >= %s", "ev.created <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr],
 			'group' => ['us.device']
 		]);
 		foreach ($devices as $deviceEntry) {
@@ -191,7 +205,8 @@ class VisitorsReportsService extends ReportingService {
 		$id = intval($params['filters']['id']);
 		$visitor = $this->query(Installer::getUsersTable(), [
 			'select' => ['*'],
-			'where' => ["id = {$id}"],
+			'where' => ["id = %d"],
+			'whereArgs' => [$id]
 		]);
 
 		if (!$visitor) {
@@ -207,7 +222,8 @@ class VisitorsReportsService extends ReportingService {
 				'sum(JSON_LENGTH(JSON_EXTRACT(se.events, "$"))) as totalEvents',
 				'max(start) as lastVisit'
 			],
-			'where' => ["se.user_id = {$id}"]
+			'where' => ["se.user_id = %d"],
+			'whereArgs' => [$id]
 		]);
 		$sessions = $sessions[0];
 		$avgSessionDuration = intval($sessions->avgSessionDuration);
