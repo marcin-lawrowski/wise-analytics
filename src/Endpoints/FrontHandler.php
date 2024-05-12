@@ -113,7 +113,7 @@ class FrontHandler {
 		if ($headerMessage) {
 			header("X-WA-Api-Response: {$headerMessage}");
 		}
-		echo $image;
+		echo base64_decode(esc_attr($imageSource));
 		die();
 	}
 	

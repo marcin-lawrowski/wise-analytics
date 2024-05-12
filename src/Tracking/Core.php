@@ -10,19 +10,9 @@ use Kainex\WiseAnalytics\Options;
  * @author Kainex <contact@kainex.pl>
  */
 class Core {
-	
-	/** @var Options */
-	private $options;
-
-	/**
-	 * @param Options $options
-	 */
-	public function __construct(Options $options) {
-		$this->options = $options;
-	}
 
 	public function install() {
-		add_action('wp_footer', array($this, 'printPageViewTrackingCode'));
+		add_action('wp_enqueue_scripts', array($this, 'printPageViewTrackingCode'));
 	}
 	
 	/**
@@ -30,17 +20,8 @@ class Core {
      */
 	public function printPageViewTrackingCode() {
 		if (!is_404()) {
-			$this->printTrackingCode('page-view');
+			wp_add_inline_script( 'wise-analytics-core', 'wa.track("page-view")');
 		}
-	}
-	
-	private function printTrackingCode($eventType, $customData = array()) {
-		$customDataParameter = '';
-		if (count($customData) > 0) {
-			$customDataParameter = ','.json_encode($customData);
-		}
-		
-		echo '<script type="text/javascript">wa.track("'.esc_html($eventType).'"'.esc_html($customDataParameter).');</script>';
 	}
 	
 }

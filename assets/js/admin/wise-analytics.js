@@ -3623,7 +3623,7 @@ function ajax(url, query, configuration, fetchConfiguration) {
     if (queryString.length > 0) {
       queryString = '?' + queryString;
     }
-    var promise = fetch(WA_API_BASE_URL + url + queryString, fetchConfiguration).then(function (response) {
+    var promise = fetch(waAdminConfig.apiBase + url + queryString, fetchConfiguration).then(function (response) {
       response.json().then(function (json) {
         dispatch({
           type: "".concat(prefix, "_FETCH_DONE"),

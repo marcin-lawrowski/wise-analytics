@@ -54,7 +54,7 @@ class VisitorsService {
 		if (!isset($_COOKIE[VisitorsService::UUID_COOKIE])) {
 			return $this->create($configuration);
 		} else {
-			$visitor = $this->usersDAO->getByUuid($_COOKIE[VisitorsService::UUID_COOKIE]);
+			$visitor = $this->usersDAO->getByUuid(sanitize_text_field($_COOKIE[VisitorsService::UUID_COOKIE]));
 			if (!$visitor) {
 				return $this->create($configuration);
 			}

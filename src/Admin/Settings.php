@@ -179,7 +179,7 @@ class Settings {
 			}
 
 			$redirURL = admin_url("options-general.php?page=".self::MENU_SLUG).(isset($_GET['tab']) ? '#wc_tab='.urlencode(sanitize_text_field($_GET['tab'])) : '');
-			echo '<script type="text/javascript">location.replace("' . esc_url($redirURL) . '");</script>';
+			wp_add_inline_script( 'wise-analytics-admin-core', 'location.replace('.json_encode($redirURL).')');
 		} else {
 			$this->showUpdatedMessage();
 			$this->showErrorMessage();

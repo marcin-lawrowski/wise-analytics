@@ -49,7 +49,7 @@ function ajax(url, query, configuration, fetchConfiguration) {
 			queryString = '?' + queryString;
 		}
 		
-		let promise = fetch(WA_API_BASE_URL + url + queryString, fetchConfiguration)
+		let promise = fetch(waAdminConfig.apiBase + url + queryString, fetchConfiguration)
 			.then(function(response) {
 				response.json()
 					.then((json) => {

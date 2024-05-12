@@ -38,6 +38,9 @@ class Analytics {
 			wp_enqueue_script('wise-analytics-admin-core', plugins_url('assets/js/admin/wise-analytics.min.js', dirname(__FILE__)), array('jquery', 'wise-analytics-admin-vendor'), WISE_ANALYTICS_VERSION, true);
 			wp_enqueue_style('wise-analytics-core', plugins_url('assets/css/admin/wise-analytics.min.css', dirname(__FILE__)), array(), WISE_ANALYTICS_VERSION);
 		}
+		wp_localize_script('wise-analytics-admin-core', 'waAdminConfig', [
+			'apiBase' => site_url().'/wp-json/wise-analytics/v1'
+		]);
 	}
 	
 }
