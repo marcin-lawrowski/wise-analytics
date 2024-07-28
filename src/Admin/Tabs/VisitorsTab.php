@@ -97,7 +97,7 @@ class VisitorsTab extends AbstractTab {
 					} else if ($mappedRatio > 0) {
 						$mappedStatus = '<span style="color:green">Partially Mapped</span>';
 					}
-					$url = sprintf('options-general.php?page=wise-analytics-admin&visitors-mapping-edit=%s&action-id=%s#tab=visitors', $definition['type'], urlencode($action['id']));
+					$url = sprintf('options-general.php?page=wise-analytics-admin&visitors-mapping-edit=%s&action-id=%s#wa_tab=visitors', $definition['type'], urlencode($action['id']));
 					print '<li><a href="' . esc_url($url) . '">' . esc_html($action['item']) . '</a> ['.wp_kses($mappedStatus, array('span' => array('style' => array()))).']</li>';
 				}
 				print '</ul>';
@@ -137,7 +137,7 @@ class VisitorsTab extends AbstractTab {
 
 		print '</table>';
 
-		print '<br /><a href="options-general.php?page=wise-analytics-admin#tab=visitors">Go Back</a>';
+		print '<br /><a href="options-general.php?page=wise-analytics-admin#wa_tab=visitors">Go Back</a>';
 	}
 
 	private function getVisitorFieldsSelect(string $actionsSource, string $actionId, string $actionFieldId, array $currentMappings): string {
