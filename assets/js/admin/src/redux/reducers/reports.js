@@ -9,10 +9,11 @@ const defaultServerActions = {
 	'visitors.devices': { result: { devices: [] } },
 	'visitor.information': { result: undefined },
 	'sessions.daily': { result: { sessions: [] } },
-	'sessions.sources': { result: { sources: [] } },
-	'sessions.sourceCategories': { result: { sourceCategories: [] } },
-	'sessions.sources.categories.daily': { result: { sourceCategories: [] } },
-	'sessions.sources.category': { result: { sources: [], total: 0, offset: 0 } },
+	'sources.categories.overall': { result: { sourceCategories: [] } },
+	'sources.categories.daily': { result: { sourceCategories: [] } },
+	'sources.social.overall': { result: { socialNetworks: [] } },
+	'sources.organic.overall': { result: { organic: [] } },
+	'sources': { result: { sources: [], total: 0, offset: 0 } },
 	'pages.views.daily': { result: { pageViews: [] } },
 	'events': { result: { events: [], total: 0, offset: 0 } }
 }

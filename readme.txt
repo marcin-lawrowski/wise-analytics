@@ -3,13 +3,13 @@ Contributors: marcin.lawrowski
 Donate link: https://kainex.pl/projects/wp-plugins/wise-analytics/wise-analytics-donate?utm_source=wiseanalytics-page&utm_medium=lead&utm_campaign=readme
 Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
-Requires PHP: 7.2.0
-Tested up to: 6.4.3
-Stable tag: 1.0.0
+Requires PHP: 7.4.0
+Tested up to: 6.6.1
+Stable tag: 1.1
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Advanced web traffic tracking and analytics plugin for WordPress sites.
+Your site's stats are private thing. No need to store it outside your server! Advanced web traffic tracking and analytics plugin for WordPress sites.
 
 == Description ==
 
@@ -49,7 +49,7 @@ Advanced web traffic tracking and analytics plugin for WordPress sites.
 
 = How to tell Wise Analytics to recognize users? =
 
-Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms. Currently we support Contact Form 7 plugin only. Once a visitor submits a form it is the recognized in Wise Analytics by name or e-mail (depending on mapping).
+Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms. Currently, we support Contact Form 7 plugin only. Once a visitor submits a form it is the recognized in Wise Analytics by name or e-mail (depending on mapping).
 
 == Screenshots ==
 
@@ -62,6 +62,11 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 7. Referral visits
 
 == Changelog ==
+
+= 1.1 =
+* Added: social networks pie chart
+* Added: organic search pie chart
+* Added: referrals table
 
 = 1.0 =
 

@@ -9,6 +9,7 @@ import {getDatesRange} from "utils/dates";
 import DatesRangeFilter from "./reporting/pages/parts/DatesRangeFilter";
 import MainMenu from "./reporting/pages/parts/MainMenu";
 import Conversions from "./reporting/pages/conversions/Conversions";
+import Sources from "./reporting/pages/sources/Sources";
 
 class Application extends React.Component {
 
@@ -47,6 +48,7 @@ class Application extends React.Component {
 						<Route path="/">
 							<Route index element={ <Overview startDate={ this.state.startDate } endDate={ this.state.endDate } /> } />
 							<Route path="visitors/*" element={<Visitors startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
+							<Route path="sources/*" element={<Sources startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="events/*" element={<Events startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="conversions/*" element={<Conversions startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 						</Route>

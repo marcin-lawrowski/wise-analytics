@@ -6,40 +6,33 @@ use Kainex\WiseAnalytics\Services\Reporting\Events\EventsReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Highlights\HighlightsService;
 use Kainex\WiseAnalytics\Services\Reporting\Pages\PagesReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
+use Kainex\WiseAnalytics\Services\Reporting\Sources\SourcesReportsService;
 use Kainex\WiseAnalytics\Services\Reporting\Visitors\VisitorsReportsService;
 
 class ReportsEndpoint {
 
-	/** @var HighlightsService */
-	private $highlightsService;
-
-	/** @var PagesReportsService */
-	private $pagesReportsService;
-
-	/** @var VisitorsReportsService */
-	private $visitorsReportsService;
-
-	/** @var EventsReportsService */
-	private $eventsReportsService;
-
-	/** @var SessionsReportsService */
-	private $sessionsReportsService;
+	private HighlightsService $highlightsService;
+	private PagesReportsService $pagesReportsService;
+	private VisitorsReportsService $visitorsReportsService;
+	private EventsReportsService $eventsReportsService;
+	private SessionsReportsService $sessionsReportsService;
+	private SourcesReportsService $sources;
 
 	/**
-	 * ReportsEndpoint constructor.
 	 * @param HighlightsService $highlightsService
 	 * @param PagesReportsService $pagesReportsService
 	 * @param VisitorsReportsService $visitorsReportsService
 	 * @param EventsReportsService $eventsReportsService
 	 * @param SessionsReportsService $sessionsReportsService
+	 * @param SourcesReportsService $sources
 	 */
-	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $visitorsReportsService, EventsReportsService $eventsReportsService, SessionsReportsService $sessionsReportsService)
-	{
+	public function __construct(HighlightsService $highlightsService, PagesReportsService $pagesReportsService, VisitorsReportsService $visitorsReportsService, EventsReportsService $eventsReportsService, SessionsReportsService $sessionsReportsService, SourcesReportsService $sources) {
 		$this->highlightsService = $highlightsService;
 		$this->pagesReportsService = $pagesReportsService;
 		$this->visitorsReportsService = $visitorsReportsService;
 		$this->eventsReportsService = $eventsReportsService;
 		$this->sessionsReportsService = $sessionsReportsService;
+		$this->sources = $sources;
 	}
 
 	public function registerEndpoints() {
@@ -76,14 +69,16 @@ class ReportsEndpoint {
 					return $this->visitorsReportsService->getInformation($queryParams);
 				case 'sessions.daily';
 					return $this->sessionsReportsService->getSessionsDaily($queryParams);
-				case 'sessions.sources';
-					return $this->sessionsReportsService->getSources($queryParams);
-				case 'sessions.sourceCategories';
-					return $this->sessionsReportsService->getSourceCategories($queryParams);
-				case 'sessions.sources.categories.daily';
-					return $this->sessionsReportsService->getSourceCategoriesDaily($queryParams);
-				case 'sessions.sources.category';
-					return $this->sessionsReportsService->getSourceCategory($queryParams);
+				case 'sources.categories.overall';
+					return $this->sources->getSourceCategories($queryParams);
+				case 'sources.social.overall';
+					return $this->sources->getSocialNetworks($queryParams);
+				case 'sources.organic.overall';
+					return $this->sources->getOrganicSearch($queryParams);
+				case 'sources.categories.daily';
+					return $this->sources->getSourceCategoriesDaily($queryParams);
+				case 'sources';
+					return $this->sources->getSources($queryParams);
 				case 'events';
 					return $this->eventsReportsService->getEvents($queryParams);
 			}

@@ -6,7 +6,7 @@ import moment from 'moment';
 import StatsTable from "common/data/StatsTable";
 import Select from "react-select";
 
-class SourcesCategoryTable extends React.Component {
+class SourcesTable extends React.Component {
 
 	get SOURCES() {
 		return [
@@ -30,7 +30,7 @@ class SourcesCategoryTable extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.clearReport('sessions.sources.category');
+		this.props.clearReport('sources');
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
@@ -41,7 +41,7 @@ class SourcesCategoryTable extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sessions.sources.category',
+			name: 'sources',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD'),
@@ -92,7 +92,7 @@ class SourcesCategoryTable extends React.Component {
 
 }
 
-SourcesCategoryTable.propTypes = {
+SourcesTable.propTypes = {
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object
@@ -101,7 +101,7 @@ SourcesCategoryTable.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sessions.sources.category'].inProgress,
-		report: state.reports['sessions.sources.category'].result
+		loading: state.reports['sources'].inProgress,
+		report: state.reports['sources'].result
 	}), { requestReport, clearReport }
-)(SourcesCategoryTable);
+)(SourcesTable);

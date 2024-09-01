@@ -6,7 +6,7 @@ import moment from 'moment';
 import LineChart from "common/charts/LineChart";
 import Loader from "common/Loader";
 
-class SourcesLineChart extends React.Component {
+class CategoriesDailyLineChart extends React.Component {
 
 	componentDidMount() {
 		this.refresh();
@@ -19,12 +19,12 @@ class SourcesLineChart extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.clearReport('sessions.sources.categories.daily');
+		this.props.clearReport('sources.categories.daily');
 	}
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sessions.sources.categories.daily',
+			name: 'sources.categories.daily',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -44,7 +44,7 @@ class SourcesLineChart extends React.Component {
 
 		return <div className="card">
 			<div className="card-body p-0">
-				<h6 className="card-title text-muted">Sources <Loader show={ this.props.loading } /></h6>
+				<h6 className="card-title text-muted">Source Categories Daily <Loader show={ this.props.loading } /></h6>
 
 				<div style={ { height: 300 }}>
 					{ this.props.report.sourceCategories.length > 0 && <LineChart data={ data } enableArea={ false } /> }
@@ -54,7 +54,7 @@ class SourcesLineChart extends React.Component {
 	}
 }
 
-SourcesLineChart.propTypes = {
+CategoriesDailyLineChart.propTypes = {
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object
@@ -63,7 +63,7 @@ SourcesLineChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sessions.sources.categories.daily'].inProgress,
-		report: state.reports['sessions.sources.categories.daily'].result
+		loading: state.reports['sources.categories.daily'].inProgress,
+		report: state.reports['sources.categories.daily'].result
 	}), { requestReport, clearReport }
-)(SourcesLineChart);
+)(CategoriesDailyLineChart);
