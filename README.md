@@ -35,7 +35,7 @@ By [Kainex.pl](https://kainex.pl/)
 
  - WordPress site
  - Admin access to the WordPress site
- - PHP >= 7.2.0
+ - PHP >= 7.4.0
 
 #### Steps:
 

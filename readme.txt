@@ -5,7 +5,7 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.6.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Your site's stats are private thing. No need to store it outside your server! Ad
 
 **Wise Analytics** is a fully fledged site traffic statistics plugin that helps to track visitors behavior, measure the sources and actions taken on your website. The plugin provides a platform to analyze the traffic as tables and charts. It is easy to setup and configure. Our development team is constantly working on new features and supporting the existing ones.
 
-**[Source code on GitHub]**(https://github.com/marcin-lawrowski/wise-analytics)
+**[Source code on GitHub](https://github.com/marcin-lawrowski/wise-analytics)
 
 **[Read More](https://kainex.pl/projects/wp-plugins/wise-analytics?utm_source=wiseanalytics-page&utm_medium=lead&utm_campaign=readme)**
 
@@ -23,7 +23,7 @@ Your site's stats are private thing. No need to store it outside your server! Ad
 
 * Tracking page views, sessions (full visits) and events
 * Integration with Contact Form 7 (recognizing users that sent a form)
-* Tracking traffic sources (Referral, Social Networks, Search Engines, Direct)
+* Tracking traffic sources (Referral, Social Networks, Search Engines, Direct, Paid Traffic)
 * Detecting devices, languages
 * Tracking WordPress log-in event
 * Visitor details page (name, e-mail, language, screen size, device, last visit, etc.)
@@ -34,7 +34,7 @@ Your site's stats are private thing. No need to store it outside your server! Ad
 == Installation ==
 
 = Requirements: =
-* PHP >= 7.2.0
+* PHP >= 7.4.0
 
 = Plugin installation: =
 1. Upload the entire wise-analytics folder to the plugins directory (usually `/wp-content/plugins/`) of WordPress instance.
@@ -62,6 +62,10 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 7. Referral visits
 
 == Changelog ==
+
+= 1.1.1 =
+* Recognizing paid traffic
+* Traffic source daily chart with comparison to other metrics
 
 = 1.1 =
 * Added: social networks pie chart

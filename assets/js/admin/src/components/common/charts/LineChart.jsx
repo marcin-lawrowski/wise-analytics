@@ -14,7 +14,7 @@ class LineChart extends React.Component {
 		return <ResponsiveLine
 			data={ this.props.data }
 			curve="monotoneX"
-			margin={{ top: 10, right: 30, bottom: 30, left: 30 }}
+			margin={{ top: 10, right: 30, bottom: 60, left: 30 }}
 			xScale={{ type: 'time', format: '%Y-%m-%d' }}
 			yScale={{
 				type: 'linear',
@@ -32,7 +32,7 @@ class LineChart extends React.Component {
 			axisBottom={{
 				format: '%b %d',
 			    legend: 'Day',
-			    legendOffset: 40,
+			    legendOffset: 30,
 			    legendPosition: 'middle',
 				useUTC: false,
 				precision: 'day',
@@ -49,6 +49,32 @@ class LineChart extends React.Component {
 			lineWidth={4}
 			pointLabelYOffset={-12}
 			useMesh={true}
+			legends={[
+				{
+					anchor: 'bottom-left',
+					direction: 'row',
+					justify: false,
+					translateX: 0,
+					translateY: 60,
+					itemsSpacing: 10,
+					itemDirection: 'left-to-right',
+					itemWidth: 110,
+					itemHeight: 20,
+					itemOpacity: 0.75,
+					symbolSize: 12,
+					symbolShape: 'circle',
+					symbolBorderColor: 'rgba(0, 0, 0, .5)',
+					effects: [
+						{
+							on: 'hover',
+							style: {
+								itemBackground: 'rgba(0, 0, 0, .03)',
+								itemOpacity: 1
+							}
+						}
+					]
+				}
+			]}
 			tooltip={({point}) => (
 	            <div
 	                style={{

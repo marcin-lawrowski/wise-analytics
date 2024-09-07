@@ -40,9 +40,10 @@ class SessionsService {
 	 * @param \DateTime $day The day to refresh the sessions
 	 * @throws \Exception
 	 */
-	public function refresh(\DateTime $day) {
+	public function refresh(\DateTime $day, int $spanDays = 1) {
 		$startDate = clone $day;
 		$startDate->setTime(0, 0, 0);
+		$startDate->modify('-'.$spanDays.' days');
 		$endDate = clone $day;
 		$endDate->setTime(23, 59, 59);
 
@@ -183,7 +184,7 @@ class SessionsService {
 		// social networks:
 		foreach (self::SOCIAL_NETWORKS as $pattern => $networkName) {
 			if (preg_match('/'.$pattern.'$/', $domain)) {
-				$session->setSourceCategory('Social Network');
+				$session->setSourceCategory($this->isPaid($firstEvent) ? 'Paid Social' : 'Organic Social');
 				$session->setSourceGroup($networkName);
 				return;
 			}
@@ -192,7 +193,7 @@ class SessionsService {
 		// search engines:
 		foreach (self::SEARCH_ENGINES as $pattern => $engineName) {
 			if (preg_match('/'.$pattern.'$/', $domain)) {
-				$session->setSourceCategory('Organic');
+				$session->setSourceCategory($this->isPaid($firstEvent) ? 'Paid Search' : 'Organic Search');
 				$session->setSourceGroup($engineName);
 				return;
 			}
@@ -281,5 +282,21 @@ class SessionsService {
 		'feishu.cn' => 'Feishu',
 		'pinterest.ca' => 'Pinterest',
 	];
+
+	private function isPaid(object $firstEvent): bool {
+		$data = json_decode($firstEvent->data, true);
+		if (!is_array($data) || !isset($data['uri']) || !$data['uri']) {
+			return false;
+		}
+
+		if (str_contains($data['uri'], 'gad_source')) { // Google Ads
+			return true;
+		}
+		if (str_contains($data['uri'], 'fbclid')) { // Facebook Ads
+			return true;
+		}
+
+		return false;
+	}
 
 }

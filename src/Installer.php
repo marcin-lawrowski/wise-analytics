@@ -262,8 +262,17 @@ class Installer {
 	}
 
 	private static function installCron() {
+		add_filter( 'cron_schedules', function($schedules) {
+			$schedules['every3hours'] = [
+				'interval' => 10800,
+				'display' => __('Every 3 hours')
+			];
+
+			return $schedules;
+		});
+
 		if (!wp_next_scheduled('wa_processing_hook_'.get_current_blog_id())) {
-			wp_schedule_event(time(), 'hourly', 'wa_processing_hook_'.get_current_blog_id());
+			wp_schedule_event(time(), 'every3hours', 'wa_processing_hook_'.get_current_blog_id());
 		}
 	}
 

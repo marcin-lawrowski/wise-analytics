@@ -40,7 +40,7 @@ class SourcesReportsService extends ReportingService {
 				'se.source_group AS socialNetwork'
 			],
 			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category = %s'],
-			'whereArgs' => [$startDateStr, $endDateStr, 'Social Network'],
+			'whereArgs' => [$startDateStr, $endDateStr, 'Organic Social'],
 			'group' => ['se.source_group']
 		]);
 
@@ -61,7 +61,7 @@ class SourcesReportsService extends ReportingService {
 				'se.source_group AS searchEngine'
 			],
 			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category = %s'],
-			'whereArgs' => [$startDateStr, $endDateStr, 'Organic'],
+			'whereArgs' => [$startDateStr, $endDateStr, 'Organic Search'],
 			'group' => ['se.source_group']
 		]);
 
@@ -106,7 +106,7 @@ class SourcesReportsService extends ReportingService {
 				'date' => $dateStr
 			];
 			foreach ($allCategories as $category) {
-				$entry[$category] = isset($output[$dateStr]) && isset($output[$dateStr][$category]) ? $output[$dateStr][$category] : 0;
+				$entry[$category] = $output[$dateStr][$category] ?? 0;
 			}
 
 			$sourceCategories[] = $entry;
@@ -114,7 +114,23 @@ class SourcesReportsService extends ReportingService {
 			$startDate->modify('+1 day');
 		}
 
+		// get all categories:
+		$categories = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'se.source_category'
+			],
+			'where' => ['se.source_category IS NOT NULL', "se.source_category <> ''"],
+			'order' => ['se.source_category asc'],
+			'group' => ['se.source_category']
+		]);
+		$allCategories = [];
+		foreach ($categories as $category) {
+			$allCategories[] = $category->source_category;
+		}
+
 		return [
+			'categories' => $allCategories,
 			'sourceCategories' => $sourceCategories
 		];
 	}

@@ -10,7 +10,7 @@ const defaultServerActions = {
 	'visitor.information': { result: undefined },
 	'sessions.daily': { result: { sessions: [] } },
 	'sources.categories.overall': { result: { sourceCategories: [] } },
-	'sources.categories.daily': { result: { sourceCategories: [] } },
+	'sources.categories.daily': { result: { sourceCategories: [], categories: [] } },
 	'sources.social.overall': { result: { socialNetworks: [] } },
 	'sources.organic.overall': { result: { organic: [] } },
 	'sources': { result: { sources: [], total: 0, offset: 0 } },

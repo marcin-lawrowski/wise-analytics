@@ -261,7 +261,7 @@ var LineChart = /*#__PURE__*/function (_React$Component) {
         margin: {
           top: 10,
           right: 30,
-          bottom: 30,
+          bottom: 60,
           left: 30
         },
         xScale: {
@@ -285,7 +285,7 @@ var LineChart = /*#__PURE__*/function (_React$Component) {
         axisBottom: {
           format: '%b %d',
           legend: 'Day',
-          legendOffset: 40,
+          legendOffset: 30,
           legendPosition: 'middle',
           useUTC: false,
           precision: 'day',
@@ -305,6 +305,28 @@ var LineChart = /*#__PURE__*/function (_React$Component) {
         lineWidth: 4,
         pointLabelYOffset: -12,
         useMesh: true,
+        legends: [{
+          anchor: 'bottom-left',
+          direction: 'row',
+          justify: false,
+          translateX: 0,
+          translateY: 60,
+          itemsSpacing: 10,
+          itemDirection: 'left-to-right',
+          itemWidth: 110,
+          itemHeight: 20,
+          itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: 'circle',
+          symbolBorderColor: 'rgba(0, 0, 0, .5)',
+          effects: [{
+            on: 'hover',
+            style: {
+              itemBackground: 'rgba(0, 0, 0, .03)',
+              itemOpacity: 1
+            }
+          }]
+        }],
         tooltip: function tooltip(_ref) {
           var point = _ref.point;
           return /*#__PURE__*/_react["default"].createElement("div", {
@@ -1297,8 +1319,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
@@ -1314,11 +1338,28 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 var CategoriesDailyLineChart = /*#__PURE__*/function (_React$Component) {
   (0, _inherits2["default"])(CategoriesDailyLineChart, _React$Component);
   var _super = _createSuper(CategoriesDailyLineChart);
-  function CategoriesDailyLineChart() {
+  function CategoriesDailyLineChart(props) {
+    var _this;
     (0, _classCallCheck2["default"])(this, CategoriesDailyLineChart);
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.state = {
+      metricsFilter: []
+    };
+    _this.onCategoryFilterChange = _this.onCategoryFilterChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.onMetricFilterChange = _this.onMetricFilterChange.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.refreshMetrics = _this.refreshMetrics.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.getMetricsData = _this.getMetricsData.bind((0, _assertThisInitialized2["default"])(_this));
+    return _this;
   }
   (0, _createClass2["default"])(CategoriesDailyLineChart, [{
+    key: "METRICS_COMPARE",
+    get: function get() {
+      return [{
+        label: 'Visitors',
+        value: 'visitors'
+      }];
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.refresh();
@@ -1328,12 +1369,65 @@ var CategoriesDailyLineChart = /*#__PURE__*/function (_React$Component) {
     value: function componentDidUpdate(prevProps, prevState, snapshot) {
       if ((prevProps.startDate !== this.props.startDate || prevProps.endDate !== this.props.endDate) && this.props.startDate && this.props.endDate) {
         this.refresh();
+        this.refreshMetrics();
+      }
+      if (this.props.report !== prevProps.report) {
+        var _this$state$categorie;
+        this.setState({
+          categoriesFilter: (_this$state$categorie = this.state.categoriesFilter) !== null && _this$state$categorie !== void 0 ? _this$state$categorie : this.props.report.categories
+        });
       }
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.props.clearReport('sources.categories.daily');
+    }
+  }, {
+    key: "onCategoryFilterChange",
+    value: function onCategoryFilterChange(sourceCategory) {
+      if (this.state.categoriesFilter.includes(sourceCategory)) {
+        this.setState({
+          categoriesFilter: this.state.categoriesFilter.filter(function (category) {
+            return category !== sourceCategory;
+          })
+        });
+      } else {
+        this.setState({
+          categoriesFilter: [].concat((0, _toConsumableArray2["default"])(this.state.categoriesFilter), [sourceCategory])
+        });
+      }
+    }
+  }, {
+    key: "onMetricFilterChange",
+    value: function onMetricFilterChange(metric) {
+      if (this.state.metricsFilter.includes(metric)) {
+        this.setState({
+          metricsFilter: this.state.metricsFilter.filter(function (metricFilter) {
+            return metricFilter !== metric;
+          })
+        });
+      } else {
+        this.setState({
+          metricsFilter: [].concat((0, _toConsumableArray2["default"])(this.state.metricsFilter), [metric])
+        }, this.refreshMetrics);
+      }
+    }
+  }, {
+    key: "refreshMetrics",
+    value: function refreshMetrics() {
+      var _this2 = this;
+      this.state.metricsFilter.map(function (metric) {
+        if (metric === 'visitors') {
+          _this2.props.requestReport({
+            name: 'visitors.daily',
+            filters: {
+              startDate: (0, _moment["default"])(_this2.props.startDate).format('YYYY-MM-DD'),
+              endDate: (0, _moment["default"])(_this2.props.endDate).format('YYYY-MM-DD')
+            }
+          });
+        }
+      });
     }
   }, {
     key: "refresh",
@@ -1347,41 +1441,133 @@ var CategoriesDailyLineChart = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "getMetricsData",
+    value: function getMetricsData() {
+      var _this3 = this;
+      return this.state.metricsFilter.map(function (metric) {
+        if (metric === 'visitors' && _this3.props.visitorsMetric.visitors.length > 0) {
+          var metricDefinition = _this3.METRICS_COMPARE.find(function (metricCompare) {
+            return metricCompare.value === metric;
+          });
+          return {
+            id: metricDefinition.label,
+            single: 'Visitor',
+            plural: metricDefinition.label,
+            data: _this3.props.visitorsMetric.visitors.map(function (record, index) {
+              return {
+                "x": record.date,
+                "y": record.visitors
+              };
+            })
+          };
+        }
+        return null;
+      }).filter(function (definition) {
+        return definition !== null;
+      });
+    }
+  }, {
+    key: "renderSettings",
+    value: function renderSettings() {
+      var _this4 = this;
+      if (this.props.report.categories.length === 0) {
+        return null;
+      }
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        className: "d-inline dropdown"
+      }, /*#__PURE__*/_react["default"].createElement("button", {
+        className: "btn btn-link dropdown-toggle",
+        type: "button",
+        "data-bs-toggle": "dropdown",
+        "aria-expanded": "false"
+      }, /*#__PURE__*/_react["default"].createElement("i", {
+        className: "bi bi-gear"
+      })), /*#__PURE__*/_react["default"].createElement("ul", {
+        className: "dropdown-menu"
+      }, this.props.report.categories.map(function (sourceCategory, index) {
+        return /*#__PURE__*/_react["default"].createElement("li", {
+          key: index
+        }, /*#__PURE__*/_react["default"].createElement("span", {
+          className: "dropdown-item"
+        }, /*#__PURE__*/_react["default"].createElement("div", {
+          className: "dropdown-item form-check"
+        }, /*#__PURE__*/_react["default"].createElement("input", {
+          className: "form-check-input",
+          type: "checkbox",
+          id: "source" + index,
+          checked: _this4.state.categoriesFilter && _this4.state.categoriesFilter.includes(sourceCategory),
+          onChange: function onChange() {
+            return _this4.onCategoryFilterChange(sourceCategory);
+          }
+        }), /*#__PURE__*/_react["default"].createElement("label", {
+          className: "form-check-label",
+          htmlFor: "source" + index
+        }, sourceCategory))));
+      }), this.props.report.categories.length === 0 && /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement("span", {
+        className: "dropdown-item disabled"
+      }, "no data found")), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement("hr", {
+        className: "dropdown-divider"
+      })), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement("h6", {
+        className: "dropdown-header"
+      }, "Compare with")), this.METRICS_COMPARE.map(function (metric, index) {
+        return /*#__PURE__*/_react["default"].createElement("li", {
+          key: index
+        }, /*#__PURE__*/_react["default"].createElement("span", {
+          className: "dropdown-item"
+        }, /*#__PURE__*/_react["default"].createElement("div", {
+          className: "dropdown-item form-check"
+        }, /*#__PURE__*/_react["default"].createElement("input", {
+          className: "form-check-input",
+          type: "checkbox",
+          id: "metric" + index,
+          checked: _this4.state.metricsFilter && _this4.state.metricsFilter.includes(metric.value),
+          onChange: function onChange() {
+            return _this4.onMetricFilterChange(metric.value);
+          }
+        }), /*#__PURE__*/_react["default"].createElement("label", {
+          className: "form-check-label",
+          htmlFor: "metric" + index
+        }, metric.label))));
+      })));
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this = this;
-      var lines = this.props.report.sourceCategories.length ? Object.keys(this.props.report.sourceCategories[0]).filter(function (line) {
-        return line !== 'date';
+      var _this5 = this;
+      var sourceCategories = this.props.report.sourceCategories.length ? Object.keys(this.props.report.sourceCategories[0]).filter(function (categoryName) {
+        return _this5.state.categoriesFilter && _this5.state.categoriesFilter.includes(categoryName);
       }) : [];
-      var data = lines.map(function (categoryName) {
+      var data = [sourceCategories.map(function (categoryName) {
         return {
           id: categoryName,
           single: categoryName,
           plural: categoryName,
-          data: _this.props.report.sourceCategories.map(function (record, index) {
+          data: _this5.props.report.sourceCategories.map(function (record, index) {
             return {
               "x": record.date,
               "y": record[categoryName]
             };
           })
         };
-      });
+      }), this.getMetricsData()].flat();
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: "card"
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "card-body p-0"
       }, /*#__PURE__*/_react["default"].createElement("h6", {
-        className: "card-title text-muted"
-      }, "Source Categories Daily ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
+        className: "card-title text-muted d-flex align-items-center"
+      }, "Source Categories Daily ", this.renderSettings(), " ", /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
         show: this.props.loading
       })), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           height: 300
         }
-      }, this.props.report.sourceCategories.length > 0 && /*#__PURE__*/_react["default"].createElement(_LineChart["default"], {
+      }, sourceCategories.length > 0 ? /*#__PURE__*/_react["default"].createElement(_LineChart["default"], {
         data: data,
         enableArea: false
-      }))));
+      }) : /*#__PURE__*/_react["default"].createElement("div", {
+        className: "text-muted"
+      }, "No data found within the given time period"))));
     }
   }]);
   return CategoriesDailyLineChart;
@@ -1394,15 +1580,16 @@ CategoriesDailyLineChart.propTypes = {
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration,
-    loading: state.reports['sources.categories.daily'].inProgress,
-    report: state.reports['sources.categories.daily'].result
+    loading: state.reports['sources.categories.daily'].inProgress || state.reports['visitors.daily'].inProgress,
+    report: state.reports['sources.categories.daily'].result,
+    visitorsMetric: state.reports['visitors.daily'].result
   };
 }, {
   requestReport: _reports.requestReport,
   clearReport: _reports.clearReport
 })(CategoriesDailyLineChart);
 
-},{"@babel/runtime/helpers/classCallCheck":53,"@babel/runtime/helpers/createClass":54,"@babel/runtime/helpers/getPrototypeOf":57,"@babel/runtime/helpers/inherits":58,"@babel/runtime/helpers/interopRequireDefault":59,"@babel/runtime/helpers/possibleConstructorReturn":62,"actions/reports":38,"common/Loader":2,"common/charts/LineChart":4,"moment":148,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],14:[function(require,module,exports){
+},{"@babel/runtime/helpers/assertThisInitialized":52,"@babel/runtime/helpers/classCallCheck":53,"@babel/runtime/helpers/createClass":54,"@babel/runtime/helpers/getPrototypeOf":57,"@babel/runtime/helpers/inherits":58,"@babel/runtime/helpers/interopRequireDefault":59,"@babel/runtime/helpers/possibleConstructorReturn":62,"@babel/runtime/helpers/toConsumableArray":64,"actions/reports":38,"common/Loader":2,"common/charts/LineChart":4,"moment":148,"prop-types":"prop-types","react":"react","react-redux":"react-redux"}],14:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -3691,7 +3878,8 @@ var defaultServerActions = {
   },
   'sources.categories.daily': {
     result: {
-      sourceCategories: []
+      sourceCategories: [],
+      categories: []
     }
   },
   'sources.social.overall': {

@@ -54,6 +54,9 @@ div.waContainer .card {
 div.waContainer dd, div.waContainer li {
   margin-bottom: auto;
 }
+div.waContainer input[type=checkbox]:checked::before {
+  content: none;
+}
 div.waContainer :root,
 div.waContainer [data-bs-theme=light] {
   --bs-blue: #0d6efd;
