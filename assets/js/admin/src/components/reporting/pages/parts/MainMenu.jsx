@@ -44,6 +44,7 @@ class MainMenu extends React.Component {
 					<div className={ section !== 'sources' ? 'd-none' : ''}>
 						<ul className="mb-1">
 							<li><Link to="/sources/overview" className={ linkClass("/sources/overview") }>Overview</Link></li>
+							<li><Link to="/sources/channels" className={ linkClass("/sources/channels") }>Channels</Link></li>
 							<li><Link to="/sources/referral" className={ linkClass("/sources/referral") }>Referral</Link></li>
 						</ul>
 					</div>

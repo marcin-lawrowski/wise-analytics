@@ -5,15 +5,12 @@ import { requestReport, clearReport } from "actions/reports";
 import moment from 'moment';
 import StatsTable from 'common/data/StatsTable';
 
-class ReferralsTable extends React.Component {
+class ChannelsTable extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			offset: 0,
-			category: 'Referral'
-		}
+		this.state = { }
 	}
 
 	componentDidMount() {
@@ -21,7 +18,7 @@ class ReferralsTable extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.props.clearReport('sources');
+		this.props.clearReport('sources.categories.overall');
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
@@ -32,47 +29,41 @@ class ReferralsTable extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sources',
+			name: 'sources.categories.overall',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
-				endDate: moment(this.props.endDate).format('YYYY-MM-DD'),
-				category: 'Referral',
-			},
-			offset: this.state.offset
+				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
+			}
 		});
 	}
 
 	render() {
 		return <StatsTable
-			title={ `Referral Sources` }
+			title={ `Channels Summary` }
 			loading={ this.props.loading }
 			columns={[
-				{ 'name': 'Source' },
+				{ 'name': 'Channel' },
 				{ 'name': 'Visits' },
 				{ 'name': 'Visitors' },
 				{ 'name': 'Events' },
 				{ 'name': 'Avg. Events per Visit' },
 				{ 'name': 'Avg. Visit' }
 			]}
-			data={ this.props.report.sources }
+			data={ this.props.report.sourceCategories }
 			rowRenderer={ record => [
-				{ value: record.sourceGroup },
+				{ value: record.source },
 				{ value: record.totalSessions },
 				{ value: record.totalVisitors },
 				{ value: record.totalEvents },
 				{ value: record.eventsPerSession },
 				{ value: record.avgSessionTime }
 			]}
-			offset={ this.props.report.offset }
-			limit={ this.props.report.limit }
-			total={ this.props.report.total }
-			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
 		/>
 	}
 
 }
 
-ReferralsTable.propTypes = {
+ChannelsTable.propTypes = {
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object
@@ -81,7 +72,7 @@ ReferralsTable.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sources'].inProgress,
-		report: state.reports['sources'].result
+		loading: state.reports['sources.categories.overall'].inProgress,
+		report: state.reports['sources.categories.overall'].result
 	}), { requestReport, clearReport }
-)(ReferralsTable);
+)(ChannelsTable);

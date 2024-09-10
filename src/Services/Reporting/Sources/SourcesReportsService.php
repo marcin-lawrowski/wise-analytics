@@ -16,12 +16,21 @@ class SourcesReportsService extends ReportingService {
 			'alias' => 'se',
 			'select' => [
 				'count(distinct se.user_id) AS totalVisitors',
+				'SUM(se.duration) / COUNT(*) as avgSessionTime',
+				'COUNT(*) AS totalSessions',
+				'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession',
+				'SUM(JSON_LENGTH(se.events)) AS totalEvents',
 				'se.source_category AS source'
 			],
 			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category IS NOT NULL', "se.source_category <> ''"],
 			'whereArgs' => [$startDateStr, $endDateStr],
 			'group' => ['se.source_category']
 		]);
+
+		foreach ($sources as $key => $source) {
+			$source->avgSessionTime = $source->avgSessionTime > 0 ? TimeUtils::formatDuration($source->avgSessionTime, 'suffixes') : '0s';
+			$source->eventsPerSession = round($source->eventsPerSession, 1);
+		}
 
 		return [
 			'sourceCategories' => $sources
@@ -151,7 +160,13 @@ class SourcesReportsService extends ReportingService {
 
 		$args = [
 			'alias' => 'se',
-			'select' => ['SUM(se.duration) / COUNT(*) as avgSessionTime', 'COUNT(*) AS totalSessions', 'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession'],
+			'select' => [
+				'count(distinct se.user_id) AS totalVisitors',
+				'SUM(se.duration) / COUNT(*) as avgSessionTime',
+				'COUNT(*) AS totalSessions',
+				'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession',
+				'SUM(JSON_LENGTH(se.events)) AS totalEvents',
+			],
 			'where' => ["se.start >= %s", "se.start <= %s", "se.source_category = %s"],
 			'whereArgs' => [$startDateStr, $endDateStr, $category],
 			'order' => ["totalSessions DESC"],

@@ -66,6 +66,7 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 = 1.1.1 =
 * Recognizing paid traffic
 * Traffic source daily chart with comparison to other metrics
+* Channels table
 
 = 1.1 =
 * Added: social networks pie chart

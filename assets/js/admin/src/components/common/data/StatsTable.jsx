@@ -111,12 +111,19 @@ class StatsTable extends React.Component {
 					<tbody>
 					{ this.props.data.map( (row, index) =>
 						<React.Fragment key={ index }>
-							<tr>
-								{ this.props.columns.map( (column, columnIndex) =>
-									<td>{ this.props.cellRenderer(columnIndex, row) }</td>
-								)}
-							</tr>
-							{ this.props.rowDivider ? this.props.rowDivider(row, index, this.props.data) : null }
+							{ this.props.rowRenderer ? (
+								<tr>
+									{ this.props.rowRenderer(row, index).map( (cell, indexCell) => <td key={ indexCell }>{ cell.value }</td> ) }
+								</tr>
+								) : (
+								<tr>
+									{ this.props.columns.map((column, columnIndex) =>
+										<td key={ columnIndex }>{this.props.cellRenderer(columnIndex, row)}</td>
+									)}
+								</tr>
+							)}
+
+							{this.props.rowDivider ? this.props.rowDivider(row, index, this.props.data) : null}
 						</React.Fragment>
 					)}
 					</tbody>
