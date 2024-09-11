@@ -46,12 +46,21 @@ class SourcesReportsService extends ReportingService {
 			'alias' => 'se',
 			'select' => [
 				'count(distinct se.user_id) AS totalVisitors',
+				'SUM(se.duration) / COUNT(*) as avgSessionTime',
+				'COUNT(*) AS totalSessions',
+				'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession',
+				'SUM(JSON_LENGTH(se.events)) AS totalEvents',
 				'se.source_group AS socialNetwork'
 			],
 			'where' => ["se.start >= %s", "se.start <= %s", 'se.source_category = %s'],
 			'whereArgs' => [$startDateStr, $endDateStr, 'Organic Social'],
 			'group' => ['se.source_group']
 		]);
+
+		foreach ($sources as $key => $source) {
+			$source->avgSessionTime = $source->avgSessionTime > 0 ? TimeUtils::formatDuration($source->avgSessionTime, 'suffixes') : '0s';
+			$source->eventsPerSession = round($source->eventsPerSession, 1);
+		}
 
 		return [
 			'socialNetworks' => $sources

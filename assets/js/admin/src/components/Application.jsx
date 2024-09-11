@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Overview from "./reporting/pages/Overview";
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route, Link} from "react-router-dom";
 import Visitors from "./reporting/pages/visitors/Visitors";
 import Events from "./reporting/pages/events/Events";
 import {getDatesRange} from "utils/dates";
@@ -10,6 +10,7 @@ import DatesRangeFilter from "./reporting/pages/parts/DatesRangeFilter";
 import MainMenu from "./reporting/pages/parts/MainMenu";
 import Conversions from "./reporting/pages/conversions/Conversions";
 import Sources from "./reporting/pages/sources/Sources";
+import Help from "./reporting/pages/help/Help";
 
 class Application extends React.Component {
 
@@ -39,7 +40,7 @@ class Application extends React.Component {
 					<MainMenu />
 					<div className="card p-1">
 						<div className="card-body">
-							<strong>Notice: </strong>Some statistic like sessions or sources are refreshed periodically.
+							<strong>Notice: </strong>Some statistics like visits or sources are calculated periodically. It may take time before they appear here. <Link to="/help/basics">Help</Link>
 						</div>
 					</div>
 				</div>
@@ -51,6 +52,7 @@ class Application extends React.Component {
 							<Route path="sources/*" element={<Sources startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="events/*" element={<Events startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="conversions/*" element={<Conversions startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
+							<Route path="help/*" element={<Help />} />
 						</Route>
 					</Routes>
 				</div>

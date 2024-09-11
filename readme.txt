@@ -57,7 +57,7 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 2. Top Pages, Recent Visitors, Last events
 3. Visitors table
 4. Visitor detailed page
-5. Traffic sources chart
+5. Traffic sources overview
 6. Organic visits
 7. Referral visits
 
@@ -66,6 +66,7 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 = 1.1.1 =
 * Recognizing paid traffic
 * Traffic source daily chart with comparison to other metrics
+* SocialNetworks table
 * Channels table
 
 = 1.1 =
