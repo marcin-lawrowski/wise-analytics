@@ -14,7 +14,7 @@ class LineChart extends React.Component {
 		return <ResponsiveLine
 			data={ this.props.data }
 			curve="monotoneX"
-			margin={{ top: 10, right: 30, bottom: 60, left: 30 }}
+			margin={{ top: 10, right: 30, bottom: 60, left: this.props.marginLeft }}
 			xScale={{ type: 'time', format: '%Y-%m-%d' }}
 			yScale={{
 				type: 'linear',
@@ -27,7 +27,7 @@ class LineChart extends React.Component {
 			gridYValues={ yTickValues }
 			enableArea={ this.props.enableArea } // background below the lines
 			xFormat="time:%Y-%m-%d"
-			yFormat=" >-.0d"
+			yFormat={ this.props.yFormat }
 			tickInterval={ 100 }
 			axisBottom={{
 				format: '%b %d',
@@ -42,7 +42,8 @@ class LineChart extends React.Component {
 				tickSize: 5,
 				tickPadding: 5,
 				tickRotation: 0,
-				tickValues: yTickValues
+				tickValues: yTickValues,
+				format: this.props.axisLeftFormat
 			}}
 			colors={{ scheme: 'category10' }}
 			pointSize={10}
@@ -93,12 +94,17 @@ class LineChart extends React.Component {
 }
 
 LineChart.defaultProps = {
-	enableArea: true
+	marginLeft: 30,
+	enableArea: true,
+	yFormat: " >-.0d",
+	axisLeftFormat: y => y
 }
 
 LineChart.propTypes = {
+	marginLeft: PropTypes.number.isRequired,
 	data: PropTypes.array.isRequired,
 	enableArea: PropTypes.bool.isRequired,
+	axisLeftFormat: PropTypes.func.isRequired
 };
 
 export default LineChart;

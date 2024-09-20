@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import VisitorsChart from "reporting/components/visitors/VisitorsChart";
 import SessionsChart from "reporting/components/sessions/SessionsChart";
+import SessionsAverageTimeChart from "reporting/components/sessions/SessionsAverageTimeChart";
 import PageViewsChart from "reporting/components/pages/PageViewsChart";
 import Select from "react-select";
 import Loader from "common/Loader";
@@ -12,7 +13,8 @@ class LeadLineChart extends React.Component {
 	get STATS() {
 		return [
 			{ value: 'visitors', label: 'Visitors' },
-			{ value: 'sessions', label: 'Sessions' },
+			{ value: 'sessions', label: 'Visits' },
+			{ value: 'sessionsAvgTime', label: 'Average Time' },
 			{ value: 'pageViews', label: 'Page Views' }
 		];
 	}
@@ -51,6 +53,13 @@ class LeadLineChart extends React.Component {
 				}
 				{ this.state.stats === 'sessions' &&
 					<SessionsChart
+						startDate={ this.props.startDate }
+						endDate={ this.props.endDate }
+						onLoading={ loading => this.setState({ loading: loading })}
+					/>
+				}
+				{ this.state.stats === 'sessionsAvgTime' &&
+					<SessionsAverageTimeChart
 						startDate={ this.props.startDate }
 						endDate={ this.props.endDate }
 						onLoading={ loading => this.setState({ loading: loading })}

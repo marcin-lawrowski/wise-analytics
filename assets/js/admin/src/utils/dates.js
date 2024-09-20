@@ -41,3 +41,21 @@ export function getDatesRange(preset) {
 		return { startDate: moment().subtract(1, 'months').startOf('month').toDate(), endDate: moment().subtract(1, 'months').endOf('month').toDate() };
 	}
 }
+
+export function getDuration(seconds) {
+	if (seconds < 0) {
+		seconds = -seconds;
+	}
+
+	const time = {
+		d: Math.floor(seconds / 86400),
+		h: Math.floor(seconds / 3600) % 24,
+		m: Math.floor(seconds / 60) % 60,
+		s: Math.floor(seconds) % 60
+	};
+
+	return Object.entries(time)
+		.filter(val => val[1] !== 0)
+		.map(([key, val]) => `${val}${key}`)
+		.join(' ');
+}

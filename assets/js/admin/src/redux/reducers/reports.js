@@ -9,6 +9,7 @@ const defaultServerActions = {
 	'visitors.devices': { result: { devices: [] } },
 	'visitor.information': { result: undefined },
 	'sessions.daily': { result: { sessions: [] } },
+	'sessions.avg.time.daily': { result: { sessions: [] } },
 	'sources.categories.overall': { result: { sourceCategories: [] } },
 	'sources.categories.daily': { result: { sourceCategories: [], categories: [] } },
 	'sources.social.overall': { result: { socialNetworks: [] } },

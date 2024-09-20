@@ -63,6 +63,9 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 
 == Changelog ==
 
+= 1.1.2 =
+* Added average time line chart
+
 = 1.1.1 =
 * Recognizing paid traffic
 * Traffic source daily chart with comparison to other metrics

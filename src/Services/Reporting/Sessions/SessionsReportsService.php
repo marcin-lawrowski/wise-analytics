@@ -36,6 +36,46 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
+	public function getSessionsAvgTimeDaily($queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$result = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'SUM(duration) / COUNT(*) as avgSessionTime',
+				'DATE_FORMAT(se.start, \'%%Y-%%m-%%d\') as date',
+			],
+			'where' => ["se.start >= %s", "se.start <= %s"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['DATE_FORMAT(se.start, \'%%Y-%%m-%%d\')']
+		]);
+
+		$output = [];
+		foreach ($result as $record) {
+			$output[$record->date] = intval($record->avgSessionTime);
+		}
+
+		$sessions = [];
+		$endDate->modify('+1 day');
+		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
+			$dateStr = $startDate->format('Y-m-d');
+
+			$sessions[] = [
+				'date' => $dateStr,
+				'time' => $output[$dateStr] ?? 0,
+				'timeFormatted' => TimeUtils::formatDuration($output[$dateStr] ?? 0)
+			];
+
+			$startDate->modify('+1 day');
+		}
+
+		return [
+			'sessions' => $sessions
+		];
+	}
+
 	public function getSessionsDaily(array $queryParams) {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
