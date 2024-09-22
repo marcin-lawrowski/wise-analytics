@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import Home from "./home/Home";
 import Visitor from "./visitor/Visitor";
 import Browse from "./browse/Browse";
+import Devices from "./devices/Devices";
 
 class Visitors extends React.Component {
 
@@ -13,7 +14,8 @@ class Visitors extends React.Component {
 			<Route path="/">
 				<Route path="overview" element={<Home startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 				<Route path="browse" element={<Browse startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
-				<Route path="browse/visitor/:id" element={<Visitor startDate={ this.props.startDate } endDate={ this.props.endDate } />} />=
+				<Route path="browse/visitor/:id" element={<Visitor startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
+				<Route path="devices" element={<Devices startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 			</Route>
 		</Routes>
 	}

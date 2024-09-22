@@ -245,4 +245,54 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
+	public function getScreens(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$offset = intval($queryParams['offset'] ?? 0);
+
+		$resolutions = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(distinct se.user_id) as totalVisitors',
+				'concat(us.screen_width, "x", us.screen_height) as resolution',
+				'SUM(se.duration) / COUNT(*) as avgSessionTime',
+				'COUNT(*) AS totalSessions',
+				'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession',
+				'SUM(JSON_LENGTH(se.events)) AS totalEvents',
+			],
+			'join' => [[Installer::getUsersTable(), 'us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= %s", "se.start <= %s", "us.id IS NOT NULL"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'order' => ['totalVisitors DESC', 'resolution DESC'],
+			'group' => ['resolution'],
+			'offset' => $offset,
+			'limit' => self::RESULTS_LIMIT
+		]);
+
+		foreach ($resolutions as $key => $resolution) {
+			$resolution->avgSessionTime = $resolution->avgSessionTime > 0 ? TimeUtils::formatDuration($resolution->avgSessionTime, 'suffixes') : '0s';
+			$resolution->eventsPerSession = round($resolution->eventsPerSession, 1);
+		}
+
+		$count = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'concat(us.screen_width, "x", us.screen_height) as resolution'
+			],
+			'join' => [[Installer::getUsersTable(), 'us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= %s", "se.start <= %s", "us.id IS NOT NULL"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['resolution'],
+			'outerQuery' => 'SELECT COUNT(*) AS total FROM (%s) innerSQL'
+		]);
+
+		return [
+			'screens' => $resolutions,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		];
+	}
+
 }
