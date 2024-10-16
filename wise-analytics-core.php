@@ -59,6 +59,10 @@ if (is_admin()) {
 }
 
 // install cron tasks:
+// install cron tasks:
+if (!wp_next_scheduled('wa_processing_hook_'.get_current_blog_id())) {
+	wp_schedule_event(time(), 'twicedaily', 'wa_processing_hook_'.get_current_blog_id());
+}
 add_action('wa_processing_hook_'.get_current_blog_id(), [$container->get(ProcessingService::class), 'process']);
 if (isset($_GET['wa_processing_hook'])) {
 	$container->get(ProcessingService::class)->process();

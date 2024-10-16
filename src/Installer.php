@@ -191,7 +191,6 @@ class Installer {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 
-		self::installCron();
 		self::addRewriteRules();
 		
 		// set default options after installation:
@@ -261,21 +260,6 @@ class Installer {
 		$wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %i", $tableName));
 	}
 
-	private static function installCron() {
-		add_filter( 'cron_schedules', function($schedules) {
-			$schedules['every3hours'] = [
-				'interval' => 10800,
-				'display' => __('Every 3 hours')
-			];
-
-			return $schedules;
-		});
-
-		if (!wp_next_scheduled('wa_processing_hook_'.get_current_blog_id())) {
-			wp_schedule_event(time(), 'every3hours', 'wa_processing_hook_'.get_current_blog_id());
-		}
-	}
-
 	/**
 	 * Registers API endpoints using rewrite rules.
      */
@@ -286,8 +270,10 @@ class Installer {
 	}
 
 	private static function uninstallCron($blogId) {
-		$timestamp = wp_next_scheduled('wa_processing_hook_'.$blogId);
-        wp_unschedule_event($timestamp, 'wa_processing_hook_'.$blogId);
+		if (wp_next_scheduled('wa_processing_hook_'.$blogId)) {
+			$timestamp = wp_next_scheduled('wa_processing_hook_' . $blogId);
+			wp_unschedule_event($timestamp, 'wa_processing_hook_' . $blogId);
+		}
 	}
 
 }
