@@ -78,6 +78,8 @@ class FrontHandler {
 					'userAgent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT']),
 					'referer' => $this->getRequestParam('re'),
 					'language' => $language,
+					'time' => $this->getRequestParam('t'),
+					'tz' => $this->getRequestParam('tz')
 				]
 			);
 

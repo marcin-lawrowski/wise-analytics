@@ -150,6 +150,13 @@ class EventsService {
 				break;
 		}
 
+		if (isset($inputData['time']) && is_numeric($inputData['time'])) {
+			$output['time'] = (int) $inputData['time'];
+		}
+		if (isset($inputData['tz']) && is_numeric($inputData['tz'])) {
+			$output['tz'] = (int) $inputData['tz'];
+		}
+
 		return $output;
 	}
 

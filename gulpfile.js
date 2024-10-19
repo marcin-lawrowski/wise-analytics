@@ -74,7 +74,7 @@ gulp.task('eslint', function() {
 });
 
 const libVendors = [
-	'react', 'react-select', 'react-datepicker', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', 'react-router', 'react-router-dom', 'react-is', '@nivo/core', '@nivo/line', '@nivo/pie'
+	'react', 'react-select', 'react-datepicker', 'react-dom', 'prop-types', 'redux', 'redux-thunk', 'react-redux', 'react-router', 'react-router-dom', 'react-is', '@nivo/core', '@nivo/line', '@nivo/bar', '@nivo/pie'
 ]
 
 gulp.task('build:vendor', () => {

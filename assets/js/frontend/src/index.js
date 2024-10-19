@@ -99,7 +99,9 @@ var Core = function() {
 			la: window.navigator.userLanguage || window.navigator.language,
 			cs: getApiHash(),
 			sw: getScreenWidth(),
-			sh: getScreenHeight()
+			sh: getScreenHeight(),
+			t: parseInt((new Date().getTime() / 1000).toFixed(0)),
+			tz: (new Date()).getTimezoneOffset(),
 		};
 
 		if (typeof customData !== 'undefined') {

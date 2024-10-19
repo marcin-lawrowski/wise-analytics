@@ -63,6 +63,8 @@ class ReportsEndpoint {
 					return $this->visitorsReportsService->getVisitorsDaily($queryParams);
 				case 'visitors.languages';
 					return $this->visitorsReportsService->getLanguages($queryParams);
+				case 'visitors.hourly';
+					return $this->visitorsReportsService->getHourlyStats($queryParams);
 				case 'visitors.devices';
 					return $this->visitorsReportsService->getDevices($queryParams);
 				case 'visitors.screens';

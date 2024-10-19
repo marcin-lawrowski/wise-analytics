@@ -295,4 +295,48 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
+	public function getHourlyStats(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$hoursOfDay = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'count(distinct se.user_id) as totalVisitors',
+				'DATE_FORMAT(se.local_time, \'%%H\') as hour',
+				'SUM(se.duration) / COUNT(*) as avgSessionTime',
+				'COUNT(*) AS totalSessions',
+				'SUM(JSON_LENGTH(se.events)) / COUNT(*) AS eventsPerSession',
+				'SUM(JSON_LENGTH(se.events)) AS totalEvents',
+			],
+			'join' => [[Installer::getUsersTable(), 'us', ['se.user_id = us.id']]],
+			'where' => ["se.start >= %s", "se.start <= %s", "us.id IS NOT NULL", "se.local_time IS NOT NULL"],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'order' => ['hour ASC'],
+			'group' => ['DATE_FORMAT(se.local_time, \'%%H\')']
+		]);
+
+		$map = [];
+		foreach ($hoursOfDay as $hour) {
+			$hour->avgSessionTime = $hour->avgSessionTime > 0 ? TimeUtils::formatDuration($hour->avgSessionTime, 'suffixes') : '0s';
+			$hour->eventsPerSession = round($hour->eventsPerSession, 1);
+			$map[intval($hour->hour)] = $hour;
+		}
+
+		$output = [];
+		for ($i = 0; $i < 24; $i++) {
+			$output[] = $map[$i] ?? [
+				'hour' => str_pad($i, 2, '0', STR_PAD_LEFT),
+				'totalVisitors' => 0,
+				'avgSessionTime' => '0s',
+				'totalSessions' => 0,
+				'eventsPerSession' => 0,
+				'totalEvents' => 0,
+			];
+		}
+
+		return ['hourly' => $output];
+	}
+
 }

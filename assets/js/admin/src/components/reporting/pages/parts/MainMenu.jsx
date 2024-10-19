@@ -37,6 +37,7 @@ class MainMenu extends React.Component {
 							<li><Link to="/visitors/overview" className={ linkClass("/visitors/overview") }>Overview</Link></li>
 							<li><Link to="/visitors/browse" className={ linkClass("/visitors/browse") }>Browse</Link></li>
 							<li><Link to="/visitors/devices" className={ linkClass("/visitors/devices") }>Devices</Link></li>
+							<li><Link to="/visitors/hourly" className={ linkClass("/visitors/hourly") }>Hourly</Link></li>
 						</ul>
 					</div>
 

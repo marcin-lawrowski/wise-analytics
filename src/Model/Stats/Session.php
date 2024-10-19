@@ -13,6 +13,10 @@ class Session {
     /** @var \DateTime */
     private $start;
 
+	private ?\DateTime $localTime = null;
+
+	private ?int $localTimeZone = null;
+
     /** @var \DateTime */
     private $end;
 
@@ -173,6 +177,22 @@ class Session {
 	public function setSourceGroup(?string $sourceGroup): void
 	{
 		$this->sourceGroup = $sourceGroup;
+	}
+
+	public function getLocalTime(): ?\DateTime {
+		return $this->localTime;
+	}
+
+	public function setLocalTime(?\DateTime $localTime): void {
+		$this->localTime = $localTime;
+	}
+
+	public function getLocalTimeZone(): ?int {
+		return $this->localTimeZone;
+	}
+
+	public function setLocalTimeZone(?int $localTimeZone): void {
+		$this->localTimeZone = $localTimeZone;
 	}
 
 }

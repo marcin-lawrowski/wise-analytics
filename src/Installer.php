@@ -22,6 +22,7 @@ class Installer {
 		register_uninstall_hook($pluginFile, [Installer::class, 'uninstall']);
 		add_action('wpmu_new_blog', [Installer::class, 'newBlog'], 10, 6);
 		add_action('delete_blog', [Installer::class, 'deleteBlog'], 10, 6);
+		add_action('admin_init', [Installer::class, 'onUpgrade'], 10, 6);
 	}
 
 	public static function getUsersTable() {
@@ -115,9 +116,18 @@ class Installer {
 	}
 
 	private static function doActivation() {
-		global $wpdb;
+		self::createDbSchema();
+		self::addRewriteRules();
+		
+		// set default options after installation:
+		$container = Container::getInstance();
+		/** @var Settings $settings */
+		$settings = $container->get(Settings::class);
+		$settings->setDefaultSettings();
+	}
 
-		self::dropTable('aaa');
+	public static function createDbSchema() {
+		global $wpdb;
 
 		$charsetCollate = $wpdb->get_charset_collate();
 
@@ -150,9 +160,8 @@ class Installer {
 				int_value int,
 				created datetime not null default now()
 		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
-		
+
 		$tableName = self::getEventsTable();
 		$sql = "CREATE TABLE ".$tableName." (
 				id bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -163,7 +172,6 @@ class Installer {
 				checksum text,
 				data json
 		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 
 		$tableName = self::getSessionsTable();
@@ -172,13 +180,14 @@ class Installer {
 				user_id bigint(11),
 				start datetime not null,
 				end datetime not null,
+				local_time datetime,
+				local_timezone int,
 				duration int default 0,
 				events json,
 				source text,
 				source_group text,
 				source_category text
 		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 
 		$tableName = self::getEventTypesTable();
@@ -188,16 +197,7 @@ class Installer {
 				slug text NOT NULL,
 				data json
 		) $charsetCollate;";
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
-
-		self::addRewriteRules();
-		
-		// set default options after installation:
-		$container = Container::getInstance();
-		/** @var Settings $settings */
-		$settings = $container->get(Settings::class);
-		$settings->setDefaultSettings();
 	}
 
 	/**
@@ -235,6 +235,16 @@ class Installer {
 			return;
 		}
 		self::doUninstall();
+	}
+
+	public static function onUpgrade() {
+		$oldVersion = get_option('wa_version', '1.0');
+
+		if (!(version_compare($oldVersion, WISE_ANALYTICS_VERSION) < 0)) {
+			return ;
+		}
+		self::createDbSchema();
+		update_option('wa_version', WISE_ANALYTICS_VERSION);
 	}
 
 	private static function doUninstall($refererCheck = null) {

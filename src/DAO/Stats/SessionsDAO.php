@@ -13,18 +13,10 @@ use Kainex\WiseAnalytics\Options;
  * @author Kainex <contact@kaine.pl>
  */
 class SessionsDAO extends AbstractDAO {
-	
-	/** @var Options */
-	private $options;
 
 	protected function getTable(): string {
 		return Installer::getSessionsTable();
 	}
-
-	public function __construct(Options $options) {
-		$this->options = $options;
-	}
-
 	/**
 	 * @param integer $id
 	 *
@@ -51,7 +43,9 @@ class SessionsDAO extends AbstractDAO {
 			'source_category' => $session->getSourceCategory(),
 			'events' => json_encode($session->getEvents()),
 			'start' => $session->getStart()->format('Y-m-d H:i:s'),
-			'end' => $session->getEnd()->format('Y-m-d H:i:s')
+			'end' => $session->getEnd()->format('Y-m-d H:i:s'),
+			'local_time' => $session->getLocalTime() ? $session->getLocalTime()->format('Y-m-d H:i:s') : null,
+			'local_timezone' => $session->getLocalTimeZone() ?? null,
 		);
 
 		if ($session->getId() !== null) {
@@ -84,6 +78,12 @@ class SessionsDAO extends AbstractDAO {
 		$session->setSourceCategory($rawData->source_category);
 		$session->setStart(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->start));
 		$session->setEnd(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->end));
+		if ($rawData->local_time) {
+			$session->setLocalTime(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->local_time));
+		}
+		if ($rawData->local_timezone) {
+			$session->setLocalTimeZone((int) $rawData->local_timezone);
+		}
 
 		return $session;
 	}

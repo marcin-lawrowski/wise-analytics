@@ -4,8 +4,8 @@ Donate link: https://kainex.pl/projects/wp-plugins/wise-analytics/wise-analytics
 Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
-Tested up to: 6.6.1
-Stable tag: 1.1.2
+Tested up to: 6.6.2
+Stable tag: 1.1.3
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ We believe that the statistics should be neither collected nor processed outside
 * Integration with Contact Form 7 (recognizing visitors who sent a form)
 * Tracking traffic sources (Referral, Social Networks, Search Engines, Direct, Paid Traffic)
 * Detecting devices, languages, screens
+* Hourly visits in visitors' local time
 * Tracking WordPress log-in event
 * Visitor profile page (name, e-mail, language, screen size, device, last visit, etc.)
 * Top visited pages
@@ -64,8 +65,13 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 7. Referral visits
 8. Channels
 9. Devices
+10. Hourly stats
 
 == Changelog ==
+
+= 1.1.3 =
+* Added hourly stats
+* Improved backend sessions processing
 
 = 1.1.2 =
 * Added average time line chart

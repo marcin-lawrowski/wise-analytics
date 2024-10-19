@@ -146,6 +146,16 @@ class SessionsService {
 			$session->setStart($startDate);
 			$session->setEnd($endDate);
 
+			$eventData = $this->getDataOfEventWithLocalTime($group);
+			if ($eventData) {
+				$time = $eventData['time'] - (($eventData['tz'] ?? 0) * 60);
+				$session->setLocalTime(new \DateTime('@' . $time));
+
+				if (isset($eventData['tz'])) {
+					$session->setLocalTimeZone($eventData['tz']);
+				}
+			}
+
 			$this->setSources($session, $firstEvent);
 
 			$this->sessionsDAO->save($session);
@@ -297,6 +307,17 @@ class SessionsService {
 		}
 
 		return false;
+	}
+
+	private function getDataOfEventWithLocalTime($group): ?array {
+		foreach ($group as $event) {
+			$data = json_decode($event->data, true);
+			if (isset($data['time']) && is_numeric($data['time'])) {
+				return $data;
+			}
+		}
+
+		return null;
 	}
 
 }
