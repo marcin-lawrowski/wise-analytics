@@ -116,4 +116,39 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
+	public function getSessionsOfVisitorHourly(array $params): array {
+		if (!isset($params['filters']['visitorId'])) {
+			throw new \Exception('Missing ID');
+		}
+
+		$visitorId = intval($params['filters']['visitorId']);
+
+		$result = $this->querySessions([
+			'alias' => 'se',
+			'select' => [
+				'DATE_FORMAT(se.local_time, \'%%H\') as hour',
+				'count(*) as totalSessions'
+			],
+			'where' => ["se.user_id = %d", 'local_time IS NOT NULL'],
+			'whereArgs' => [$visitorId],
+			'group' => ['DATE_FORMAT(se.local_time, \'%%H\')'],
+			'order' => ['hour ASC']
+		]);
+
+		$map = [];
+		foreach ($result as $hour) {
+			$map[intval($hour->hour)] = $hour;
+		}
+
+		$output = [];
+		for ($i = 0; $i < 24; $i++) {
+			$output[] = $map[$i] ?? [
+				'hour' => str_pad($i, 2, '0', STR_PAD_LEFT),
+				'totalSessions' => 0
+			];
+		}
+
+		return ['hourly' => $output];
+	}
+
 }

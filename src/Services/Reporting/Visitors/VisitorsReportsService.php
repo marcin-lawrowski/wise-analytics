@@ -4,10 +4,20 @@ namespace Kainex\WiseAnalytics\Services\Reporting\Visitors;
 
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
+use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
 use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class VisitorsReportsService extends ReportingService {
+
+	private SessionsReportsService  $sessionsReportsService;
+
+	/**
+	 * @param SessionsReportsService $sessionsReportsService
+	 */
+	public function __construct(SessionsReportsService $sessionsReportsService) {
+		$this->sessionsReportsService = $sessionsReportsService;
+	}
 
 	public function getVisitorsHighlights(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
@@ -241,7 +251,7 @@ class VisitorsReportsService extends ReportingService {
 			'data' => json_decode($visitor->data),
 			'totalSessions' => intval($sessions->totalSessions),
 			'totalEvents' => intval($sessions->totalEvents),
-			'avgSessionDuration' => $avgSessionDuration > 0 ? TimeUtils::formatDuration($avgSessionDuration, 'suffixes') : '0s',
+			'avgSessionDuration' => $avgSessionDuration > 0 ? TimeUtils::formatDuration($avgSessionDuration, 'suffixes') : '0s'
 		];
 	}
 

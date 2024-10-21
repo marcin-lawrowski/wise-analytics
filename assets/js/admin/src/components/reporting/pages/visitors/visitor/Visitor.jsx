@@ -6,6 +6,8 @@ import { requestReport, clearReport } from "actions/reports";
 import { setTitle } from "actions/ui";
 import Loader from "common/Loader";
 import VisitorEvents from "reporting/components/visitors/VisitorEvents";
+import HourlySessionsChart from "reporting/components/sessions/hourly/HourlySessionsChart";
+import TooltipIcon from "common/TooltipIcon";
 
 class Visitor extends React.Component {
 
@@ -45,11 +47,10 @@ class Visitor extends React.Component {
 			['E-mail', data.email],
 			['Company', data.company],
 			['Language', data.language],
-			['Screen Width', data.screenWidth],
-			['Screen Height', data.screenHeight],
+			['Screen', data.screenWidth + 'x' + data.screenHeight],
 			['First Visit', data.firstVisit],
 			['Last Visit', data.lastVisit],
-			['Total Visit', data.totalSessions],
+			['Total Visits', data.totalSessions],
 			['Avg. Visit', data.avgSessionDuration],
 			['Total Events', data.totalEvents],
 		];
@@ -69,14 +70,20 @@ class Visitor extends React.Component {
 
 		return <React.Fragment>
 			<div className="row">
-				<div className="col-md-9">
+				<div className="col-md-8">
 					<VisitorEvents startDate={ this.props.startDate } endDate={ this.props.endDate } id={ this.props.params.id } />
 				</div>
-				<div className="col-md-3">
+				<div className="col-md-4">
 					<div className="card p-1">
 						<div className="card-body">
 							<h6 className="card-title">Visitor Information <Loader show={ this.props.informationLoading } /></h6>
 							{ this.props.information && this.renderInformation() }
+						</div>
+					</div>
+					<div className="card p-1">
+						<div className="card-body">
+							<h6 className="card-title">Visits Hourly <Loader show={ this.props.informationLoading } /><TooltipIcon text="Check the exact hours of day the visitor visited you site. The chart is based on visitors' local time. Entire history is taken into account." /></h6>
+							{ this.props.information && <HourlySessionsChart visitorId={ this.props.information.id } /> }
 						</div>
 					</div>
 				</div>

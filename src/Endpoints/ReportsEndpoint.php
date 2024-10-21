@@ -73,6 +73,8 @@ class ReportsEndpoint {
 					return $this->visitorsReportsService->getInformation($queryParams);
 				case 'sessions.daily';
 					return $this->sessionsReportsService->getSessionsDaily($queryParams);
+				case 'sessions.visitor.hourly';
+					return $this->sessionsReportsService->getSessionsOfVisitorHourly($queryParams);
 				case 'sessions.avg.time.daily';
 					return $this->sessionsReportsService->getSessionsAvgTimeDaily($queryParams);
 				case 'sources.categories.overall';

@@ -10,6 +10,7 @@ const defaultServerActions = {
 	'visitors.hourly': { result: { hourly: [] } },
 	'visitors.screens': { result: { screens: [] } },
 	'visitor.information': { result: undefined },
+	'sessions.visitor.hourly': { result: { hourly: [] } },
 	'sessions.daily': { result: { sessions: [] } },
 	'sessions.avg.time.daily': { result: { sessions: [] } },
 	'sources.categories.overall': { result: { sourceCategories: [] } },
