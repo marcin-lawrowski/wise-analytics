@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useRef, useEffect } from 'react';
 
-class TooltipIcon extends React.Component {
+const TooltipIcon = (props) => {
+  const tooltipRef = useRef(null);
 
-    render() {
-        // TODO: install boostrap js
-        return <i className={`ml-1 fas fa2 ${this.props.icon}`} style={ { fontSize: this.props.iconSize + 'em' } } data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" />;
-    }
+  useEffect(() => {
+    const tooltip = new window.bootstrap.Tooltip(tooltipRef.current, {
+      container: '.waContainer .container-fluid',
+      trigger: 'hover',
+      placement: props.placement
+  });
 
-}
+  return () => {
+    tooltip.dispose();
+  };
+  }, []);
+
+  return <i ref={tooltipRef} className="bi bi-question-circle fs-6" data-bs-toggle="tooltip" title={ props.text } />
+};
 
 TooltipIcon.defaultProps = {
-    iconSize: 'inherit',
-    icon: 'fa-question-circle',
-    placement: 'top'
-};
+  placement: 'auto'
+}
 
 export default TooltipIcon;

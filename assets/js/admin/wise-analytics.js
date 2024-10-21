@@ -174,51 +174,39 @@ var _default = exports["default"] = Loader;
 },{"@babel/runtime/helpers/classCallCheck":68,"@babel/runtime/helpers/createClass":69,"@babel/runtime/helpers/getPrototypeOf":72,"@babel/runtime/helpers/inherits":73,"@babel/runtime/helpers/interopRequireDefault":74,"@babel/runtime/helpers/possibleConstructorReturn":79,"prop-types":"prop-types","react":"react"}],3:[function(require,module,exports){
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _typeof = require("@babel/runtime/helpers/typeof");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-var _react = _interopRequireDefault(require("react"));
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var TooltipIcon = /*#__PURE__*/function (_React$Component) {
-  (0, _inherits2["default"])(TooltipIcon, _React$Component);
-  var _super = _createSuper(TooltipIcon);
-  function TooltipIcon() {
-    (0, _classCallCheck2["default"])(this, TooltipIcon);
-    return _super.apply(this, arguments);
-  }
-  (0, _createClass2["default"])(TooltipIcon, [{
-    key: "render",
-    value: function render() {
-      // TODO: install boostrap js
-      return /*#__PURE__*/_react["default"].createElement("i", {
-        className: "ml-1 fas fa2 ".concat(this.props.icon),
-        style: {
-          fontSize: this.props.iconSize + 'em'
-        },
-        "data-bs-toggle": "tooltip",
-        "data-bs-placement": "top",
-        title: "Tooltip on top"
-      });
-    }
-  }]);
-  return TooltipIcon;
-}(_react["default"].Component);
+var _react = _interopRequireWildcard(require("react"));
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var TooltipIcon = function TooltipIcon(props) {
+  var tooltipRef = (0, _react.useRef)(null);
+  (0, _react.useEffect)(function () {
+    var tooltip = new window.bootstrap.Tooltip(tooltipRef.current, {
+      container: '.waContainer .container-fluid',
+      trigger: 'hover',
+      placement: props.placement
+    });
+    return function () {
+      tooltip.dispose();
+    };
+  }, []);
+  return /*#__PURE__*/_react["default"].createElement("i", {
+    ref: tooltipRef,
+    className: "bi bi-question-circle fs-6",
+    "data-bs-toggle": "tooltip",
+    title: props.text
+  });
+};
 TooltipIcon.defaultProps = {
-  iconSize: 'inherit',
-  icon: 'fa-question-circle',
-  placement: 'top'
+  placement: 'auto'
 };
 var _default = exports["default"] = TooltipIcon;
 
-},{"@babel/runtime/helpers/classCallCheck":68,"@babel/runtime/helpers/createClass":69,"@babel/runtime/helpers/getPrototypeOf":72,"@babel/runtime/helpers/inherits":73,"@babel/runtime/helpers/interopRequireDefault":74,"@babel/runtime/helpers/possibleConstructorReturn":79,"react":"react"}],4:[function(require,module,exports){
+},{"@babel/runtime/helpers/typeof":85,"react":"react"}],4:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -16524,7 +16512,7 @@ module.exports = exports.default;
 'use strict';
 
 var m = require('react-dom');
-if ("production" === 'production') {
+if ("development" === 'production') {
   exports.createRoot = m.createRoot;
   exports.hydrateRoot = m.hydrateRoot;
 } else {

@@ -42,7 +42,9 @@ var jsFiles = {
 };
 
 var cssFiles = {
-	vendor: [ ],
+	vendor: [
+		'node_modules/bootstrap/dist/css/bootstrap.min.css'
+	],
 	source: [
 		'assets/css/admin/src/**/*.scss'
 	]
