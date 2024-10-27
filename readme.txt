@@ -5,7 +5,7 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.6.2
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,10 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 10. Hourly stats
 
 == Changelog ==
+
+= 1.1.4 =
+* Added pages views report
+* Many minor adjustments
 
 = 1.1.3 =
 * Added hourly stats

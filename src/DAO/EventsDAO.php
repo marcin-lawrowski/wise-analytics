@@ -4,7 +4,6 @@ namespace Kainex\WiseAnalytics\DAO;
 
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\Event;
-use Kainex\WiseAnalytics\Options;
 
 /**
  * EventsDAO.
@@ -12,13 +11,6 @@ use Kainex\WiseAnalytics\Options;
  * @author Kainex <contact@kaine.pl>
  */
 class EventsDAO extends AbstractDAO {
-	
-	/** @var Options */
-	private $options;
-
-	public function __construct(Options $options) {
-		$this->options = $options;
-	}
 
 	protected function getTable(): string {
 		return Installer::getEventsTable();
@@ -68,7 +60,8 @@ class EventsDAO extends AbstractDAO {
 			'checksum' => $event->getChecksum(),
 			'uri' => $event->getUri(),
 			'data' => json_encode($event->getData()),
-			'created' => $event->getCreated()->format('Y-m-d H:i:s')
+			'created' => $event->getCreated()->format('Y-m-d H:i:s'),
+			'duration' => $event->getDuration()
 		];
 
 		if ($event->getId() !== null) {
@@ -98,6 +91,7 @@ class EventsDAO extends AbstractDAO {
         $event->setUri($rawData->uri);
 		$event->setData(json_decode($rawData->data, true));
 		$event->setChecksum($rawData->checksum);
+		$event->setDuration($rawData->duration);
 		$event->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', $rawData->created));
 
 		return $event;

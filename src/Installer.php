@@ -170,7 +170,8 @@ class Installer {
 				uri text,
 				created datetime not null default now(),
 				checksum text,
-				data json
+				data json,
+				duration int default 0
 		) $charsetCollate;";
 		dbDelta($sql);
 
@@ -182,6 +183,8 @@ class Installer {
 				end datetime not null,
 				local_time datetime,
 				local_timezone int,
+				first_event int,
+				last_event int,
 				duration int default 0,
 				events json,
 				source text,

@@ -11,6 +11,7 @@ import MainMenu from "./reporting/pages/parts/MainMenu";
 import Conversions from "./reporting/pages/conversions/Conversions";
 import Sources from "./reporting/pages/sources/Sources";
 import Help from "./reporting/pages/help/Help";
+import Behaviour from "./reporting/pages/behaviour/Behaviour";
 
 class Application extends React.Component {
 
@@ -50,6 +51,7 @@ class Application extends React.Component {
 							<Route index element={ <Overview startDate={ this.state.startDate } endDate={ this.state.endDate } /> } />
 							<Route path="visitors/*" element={<Visitors startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="sources/*" element={<Sources startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
+							<Route path="behaviour/*" element={<Behaviour startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="events/*" element={<Events startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="conversions/*" element={<Conversions startDate={ this.state.startDate } endDate={ this.state.endDate } />} />
 							<Route path="help/*" element={<Help />} />

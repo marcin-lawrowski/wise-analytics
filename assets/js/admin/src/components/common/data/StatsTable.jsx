@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import Loader from "common/Loader";
 import TooltipIcon from "../TooltipIcon";
+import {Link} from "react-router-dom";
 
 class StatsTable extends React.Component {
 
@@ -128,6 +129,8 @@ class StatsTable extends React.Component {
 					)}
 					</tbody>
 				</table>
+
+				{ this.props.fullReportURL && <Link to={ this.props.fullReportURL } className="btn btn-sm btn-light">Full Report</Link> }
 			</div>
 		</div>
 	}
@@ -146,13 +149,15 @@ StatsTable.propTypes = {
 	className: PropTypes.string,
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
-	cellRenderer: PropTypes.func.isRequired,
+	cellRenderer: PropTypes.func,
+	rowRenderer: PropTypes.func,
 	total: PropTypes.number,
 	offset: PropTypes.number,
 	limit: PropTypes.number,
 	onOffsetChange: PropTypes.func.isRequired,
 	filters: PropTypes.array.isRequired,
-	rowDivider: PropTypes.func
+	rowDivider: PropTypes.func,
+	fullReportURL: PropTypes.string
 };
 
 export default StatsTable;

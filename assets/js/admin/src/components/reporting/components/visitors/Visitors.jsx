@@ -62,6 +62,7 @@ class Visitors extends React.Component {
 						)}
 						</tbody>
 					</table>
+					<Link to="/visitors/browse" className="btn btn-sm btn-light">Full Report</Link>
 				</div>
 			</div>
 		</React.Fragment>

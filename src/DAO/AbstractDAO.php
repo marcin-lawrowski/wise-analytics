@@ -6,6 +6,12 @@ abstract class AbstractDAO {
 
 	abstract protected function getTable(): string;
 
+	public function updateRaw(int $key, array $updates) {
+		global $wpdb;
+
+		$wpdb->update($this->getTable(), $updates, array('id' => $key), '%s', '%d');
+	}
+
 	/**
 	 * @param string $fieldName
 	 * @param string $fieldValue

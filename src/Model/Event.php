@@ -25,6 +25,8 @@ class Event {
 	/** @var array */
     private $data;
 
+	private int $duration = 0;
+
 	/**
 	 * @return int|null
 	 */
@@ -135,6 +137,14 @@ class Event {
 	public function setChecksum(?string $checksum): void
 	{
 		$this->checksum = $checksum;
+	}
+
+	public function getDuration(): int {
+		return $this->duration;
+	}
+
+	public function setDuration(int $duration): void {
+		$this->duration = $duration;
 	}
 
 }

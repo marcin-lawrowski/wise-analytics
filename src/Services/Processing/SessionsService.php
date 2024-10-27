@@ -6,30 +6,37 @@ use Kainex\WiseAnalytics\DAO\Stats\SessionsDAO;
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\Stats\Session;
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Services\Events\EventsService;
 use Kainex\WiseAnalytics\Utils\Logger;
 
 class SessionsService {
 	use DataAccess;
 	
 	const SESSION_GAP = 1800;
+	const DEFAULT_EVENT_DURATION = 2;
+	const MAX_EVENT_DURATION = 10 * 60;
 
 	/** @var int Average duration of the last event in a session */
 	const EXTRA_SECONDS = 5;
 
 	/** @var SessionsDAO */
 	private $sessionsDAO;
+	private EventsService $eventsService;
 
 	/** @var Logger */
 	private $logger;
 
+	/** @var int[] Event types applicable for calculating durations */
+	private array $durationEventTypes = [];
+
 	/**
-	 * SessionsService constructor.
 	 * @param SessionsDAO $sessionsDAO
+	 * @param EventsService $eventsService
 	 * @param Logger $logger
 	 */
-	public function __construct(SessionsDAO $sessionsDAO, Logger $logger)
-	{
+	public function __construct(SessionsDAO $sessionsDAO, EventsService $eventsService, Logger $logger) {
 		$this->sessionsDAO = $sessionsDAO;
+		$this->eventsService = $eventsService;
 		$this->logger = $logger;
 	}
 
@@ -41,6 +48,8 @@ class SessionsService {
 	 * @throws \Exception
 	 */
 	public function refresh(\DateTime $day, int $spanDays = 1) {
+		$this->durationEventTypes = [$this->eventsService->getOrCreateEventType('page-view')->getId()];
+
 		$startDate = clone $day;
 		$startDate->setTime(0, 0, 0);
 		$startDate->modify('-'.$spanDays.' days');
@@ -50,7 +59,7 @@ class SessionsService {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 		$endDate->modify('-'.$endDate->format('i').' days');
-
+		
 		try {
 			$args = ['table' => Installer::getEventsTable(), 'select' => ['DISTINCT user_id'], 'where' => ["created >= %s", "created <= %s"], 'whereArgs' => [$startDateStr, $endDateStr]];
 			$this->logger->info('Refreshing sessions, time range: ' . $startDateStr . ' - ' . $endDateStr);
@@ -145,7 +154,8 @@ class SessionsService {
 			$session->setDuration($duration);
 			$session->setStart($startDate);
 			$session->setEnd($endDate);
-
+			$session->setFirstEvent($firstEvent->id);
+			$session->setLastEvent($lastEvent->id);
 			$eventData = $this->getDataOfEventWithLocalTime($group);
 			if ($eventData) {
 				$time = $eventData['time'] - (($eventData['tz'] ?? 0) * 60);
@@ -159,6 +169,8 @@ class SessionsService {
 			$this->setSources($session, $firstEvent);
 
 			$this->sessionsDAO->save($session);
+
+			$this->processEventsOfSession($group, $ids);
 		}
 	}
 
@@ -318,6 +330,27 @@ class SessionsService {
 		}
 
 		return null;
+	}
+
+	private function processEventsOfSession(array $rawEvents, array $ids) {
+		$filtered = [];
+		foreach ($rawEvents as $event) {
+			if (in_array($event->type_id, $this->durationEventTypes)) {
+				$filtered[] = $event;
+			}
+		}
+
+		$previous = null;
+		foreach ($filtered as $event) {
+			if ($previous !== null) {
+				$diff = min(self::MAX_EVENT_DURATION, abs(strtotime($event->created) - strtotime($previous->created)));
+				$this->eventsService->updateRaw($previous->id, ['duration' => $diff]);
+			}
+			$previous = $event;
+		}
+		if ($previous) {
+			$this->eventsService->updateRaw($previous->id, ['duration' => self::DEFAULT_EVENT_DURATION]);
+		}
 	}
 
 }

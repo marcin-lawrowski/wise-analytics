@@ -35,6 +35,9 @@ class Session {
     /** @var string|null */
     private $sourceCategory;
 
+	private ?int $firstEvent;
+	private ?int $lastEvent;
+
 	/**
 	 * @return int|null
 	 */
@@ -193,6 +196,22 @@ class Session {
 
 	public function setLocalTimeZone(?int $localTimeZone): void {
 		$this->localTimeZone = $localTimeZone;
+	}
+
+	public function getFirstEvent(): ?int {
+		return $this->firstEvent;
+	}
+
+	public function setFirstEvent(?int $firstEvent): void {
+		$this->firstEvent = $firstEvent;
+	}
+
+	public function getLastEvent(): ?int {
+		return $this->lastEvent;
+	}
+
+	public function setLastEvent(?int $lastEvent): void {
+		$this->lastEvent = $lastEvent;
 	}
 
 }

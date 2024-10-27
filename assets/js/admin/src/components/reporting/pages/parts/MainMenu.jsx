@@ -20,6 +20,9 @@ class MainMenu extends React.Component {
 		if (this.props.location.pathname.match(/^\/sources/)) {
 			section = 'sources';
 		}
+		if (this.props.location.pathname.match(/^\/behaviour/)) {
+			section = 'behaviour';
+		}
 
 		const linkClass = (path) => {
 			return this.props.location.pathname.match('^' + path) ? 'd-block wa-bg-color-secondary-light text-muted' : 'd-block text-muted';
@@ -49,6 +52,14 @@ class MainMenu extends React.Component {
 							<li><Link to="/sources/channels" className={ linkClass("/sources/channels") }>Channels</Link></li>
 							<li><Link to="/sources/referral" className={ linkClass("/sources/referral") }>Referral</Link></li>
 							<li><Link to="/sources/social" className={ linkClass("/sources/social") }>Social Networks</Link></li>
+						</ul>
+					</div>
+
+					<Link className="d-block w-100 text-start top-item text-muted" to="/behaviour/pages"><i className={ section !== 'behaviour' ? "bi bi-chevron-right" : "bi bi-chevron-down" }/>Behaviour</Link>
+
+					<div className={ section !== 'behaviour' ? 'd-none' : ''}>
+						<ul className="mb-1">
+							<li><Link to="/behaviour/pages" className={ linkClass("/behaviour/pages") }>Pages</Link></li>
 						</ul>
 					</div>
 

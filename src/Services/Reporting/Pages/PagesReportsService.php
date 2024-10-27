@@ -7,6 +7,7 @@ use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\EventResource;
 use Kainex\WiseAnalytics\Model\EventType;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
+use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class PagesReportsService extends ReportingService {
 
@@ -65,7 +66,7 @@ class PagesReportsService extends ReportingService {
 		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
 		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
 
-		$result = $this->queryEvents([
+		$results = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => ['count(ev.uri) as pageViews, ev.uri, re.text_value as title'],
 			'join' => [[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]]],
@@ -88,7 +89,63 @@ class PagesReportsService extends ReportingService {
 		]);
 
 		return [
-			'pages' => $result,
+			'pages' => $results,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		];
+	}
+
+	public function getPages(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$offset = intval($queryParams['offset'] ?? 0);
+		$eventType = $this->getPageViewEventType();
+
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
+		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
+
+		$results = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.uri) as pageViews',
+				'count(distinct ev.user_id) as uniquePageViews',
+				'ev.uri',
+				're.text_value as title',
+				'sum(ev.duration) / count(ev.uri) as avgDuration',
+				'max(ev.created) as lastViewed',
+				'min(ev.created) as firstViewed'
+			],
+			'join' => [
+				[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]],
+			],
+			'where' => $condition,
+			'whereArgs' => $conditionArgs,
+			'group' => ['ev.uri'],
+			'order' => ['pageViews DESC'],
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		]);
+
+		$results = $this->formatResults($results, [
+			'avgDuration' => 'duration',
+			'lastViewed' => 'timestamp',
+			'firstViewed' => 'timestamp',
+		]);
+
+		$count = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.id) as total'
+			],
+			'group' => ['ev.uri'],
+			'where' => $condition,
+			'whereArgs' => $conditionArgs
+		]);
+
+		return [
+			'pages' => $results,
 			'total' => $count ? (int) $count[0]->total : 0,
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset

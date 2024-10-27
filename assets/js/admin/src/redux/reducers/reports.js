@@ -19,7 +19,8 @@ const defaultServerActions = {
 	'sources.organic.overall': { result: { organic: [] } },
 	'sources': { result: { sources: [], total: 0, offset: 0 } },
 	'pages.views.daily': { result: { pageViews: [] } },
-	'events': { result: { events: [], total: 0, offset: 0 } }
+	'events': { result: { events: [], total: 0, offset: 0 } },
+	'behaviour.pages': { result: { pages: [], total: 0, offset: 0 } }
 }
 
 const defaultState = {

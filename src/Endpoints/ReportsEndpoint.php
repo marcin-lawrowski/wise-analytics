@@ -89,6 +89,8 @@ class ReportsEndpoint {
 					return $this->sources->getSources($queryParams);
 				case 'events';
 					return $this->eventsReportsService->getEvents($queryParams);
+				case 'behaviour.pages';
+					return $this->pagesReportsService->getPages($queryParams);
 			}
 
 		} catch (\Exception $e) {

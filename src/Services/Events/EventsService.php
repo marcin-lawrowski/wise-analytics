@@ -11,7 +11,7 @@ use Kainex\WiseAnalytics\Model\EventType;
 use Kainex\WiseAnalytics\Model\User;
 use Kainex\WiseAnalytics\Utils\URLUtils;
 
-class EventsService {
+class EventsService extends EventsDAO {
 
 	const STANDARD_TYPES = [
 		'page-view' => 'Page View',
@@ -22,9 +22,6 @@ class EventsService {
 	/** @var URLUtils */
 	private $urlUtils;
 
-	/** @var EventsDAO */
-	private $eventsDAO;
-
 	/** @var EventTypesDAO */
 	private $eventTypesDAO;
 
@@ -34,14 +31,12 @@ class EventsService {
 	/**
 	 * EventsService constructor.
 	 * @param URLUtils $urlUtils
-	 * @param EventsDAO $eventsDAO
 	 * @param EventTypesDAO $eventTypesDAO
 	 * @param EventResourcesDAO $resourcesDAO
 	 */
-	public function __construct(URLUtils $urlUtils, EventsDAO $eventsDAO, EventTypesDAO $eventTypesDAO, EventResourcesDAO $resourcesDAO)
+	public function __construct(URLUtils $urlUtils, EventTypesDAO $eventTypesDAO, EventResourcesDAO $resourcesDAO)
 	{
 		$this->urlUtils = $urlUtils;
-		$this->eventsDAO = $eventsDAO;
 		$this->eventTypesDAO = $eventTypesDAO;
 		$this->eventResourcesDAO = $resourcesDAO;
 	}
@@ -58,7 +53,7 @@ class EventsService {
 		if (!$checksum) {
 			throw new \Exception('Missing checksum');
 		}
-		if ($this->eventsDAO->getByChecksum($checksum)) {
+		if ($this->getByChecksum($checksum)) {
 			throw new \Exception('Invalid checksum');
 		}
 
@@ -72,7 +67,7 @@ class EventsService {
 		$event->setChecksum($checksum);
 		$event->setData($this->convertData($typeSlug, $inputData));
 
-		$this->eventsDAO->save($event);
+		$this->save($event);
 
 		$this->postCreateActions($typeSlug, $event, $inputData);
 
@@ -96,7 +91,7 @@ class EventsService {
 		$event->setTypeId($eventType->getId());
 		$event->setData($this->convertData($typeSlug, $inputData));
 
-		$this->eventsDAO->save($event);
+		$this->save($event);
 
 		$this->postCreateActions($typeSlug, $event, $inputData);
 
@@ -108,7 +103,7 @@ class EventsService {
 	 * @return EventType
 	 * @throws \Exception
 	 */
-	private function getOrCreateEventType(string $typeSlug): EventType {
+	public function getOrCreateEventType(string $typeSlug): EventType {
 		$eventType = $this->eventTypesDAO->getBySlug($typeSlug);
 		if (!$eventType) {
 			if (isset(self::STANDARD_TYPES[$typeSlug])) {

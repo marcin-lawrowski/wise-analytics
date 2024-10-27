@@ -3,6 +3,7 @@
 namespace Kainex\WiseAnalytics\Services\Reporting;
 
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 /**
  * Class ReportingService
@@ -64,6 +65,26 @@ abstract class ReportingService {
 		$date2->setTime(23, 59, 59);
 
 		return [$date1, $date2];
+	}
+
+	protected function formatResults(array $results, array $defs): array {
+		foreach ($results as $result) {
+			foreach ($defs as $fieldName => $formatter) {
+				if (!property_exists($result, $fieldName)) {
+					continue;
+				}
+				switch ($formatter) {
+					case 'duration':
+						$result->$fieldName = $result->$fieldName > 0 ? TimeUtils::formatDuration($result->$fieldName, 'suffixes') : '0s';
+						break;
+					case 'timestamp':
+						$result->$fieldName = TimeUtils::formatTimestamp($result->$fieldName);
+						break;
+				}
+			}
+		}
+
+		return $results;
 	}
 
 }

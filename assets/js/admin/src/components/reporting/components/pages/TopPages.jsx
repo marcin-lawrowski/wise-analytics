@@ -57,6 +57,7 @@ class TopPages extends React.Component {
 			limit={ this.props.report.limit }
 			total={ this.props.report.total }
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+			fullReportURL="/behaviour/pages"
 		/>
 	}
 

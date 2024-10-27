@@ -5,7 +5,6 @@ namespace Kainex\WiseAnalytics\DAO\Stats;
 use Kainex\WiseAnalytics\DAO\AbstractDAO;
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Model\Stats\Session;
-use Kainex\WiseAnalytics\Options;
 
 /**
  * SessionsDAO.
@@ -46,6 +45,8 @@ class SessionsDAO extends AbstractDAO {
 			'end' => $session->getEnd()->format('Y-m-d H:i:s'),
 			'local_time' => $session->getLocalTime() ? $session->getLocalTime()->format('Y-m-d H:i:s') : null,
 			'local_timezone' => $session->getLocalTimeZone() ?? null,
+			'first_event' => $session->getFirstEvent() ?? null,
+			'last_event' => $session->getLastEvent() ?? null
 		);
 
 		if ($session->getId() !== null) {
@@ -84,6 +85,8 @@ class SessionsDAO extends AbstractDAO {
 		if ($rawData->local_timezone) {
 			$session->setLocalTimeZone((int) $rawData->local_timezone);
 		}
+		$session->setFirstEvent($rawData->first_event);
+		$session->setLastEvent($rawData->last_event);
 
 		return $session;
 	}
