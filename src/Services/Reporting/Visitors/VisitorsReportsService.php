@@ -87,13 +87,10 @@ class VisitorsReportsService extends ReportingService {
 			'limit' => self::RESULTS_LIMIT
 		]);
 
-		$output = [];
-		foreach ($result as $record) {
-			$avgSessionDuration = intval($record->avgSessionDuration);
-			$record->avgSessionDuration = $avgSessionDuration > 0 ? TimeUtils::formatDuration($avgSessionDuration, 'suffixes') : '0s';
-			$record->lastVisit = TimeUtils::formatTimestamp($record->lastVisit);
-			$output[] = $record;
-		}
+		$result = $this->formatResults($result, [
+			'avgSessionDuration' => 'duration',
+			'lastVisit' => 'timestamp'
+		]);
 
 		$count = $this->querySessions([
 			'alias' => 'se',
@@ -106,7 +103,7 @@ class VisitorsReportsService extends ReportingService {
 		]);
 
 		return [
-			'visitors' => $output,
+			'visitors' => $result,
 			'total' => $count ? (int) $count[0]->total : 0,
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
@@ -280,10 +277,10 @@ class VisitorsReportsService extends ReportingService {
 			'limit' => self::RESULTS_LIMIT
 		]);
 
-		foreach ($resolutions as $key => $resolution) {
-			$resolution->avgSessionTime = $resolution->avgSessionTime > 0 ? TimeUtils::formatDuration($resolution->avgSessionTime, 'suffixes') : '0s';
-			$resolution->eventsPerSession = round($resolution->eventsPerSession, 1);
-		}
+		$resolutions = $this->formatResults($resolutions, [
+			'avgSessionTime' => 'duration',
+			'eventsPerSession' => 'round1'
+		]);
 
 		$count = $this->querySessions([
 			'alias' => 'se',

@@ -75,10 +75,14 @@ abstract class ReportingService {
 				}
 				switch ($formatter) {
 					case 'duration':
-						$result->$fieldName = $result->$fieldName > 0 ? TimeUtils::formatDuration($result->$fieldName, 'suffixes') : '0s';
+						$numberValue = intval($result->$fieldName);
+						$result->$fieldName = $numberValue > 0 ? TimeUtils::formatDuration($numberValue, 'suffixes') : '0s';
 						break;
 					case 'timestamp':
 						$result->$fieldName = TimeUtils::formatTimestamp($result->$fieldName);
+						break;
+					case 'round1':
+						$result->$fieldName = round($result->$fieldName, 1);
 						break;
 				}
 			}

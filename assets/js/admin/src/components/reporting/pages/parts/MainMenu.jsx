@@ -60,6 +60,8 @@ class MainMenu extends React.Component {
 					<div className={ section !== 'behaviour' ? 'd-none' : ''}>
 						<ul className="mb-1">
 							<li><Link to="/behaviour/pages" className={ linkClass("/behaviour/pages") }>Pages</Link></li>
+							<li><Link to="/behaviour/entry-pages" className={ linkClass("/behaviour/entry-pages") }>Entry Pages</Link></li>
+							<li><Link to="/behaviour/exit-pages" className={ linkClass("/behaviour/exit-pages") }>Exit Pages</Link></li>
 						</ul>
 					</div>
 

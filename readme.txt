@@ -5,15 +5,15 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.6.2
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Your stats are private thing. No need to store it outside your server or give it for free! Wise Analytics is an advanced web traffic tracking and analytics plugin for WordPress sites.
+Your stats are private thing. No need to store them outside your server or give it for free! Wise Analytics is an advanced web traffic tracking and analytics plugin for WordPress sites.
 
 == Description ==
 
-**Wise Analytics** is a fully fledged site statistics plugin that helps to track the behavior of visitors, measure the traffic sources and actions taken on your website. The plugin provides a platform to analyze the traffic visualized as tables and charts. It is easy to setup and configure. Our development team is constantly working on new features and supporting the existing ones.
+**Wise Analytics** is a fully fledged site statistics plugin that helps to track the behavior of visitors, measure the traffic sources and actions taken on your website. The plugin provides a platform to analyze the traffic visualized as tables and charts. It is easy to set up and configure. Our development team is constantly working on new features and supporting the existing ones.
 
 We believe that the statistics should be neither collected nor processed outside your server. With Wise Analytics you can have such level of privacy. Then you may learn your visitors and improve your site or business to earn more.
 
@@ -24,12 +24,13 @@ We believe that the statistics should be neither collected nor processed outside
 = List of features: =
 
 * Tracking visitors, visits, page views and other actions
-* Integration with Contact Form 7 (recognizing visitors who sent a form)
+* Integration with Contact Form 7 (a visitor sends a form -> Wise Analytics recognizes all future actions of the visitor -> all actions are then assigned to e-mail address of the visitor)
 * Tracking traffic sources (Referral, Social Networks, Search Engines, Direct, Paid Traffic)
 * Detecting devices, languages, screens
+* Visitors behaviour: pages stats, entry pages, exit pages
 * Hourly visits in visitors' local time
 * Tracking WordPress log-in event
-* Visitor profile page (name, e-mail, language, screen size, device, last visit, etc.)
+* Visitor profile page (name, e-mail, language, screen size, device, last visit, hourly activity, full actions log, etc.)
 * Top visited pages
 * Full visitors table with average visit time
 * Filtering by dates range
@@ -68,6 +69,10 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 10. Hourly stats
 
 == Changelog ==
+
+= 1.1.5 =
+* Entry pages report
+* Exit pages report
 
 = 1.1.4 =
 * Added pages views report

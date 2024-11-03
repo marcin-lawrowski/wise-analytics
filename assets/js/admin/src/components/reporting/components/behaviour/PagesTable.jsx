@@ -35,7 +35,8 @@ class PagesTable extends React.Component {
 			name: 'behaviour.pages',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
-				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
+				endDate: moment(this.props.endDate).format('YYYY-MM-DD'),
+				scope: this.props.scope
 			},
 			offset: this.state.offset
 		});
@@ -52,7 +53,7 @@ class PagesTable extends React.Component {
 
 	render() {
 		return <StatsTable
-			title="Visited Pages"
+			title={ this.props.title }
 			loading={ this.props.loading }
 			columns={[
 				{ 'name': 'Page' },
@@ -79,10 +80,17 @@ class PagesTable extends React.Component {
 	}
 }
 
+PagesTable.defaultProps = {
+	scope: 'all',
+	title: 'Visited Pages'
+}
+
 PagesTable.propTypes = {
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
-	endDate: PropTypes.object
+	endDate: PropTypes.object,
+	scope: PropTypes.string,
+	title: PropTypes.string
 };
 
 export default connect(

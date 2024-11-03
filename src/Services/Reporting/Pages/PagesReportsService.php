@@ -98,13 +98,32 @@ class PagesReportsService extends ReportingService {
 
 	public function getPages(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$filters = $queryParams['filters'];
 		$offset = intval($queryParams['offset'] ?? 0);
+		$scope = $filters['scope'] ?? 'all';
 		$eventType = $this->getPageViewEventType();
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
 		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
+		$dataJoins =  [
+			[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]],
+		];
+		$countJoins = [];
+
+		// scope filters:
+		if (in_array($scope, ['entry', 'exit'])) {
+			$condition[] = 'se.id IS NOT NULL';
+		}
+		if ($scope == 'entry') {
+			$dataJoins[] = [Installer::getSessionsTable(), 'se', ['se.first_event = ev.id']];
+			$countJoins[] = [Installer::getSessionsTable(), 'se', ['se.first_event = ev.id']];
+		}
+		if ($scope == 'exit') {
+			$dataJoins[] = [Installer::getSessionsTable(), 'se', ['se.last_event = ev.id']];
+			$countJoins[] = [Installer::getSessionsTable(), 'se', ['se.last_event = ev.id']];
+		}
 
 		$results = $this->queryEvents([
 			'alias' => 'ev',
@@ -117,9 +136,7 @@ class PagesReportsService extends ReportingService {
 				'max(ev.created) as lastViewed',
 				'min(ev.created) as firstViewed'
 			],
-			'join' => [
-				[Installer::getEventResourcesTable(), 're', ['re.text_key = ev.uri', 're.type_id = '.EventResource::TYPE_URI_TITLE]],
-			],
+			'join' => $dataJoins,
 			'where' => $condition,
 			'whereArgs' => $conditionArgs,
 			'group' => ['ev.uri'],
@@ -139,6 +156,7 @@ class PagesReportsService extends ReportingService {
 			'select' => [
 				'count(ev.id) as total'
 			],
+			'join' => $countJoins,
 			'group' => ['ev.uri'],
 			'where' => $condition,
 			'whereArgs' => $conditionArgs
