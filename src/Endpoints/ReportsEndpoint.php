@@ -91,6 +91,8 @@ class ReportsEndpoint {
 					return $this->eventsReportsService->getEvents($queryParams);
 				case 'behaviour.pages';
 					return $this->pagesReportsService->getPages($queryParams);
+				case 'behaviour.pages.external';
+					return $this->pagesReportsService->getExternalPages($queryParams);
 			}
 
 		} catch (\Exception $e) {

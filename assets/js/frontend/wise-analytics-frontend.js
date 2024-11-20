@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var botd = require('./libs/botd.cjs.js');
+var tracking = require('./libs/resourcesTracking.js');
 
 var Core = function() {
 	var API_BASE_URL = waConfig.url + '/wa-api/';
@@ -13,7 +14,7 @@ var Core = function() {
 	}
 
 	function initOnLoad() {
-
+		tracking.bindOffsiteLinks();
 	}
 
 	/**
@@ -238,7 +239,7 @@ window.wa = new Core();
 		window.wa.initOnLoad();
 	});
 })();
-},{"./libs/botd.cjs.js":2}],2:[function(require,module,exports){
+},{"./libs/botd.cjs.js":2,"./libs/resourcesTracking.js":3}],2:[function(require,module,exports){
 /**
  * Fingerprint BotD v1.9.1 - Copyright (c) FingerprintJS, Inc, 2024 (https://fingerprint.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
@@ -1146,7 +1147,136 @@ exports.detect = detect;
 exports.detectors = detectors;
 exports.load = load;
 exports.sources = sources;
-},{"tslib":3}],3:[function(require,module,exports){
+},{"tslib":4}],3:[function(require,module,exports){
+function bindOffsiteLinks() {
+	var regExp = new RegExp("//" + window.location.host + "($|/)");
+	var detectedLinks = document.getElementsByTagName("a");
+
+	if (detectedLinks.length === 0) {
+		return;
+	}
+
+	for (var link_i = 0; link_i <= detectedLinks.length; link_i++) {
+		var detectedLink = detectedLinks[link_i];
+
+		if (!detectedLink || !detectedLink.attributes.href) {
+			continue;
+		}
+		var thisHref = detectedLink.attributes.href.value;
+		var isNonExternal = (thisHref.substring(0, 4) === "http") ? regExp.test(thisHref) : true;
+
+		if (isNonExternal) {
+			continue;
+		}
+
+		const clickListener = function(event, onclickFunction) {
+			event.preventDefault();
+			var linkHref = findEventTargetLink(event);
+			var linkElem = findEventTarget(event);
+			var trackCallback = function() {
+				if (typeof onclickFunction === "function") {
+					var ret = true;
+					try {
+						ret = onclickFunction.apply(linkElem);
+					} catch (err) {
+						if (console) {
+							console.error(err);
+						}
+					}
+					if (ret !== false) {
+						if (linkElem.target !== "_blank") {
+							window.location = linkHref;
+						}
+					}
+				} else {
+					if (linkElem.target !== "_blank") {
+						window.location = linkHref;
+					}
+				}
+			};
+
+			wa.track('external-page-view', { url: linkHref }, trackCallback);
+
+			// prevents blocking:
+			if (linkElem.target === "_blank" && window.isOpening !== linkHref) {
+				window.isOpening = linkHref;
+				setTimeout(function() { window.isOpening = ''; }, 1500);
+				var newWindow = window.open();
+				if (newWindow != null) {
+					newWindow.location = linkHref;
+				}
+			}
+		};
+
+		var onclickFunction = null;
+		if (typeof detectedLink.onclick === "function") {
+			onclickFunction = detectedLink.onclick;
+			detectedLink.onclick = '';
+		}
+
+		detectedLink.addEventListener("click", (function(callback) {
+			return function(event) { clickListener(event, callback); }
+		})(onclickFunction));
+	}
+}
+
+function findEventTargetLink(evt) {
+    let elem;
+	if (evt.srcElement) {
+		elem = evt.srcElement;
+	} else if (evt.target) {
+		elem = evt.target;
+	}
+    if (!elem) {
+        console.log('wa: could not find the target link')
+        return null;
+    }
+
+	if (elem.nodeName !== 'A') {
+		var max = 5;
+		var tries = 0;
+		var parent = elem.parentNode;
+
+		while (parent.nodeName !== 'A' && tries < max) {
+			tries++;
+			parent = parent.parentNode;
+		}
+
+		return parent.href;
+	} else {
+		return elem.href;
+	}
+}
+
+function findEventTarget(evt) {
+    let elem;
+	if (evt.srcElement) {
+		elem = evt.srcElement;
+	} else if (evt.target) {
+		elem = evt.target;
+	}
+    if (!elem) {
+        console.log('wa: could not find the target')
+        return null;
+    }
+
+	if (elem.nodeName !== 'A') {
+		var max = 5;
+		var tries = 0;
+		var parent = elem.parentNode;
+		while (parent.nodeName !== 'A' && tries < max) {
+			tries++;
+			parent = parent.parentNode;
+		}
+
+		return parent;
+	} else {
+		return elem;
+	}
+}
+
+exports.bindOffsiteLinks = bindOffsiteLinks;
+},{}],4:[function(require,module,exports){
 (function (global){
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.

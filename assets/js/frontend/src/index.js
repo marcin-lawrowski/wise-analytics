@@ -1,4 +1,5 @@
 var botd = require('./libs/botd.cjs.js');
+var tracking = require('./libs/resourcesTracking.js');
 
 var Core = function() {
 	var API_BASE_URL = waConfig.url + '/wa-api/';
@@ -12,7 +13,7 @@ var Core = function() {
 	}
 
 	function initOnLoad() {
-
+		tracking.bindOffsiteLinks();
 	}
 
 	/**

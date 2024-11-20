@@ -24,7 +24,7 @@ class PagesReportsService extends ReportingService {
 	}
 
 	public function getTotalPageViews(\DateTime $startDate, \DateTime $endDate): array {
-		$eventType = $this->getPageViewEventType();
+		$eventType = $this->getEventType('page-view');
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -59,7 +59,7 @@ class PagesReportsService extends ReportingService {
 	public function getTopPagesViews(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$offset = intval($queryParams['offset'] ?? 0);
-		$eventType = $this->getPageViewEventType();
+		$eventType = $this->getEventType('page-view');
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -101,7 +101,7 @@ class PagesReportsService extends ReportingService {
 		$filters = $queryParams['filters'];
 		$offset = intval($queryParams['offset'] ?? 0);
 		$scope = $filters['scope'] ?? 'all';
-		$eventType = $this->getPageViewEventType();
+		$eventType = $this->getEventType('page-view');
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -170,9 +170,60 @@ class PagesReportsService extends ReportingService {
 		];
 	}
 
+	public function getExternalPages(array $queryParams): array {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$filters = $queryParams['filters'];
+		$offset = intval($queryParams['offset'] ?? 0);
+		$eventType = $this->getEventType('external-page-view');
+
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
+		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
+
+		$results = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.uri) as pageViews',
+				'count(distinct ev.user_id) as uniquePageViews',
+				'ev.uri',
+				'max(ev.created) as lastViewed',
+				'min(ev.created) as firstViewed'
+			],
+			'where' => $condition,
+			'whereArgs' => $conditionArgs,
+			'group' => ['ev.uri'],
+			'order' => ['pageViews DESC'],
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		]);
+
+		$results = $this->formatResults($results, [
+			'lastViewed' => 'timestamp',
+			'firstViewed' => 'timestamp',
+		]);
+
+		$count = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'count(ev.id) as total'
+			],
+			'group' => ['ev.uri'],
+			'where' => $condition,
+			'whereArgs' => $conditionArgs
+		]);
+
+		return [
+			'pages' => $results,
+			'total' => $count ? (int) $count[0]->total : 0,
+			'limit' => self::RESULTS_LIMIT,
+			'offset' => $offset
+		];
+	}
+
 	public function getPagesViewsDaily(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
-		$eventType = $this->getPageViewEventType();
+		$eventType = $this->getEventType('page-view');
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
@@ -211,12 +262,8 @@ class PagesReportsService extends ReportingService {
 		];
 	}
 
-	/**
-	 * @return EventType
-	 * @throws \Exception
-	 */
-	private function getPageViewEventType(): EventType 	{
-		$eventType = $this->eventTypesDAO->getBySlug('page-view');
+	private function getEventType(string $slug): EventType 	{
+		$eventType = $this->eventTypesDAO->getBySlug($slug);
 		if (!$eventType) {
 			throw new \Exception('Missing event type');
 		}

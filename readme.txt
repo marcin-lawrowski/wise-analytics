@@ -4,8 +4,8 @@ Donate link: https://kainex.pl/projects/wp-plugins/wise-analytics/wise-analytics
 Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
-Tested up to: 6.6.2
-Stable tag: 1.1.5
+Tested up to: 6.7
+Stable tag: 1.1.6
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,8 +67,12 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 8. Channels
 9. Devices
 10. Hourly stats
+11. Pages report
 
 == Changelog ==
+
+= 1.1.6 =
+* External links tracking
 
 = 1.1.5 =
 * Entry pages report

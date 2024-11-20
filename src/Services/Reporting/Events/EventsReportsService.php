@@ -33,6 +33,7 @@ class EventsReportsService extends ReportingService {
 				'us.last_name as visitorLastName',
 				'ev.type_id as typeId',
 				'et.name as typeName',
+				'et.slug as typeSlug',
 				're.text_value as title'
 			],
 			'join' => [

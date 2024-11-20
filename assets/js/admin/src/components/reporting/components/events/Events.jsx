@@ -14,6 +14,8 @@ class Events extends React.Component {
 		this.state = {
 			offset: 0
 		}
+
+		this.renderEventLink = this.renderEventLink.bind(this);
 	}
 
 	componentDidMount() {
@@ -50,6 +52,15 @@ class Events extends React.Component {
 		return <Link to={ '/visitors/browse/visitor/' + event.visitorId } title="Go to details">{ name }</Link>;
 	}
 
+	renderEventLink(event) {
+		if (event.typeSlug === 'external-page-view') {
+			let domain = (new URL(event.uri));
+			return <a href={ event.uri } target="_blank">{ domain.hostname ?? event.uri }</a>;
+		} else {
+			return <a href={ this.props.configuration.baseUrl + event.uri } target="_blank">{ event.title ? event.title : event.uri }</a>;
+		}
+	}
+
 	render() {
 		return <StatsTable
 			title="Recent Events"
@@ -68,7 +79,7 @@ class Events extends React.Component {
 					case 1:
 						return row.typeName ? row.typeName : 'Unknown';
 					case 2:
-						return <a href={ this.props.configuration.baseUrl + row.uri } target="_blank">{ row.title ? row.title : row.uri }</a>;
+						return this.renderEventLink(row);
 					case 3:
 						return row.createdPretty;
 				}

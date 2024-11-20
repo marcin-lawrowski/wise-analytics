@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import Pages from "./pages/Pages";
 import EntryPages from "./pages/EntryPages";
 import ExitPages from "./pages/ExitPages";
+import ExternalPages from "./pages/ExternalPages";
 
 class Behaviour extends React.Component {
 
@@ -14,6 +15,7 @@ class Behaviour extends React.Component {
 				<Route path="pages" element={<Pages startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 				<Route path="entry-pages" element={<EntryPages startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 				<Route path="exit-pages" element={<ExitPages startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
+				<Route path="external-pages" element={<ExternalPages startDate={ this.props.startDate } endDate={ this.props.endDate } />} />
 			</Route>
 		</Routes>
 	}

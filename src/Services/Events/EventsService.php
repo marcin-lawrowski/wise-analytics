@@ -15,6 +15,7 @@ class EventsService extends EventsDAO {
 
 	const STANDARD_TYPES = [
 		'page-view' => 'Page View',
+		'external-page-view' => 'External Page View',
 		'wp-user-log-in' => 'User Log In',
 		'form-submission' => 'Form Submission'
 	];
@@ -136,6 +137,11 @@ class EventsService extends EventsDAO {
 					'referer' => $inputData['referer']
 				]);
 				break;
+			case 'external-page-view':
+				$output = array_filter([
+					'referer' => $inputData['referer']
+				]);
+				break;
 			case 'wp-user-log-in':
 				$output = array_filter([
 					'id' => $inputData['id'],
@@ -177,6 +183,13 @@ class EventsService extends EventsDAO {
 					throw new \Exception('Missing URI');
 				}
 
+				break;
+			case 'external-page-view':
+				if (isset($inputData['uri']) && $inputData['uri']) {
+					$output = $inputData['uri'];
+				} else {
+					throw new \Exception('Missing URI');
+				}
 				break;
 			default:
 				if (isset($inputData['uri']) && $inputData['uri']) {
