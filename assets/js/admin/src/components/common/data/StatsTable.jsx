@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import Loader from "common/Loader";
-import TooltipIcon from "../TooltipIcon";
 import {Link} from "react-router-dom";
 
 class StatsTable extends React.Component {
@@ -15,6 +14,8 @@ class StatsTable extends React.Component {
 		this.hasNext = this.hasNext.bind(this);
 		this.hasPrev = this.hasPrev.bind(this);
 		this.handleFirst = this.handleFirst.bind(this);
+		this.renderSortable = this.renderSortable.bind(this);
+		this.handleSort = this.handleSort.bind(this);
 	}
 
 	renderPaginationSummary() {
@@ -56,6 +57,22 @@ class StatsTable extends React.Component {
 		this.props.onOffsetChange(this.props.offset + this.props.limit);
 	}
 
+	handleSort(column) {
+		if (!column.sortable) {
+			return null;
+		}
+
+		let direction;
+		if (this.props.sortDirection === 'desc') {
+			direction = 'asc';
+		}
+		if (this.props.sortDirection === 'asc') {
+			direction = 'desc';
+		}
+
+		this.props.onSortChange(column.sortable, direction);
+	}
+
 	hasNext() {
 		const newOffset = this.props.offset + this.props.limit;
 
@@ -66,6 +83,23 @@ class StatsTable extends React.Component {
 		const newOffset = this.props.offset - this.props.limit;
 
 		return newOffset >= 0;
+	}
+
+	renderSortable(column) {
+		if (!column.sortable) {
+			return null;
+		}
+
+		if (this.props.sortColumn === column.sortable) {
+			if (this.props.sortDirection === 'desc') {
+				return <i className="bi bi-arrow-down wa-text-color-primary"/>
+			}
+			if (this.props.sortDirection === 'asc') {
+				return <i className="bi bi-arrow-up wa-text-color-primary"/>
+			}
+		}
+
+		return null;
 	}
 
 	render() {
@@ -105,7 +139,7 @@ class StatsTable extends React.Component {
 					<thead>
 						<tr>
 							{ this.props.columns.map( column =>
-								<th scope="col">{ column.name }</th>
+								<th scope="col" role={ column.sortable ? "button" : undefined } onClick={ () => this.handleSort(column) }>{ column.name }{ this.renderSortable(column) }</th>
 							)}
 						</tr>
 					</thead>
@@ -147,6 +181,8 @@ StatsTable.propTypes = {
 	title: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
 	className: PropTypes.string,
+	sortColumn: PropTypes.string,
+	sortDirection: PropTypes.string,
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 	cellRenderer: PropTypes.func,
@@ -155,6 +191,7 @@ StatsTable.propTypes = {
 	offset: PropTypes.number,
 	limit: PropTypes.number,
 	onOffsetChange: PropTypes.func.isRequired,
+	onSortChange: PropTypes.func,
 	filters: PropTypes.array.isRequired,
 	rowDivider: PropTypes.func,
 	fullReportURL: PropTypes.string

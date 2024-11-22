@@ -100,8 +100,17 @@ class PagesReportsService extends ReportingService {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$filters = $queryParams['filters'];
 		$offset = intval($queryParams['offset'] ?? 0);
+		$sortColumn = $queryParams['sortColumn'] ?? 'pageViews';
+		$sortDirection = $queryParams['sortDirection'] ?? 'desc';
 		$scope = $filters['scope'] ?? 'all';
 		$eventType = $this->getEventType('page-view');
+
+		if (!in_array($sortColumn, ['pageViews', 'uniquePageViews', 'title', 'avgDuration', 'lastViewed', 'firstViewed'])) {
+			throw new \Exception("Invalid sort column '$sortColumn'");
+		}
+		if (!in_array($sortDirection, ['asc', 'desc'])) {
+			throw new \Exception("Invalid sort direction '$sortDirection'");
+		}
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
@@ -140,7 +149,7 @@ class PagesReportsService extends ReportingService {
 			'where' => $condition,
 			'whereArgs' => $conditionArgs,
 			'group' => ['ev.uri'],
-			'order' => ['pageViews DESC'],
+			'order' => [$sortColumn.' '.$sortDirection],
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
 		]);
@@ -166,7 +175,9 @@ class PagesReportsService extends ReportingService {
 			'pages' => $results,
 			'total' => $count ? (int) $count[0]->total : 0,
 			'limit' => self::RESULTS_LIMIT,
-			'offset' => $offset
+			'offset' => $offset,
+			'sortColumn' => $sortColumn,
+			'sortDirection' => $sortDirection
 		];
 	}
 
@@ -174,12 +185,21 @@ class PagesReportsService extends ReportingService {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$filters = $queryParams['filters'];
 		$offset = intval($queryParams['offset'] ?? 0);
+		$sortColumn = $queryParams['sortColumn'] ?? 'pageViews';
+		$sortDirection = $queryParams['sortDirection'] ?? 'desc';
 		$eventType = $this->getEventType('external-page-view');
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 		$condition = ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"];
 		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
+
+		if (!in_array($sortColumn, ['pageViews', 'uniquePageViews', 'uri', 'lastViewed', 'firstViewed'])) {
+			throw new \Exception("Invalid sort column '$sortColumn'");
+		}
+		if (!in_array($sortDirection, ['asc', 'desc'])) {
+			throw new \Exception("Invalid sort direction '$sortDirection'");
+		}
 
 		$results = $this->queryEvents([
 			'alias' => 'ev',
@@ -193,7 +213,7 @@ class PagesReportsService extends ReportingService {
 			'where' => $condition,
 			'whereArgs' => $conditionArgs,
 			'group' => ['ev.uri'],
-			'order' => ['pageViews DESC'],
+			'order' => [$sortColumn.' '.$sortDirection],
 			'limit' => self::RESULTS_LIMIT,
 			'offset' => $offset
 		]);
@@ -217,7 +237,9 @@ class PagesReportsService extends ReportingService {
 			'pages' => $results,
 			'total' => $count ? (int) $count[0]->total : 0,
 			'limit' => self::RESULTS_LIMIT,
-			'offset' => $offset
+			'offset' => $offset,
+			'sortColumn' => $sortColumn,
+			'sortDirection' => $sortDirection
 		];
 	}
 

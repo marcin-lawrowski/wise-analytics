@@ -671,7 +671,6 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _Loader = _interopRequireDefault(require("common/Loader"));
-var _TooltipIcon = _interopRequireDefault(require("../TooltipIcon"));
 var _reactRouterDom = require("react-router-dom");
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -688,6 +687,8 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
     _this.hasNext = _this.hasNext.bind((0, _assertThisInitialized2["default"])(_this));
     _this.hasPrev = _this.hasPrev.bind((0, _assertThisInitialized2["default"])(_this));
     _this.handleFirst = _this.handleFirst.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.renderSortable = _this.renderSortable.bind((0, _assertThisInitialized2["default"])(_this));
+    _this.handleSort = _this.handleSort.bind((0, _assertThisInitialized2["default"])(_this));
     return _this;
   }
   (0, _createClass2["default"])(StatsTable, [{
@@ -727,6 +728,21 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
       this.props.onOffsetChange(this.props.offset + this.props.limit);
     }
   }, {
+    key: "handleSort",
+    value: function handleSort(column) {
+      if (!column.sortable) {
+        return null;
+      }
+      var direction;
+      if (this.props.sortDirection === 'desc') {
+        direction = 'asc';
+      }
+      if (this.props.sortDirection === 'asc') {
+        direction = 'desc';
+      }
+      this.props.onSortChange(column.sortable, direction);
+    }
+  }, {
     key: "hasNext",
     value: function hasNext() {
       var newOffset = this.props.offset + this.props.limit;
@@ -737,6 +753,26 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
     value: function hasPrev() {
       var newOffset = this.props.offset - this.props.limit;
       return newOffset >= 0;
+    }
+  }, {
+    key: "renderSortable",
+    value: function renderSortable(column) {
+      if (!column.sortable) {
+        return null;
+      }
+      if (this.props.sortColumn === column.sortable) {
+        if (this.props.sortDirection === 'desc') {
+          return /*#__PURE__*/_react["default"].createElement("i", {
+            className: "bi bi-arrow-down wa-text-color-primary"
+          });
+        }
+        if (this.props.sortDirection === 'asc') {
+          return /*#__PURE__*/_react["default"].createElement("i", {
+            className: "bi bi-arrow-up wa-text-color-primary"
+          });
+        }
+      }
+      return null;
     }
   }, {
     key: "render",
@@ -791,8 +827,12 @@ var StatsTable = /*#__PURE__*/function (_React$Component) {
         className: "table table-striped"
       }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, this.props.columns.map(function (column) {
         return /*#__PURE__*/_react["default"].createElement("th", {
-          scope: "col"
-        }, column.name);
+          scope: "col",
+          role: column.sortable ? "button" : undefined,
+          onClick: function onClick() {
+            return _this2.handleSort(column);
+          }
+        }, column.name, _this2.renderSortable(column));
       }))), /*#__PURE__*/_react["default"].createElement("tbody", null, this.props.data.map(function (row, index) {
         return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, {
           key: index
@@ -825,6 +865,8 @@ StatsTable.propTypes = {
   title: _propTypes["default"].string.isRequired,
   loading: _propTypes["default"].bool.isRequired,
   className: _propTypes["default"].string,
+  sortColumn: _propTypes["default"].string,
+  sortDirection: _propTypes["default"].string,
   columns: _propTypes["default"].array.isRequired,
   data: _propTypes["default"].array.isRequired,
   cellRenderer: _propTypes["default"].func,
@@ -833,13 +875,14 @@ StatsTable.propTypes = {
   offset: _propTypes["default"].number,
   limit: _propTypes["default"].number,
   onOffsetChange: _propTypes["default"].func.isRequired,
+  onSortChange: _propTypes["default"].func,
   filters: _propTypes["default"].array.isRequired,
   rowDivider: _propTypes["default"].func,
   fullReportURL: _propTypes["default"].string
 };
 var _default = exports["default"] = StatsTable;
 
-},{"../TooltipIcon":3,"@babel/runtime/helpers/assertThisInitialized":75,"@babel/runtime/helpers/classCallCheck":76,"@babel/runtime/helpers/createClass":77,"@babel/runtime/helpers/getPrototypeOf":80,"@babel/runtime/helpers/inherits":81,"@babel/runtime/helpers/interopRequireDefault":82,"@babel/runtime/helpers/possibleConstructorReturn":87,"common/Loader":2,"prop-types":"prop-types","react":"react","react-router-dom":"react-router-dom"}],8:[function(require,module,exports){
+},{"@babel/runtime/helpers/assertThisInitialized":75,"@babel/runtime/helpers/classCallCheck":76,"@babel/runtime/helpers/createClass":77,"@babel/runtime/helpers/getPrototypeOf":80,"@babel/runtime/helpers/inherits":81,"@babel/runtime/helpers/interopRequireDefault":82,"@babel/runtime/helpers/possibleConstructorReturn":87,"common/Loader":2,"prop-types":"prop-types","react":"react","react-router-dom":"react-router-dom"}],8:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -939,7 +982,9 @@ var ExternalPagesTable = /*#__PURE__*/function (_React$Component) {
           startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
         },
-        offset: this.state.offset
+        offset: this.state.offset,
+        sortColumn: this.state.sortColumn,
+        sortDirection: this.state.sortDirection
       });
     }
   }, {
@@ -950,15 +995,20 @@ var ExternalPagesTable = /*#__PURE__*/function (_React$Component) {
         title: this.props.title,
         loading: this.props.loading,
         columns: [{
-          'name': 'Page'
+          'name': 'Page',
+          sortable: 'uri'
         }, {
-          'name': 'Views'
+          'name': 'Views',
+          sortable: 'pageViews'
         }, {
-          'name': 'Unique Views'
+          'name': 'Unique Views',
+          sortable: 'uniquePageViews'
         }, {
-          'name': 'First Viewed'
+          'name': 'First Viewed',
+          sortable: 'firstViewed'
         }, {
-          'name': 'Last Viewed'
+          'name': 'Last Viewed',
+          sortable: 'lastViewed'
         }],
         data: this.props.report.pages,
         rowRenderer: function rowRenderer(record) {
@@ -977,12 +1027,20 @@ var ExternalPagesTable = /*#__PURE__*/function (_React$Component) {
             value: record.lastViewed
           }];
         },
+        sortColumn: this.props.report.sortColumn,
+        sortDirection: this.props.report.sortDirection,
         offset: this.props.report.offset,
         limit: this.props.report.limit,
         total: this.props.report.total,
         onOffsetChange: function onOffsetChange(offset) {
           return _this2.setState({
             offset: offset
+          }, _this2.refresh);
+        },
+        onSortChange: function onSortChange(sortColumn, sortDirection) {
+          return _this2.setState({
+            sortColumn: sortColumn,
+            sortDirection: sortDirection
           }, _this2.refresh);
         }
       });
@@ -1073,7 +1131,9 @@ var PagesTable = /*#__PURE__*/function (_React$Component) {
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD'),
           scope: this.props.scope
         },
-        offset: this.state.offset
+        offset: this.state.offset,
+        sortColumn: this.state.sortColumn,
+        sortDirection: this.state.sortDirection
       });
     }
   }, {
@@ -1096,17 +1156,23 @@ var PagesTable = /*#__PURE__*/function (_React$Component) {
         title: this.props.title,
         loading: this.props.loading,
         columns: [{
-          'name': 'Page'
+          'name': 'Page',
+          sortable: 'title'
         }, {
-          'name': 'Views'
+          'name': 'Views',
+          sortable: 'pageViews'
         }, {
-          'name': 'Unique Views'
+          'name': 'Unique Views',
+          sortable: 'uniquePageViews'
         }, {
-          'name': 'Avg. View'
+          'name': 'Avg. View',
+          sortable: 'avgDuration'
         }, {
-          'name': 'First Viewed'
+          'name': 'First Viewed',
+          sortable: 'firstViewed'
         }, {
-          'name': 'Last Viewed'
+          'name': 'Last Viewed',
+          sortable: 'lastViewed'
         }],
         data: this.props.report.pages,
         rowRenderer: function rowRenderer(record) {
@@ -1127,12 +1193,20 @@ var PagesTable = /*#__PURE__*/function (_React$Component) {
             value: record.lastViewed
           }];
         },
+        sortColumn: this.props.report.sortColumn,
+        sortDirection: this.props.report.sortDirection,
         offset: this.props.report.offset,
         limit: this.props.report.limit,
         total: this.props.report.total,
         onOffsetChange: function onOffsetChange(offset) {
           return _this2.setState({
             offset: offset
+          }, _this2.refresh);
+        },
+        onSortChange: function onSortChange(sortColumn, sortDirection) {
+          return _this2.setState({
+            sortColumn: sortColumn,
+            sortDirection: sortDirection
           }, _this2.refresh);
         }
       });
@@ -17392,7 +17466,7 @@ module.exports = exports.default;
 'use strict';
 
 var m = require('react-dom');
-if ("production" === 'production') {
+if ("development" === 'production') {
   exports.createRoot = m.createRoot;
   exports.hydrateRoot = m.hydrateRoot;
 } else {

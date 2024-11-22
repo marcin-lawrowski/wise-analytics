@@ -38,7 +38,9 @@ class PagesTable extends React.Component {
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD'),
 				scope: this.props.scope
 			},
-			offset: this.state.offset
+			offset: this.state.offset,
+			sortColumn: this.state.sortColumn,
+			sortDirection: this.state.sortDirection
 		});
 	}
 
@@ -56,12 +58,12 @@ class PagesTable extends React.Component {
 			title={ this.props.title }
 			loading={ this.props.loading }
 			columns={[
-				{ 'name': 'Page' },
-				{ 'name': 'Views' },
-				{ 'name': 'Unique Views' },
-				{ 'name': 'Avg. View' },
-				{ 'name': 'First Viewed' },
-				{ 'name': 'Last Viewed' }
+				{ 'name': 'Page', sortable: 'title' },
+				{ 'name': 'Views', sortable: 'pageViews' },
+				{ 'name': 'Unique Views', sortable: 'uniquePageViews' },
+				{ 'name': 'Avg. View', sortable: 'avgDuration' },
+				{ 'name': 'First Viewed', sortable: 'firstViewed' },
+				{ 'name': 'Last Viewed', sortable: 'lastViewed' }
 			]}
 			data={ this.props.report.pages }
 			rowRenderer={ record => [
@@ -72,10 +74,13 @@ class PagesTable extends React.Component {
 				{ value: record.firstViewed },
 				{ value: record.lastViewed }
 			]}
+			sortColumn={ this.props.report.sortColumn }
+			sortDirection={ this.props.report.sortDirection }
 			offset={ this.props.report.offset }
 			limit={ this.props.report.limit }
 			total={ this.props.report.total }
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+			onSortChange={ (sortColumn, sortDirection) => this.setState({ sortColumn: sortColumn, sortDirection: sortDirection }, this.refresh) }
 		/>
 	}
 }

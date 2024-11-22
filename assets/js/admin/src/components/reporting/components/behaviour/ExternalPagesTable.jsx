@@ -37,7 +37,9 @@ class ExternalPagesTable extends React.Component {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
 			},
-			offset: this.state.offset
+			offset: this.state.offset,
+			sortColumn: this.state.sortColumn,
+			sortDirection: this.state.sortDirection
 		});
 	}
 
@@ -46,11 +48,11 @@ class ExternalPagesTable extends React.Component {
 			title={ this.props.title }
 			loading={ this.props.loading }
 			columns={[
-				{ 'name': 'Page' },
-				{ 'name': 'Views' },
-				{ 'name': 'Unique Views' },
-				{ 'name': 'First Viewed' },
-				{ 'name': 'Last Viewed' }
+				{ 'name': 'Page', sortable: 'uri' },
+				{ 'name': 'Views', sortable: 'pageViews' },
+				{ 'name': 'Unique Views', sortable: 'uniquePageViews' },
+				{ 'name': 'First Viewed', sortable: 'firstViewed' },
+				{ 'name': 'Last Viewed', sortable: 'lastViewed' }
 			]}
 			data={ this.props.report.pages }
 			rowRenderer={ record => [
@@ -60,10 +62,13 @@ class ExternalPagesTable extends React.Component {
 				{ value: record.firstViewed },
 				{ value: record.lastViewed }
 			]}
+			sortColumn={ this.props.report.sortColumn }
+			sortDirection={ this.props.report.sortDirection }
 			offset={ this.props.report.offset }
 			limit={ this.props.report.limit }
 			total={ this.props.report.total }
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+			onSortChange={ (sortColumn, sortDirection) => this.setState({ sortColumn: sortColumn, sortDirection: sortDirection }, this.refresh) }
 		/>
 	}
 }
