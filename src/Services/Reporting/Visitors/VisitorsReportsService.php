@@ -150,6 +150,46 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
+	public function getReturningVisitorsDaily(array $queryParams) {
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$result = $this->queryEvents([
+			'alias' => 'ev',
+			'select' => [
+				'DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\') as date',
+				'count(distinct ev.user_id) as visitors'
+			],
+			'where' => ["ev.created >= %s", "ev.created <= %s", sprintf("(SELECT COUNT(*) FROM %s se WHERE se.user_id = ev.user_id) > 1", Installer::getSessionsTable())],
+			'whereArgs' => [$startDateStr, $endDateStr],
+			'group' => ['DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\')']
+		]);
+
+
+		$output = [];
+		foreach ($result as $record) {
+			$output[$record->date] = intval($record->visitors);
+		}
+
+		$visitors = [];
+		$endDate->modify('+1 day');
+		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
+			$dateStr = $startDate->format('Y-m-d');
+
+			$visitors[] = [
+				'date' => $dateStr,
+				'visitors' => isset($output[$dateStr]) ? $output[$dateStr] : 0
+			];
+
+			$startDate->modify('+1 day');
+		}
+
+		return [
+			'visitors' => $visitors
+		];
+	}
+
 	public function getLanguages(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');

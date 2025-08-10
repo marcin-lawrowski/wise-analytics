@@ -17,7 +17,8 @@ class EventsService extends EventsDAO {
 		'page-view' => 'Page View',
 		'external-page-view' => 'External Page View',
 		'wp-user-log-in' => 'User Log In',
-		'form-submission' => 'Form Submission'
+		'form-submission' => 'Form Submission',
+		'conversion' => 'Conversion'
 	];
 
 	/** @var URLUtils */
@@ -148,6 +149,9 @@ class EventsService extends EventsDAO {
 					'login' => $inputData['login'],
 					'ip' => $inputData['ip']
 				]);
+				break;
+			case 'conversion':
+				$output = array_filter($inputData);
 				break;
 		}
 

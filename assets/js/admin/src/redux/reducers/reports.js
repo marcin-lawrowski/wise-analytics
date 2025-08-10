@@ -21,7 +21,8 @@ const defaultServerActions = {
 	'pages.views.daily': { result: { pageViews: [] } },
 	'events': { result: { events: [], total: 0, offset: 0 } },
 	'behaviour.pages': { result: { pages: [], total: 0, offset: 0 } },
-	'behaviour.pages.external': { result: { pages: [], total: 0, offset: 0 } }
+	'behaviour.pages.external': { result: { pages: [], total: 0, offset: 0 } },
+	'combined': { result: [] }
 }
 
 const defaultState = {

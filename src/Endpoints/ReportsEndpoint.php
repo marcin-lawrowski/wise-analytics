@@ -50,53 +50,65 @@ class ReportsEndpoint {
 		$queryParams = $request->get_query_params();
 
 		try {
-			switch ($queryParams['name']) {
-				case 'overview.highlights';
-					return $this->highlightsService->getHighlights($queryParams);
-				case 'pages.top';
-					return $this->pagesReportsService->getTopPagesViews($queryParams);
-				case 'pages.views.daily';
-					return $this->pagesReportsService->getPagesViewsDaily($queryParams);
-				case 'visitors.last';
-					return $this->visitorsReportsService->getLastVisitors($queryParams);
-				case 'visitors.daily';
-					return $this->visitorsReportsService->getVisitorsDaily($queryParams);
-				case 'visitors.languages';
-					return $this->visitorsReportsService->getLanguages($queryParams);
-				case 'visitors.hourly';
-					return $this->visitorsReportsService->getHourlyStats($queryParams);
-				case 'visitors.devices';
-					return $this->visitorsReportsService->getDevices($queryParams);
-				case 'visitors.screens';
-					return $this->visitorsReportsService->getScreens($queryParams);
-				case 'visitor.information';
-					return $this->visitorsReportsService->getInformation($queryParams);
-				case 'sessions.daily';
-					return $this->sessionsReportsService->getSessionsDaily($queryParams);
-				case 'sessions.visitor.hourly';
-					return $this->sessionsReportsService->getSessionsOfVisitorHourly($queryParams);
-				case 'sessions.avg.time.daily';
-					return $this->sessionsReportsService->getSessionsAvgTimeDaily($queryParams);
-				case 'sources.categories.overall';
-					return $this->sources->getSourceCategories($queryParams);
-				case 'sources.social.overall';
-					return $this->sources->getSocialNetworks($queryParams);
-				case 'sources.organic.overall';
-					return $this->sources->getOrganicSearch($queryParams);
-				case 'sources.categories.daily';
-					return $this->sources->getSourceCategoriesDaily($queryParams);
-				case 'sources';
-					return $this->sources->getSources($queryParams);
-				case 'events';
-					return $this->eventsReportsService->getEvents($queryParams);
-				case 'behaviour.pages';
-					return $this->pagesReportsService->getPages($queryParams);
-				case 'behaviour.pages.external';
-					return $this->pagesReportsService->getExternalPages($queryParams);
-			}
+			return $this->getReport($queryParams);
 
 		} catch (\Exception $e) {
 			return new \WP_Error('endpoint_error', 'Endpoint error: '.$e->getMessage(), ['status' => 500]);
+		}
+	}
+
+	private function getReport($queryParams) {
+		switch ($queryParams['name']) {
+			case 'combined':
+				$results = [];
+				foreach ($queryParams['reports'] as $reportName) {
+					$results[] = $this->getReport(array_merge($queryParams, ['name' => $reportName]));
+				}
+				return $results;
+			case 'overview.highlights';
+				return $this->highlightsService->getHighlights($queryParams);
+			case 'pages.top';
+				return $this->pagesReportsService->getTopPagesViews($queryParams);
+			case 'pages.views.daily';
+				return $this->pagesReportsService->getPagesViewsDaily($queryParams);
+			case 'visitors.last';
+				return $this->visitorsReportsService->getLastVisitors($queryParams);
+			case 'visitors.daily';
+				return $this->visitorsReportsService->getVisitorsDaily($queryParams);
+			case 'visitors.returning.daily';
+				return $this->visitorsReportsService->getReturningVisitorsDaily($queryParams);
+			case 'visitors.languages';
+				return $this->visitorsReportsService->getLanguages($queryParams);
+			case 'visitors.hourly';
+				return $this->visitorsReportsService->getHourlyStats($queryParams);
+			case 'visitors.devices';
+				return $this->visitorsReportsService->getDevices($queryParams);
+			case 'visitors.screens';
+				return $this->visitorsReportsService->getScreens($queryParams);
+			case 'visitor.information';
+				return $this->visitorsReportsService->getInformation($queryParams);
+			case 'sessions.daily';
+				return $this->sessionsReportsService->getSessionsDaily($queryParams);
+			case 'sessions.visitor.hourly';
+				return $this->sessionsReportsService->getSessionsOfVisitorHourly($queryParams);
+			case 'sessions.avg.time.daily';
+				return $this->sessionsReportsService->getSessionsAvgTimeDaily($queryParams);
+			case 'sources.categories.overall';
+				return $this->sources->getSourceCategories($queryParams);
+			case 'sources.social.overall';
+				return $this->sources->getSocialNetworks($queryParams);
+			case 'sources.organic.overall';
+				return $this->sources->getOrganicSearch($queryParams);
+			case 'sources.categories.daily';
+				return $this->sources->getSourceCategoriesDaily($queryParams);
+			case 'sources';
+				return $this->sources->getSources($queryParams);
+			case 'events';
+				return $this->eventsReportsService->getEvents($queryParams);
+			case 'behaviour.pages';
+				return $this->pagesReportsService->getPages($queryParams);
+			case 'behaviour.pages.external';
+				return $this->pagesReportsService->getExternalPages($queryParams);
 		}
 
 		return new \WP_Error('invalid_report', 'Invalid report', ['status' => 404]);

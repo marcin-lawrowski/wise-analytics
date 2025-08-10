@@ -36,6 +36,7 @@ class SessionsAverageTimeChart extends React.Component {
 			id: 'Avg. Visit Time',
 			single: '',
 			plural: '',
+			formatter: getDuration,
 			data: this.props.report.sessions.map( (record, index) => ({ "x": record.date, "y": record.time }) )
 		}];
 
@@ -43,8 +44,6 @@ class SessionsAverageTimeChart extends React.Component {
 			{ this.props.report.sessions.length > 0 && <LineChart
 				marginLeft={ 50 }
 				data={ data }
-				yFormat={ getDuration }
-				axisLeftFormat={ getDuration }
 			/> }
 		</div>
 	}

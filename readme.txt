@@ -5,7 +5,7 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,48 @@ We believe that the statistics should be neither collected nor processed outside
 
 == Frequently Asked Questions ==
 
+= How to add more details to visitors (e.g. e-mail address, name, city, etc.) ? =
+
+By default, a visitor in Wise Analytics has only ID number and a list of actions they performed on your site. If you want to add more details to the current visitor execute the following PHP code somewhere in your logic:
+
+`
+if (class_exists('\Kainex\WiseAnalytics\Container', false)) {
+   \$visitorsService = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
+   \$visitor = \$visitorsService->getOrCreate();
+   \$visitor->setFirstName("Jerry");
+   \$visitor->setEmail("jerry@example.pl");
+   \$visitorsService->save(\$visitor);
+}
+`
+Next time you check Wise Analytics stats this visitor will be displayed as Jerry rather than Visitor #12345
+
+= How to register a conversion  ?=
+
+When a visitor does something significant on your site you may register a conversion event in your code:
+
+`
+if (class_exists("\Kainex\WiseAnalytics\Container", false)) {
+  \$visitors = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
+  \$events = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Events\EventsService::class);
+
+  \$visitor = \$visitors->getOrCreate();
+  \$visitor->setFirstName("John");
+  \$visitor->setEmail("john@myshop.com");
+  \$visitors->save(\$visitor);
+
+  \$events->createEvent(
+    \$visitor,
+     "conversion", [
+     "uri" => \Kainex\WiseAnalytics\Utils\URLUtils::getCurrentURL(),
+     "ip" => \Kainex\WiseAnalytics\Utils\IPUtils::getIpAddress(),
+     "order.id" => 123456,
+     "order.id.public" => "order_123456",
+     "order.amount" => 19900
+    ]
+  );
+}
+`
+
 = How to tell Wise Analytics to recognize users? =
 
 Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms. Currently, we support Contact Form 7 plugin only. Once a visitor submits a form it is the recognized in Wise Analytics by name or e-mail (depending on mapping).
@@ -70,6 +112,10 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 11. Pages report
 
 == Changelog ==
+
+= 1.1.7 =
+* Lead line chart comparison option
+* Conversion event type
 
 = 1.1.6 =
 * External links tracking
