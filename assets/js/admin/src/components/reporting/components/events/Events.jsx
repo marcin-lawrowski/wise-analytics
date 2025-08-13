@@ -88,12 +88,14 @@ class Events extends React.Component {
 			limit={ this.props.report.limit }
 			total={ this.props.report.total }
 			onOffsetChange={ offset => this.setState({ offset: offset }, this.refresh) }
+			fullReportURL={ this.props.fullReportButtonVisible ? '/behaviour/events' : undefined }
 		/>
 	}
 
 }
 
 Events.propTypes = {
+	fullReportButtonVisible: PropTypes.bool,
 	configuration: PropTypes.object.isRequired,
 	startDate: PropTypes.object,
 	endDate: PropTypes.object

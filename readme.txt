@@ -5,7 +5,7 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,7 +23,7 @@ We believe that the statistics should be neither collected nor processed outside
 
 = List of features: =
 
-* Tracking visitors, visits, page views and other actions
+* Tracking visitors, visits, the behaviour, page views and other actions
 * Integration with Contact Form 7 (a visitor sends a form -> Wise Analytics recognizes all future actions of the visitor -> all actions are then assigned to e-mail address of the visitor)
 * Tracking traffic sources (Referral, Social Networks, Search Engines, Direct, Paid Traffic)
 * Detecting devices, languages, screens
@@ -53,35 +53,38 @@ We believe that the statistics should be neither collected nor processed outside
 
 = How to add more details to visitors (e.g. e-mail address, name, city, etc.) ? =
 
-By default, a visitor in Wise Analytics has only ID number and a list of actions they performed on your site. If you want to add more details to the current visitor execute the following PHP code somewhere in your logic:
+By default, visitors in Wise Analytics are described by ID number and a list of actions (called events) they performed on your site only.
+If you want to add more details to the current visitor execute the following PHP code somewhere in your logic:
 
 `
 if (class_exists('\Kainex\WiseAnalytics\Container', false)) {
-   \$visitorsService = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
-   \$visitor = \$visitorsService->getOrCreate();
-   \$visitor->setFirstName("Jerry");
-   \$visitor->setEmail("jerry@example.pl");
-   \$visitorsService->save(\$visitor);
+   $visitorsService = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
+   $visitor = $visitorsService->getOrCreate();
+   $visitor->setFirstName("Jerry");
+   $visitor->setLastName("Smith");
+   $visitor->setEmail("jerry@example.pl");
+   $visitorsService->save($visitor);
 }
 `
-Next time you check Wise Analytics stats this visitor will be displayed as Jerry rather than Visitor #12345
+Next time you check Wise Analytics stats browser this visitor will be displayed as Jerry rather than Visitor #12345
 
-= How to register a conversion  ?=
+= How to register a conversion? =
 
-When a visitor does something significant on your site you may register a conversion event in your code:
+When a visitor does something significant on your site you may register a conversion event in your code.
+Then the conversion is visible in the stats browser.
 
 `
 if (class_exists("\Kainex\WiseAnalytics\Container", false)) {
-  \$visitors = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
-  \$events = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Events\EventsService::class);
+  $visitors = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Users\VisitorsService::class);
+  $events = \Kainex\WiseAnalytics\Container::getInstance()->get(\Kainex\WiseAnalytics\Services\Events\EventsService::class);
 
-  \$visitor = \$visitors->getOrCreate();
-  \$visitor->setFirstName("John");
-  \$visitor->setEmail("john@myshop.com");
-  \$visitors->save(\$visitor);
+  $visitor = $visitors->getOrCreate();
+  $visitor->setFirstName("John");
+  $visitor->setEmail("john@myshop.com");
+  $visitors->save($visitor);
 
-  \$events->createEvent(
-    \$visitor,
+  $events->createEvent(
+    $visitor,
      "conversion", [
      "uri" => \Kainex\WiseAnalytics\Utils\URLUtils::getCurrentURL(),
      "ip" => \Kainex\WiseAnalytics\Utils\IPUtils::getIpAddress(),
@@ -93,7 +96,12 @@ if (class_exists("\Kainex\WiseAnalytics\Container", false)) {
 }
 `
 
-= How to tell Wise Analytics to recognize users? =
+= How to tell Wise Analytics to add more details to visitors after they put more details (e.g. e-mail address) in other plugins? =
+
+Imagine you have a contact form on your site. A visitor fills in the form and sends a message.
+Together with the message they usually provide more details like a name, e-mail address, phone number, company name, etc.
+Those details may be intercepted by Wise Analytics and then presented on a visitor's profile page in the stats browser.
+This way you will learn more about your visitors: how often they come back, what exactly they do on your site, etc.
 
 Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms. Currently, we support Contact Form 7 plugin only. Once a visitor submits a form it is the recognized in Wise Analytics by name or e-mail (depending on mapping).
 
@@ -112,6 +120,9 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 11. Pages report
 
 == Changelog ==
+
+= 1.1.8 =
+* Events page
 
 = 1.1.7 =
 * Lead line chart comparison option

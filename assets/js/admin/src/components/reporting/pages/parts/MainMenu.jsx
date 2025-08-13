@@ -63,14 +63,7 @@ class MainMenu extends React.Component {
 							<li><Link to="/behaviour/entry-pages" className={ linkClass("/behaviour/entry-pages") }>Entry Pages</Link></li>
 							<li><Link to="/behaviour/exit-pages" className={ linkClass("/behaviour/exit-pages") }>Exit Pages</Link></li>
 							<li><Link to="/behaviour/external-pages" className={ linkClass("/behaviour/external-pages") }>External Pages</Link></li>
-						</ul>
-					</div>
-
-					<Link className="d-block w-100 text-start top-item text-muted" to="/events/overview"><i className={ section !== 'events' ? "bi bi-chevron-right" : "bi bi-chevron-down" }/>Actions</Link>
-
-					<div className={ section !== 'events' ? 'd-none' : ''}>
-						<ul className="mb-1">
-							<li><Link to="/events/overview" className={ linkClass("/events/overview") }>Overview</Link></li>
+							<li><Link to="/behaviour/events" className={ linkClass("/behaviour/events") }>Events</Link></li>
 						</ul>
 					</div>
 

@@ -7,7 +7,6 @@ import Visitors from "reporting/components/visitors/Visitors";
 import Events from "reporting/components/events/Events";
 import LeadLineChart from "reporting/components/overall/LeadLineChart";
 import { setTitle } from "actions/ui";
-import {Link} from "react-router-dom";
 
 class Overview extends React.Component {
 
@@ -50,6 +49,7 @@ class Overview extends React.Component {
 					<Events
 						startDate={ this.props.startDate }
 						endDate={ this.props.endDate }
+						fullReportButtonVisible={ true }
 					/>
 				</div>
 			</div>
