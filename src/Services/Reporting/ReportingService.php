@@ -3,6 +3,7 @@
 namespace Kainex\WiseAnalytics\Services\Reporting;
 
 use Kainex\WiseAnalytics\Services\Commons\DataAccess;
+use Kainex\WiseAnalytics\Services\Commons\ReportsDataHelper;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 /**
@@ -10,7 +11,7 @@ use Kainex\WiseAnalytics\Utils\TimeUtils;
  * @package Kainex\WiseAnalytics\Services\Reporting
  */
 abstract class ReportingService {
-	use DataAccess;
+	use DataAccess, ReportsDataHelper;
 
 	const RESULTS_LIMIT = 20;
 
@@ -48,6 +49,15 @@ abstract class ReportingService {
 		return [$startDate, $endDate];
 	}
 
+	protected function getModifier(array $queryParams, string $name, string $defaultValue = null): ?string {
+		if (!isset($queryParams['modifiers'])) {
+			return $defaultValue;
+		}
+		$modifiers = $queryParams['modifiers'];
+
+		return $modifiers[$name] ?? $defaultValue;
+	}
+
 	/**
 	 * @param \DateTime $startDate
 	 * @param \DateTime $endDate
@@ -83,6 +93,9 @@ abstract class ReportingService {
 						break;
 					case 'round1':
 						$result->$fieldName = round($result->$fieldName, 1);
+						break;
+					case 'integer':
+						$result->$fieldName = intval($result->$fieldName);
 						break;
 				}
 			}

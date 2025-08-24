@@ -4,20 +4,10 @@ namespace Kainex\WiseAnalytics\Services\Reporting\Visitors;
 
 use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
-use Kainex\WiseAnalytics\Services\Reporting\Sessions\SessionsReportsService;
 use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
 class VisitorsReportsService extends ReportingService {
-
-	private SessionsReportsService  $sessionsReportsService;
-
-	/**
-	 * @param SessionsReportsService $sessionsReportsService
-	 */
-	public function __construct(SessionsReportsService $sessionsReportsService) {
-		$this->sessionsReportsService = $sessionsReportsService;
-	}
 
 	public function getVisitorsHighlights(\DateTime $startDate, \DateTime $endDate): array {
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
@@ -110,40 +100,28 @@ class VisitorsReportsService extends ReportingService {
 		];
 	}
 
-	public function getVisitorsDaily(array $queryParams): array {
+	public function getVisitors(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$period = $this->getModifier($queryParams, 'period', 'daily');
+		$groupExpression = $this->getGroupingExpressionByPeriod($period, 'ev.created');
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => [
-				'DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\') as date',
+				$groupExpression.' as date',
 				'count(distinct ev.user_id) as visitors'
 			],
 			'where' => ["ev.created >= %s", "ev.created <= %s"],
 			'whereArgs' => [$startDateStr, $endDateStr],
-			'group' => ['DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\')']
+			'group' => [$groupExpression]
 		]);
 
-
-		$output = [];
-		foreach ($result as $record) {
-			$output[$record->date] = intval($record->visitors);
-		}
-
-		$visitors = [];
-		$endDate->modify('+1 day');
-		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
-			$dateStr = $startDate->format('Y-m-d');
-
-			$visitors[] = [
-				'date' => $dateStr,
-				'visitors' => isset($output[$dateStr]) ? $output[$dateStr] : 0
-			];
-
-			$startDate->modify('+1 day');
-		}
+		$result = $this->formatResults($result, [
+			'visitors' => 'integer'
+		]);
+		$visitors = $this->fillResultsWithZeroValues($result, $period, $startDate, $endDate, ['visitors' => 0]);
 
 		return [
 			'visitors' => $visitors

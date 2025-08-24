@@ -22,7 +22,7 @@ class PageViewsChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'pages.views.daily',
+			name: 'pages.views',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -54,7 +54,7 @@ PageViewsChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['pages.views.daily'].inProgress,
-		report: state.reports['pages.views.daily'].result
+		loading: state.reports['pages.views'].inProgress,
+		report: state.reports['pages.views'].result
 	}), { requestReport }
 )(PageViewsChart);

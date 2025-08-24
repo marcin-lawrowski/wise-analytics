@@ -22,7 +22,7 @@ class VisitorsChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'visitors.daily',
+			name: 'visitors',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -54,7 +54,7 @@ VisitorsChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['visitors.daily'].inProgress,
-		report: state.reports['visitors.daily'].result
+		loading: state.reports['visitors'].inProgress,
+		report: state.reports['visitors'].result
 	}), { requestReport }
 )(VisitorsChart);

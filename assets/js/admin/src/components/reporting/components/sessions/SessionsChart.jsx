@@ -22,7 +22,7 @@ class SessionsChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sessions.daily',
+			name: 'sessions',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -54,7 +54,7 @@ SessionsChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sessions.daily'].inProgress,
-		report: state.reports['sessions.daily'].result
+		loading: state.reports['sessions'].inProgress,
+		report: state.reports['sessions'].result
 	}), { requestReport }
 )(SessionsChart);

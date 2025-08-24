@@ -23,7 +23,7 @@ class SessionsAverageTimeChart extends React.Component {
 
 	refresh() {
 		this.props.requestReport({
-			name: 'sessions.avg.time.daily',
+			name: 'sessions.avg.time',
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -59,7 +59,7 @@ SessionsAverageTimeChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sessions.avg.time.daily'].inProgress,
-		report: state.reports['sessions.avg.time.daily'].result
+		loading: state.reports['sessions.avg.time'].inProgress,
+		report: state.reports['sessions.avg.time'].result
 	}), { requestReport }
 )(SessionsAverageTimeChart);

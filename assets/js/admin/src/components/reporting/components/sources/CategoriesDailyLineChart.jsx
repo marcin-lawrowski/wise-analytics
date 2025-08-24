@@ -65,7 +65,7 @@ class CategoriesDailyLineChart extends React.Component {
 		this.state.metricsFilter.map( metric => {
 			if (metric === 'visitors') {
 				this.props.requestReport({
-					name: 'visitors.daily',
+					name: 'visitors',
 					filters: {
 						startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 						endDate: moment(this.props.endDate).format('YYYY-MM-DD')
@@ -183,8 +183,8 @@ CategoriesDailyLineChart.propTypes = {
 export default connect(
 	(state) => ({
 		configuration: state.configuration,
-		loading: state.reports['sources.categories.daily'].inProgress || state.reports['visitors.daily'].inProgress,
+		loading: state.reports['sources.categories.daily'].inProgress || state.reports['visitors'].inProgress,
 		report: state.reports['sources.categories.daily'].result,
-		visitorsMetric: state.reports['visitors.daily'].result
+		visitorsMetric: state.reports['visitors'].result
 	}), {requestReport, clearReport}
 )(CategoriesDailyLineChart);

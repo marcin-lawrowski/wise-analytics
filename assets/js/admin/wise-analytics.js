@@ -1788,6 +1788,7 @@ var LeadLineChart = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       stats: _this.DEFAULT_STAT,
       compareStats: undefined,
+      period: undefined,
       loading: false,
       chartData: [{
         id: statRecord.label,
@@ -1803,26 +1804,26 @@ var LeadLineChart = /*#__PURE__*/function (_React$Component) {
     key: "STATS",
     get: function get() {
       return [{
-        value: 'visitors.daily',
+        value: 'visitors',
         label: 'Visitors',
         labelSingle: 'Visitor',
         reportKey: 'visitors',
         stat: 'visitors'
       }, {
-        value: 'sessions.daily',
+        value: 'sessions',
         label: 'Visits',
         labelSingle: 'Visit',
         reportKey: 'sessions',
         stat: 'sessions'
       }, {
-        value: 'sessions.avg.time.daily',
+        value: 'sessions.avg.time',
         label: 'Average Time',
         labelSingle: 'Average Time',
         reportKey: 'sessions',
         stat: 'time',
         formatter: _dates.getDuration
       }, {
-        value: 'pages.views.daily',
+        value: 'pages.views',
         label: 'Page Views',
         labelSingle: 'Page View',
         reportKey: 'pageViews',
@@ -1832,7 +1833,21 @@ var LeadLineChart = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "DEFAULT_STAT",
     get: function get() {
-      return 'visitors.daily';
+      return 'visitors';
+    }
+  }, {
+    key: "PERIOD_OPTIONS",
+    get: function get() {
+      return [{
+        value: undefined,
+        label: 'daily'
+      }, {
+        value: 'weekly',
+        label: 'weekly'
+      }, {
+        value: 'monthly',
+        label: 'monthly'
+      }];
     }
   }, {
     key: "componentDidMount",
@@ -1889,6 +1904,9 @@ var LeadLineChart = /*#__PURE__*/function (_React$Component) {
         filters: {
           startDate: (0, _moment["default"])(this.props.startDate).format('YYYY-MM-DD'),
           endDate: (0, _moment["default"])(this.props.endDate).format('YYYY-MM-DD')
+        },
+        modifiers: {
+          period: this.state.period
         }
       });
     }
@@ -1954,8 +1972,22 @@ var LeadLineChart = /*#__PURE__*/function (_React$Component) {
         isSearchable: false
       })), /*#__PURE__*/_react["default"].createElement("div", {
         className: "col-auto"
+      }, /*#__PURE__*/_react["default"].createElement(_reactSelect["default"], {
+        className: "me-2 w-auto",
+        value: this.PERIOD_OPTIONS.find(function (option) {
+          return option.value === _this3.state.period;
+        }),
+        onChange: function onChange(selected) {
+          return _this3.setState({
+            period: selected.value
+          }, _this3.refresh);
+        },
+        options: this.PERIOD_OPTIONS,
+        isSearchable: false
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        className: "col-auto d-flex align-items-center"
       }, /*#__PURE__*/_react["default"].createElement(_Loader["default"], {
-        show: this.state.loading
+        show: this.props.loading
       }))), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           height: 200
@@ -2292,7 +2324,7 @@ var CategoriesDailyLineChart = /*#__PURE__*/function (_React$Component) {
       this.state.metricsFilter.map(function (metric) {
         if (metric === 'visitors') {
           _this2.props.requestReport({
-            name: 'visitors.daily',
+            name: 'visitors',
             filters: {
               startDate: (0, _moment["default"])(_this2.props.startDate).format('YYYY-MM-DD'),
               endDate: (0, _moment["default"])(_this2.props.endDate).format('YYYY-MM-DD')
@@ -2452,9 +2484,9 @@ CategoriesDailyLineChart.propTypes = {
 var _default = exports["default"] = (0, _reactRedux.connect)(function (state) {
   return {
     configuration: state.configuration,
-    loading: state.reports['sources.categories.daily'].inProgress || state.reports['visitors.daily'].inProgress,
+    loading: state.reports['sources.categories.daily'].inProgress || state.reports['visitors'].inProgress,
     report: state.reports['sources.categories.daily'].result,
-    visitorsMetric: state.reports['visitors.daily'].result
+    visitorsMetric: state.reports['visitors'].result
   };
 }, {
   requestReport: _reports.requestReport,
@@ -6049,7 +6081,7 @@ var defaultServerActions = {
       visitors: []
     }
   },
-  'visitors.daily': {
+  'visitors': {
     result: {
       visitors: []
     }
@@ -6082,12 +6114,12 @@ var defaultServerActions = {
       hourly: []
     }
   },
-  'sessions.daily': {
+  'sessions': {
     result: {
       sessions: []
     }
   },
-  'sessions.avg.time.daily': {
+  'sessions.avg.time': {
     result: {
       sessions: []
     }
@@ -6120,7 +6152,7 @@ var defaultServerActions = {
       offset: 0
     }
   },
-  'pages.views.daily': {
+  'pages.views': {
     result: {
       pageViews: []
     }

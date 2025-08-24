@@ -12,15 +12,23 @@ class LeadLineChart extends React.Component {
 
 	get STATS() {
 		return [
-			{ value: 'visitors.daily', label: 'Visitors', labelSingle: 'Visitor', reportKey: 'visitors', stat: 'visitors' },
-			{ value: 'sessions.daily', label: 'Visits', labelSingle: 'Visit', reportKey: 'sessions', stat: 'sessions' },
-			{ value: 'sessions.avg.time.daily', label: 'Average Time', labelSingle: 'Average Time', reportKey: 'sessions', stat: 'time', formatter: getDuration },
-			{ value: 'pages.views.daily', label: 'Page Views', labelSingle: 'Page View', reportKey: 'pageViews', stat: 'pageViews' }
+			{ value: 'visitors', label: 'Visitors', labelSingle: 'Visitor', reportKey: 'visitors', stat: 'visitors' },
+			{ value: 'sessions', label: 'Visits', labelSingle: 'Visit', reportKey: 'sessions', stat: 'sessions' },
+			{ value: 'sessions.avg.time', label: 'Average Time', labelSingle: 'Average Time', reportKey: 'sessions', stat: 'time', formatter: getDuration },
+			{ value: 'pages.views', label: 'Page Views', labelSingle: 'Page View', reportKey: 'pageViews', stat: 'pageViews' }
 		];
 	}
 
 	get DEFAULT_STAT() {
-		return 'visitors.daily';
+		return 'visitors';
+	}
+
+	get PERIOD_OPTIONS() {
+		return [
+			{ value: undefined, label: 'daily' },
+			{ value: 'weekly', label: 'weekly' },
+			{ value: 'monthly', label: 'monthly' },
+		]
 	}
 
 	constructor(props) {
@@ -31,6 +39,7 @@ class LeadLineChart extends React.Component {
 		this.state = {
 			stats: this.DEFAULT_STAT,
 			compareStats: undefined,
+			period: undefined,
 			loading: false,
 			chartData: [{
 				id: statRecord.label,
@@ -84,6 +93,9 @@ class LeadLineChart extends React.Component {
 			filters: {
 				startDate: moment(this.props.startDate).format('YYYY-MM-DD'),
 				endDate: moment(this.props.endDate).format('YYYY-MM-DD')
+			},
+			modifiers: {
+				period: this.state.period
 			}
 		});
 	}
@@ -128,7 +140,16 @@ class LeadLineChart extends React.Component {
 						/>
 					</div>
 					<div className="col-auto">
-						<Loader show={ this.state.loading } />
+						<Select
+							className="me-2 w-auto"
+							value={ this.PERIOD_OPTIONS.find( option => option.value === this.state.period )}
+							onChange={ selected => this.setState({ period: selected.value }, this.refresh) }
+							options={ this.PERIOD_OPTIONS }
+							isSearchable={ false }
+						/>
+					</div>
+					<div className="col-auto d-flex align-items-center">
+						<Loader show={ this.props.loading } />
 					</div>
 				</div>
 				<div style={ { height: 200 }}>

@@ -123,6 +123,7 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 
 = 1.1.8 =
 * Events page
+* Added period switching (daily, weekly, monthly) in lead line chart
 
 = 1.1.7 =
 * Lead line chart comparison option

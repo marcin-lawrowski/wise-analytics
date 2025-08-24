@@ -36,83 +36,70 @@ class SessionsReportsService extends ReportingService {
 		];
 	}
 
-	public function getSessionsAvgTimeDaily($queryParams): array {
+	public function getSessionsAvgTime($queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$period = $this->getModifier($queryParams, 'period', 'daily');
+		$groupExpression = $this->getGroupingExpressionByPeriod($period, 'se.start');
 
 		$result = $this->querySessions([
 			'alias' => 'se',
 			'select' => [
+				$groupExpression.' as date',
 				'SUM(duration) / COUNT(*) as avgSessionTime',
-				'DATE_FORMAT(se.start, \'%%Y-%%m-%%d\') as date',
 			],
 			'where' => ["se.start >= %s", "se.start <= %s"],
 			'whereArgs' => [$startDateStr, $endDateStr],
-			'group' => ['DATE_FORMAT(se.start, \'%%Y-%%m-%%d\')']
+			'group' => [$groupExpression]
 		]);
 
 		$output = [];
 		foreach ($result as $record) {
-			$output[$record->date] = intval($record->avgSessionTime);
-		}
-
-		$sessions = [];
-		$endDate->modify('+1 day');
-		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
-			$dateStr = $startDate->format('Y-m-d');
-
-			$sessions[] = [
-				'date' => $dateStr,
-				'time' => $output[$dateStr] ?? 0,
-				'timeFormatted' => TimeUtils::formatDuration($output[$dateStr] ?? 0)
+			$avgSessionTime = intval($record->avgSessionTime);
+			$output[] = (object) [
+				'date' => $record->date,
+				'time' => $avgSessionTime,
+				'timeFormatted' => TimeUtils::formatDuration($avgSessionTime)
 			];
-
-			$startDate->modify('+1 day');
 		}
 
 		return [
-			'sessions' => $sessions
+			'sessions' => $this->fillResultsWithZeroValues($output, $period, $startDate, $endDate, ['time' => 0, 'timeFormatted' => '0s'])
 		];
 	}
 
-	public function getSessionsDaily(array $queryParams) {
+	public function getSessions(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$period = $this->getModifier($queryParams, 'period', 'daily');
+		$groupExpression = $this->getGroupingExpressionByPeriod($period, 'se.start');
 
 		$result = $this->querySessions([
 			'alias' => 'se',
 			'select' => [
-				'DATE_FORMAT(se.start, \'%%Y-%%m-%%d\') as date',
+				$groupExpression.' as date',
 				'count(*) as sessions'
 			],
 			'where' => ["se.start >= %s", "se.start <= %s"],
 			'whereArgs' => [$startDateStr, $endDateStr],
-			'group' => ['DATE_FORMAT(se.start, \'%%Y-%%m-%%d\')']
+			'group' => [$groupExpression]
 		]);
 
+		$result = $this->formatResults($result, [
+			'sessions' => 'integer'
+		]);
 
+/*
 		$output = [];
 		foreach ($result as $record) {
 			$output[$record->date] = intval($record->sessions);
 		}
-
-		$sessions = [];
-		$endDate->modify('+1 day');
-		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
-			$dateStr = $startDate->format('Y-m-d');
-
-			$sessions[] = [
-				'date' => $dateStr,
-				'sessions' => isset($output[$dateStr]) ? $output[$dateStr] : 0
-			];
-
-			$startDate->modify('+1 day');
-		}
+*/
 
 		return [
-			'sessions' => $sessions
+			'sessions' => $this->fillResultsWithZeroValues($result, $period, $startDate, $endDate, ['sessions' => 0])
 		];
 	}
 

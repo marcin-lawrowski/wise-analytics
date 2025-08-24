@@ -243,44 +243,31 @@ class PagesReportsService extends ReportingService {
 		];
 	}
 
-	public function getPagesViewsDaily(array $queryParams): array {
+	public function getPagesViews(array $queryParams): array {
 		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
 		$eventType = $this->getEventType('page-view');
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
+		$period = $this->getModifier($queryParams, 'period', 'daily');
+		$groupExpression = $this->getGroupingExpressionByPeriod($period, 'ev.created');
 
 		$result = $this->queryEvents([
 			'alias' => 'ev',
 			'select' => [
-				'DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\') as date',
+				$groupExpression.' as date',
 				'count(*) as pageViews'
 			],
 			'where' => ["ev.created >= %s", "ev.created <= %s", "ev.type_id = %d"],
 			'whereArgs' => [$startDateStr, $endDateStr, $eventType->getId()],
-			'group' => ['DATE_FORMAT(ev.created, \'%%Y-%%m-%%d\')']
+			'group' => [$groupExpression]
 		]);
 
-
-		$output = [];
-		foreach ($result as $record) {
-			$output[$record->date] = intval($record->pageViews);
-		}
-
-		$pageViews = [];
-		$endDate->modify('+1 day');
-		while ($startDate->format('Y-m-d') !== $endDate->format('Y-m-d')) {
-			$dateStr = $startDate->format('Y-m-d');
-
-			$pageViews[] = [
-				'date' => $dateStr,
-				'pageViews' => isset($output[$dateStr]) ? $output[$dateStr] : 0
-			];
-
-			$startDate->modify('+1 day');
-		}
+		$result = $this->formatResults($result, [
+			'pageViews' => 'integer'
+		]);
 
 		return [
-			'pageViews' => $pageViews
+			'pageViews' => $this->fillResultsWithZeroValues($result, $period, $startDate, $endDate, ['pageViews' => 0])
 		];
 	}
 
