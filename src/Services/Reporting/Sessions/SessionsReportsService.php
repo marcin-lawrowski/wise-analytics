@@ -2,6 +2,7 @@
 
 namespace Kainex\WiseAnalytics\Services\Reporting\Sessions;
 
+use Kainex\WiseAnalytics\Installer;
 use Kainex\WiseAnalytics\Services\Reporting\ReportingService;
 use Kainex\WiseAnalytics\Utils\TimeUtils;
 
@@ -136,6 +137,78 @@ class SessionsReportsService extends ReportingService {
 		}
 
 		return ['hourly' => $output];
+	}
+
+	public function getSessionsOfByNumber(array $queryParams): array {
+		global $wpdb;
+		list($startDate, $endDate) = $this->getDatesFilters($queryParams);
+		$startDateStr = $startDate->format('Y-m-d H:i:s');
+		$endDateStr = $endDate->format('Y-m-d H:i:s');
+
+		$table = Installer::getSessionsTable();
+		$sql = "SELECT userTotalVisits, count(userTotalVisits) as userTotalVisitsNumber, sum(userTotalVisitsDuration) as userTotalVisitsDuration
+    		FROM (
+				SELECT count(se.user_id) as userTotalVisits, sum(se.duration) as userTotalVisitsDuration
+				FROM $table se 
+				WHERE se.start >= '$startDateStr' AND se.start <= '$endDateStr'
+				GROUP BY se.user_id
+			) AS inn
+			GROUP BY inn.userTotalVisits
+    		ORDER BY inn.userTotalVisits
+		";
+
+		$results = $wpdb->get_results($sql);
+		if ($wpdb->last_error) {
+			throw new \Exception('Data layer error: '.$wpdb->last_error);
+		}
+
+		$output = [];
+		$groupsDefs = [[11, 25], [26, 50], [51, 100], [101, 200], [201, 500]];
+		foreach ($results as $result) {
+			$userTotalVisits = $result->userTotalVisits;
+			$userTotalVisitsNumber = $result->userTotalVisitsNumber;
+			$userTotalVisitsDuration = $result->userTotalVisitsDuration;
+
+
+			if ($userTotalVisits <= 10) {
+				$output[$userTotalVisits] = $result;
+			}
+			if ($userTotalVisits >= 501) {
+				$result->userTotalVisits = '501+';
+				if (isset($output['501+'])) {
+					$output['501+']->userTotalVisitsNumber += $userTotalVisitsNumber;
+					$output['501+']->userTotalVisitsDuration += $userTotalVisitsDuration;
+				} else {
+					$output['501+'] = $result;
+				}
+			}
+
+			foreach ($groupsDefs as $groupDef) {
+				if ($userTotalVisits >= $groupDef[0] && $userTotalVisits <= $groupDef[1]) {
+					$key = $groupDef[0].' - '.$groupDef[1];
+					if (isset($output[$key])) {
+						$output[$key]->userTotalVisitsNumber += $userTotalVisitsNumber;
+						$output[$key]->userTotalVisitsDuration += $userTotalVisitsDuration;
+					} else {
+						$result->userTotalVisits = $key;
+						$output[$key] = $result;
+					}
+				}
+			}
+		}
+
+		$total = 0;
+		foreach ($output as $value) {
+			$total += $value->userTotalVisitsNumber;
+		}
+
+		foreach ($output as $value) {
+			$avgSessionTime = $value->userTotalVisitsNumber > 0 ? $value->userTotalVisitsDuration / $value->userTotalVisitsNumber : 0;
+			$value->avgSessionTime = TimeUtils::formatDuration($avgSessionTime, 'suffixes');
+			$value->percentageOfTotal = $total > 0 ? round(($value->userTotalVisitsNumber / $total * 100), 2) : null;
+		}
+
+		return ['visits' => array_values($output)];
 	}
 
 }

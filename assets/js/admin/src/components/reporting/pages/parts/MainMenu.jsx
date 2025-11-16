@@ -64,6 +64,7 @@ class MainMenu extends React.Component {
 							<li><Link to="/behaviour/exit-pages" className={ linkClass("/behaviour/exit-pages") }>Exit Pages</Link></li>
 							<li><Link to="/behaviour/external-pages" className={ linkClass("/behaviour/external-pages") }>External Pages</Link></li>
 							<li><Link to="/behaviour/events" className={ linkClass("/behaviour/events") }>Events</Link></li>
+							<li><Link to="/behaviour/engagement" className={ linkClass("/behaviour/engagement") }>Engagement</Link></li>
 						</ul>
 					</div>
 

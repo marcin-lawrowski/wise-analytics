@@ -109,6 +109,8 @@ class ReportsEndpoint {
 				return $this->pagesReportsService->getPages($queryParams);
 			case 'behaviour.pages.external';
 				return $this->pagesReportsService->getExternalPages($queryParams);
+			case 'behaviour.visits.by.number';
+				return $this->sessionsReportsService->getSessionsOfByNumber($queryParams);
 		}
 
 		return new \WP_Error('invalid_report', 'Invalid report', ['status' => 404]);

@@ -5,7 +5,7 @@ Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 11. Pages report
 
 == Changelog ==
+
+= 1.1.9 =
+* Added engagements stats
 
 = 1.1.8 =
 * Events page

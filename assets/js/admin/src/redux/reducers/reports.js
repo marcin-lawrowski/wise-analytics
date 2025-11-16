@@ -22,6 +22,7 @@ const defaultServerActions = {
 	'events': { result: { events: [], total: 0, offset: 0 } },
 	'behaviour.pages': { result: { pages: [], total: 0, offset: 0 } },
 	'behaviour.pages.external': { result: { pages: [], total: 0, offset: 0 } },
+	'behaviour.visits.by.number': { result: { visits: [] } },
 	'combined': { result: [] }
 }
 
