@@ -1,7 +1,7 @@
 <?php
 /*
 	Plugin Name: Wise Analytics
-	Version: 1.1.9
+	Version: 1.1.20
 	Plugin URI: https://kainex.pl/projects/wp-plugins/wise-analytics
 	Description: Manage your own stats!
 	Author: Kainex
@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
 	exit;
 } // Exit if accessed directly
 
-define('WISE_ANALYTICS_VERSION', '1.1.9');
+define('WISE_ANALYTICS_VERSION', '1.1.20');
 define('WISE_ANALYTICS_ROOT', dirname(__FILE__));
 define('WISE_ANALYTICS_NAME', 'Wise Analytics');
 

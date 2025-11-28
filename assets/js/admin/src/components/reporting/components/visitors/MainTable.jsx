@@ -56,6 +56,7 @@ class MainTable extends React.Component {
 			loading={ this.props.loading }
 			columns={[
 				{ 'name': 'Name' },
+				{ 'name': 'Source' },
 				{ 'name': 'Visits' },
 				{ 'name': 'Avg. Visit' },
 				{ 'name': 'Last Visit' }
@@ -66,10 +67,20 @@ class MainTable extends React.Component {
 					case 0:
 						return this.renderVisitor(visitor);
 					case 1:
-						return visitor.totalSessions;
+						if (visitor.sourceCategory === 'Direct') {
+							return 'Direct';
+						} else if (visitor.sourceCategory === 'Referral') {
+							return visitor.source;
+						} else if (visitor.sourceCategory !== null) {
+							return visitor.sourceCategory + ': ' + visitor.sourceGroup;
+						} else {
+							return 'Unknown';
+						}
 					case 2:
-						return visitor.avgSessionDuration;
+						return visitor.totalSessions;
 					case 3:
+						return visitor.avgSessionDuration;
+					case 4:
 						return visitor.lastVisit;
 				}
 			}}

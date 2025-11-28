@@ -3565,6 +3565,8 @@ var MainTable = /*#__PURE__*/function (_React$Component) {
         columns: [{
           'name': 'Name'
         }, {
+          'name': 'Source'
+        }, {
           'name': 'Visits'
         }, {
           'name': 'Avg. Visit'
@@ -3577,10 +3579,20 @@ var MainTable = /*#__PURE__*/function (_React$Component) {
             case 0:
               return _this2.renderVisitor(visitor);
             case 1:
-              return visitor.totalSessions;
+              if (visitor.sourceCategory === 'Direct') {
+                return 'Direct';
+              } else if (visitor.sourceCategory === 'Referral') {
+                return visitor.source;
+              } else if (visitor.sourceCategory !== null) {
+                return visitor.sourceCategory + ': ' + visitor.sourceGroup;
+              } else {
+                return 'Unknown';
+              }
             case 2:
-              return visitor.avgSessionDuration;
+              return visitor.totalSessions;
             case 3:
+              return visitor.avgSessionDuration;
+            case 4:
               return visitor.lastVisit;
           }
         },
