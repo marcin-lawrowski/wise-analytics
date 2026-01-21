@@ -6623,7 +6623,11 @@ function ajax(url, query, configuration, fetchConfiguration) {
     if (queryString.length > 0) {
       queryString = '?' + queryString;
     }
-    var promise = fetch(waAdminConfig.apiBase + url + queryString, fetchConfiguration).then(function (response) {
+    var promise = fetch(waAdminConfig.apiBase + url + queryString, _objectSpread(_objectSpread({}, fetchConfiguration), {}, {
+      headers: {
+        'X-WP-Nonce': waAdminConfig.nonce
+      }
+    })).then(function (response) {
       response.json().then(function (json) {
         dispatch({
           type: "".concat(prefix, "_FETCH_DONE"),

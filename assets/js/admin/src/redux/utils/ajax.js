@@ -49,8 +49,10 @@ function ajax(url, query, configuration, fetchConfiguration) {
 			queryString = '?' + queryString;
 		}
 		
-		let promise = fetch(waAdminConfig.apiBase + url + queryString, fetchConfiguration)
-			.then(function(response) {
+		let promise = fetch(waAdminConfig.apiBase + url + queryString, {
+			...fetchConfiguration,
+			headers: { 'X-WP-Nonce': waAdminConfig.nonce }
+		}).then(function(response) {
 				response.json()
 					.then((json) => {
 						dispatch({ type: `${prefix}_FETCH_DONE`, payload: { requestId: requestId } });

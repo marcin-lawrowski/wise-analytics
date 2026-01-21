@@ -123,6 +123,7 @@ Go to Settings -> Wise Analytics -> Visitors and map all detected contact forms.
 
 = 1.1.20 =
 * Added source column to visitors table
+* Fixed: security issue
 
 = 1.1.9 =
 * Added engagements stats

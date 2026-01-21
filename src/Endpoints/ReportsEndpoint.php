@@ -40,7 +40,7 @@ class ReportsEndpoint {
 			'methods' => 'GET',
 			'callback' => [$this, 'reportEndpoint'],
 			'permission_callback' => function() {
-				return true; // TODO: check the permissions
+				return current_user_can('manage_options');
 			}
 		));
 	}
