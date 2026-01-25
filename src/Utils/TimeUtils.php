@@ -12,10 +12,10 @@ class TimeUtils {
 	public static function formatTimestamp(string $timestamp, bool $shortToday = true): string {
 		static $now = null;
 		if ($shortToday && !$now) {
-			$now = date('M j, Y ');
+			$now = gmdate('M j, Y ');
 		}
 
-		$formatted = date('M j, Y H:i', strtotime($timestamp));
+		$formatted = gmdate('M j, Y H:i', strtotime($timestamp));
 
 		return $shortToday ? preg_replace('/^'.$now.'/', '', $formatted) : $formatted;
 	}

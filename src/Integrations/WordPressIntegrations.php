@@ -7,6 +7,10 @@ use Kainex\WiseAnalytics\Services\Users\VisitorsService;
 use Kainex\WiseAnalytics\Utils\IPUtils;
 use Kainex\WiseAnalytics\Utils\URLUtils;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 class WordPressIntegrations {
 
 	/** @var VisitorsService */

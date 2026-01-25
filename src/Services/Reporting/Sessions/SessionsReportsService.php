@@ -146,20 +146,18 @@ class SessionsReportsService extends ReportingService {
 		$endDateStr = $endDate->format('Y-m-d H:i:s');
 
 		$table = Installer::getSessionsTable();
-		$sql = "SELECT userTotalVisits, count(userTotalVisits) as userTotalVisitsNumber, sum(userTotalVisitsDuration) as userTotalVisitsDuration
+		$results = $wpdb->get_results($wpdb->prepare("SELECT userTotalVisits, count(userTotalVisits) as userTotalVisitsNumber, sum(userTotalVisitsDuration) as userTotalVisitsDuration
     		FROM (
 				SELECT count(se.user_id) as userTotalVisits, sum(se.duration) as userTotalVisitsDuration
 				FROM $table se 
-				WHERE se.start >= '$startDateStr' AND se.start <= '$endDateStr'
+				WHERE se.start >= %s AND se.start <= %s
 				GROUP BY se.user_id
 			) AS inn
 			GROUP BY inn.userTotalVisits
     		ORDER BY inn.userTotalVisits
-		";
-
-		$results = $wpdb->get_results($sql);
+		", $startDateStr, $endDateStr));
 		if ($wpdb->last_error) {
-			throw new \Exception('Data layer error: '.$wpdb->last_error);
+			throw new \Exception(esc_textarea('Data layer error: '.$wpdb->last_error));
 		}
 
 		$output = [];

@@ -2,6 +2,10 @@
 
 namespace Kainex\WiseAnalytics;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * WiseAnalytics class for accessing plugin options.
  *

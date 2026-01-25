@@ -66,7 +66,7 @@ class Container {
 	 */
 	public function set($object, string $alias) {
 		if (isset($this->cache[$alias])) {
-			throw new \Exception('Alias is already defined: '.$alias);
+			throw new \Exception('Alias is already defined: '.esc_textarea($alias));
 		}
 
 		$this->cache[$alias] = $object;

@@ -4,6 +4,10 @@ namespace Kainex\WiseAnalytics;
 
 use Kainex\WiseAnalytics\Admin\Settings;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Installer
  *

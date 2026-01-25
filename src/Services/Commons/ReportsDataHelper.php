@@ -16,7 +16,7 @@ trait ReportsDataHelper {
 				$groupExpression = 'DATE_FORMAT('.$column.', \'%Y-%m-01\')';
 				break;
 			default:
-				throw new \Exception('Invalid period: ' . $period);
+				throw new \Exception(esc_textarea('Invalid period: ' . $period));
 		}
 
 		return $groupExpression;

@@ -39,7 +39,7 @@ class StringUtils {
 	private static function createUuidSection($characters) {
 		$return = "";
 		for ($i = 0; $i < $characters; $i++) {
-			$return .= sprintf("%x", mt_rand(0, 15));
+			$return .= sprintf("%x", wp_rand(0, 15));
 		}
 
 		return $return;

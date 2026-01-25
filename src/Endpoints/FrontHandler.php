@@ -109,13 +109,15 @@ class FrontHandler {
 	private function endResponse($headerMessage = null) {
 		$imageSource = 'R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=';
 		$image = base64_decode($imageSource);
+
 		nocache_headers();
 		header("Content-type: image/gif");
 		header("Content-Length: ".strlen($image));
 		if ($headerMessage) {
 			header("X-WA-Api-Response: {$headerMessage}");
 		}
-		echo base64_decode(esc_attr($imageSource));
+		$source_escaped = base64_decode(esc_attr($imageSource));
+		file_put_contents('php://output', $source_escaped);
 		die();
 	}
 	

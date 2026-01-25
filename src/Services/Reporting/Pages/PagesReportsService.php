@@ -106,10 +106,10 @@ class PagesReportsService extends ReportingService {
 		$eventType = $this->getEventType('page-view');
 
 		if (!in_array($sortColumn, ['pageViews', 'uniquePageViews', 'title', 'avgDuration', 'lastViewed', 'firstViewed'])) {
-			throw new \Exception("Invalid sort column '$sortColumn'");
+			throw new \Exception(esc_textarea("Invalid sort column '$sortColumn'"));
 		}
 		if (!in_array($sortDirection, ['asc', 'desc'])) {
-			throw new \Exception("Invalid sort direction '$sortDirection'");
+			throw new \Exception(esc_textarea("Invalid sort direction '$sortDirection'"));
 		}
 
 		$startDateStr = $startDate->format('Y-m-d H:i:s');
@@ -195,10 +195,10 @@ class PagesReportsService extends ReportingService {
 		$conditionArgs = [$startDateStr, $endDateStr, $eventType->getId()];
 
 		if (!in_array($sortColumn, ['pageViews', 'uniquePageViews', 'uri', 'lastViewed', 'firstViewed'])) {
-			throw new \Exception("Invalid sort column '$sortColumn'");
+			throw new \Exception(esc_textarea("Invalid sort column '$sortColumn'"));
 		}
 		if (!in_array($sortDirection, ['asc', 'desc'])) {
-			throw new \Exception("Invalid sort direction '$sortDirection'");
+			throw new \Exception(esc_textarea("Invalid sort direction '$sortDirection'"));
 		}
 
 		$results = $this->queryEvents([

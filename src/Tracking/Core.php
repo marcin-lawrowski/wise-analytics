@@ -2,7 +2,9 @@
 
 namespace Kainex\WiseAnalytics\Tracking;
 
-use Kainex\WiseAnalytics\Options;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
  * Core tracking code.

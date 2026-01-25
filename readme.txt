@@ -4,7 +4,7 @@ Donate link: https://kainex.pl/projects/wp-plugins/wise-analytics/wise-analytics
 Tags: stats, analytics, statistics, tracking, traffic
 Requires at least: 6.2.0
 Requires PHP: 7.4.0
-Tested up to: 6.7
+Tested up to: 6.9
 Stable tag: 1.1.20
 License: GPL v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

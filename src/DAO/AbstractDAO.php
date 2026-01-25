@@ -21,8 +21,7 @@ abstract class AbstractDAO {
 	protected function getByField(string $fieldName, string $fieldValue): ?object {
 		global $wpdb;
 
-		$sql = $wpdb->prepare("SELECT * FROM %i WHERE %i = %s;", $this->getTable(), $fieldName, $fieldValue);
-		$results = $wpdb->get_results($sql);
+		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM %i WHERE %i = %s;", $this->getTable(), $fieldName, $fieldValue));
 		if (is_array($results) && count($results) > 0) {
 			return $results[0];
 		}
@@ -42,8 +41,8 @@ abstract class AbstractDAO {
 			$conditions[] = $wpdb->prepare("%i = %s", $fieldName, $fieldValue);
 		}
 
-		$sql = $wpdb->prepare("SELECT * FROM %i WHERE ".implode(' AND ', $conditions), $this->getTable());
-		$results = $wpdb->get_results($sql);
+		$imploded = implode(' AND ', $conditions);
+		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM %i WHERE $imploded", $this->getTable()));
 		if (is_array($results)) {
 			return $results;
 		}
@@ -58,7 +57,9 @@ abstract class AbstractDAO {
 	protected function deleteByConditions(array $conditions, array $arguments) {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$sql = $wpdb->prepare("DELETE FROM %i WHERE ".implode(' AND ', $conditions), array_merge([$this->getTable()], $arguments));
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$wpdb->get_results($sql);
 	}
 

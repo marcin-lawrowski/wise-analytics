@@ -66,7 +66,7 @@ class EventResourcesDAO extends AbstractDAO {
 			'text_value' => $resource->getTextValue(),
 			'int_key' => $resource->getIntKey(),
 			'int_value' => $resource->getIntValue(),
-			'created' => $resource->getCreated() ? $resource->getCreated()->format('Y-m-d H:i:s') : date('Y-m-d H:i:s')
+			'created' => $resource->getCreated() ? $resource->getCreated()->format('Y-m-d H:i:s') : (new \DateTime())->format('Y-m-d H:i:s')
 		);
 
 		if ($resource->getId() !== null) {

@@ -186,7 +186,7 @@ class SessionsService {
 			return null;
 		}
 
-		$sourceDomain = parse_url($data['referer'], PHP_URL_HOST);
+		$sourceDomain = wp_parse_url($data['referer'], PHP_URL_HOST);
 		if ($sourceDomain && filter_var($sourceDomain, FILTER_VALIDATE_DOMAIN)) {
 			return preg_replace('/^www\./', '', $sourceDomain);
 		}

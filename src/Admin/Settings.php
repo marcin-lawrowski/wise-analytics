@@ -5,6 +5,10 @@ namespace Kainex\WiseAnalytics\Admin;
 use Kainex\WiseAnalytics\Admin\Tabs\Tabs;
 use Kainex\WiseAnalytics\Options;
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 class Settings {
 
 	const OPTIONS_GROUP = 'wise_analytics_options_group';
@@ -209,7 +213,7 @@ class Settings {
 	private function showUpdatedMessage() {
 		$message = get_transient('kainex_wiseanalytics_admin_settings_message');
 		if (is_string($message) && strlen($message) > 0) {
-			add_settings_error(md5($message), esc_attr('settings_updated'), strip_tags($message), 'updated');
+			add_settings_error(md5($message), esc_attr('settings_updated'), wp_strip_all_tags($message), 'updated');
 			delete_transient('kainex_wiseanalytics_admin_settings_message');
 		}
 	}
@@ -220,7 +224,7 @@ class Settings {
 	private function showErrorMessage() {
 		$message = get_transient('kainex_wiseanalytics_admin_settings_error_message');
 		if (is_string($message) && strlen($message) > 0) {
-			add_settings_error(md5($message), esc_attr('settings_updated'), strip_tags($message), 'error');
+			add_settings_error(md5($message), esc_attr('settings_updated'), wp_strip_all_tags($message), 'error');
 			delete_transient('kainex_wiseanalytics_admin_settings_error_message');
 		}
 	}

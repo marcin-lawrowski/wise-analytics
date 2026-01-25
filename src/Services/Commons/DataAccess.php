@@ -35,9 +35,11 @@ trait DataAccess {
 
 		$definition['table'] = $table;
 		$definition['type'] = 'select';
-		$results = $wpdb->get_results($this->getSQL($definition));
+		$sql = $this->getSQL($definition);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results($sql);
 		if ($wpdb->last_error) {
-			throw new \Exception('Data layer error: '.$wpdb->last_error);
+			throw new \Exception(esc_textarea('Data layer error: '.$wpdb->last_error));
 		}
 
 		if (is_array($results)) {
@@ -55,9 +57,11 @@ trait DataAccess {
 	protected function execute(array $definition) {
 		global $wpdb;
 
-		$results = $wpdb->get_results($this->getSQL($definition));
+		$sql = $this->getSQL($definition);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results($sql);
 		if ($wpdb->last_error) {
-			throw new \Exception('Data layer error: '.$wpdb->last_error);
+			throw new \Exception(esc_textarea('Data layer error: '.$wpdb->last_error));
 		}
 
 		return $results;
@@ -99,23 +103,22 @@ trait DataAccess {
 
 		$aliasSQL = isset($definition['alias']) ? ' AS '.$definition['alias'] : '';
 		$selectSQL = isset($definition['select']) ? implode(', ', $definition['select']) : '*';
-		$whereSQL = $wpdb->prepare(implode(' AND ', $definition['where']), $whereArgs);
+		$imploded = implode(' AND ', $definition['where']);
+		$whereSQL = $wpdb->prepare("$imploded", $whereArgs);
 		$groupBySQL = isset($definition['group']) ? 'GROUP BY '.implode(', ', $definition['group']) : '';
 		$orderBySQL = isset($definition['order']) ? 'ORDER BY '.implode(', ', $definition['order']) : '';
 		$joins = [];
 		if (isset($definition['join'])) {
 			foreach ($definition['join'] as $join) {
-				$joins[] = $wpdb->prepare('LEFT JOIN %i '.$join[1].' ON ('.implode(' AND ', $join[2]).')', $join[0]);
+				$joinPrepared = 'LEFT JOIN %i '.$join[1].' ON ('.implode(' AND ', $join[2]).')';
+				$joins[] = $wpdb->prepare("$joinPrepared", $join[0]);
 			}
 		}
 		$joinsSQL = implode(" ", $joins);
 		$limitSQL = isset($definition['limit']) ? ' LIMIT '.$definition['limit'] : '';
 		$offsetSQL = isset($definition['offset']) ? ' OFFSET '.$definition['offset'] : '';
-
-		$sql = $wpdb->prepare(
-			'SELECT '.$selectSQL.' FROM %i '.$aliasSQL.' '.$joinsSQL.' WHERE '.$whereSQL.' '.$groupBySQL.' '.$orderBySQL.' '.$limitSQL.' '.$offsetSQL,
-			$table
-		);
+		$combined = 'SELECT '.$selectSQL.' FROM %i '.$aliasSQL.' '.$joinsSQL.' WHERE '.$whereSQL.' '.$groupBySQL.' '.$orderBySQL.' '.$limitSQL.' '.$offsetSQL;
+		$sql = $wpdb->prepare("$combined", $table);
 
 		if (isset($definition['outerQuery'])) {
 			$sql = sprintf($definition['outerQuery'], $sql);
@@ -142,9 +145,10 @@ trait DataAccess {
 			$table = $wpdb->prefix.$table;
 		}
 
-		$whereSQL = $wpdb->prepare(implode(' AND ', $definition['where']), $whereArgs);
+		$imploded = implode(' AND ', $definition['where']);
+		$whereSQL = $wpdb->prepare("$imploded", $whereArgs);
 
-		return $wpdb->prepare("DELETE FROM %i WHERE ".$whereSQL, $table);
+		return $wpdb->prepare("DELETE FROM %i WHERE $whereSQL", $table);
 	}
 
 }
